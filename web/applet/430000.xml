@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--An excerpt of an egocentric social network-->
+<graphml>
+  <graph edgedefault="undirected">
+    <key id="name" for="node" attr.name="name" attr.type="string"/>
+    <key id="color" for="node" attr.name="color" attr.type="string"/>
+    <node id="1">
+      <data key="name">华夏制造</data>
+      <data key="color">01</data>
+    </node>
+    <node id="2">
+      <data key="name">邵永安</data>
+      <data key="color">05</data>
+    </node>
+    <node id="3">
+      <data key="name">北京长城华冠汽车科技有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="4">
+      <data key="name">华冠认证设计师团队</data>
+      <data key="color">05</data>
+    </node>
+    <node id="5">
+      <data key="name">深圳市神田机械设备有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="6">
+      <data key="name">富运精密有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="7">
+      <data key="name">峰华卓立制造技术有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="8">
+      <data key="name">佛山市顺德区嘉腾电子有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="9">
+      <data key="name">叁迪网</data>
+      <data key="color">05</data>
+    </node>
+    <node id="10">
+      <data key="name">卓越创造</data>
+      <data key="color">05</data>
+    </node>
+    <node id="11">
+      <data key="name">微蓝科技</data>
+      <data key="color">05</data>
+    </node>
+    <node id="12">
+      <data key="name">搜狐物流</data>
+      <data key="color">05</data>
+    </node>
+    <node id="13">
+      <data key="name">航天二院</data>
+      <data key="color">05</data>
+    </node>
+    <node id="14">
+      <data key="name">东莞市凯福机电有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="15">
+      <data key="name">广东易事特电源股份有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="16">
+      <data key="name">深圳市深时机电有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="17">
+      <data key="name">深圳市中科创威科技有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="18">
+      <data key="name">深圳市立鑫瑞测控科技有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="19">
+      <data key="name">大连理工计算机控制工程有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="20">
+      <data key="name">景德镇市景德电机有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="21">
+      <data key="name">深圳市冠华电热电器设备有限公司</data>
+      <data key="color">05</data>
+    </node>
+    <node id="22">
+      <data key="name">鹰牌陶瓷</data>
+      <data key="color">05</data>
+    </node>
+    <node id="23">
+      <data key="name">苹果科技</data>
+      <data key="color">05</data>
+    </node>
+    <node id="24">
+      <data key="name">it企业</data>
+      <data key="color">05</data>
+    </node>
+    <node id="25">
+      <data key="name">EAST LTD.CO</data>
+      <data key="color">05</data>
+    </node>
+    <edge source="1" target="2"></edge>
+    <edge source="2" target="1"></edge>
+    <edge source="1" target="3"></edge>
+    <edge source="3" target="4"></edge>
+    <edge source="3" target="5"></edge>
+    <edge source="3" target="6"></edge>
+    <edge source="3" target="7"></edge>
+    <edge source="3" target="8"></edge>
+    <edge source="3" target="9"></edge>
+    <edge source="3" target="1"></edge>
+    <edge source="3" target="10"></edge>
+    <edge source="3" target="11"></edge>
+    <edge source="3" target="12"></edge>
+    <edge source="1" target="13"></edge>
+    <edge source="13" target="3"></edge>
+    <edge source="13" target="3"></edge>
+    <edge source="13" target="14"></edge>
+    <edge source="13" target="15"></edge>
+    <edge source="13" target="16"></edge>
+    <edge source="13" target="17"></edge>
+    <edge source="13" target="18"></edge>
+    <edge source="13" target="19"></edge>
+    <edge source="13" target="20"></edge>
+    <edge source="13" target="21"></edge>
+    <edge source="1" target="11"></edge>
+    <edge source="11" target="3"></edge>
+    <edge source="11" target="13"></edge>
+    <edge source="11" target="22"></edge>
+    <edge source="11" target="10"></edge>
+    <edge source="11" target="1"></edge>
+    <edge source="1" target="23"></edge>
+    <edge source="23" target="1"></edge>
+    <edge source="23" target="24"></edge>
+    <edge source="1" target="10"></edge>
+    <edge source="10" target="25"></edge>
+    <edge source="10" target="3"></edge>
+    <edge source="10" target="22"></edge>
+    <edge source="10" target="1"></edge>
+  </graph>
+</graphml>

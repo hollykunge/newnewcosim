@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.flow.ProcessFlow">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.flow.ProcessFlow">
+        <id column="DD_PROCESS_ID" jdbcType="NUMERIC" property="ddProcessId"/>
+        <result column="DD_PROCESS_NAME" jdbcType="VARCHAR" property="ddProcessName"/>
+        <result column="DD_PROCESS_TYPE" jdbcType="NUMERIC" property="ddProcessType"/>
+        <result column="DD_PROCESS_CREATOR_ID" jdbcType="NUMERIC" property="ddProcessCreatorId"/>
+        <result column="DD_PROCESS_DESCRIPTION" jdbcType="VARCHAR" property="ddProcessDescription"/>
+        <result column="DD_PROCESS_CREATETIME" jdbcType="TIMESTAMP" property="ddProcessCreatetime"/>
+        <result column="DD_PROCESS_UPDATETIME" jdbcType="TIMESTAMP" property="ddProcessUpdatetime"/>
+        <result column="DD_PROCESS_CREATEBY" jdbcType="NUMERIC" property="ddProcessCreateby"/>
+        <result column="DD_PROCESS_UPDATEBY" jdbcType="NUMERIC" property="ddProcessUpdateby"/>
+        <result column="DD_PROCESS_STATUS" jdbcType="NUMERIC" property="ddProcessStatus"/>
+        <result column="DD_PROCESS_FIGURE" jdbcType="VARCHAR" property="ddProcessFigure"/>
+        <result column="DD_PROCESS_XML" jdbcType="VARCHAR" property="ddProcessXml"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    DD_PROCESS_ID, DD_PROCESS_NAME, DD_PROCESS_TYPE, DD_PROCESS_CREATOR_ID, DD_PROCESS_DESCRIPTION, 
+    DD_PROCESS_CREATETIME, DD_PROCESS_UPDATETIME, DD_PROCESS_CREATEBY, DD_PROCESS_UPDATEBY, 
+    DD_PROCESS_STATUS, DD_PROCESS_FIGURE, DD_PROCESS_XML
+  </sql>
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_process
+        where DD_PROCESS_ID = #{ddProcessId,jdbcType=NUMERIC}
+    </select>
+    <delete id="delete" parameterType="java.lang.Long">
+    delete from dd_process
+    where DD_PROCESS_ID = #{ddProcessId,jdbcType=NUMERIC}
+  </delete>
+    <insert id="addprocess" parameterType="com.casic.datadriver.model.flow.ProcessFlow">
+    insert into dd_process (DD_PROCESS_ID, DD_PROCESS_NAME, DD_PROCESS_TYPE, 
+      DD_PROCESS_CREATOR_ID, DD_PROCESS_DESCRIPTION, 
+      DD_PROCESS_CREATETIME, DD_PROCESS_UPDATETIME, 
+      DD_PROCESS_CREATEBY, DD_PROCESS_UPDATEBY, DD_PROCESS_STATUS, 
+      DD_PROCESS_FIGURE, DD_PROCESS_XML
+      )
+    values (#{ddProcessId,jdbcType=NUMERIC}, #{ddProcessName,jdbcType=VARCHAR}, #{ddProcessType,jdbcType=NUMERIC},
+      #{ddProcessCreatorId,jdbcType=NUMERIC}, #{ddProcessDescription,jdbcType=VARCHAR},
+      #{ddProcessCreatetime,jdbcType=TIMESTAMP}, #{ddProcessUpdatetime,jdbcType=TIMESTAMP}, 
+      #{ddProcessCreateby,jdbcType=NUMERIC}, #{ddProcessUpdateby,jdbcType=NUMERIC}, #{ddProcessStatus,jdbcType=NUMERIC},
+      #{ddProcessFigure,jdbcType=VARCHAR}, #{ddProcessXml,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.casic.datadriver.model.flow.ProcessFlow">
+        insert into dd_process
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ddProcessId != null">
+                DD_PROCESS_ID,
+            </if>
+            <if test="ddProcessName != null">
+                DD_PROCESS_NAME,
+            </if>
+            <if test="ddProcessType != null">
+                DD_PROCESS_TYPE,
+            </if>
+            <if test="ddProcessCreatorId != null">
+                DD_PROCESS_CREATOR_ID,
+            </if>
+            <if test="ddProcessDescription != null">
+                DD_PROCESS_DESCRIPTION,
+            </if>
+            <if test="ddProcessCreatetime != null">
+                DD_PROCESS_CREATETIME,
+            </if>
+            <if test="ddProcessUpdatetime != null">
+                DD_PROCESS_UPDATETIME,
+            </if>
+            <if test="ddProcessCreateby != null">
+                DD_PROCESS_CREATEBY,
+            </if>
+            <if test="ddProcessUpdateby != null">
+                DD_PROCESS_UPDATEBY,
+            </if>
+            <if test="ddProcessStatus != null">
+                DD_PROCESS_STATUS,
+            </if>
+            <if test="ddProcessFigure != null">
+                DD_PROCESS_FIGURE,
+            </if>
+            <if test="ddProcessXml != null">
+                DD_PROCESS_XML,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ddProcessId != null">
+                #{ddProcessId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessName != null">
+                #{ddProcessName,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProcessType != null">
+                #{ddProcessType,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessCreatorId != null">
+                #{ddProcessCreatorId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessDescription != null">
+                #{ddProcessDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProcessCreatetime != null">
+                #{ddProcessCreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ddProcessUpdatetime != null">
+                #{ddProcessUpdatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ddProcessCreateby != null">
+                #{ddProcessCreateby,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessUpdateby != null">
+                #{ddProcessUpdateby,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessStatus != null">
+                #{ddProcessStatus,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessFigure != null">
+                #{ddProcessFigure,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProcessXml != null">
+                #{ddProcessXml,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.flow.ProcessFlow">
+        update dd_process
+        <set>
+            <if test="ddProcessName != null">
+                DD_PROCESS_NAME = #{ddProcessName,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProcessType != null">
+                DD_PROCESS_TYPE = #{ddProcessType,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessCreatorId != null">
+                DD_PROCESS_CREATOR_ID = #{ddProcessCreatorId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessDescription != null">
+                DD_PROCESS_DESCRIPTION = #{ddProcessDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProcessCreatetime != null">
+                DD_PROCESS_CREATETIME = #{ddProcessCreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ddProcessUpdatetime != null">
+                DD_PROCESS_UPDATETIME = #{ddProcessUpdatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ddProcessCreateby != null">
+                DD_PROCESS_CREATEBY = #{ddProcessCreateby,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessUpdateby != null">
+                DD_PROCESS_UPDATEBY = #{ddProcessUpdateby,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessStatus != null">
+                DD_PROCESS_STATUS = #{ddProcessStatus,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProcessFigure != null">
+                DD_PROCESS_FIGURE = #{ddProcessFigure,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProcessXml != null">
+                DD_PROCESS_XML = #{ddProcessXml,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DD_PROCESS_ID = #{ddProcessId,jdbcType=NUMERIC}
+    </update>
+    <update id="update" parameterType="com.casic.datadriver.model.flow.ProcessFlow">
+    update dd_process
+    set DD_PROCESS_NAME = #{ddProcessName,jdbcType=VARCHAR},
+      DD_PROCESS_TYPE = #{ddProcessType,jdbcType=NUMERIC},
+      DD_PROCESS_CREATOR_ID = #{ddProcessCreatorId,jdbcType=NUMERIC},
+      DD_PROCESS_DESCRIPTION = #{ddProcessDescription,jdbcType=VARCHAR},
+      DD_PROCESS_CREATETIME = #{ddProcessCreatetime,jdbcType=TIMESTAMP},
+      DD_PROCESS_UPDATETIME = #{ddProcessUpdatetime,jdbcType=TIMESTAMP},
+      DD_PROCESS_CREATEBY = #{ddProcessCreateby,jdbcType=NUMERIC},
+      DD_PROCESS_UPDATEBY = #{ddProcessUpdateby,jdbcType=NUMERIC},
+      DD_PROCESS_STATUS = #{ddProcessStatus,jdbcType=NUMERIC},
+      DD_PROCESS_FIGURE = #{ddProcessFigure,jdbcType=VARCHAR},
+      DD_PROCESS_XML = #{ddProcessXml,jdbcType=VARCHAR}
+    where DD_PROCESS_ID = #{ddProcessId,jdbcType=NUMERIC}
+  </update>
+</mapper>

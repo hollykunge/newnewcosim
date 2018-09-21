@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE compass-core-mapping PUBLIC
+"-//Compass/Compass Core Mapping DTD 2.2//EN"
+"http://www.compass-project.org/dtd/compass-core-mapping-2.2.dtd">
+ 
+<compass-core-mapping package="beans">
+ 
+    <class name="ServiceUserBean" alias="${config.serviceUserBean}">   
+        <id name="id" />         
+        <property name="serviceName">    
+            <meta-data>serviceNameIndex</meta-data>    
+        </property> 
+        <property name="area">
+            <meta-data>areaIndex</meta-data>
+        </property>
+        <property name="tese">
+            <meta-data>areaIndex</meta-data>
+        </property>       
+        <reference name="serviceProjectBeans" ref-alias="${config.serviceProjectBean}" />
+    </class>
+     
+</compass-core-mapping>

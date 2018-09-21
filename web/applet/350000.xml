@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--An excerpt of an egocentric social network-->
+<graphml>
+  <graph edgedefault="undirected">
+    <key id="name" for="node" attr.name="name" attr.type="string"/>
+    <key id="color" for="node" attr.name="color" attr.type="string"/>
+    <node id="1">
+      <data key="name">EAST LTD.CO</data>
+      <data key="color">01</data>
+    </node>
+    <node id="2">
+      <data key="name">鹰牌陶瓷</data>
+      <data key="color">05</data>
+    </node>
+    <node id="3">
+      <data key="name">华夏制造</data>
+      <data key="color">05</data>
+    </node>
+    <node id="4">
+      <data key="name">三星电子</data>
+      <data key="color">05</data>
+    </node>
+    <node id="5">
+      <data key="name">卓越创造</data>
+      <data key="color">05</data>
+    </node>
+    <node id="6">
+      <data key="name">微蓝科技</data>
+      <data key="color">05</data>
+    </node>
+    <node id="7">
+      <data key="name">苹果科技</data>
+      <data key="color">05</data>
+    </node>
+    <node id="8">
+      <data key="name">搜狐物流</data>
+      <data key="color">05</data>
+    </node>
+    <node id="9">
+      <data key="name">STAR Manufacture</data>
+      <data key="color">05</data>
+    </node>
+    <node id="10">
+      <data key="name">快达运输</data>
+      <data key="color">05</data>
+    </node>
+    <node id="11">
+      <data key="name">北辰科技</data>
+      <data key="color">05</data>
+    </node>
+    <node id="12">
+      <data key="name">电子科技</data>
+      <data key="color">05</data>
+    </node>
+    <edge source="1" target="2"></edge>
+    <edge source="2" target="3"></edge>
+    <edge source="2" target="1"></edge>
+    <edge source="2" target="4"></edge>
+    <edge source="2" target="5"></edge>
+    <edge source="2" target="6"></edge>
+    <edge source="1" target="3"></edge>
+    <edge source="3" target="2"></edge>
+    <edge source="3" target="7"></edge>
+    <edge source="3" target="5"></edge>
+    <edge source="3" target="6"></edge>
+    <edge source="1" target="6"></edge>
+    <edge source="6" target="2"></edge>
+    <edge source="6" target="5"></edge>
+    <edge source="6" target="3"></edge>
+    <edge source="1" target="8"></edge>
+    <edge source="8" target="9"></edge>
+    <edge source="8" target="1"></edge>
+    <edge source="8" target="10"></edge>
+    <edge source="1" target="9"></edge>
+    <edge source="9" target="6"></edge>
+    <edge source="9" target="11"></edge>
+    <edge source="9" target="12"></edge>
+    <edge source="9" target="1"></edge>
+  </graph>
+</graphml>

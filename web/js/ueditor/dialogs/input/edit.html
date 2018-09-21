@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="edit.css">
+<link rel="stylesheet" type="text/css" href="../../../../styles/default/css/form.css">
+<link href="../../../lg/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../dynamic.jsp"></script>
+<script type="text/javascript" src="../internal.js"></script>
+<script type="text/javascript" src="../../../jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../../util/util.js"></script>
+<link rel="stylesheet" href="../../../tree/v30/zTreeStyle.css" type="text/css"/>
+<script type="text/javascript" src="../../../tree/v30/jquery.ztree.core-3.0.min.js"></script>
+<script type="text/javascript" src="../../../lg/ligerui.min.js"></script>
+<script type="text/javascript" src="../../../lg/plugins/ligerComboBox.js"></script>
+<script type="text/javascript" src="../../../util/loadjscss.js"></script>
+<script type="text/javascript" src="../../../hotent/CustomValid.js"></script>
+<script type="text/javascript" src="../../../hotent/platform/system/Share.js"></script>
+
+<script type="text/javascript">	
+	var oldElement,valid;
+	$(function() {
+		$(".button-td").bind("mouseenter mouseleave",function(){
+			$(this).toggleClass("button-td-hover");
+		});
+		JsLoader.LoadCount=1;
+		//获取所有数据字典列表
+		JsLoader.Load(__ctx + "/js/lg/plugins/htCatCombo.js","javascript1");
+		if (editor.curInputHtml) {			
+			var content=editor.curInputHtml.replace(/#validrule#/g,function(){
+				getAllRules();
+				return '正在获取验证规则...';
+				}).replace(/#serialnum#/g,function(){					
+					return '正在获取流水号...';
+					});
+			$("#inputPanel").html(content);
+		}
+		valid = $("#inputPanel").form();
+		init();
+	});
+	function init(){
+		//
+		$('#isDateString').bind('change',function(){
+			if($('#isDateString').attr('checked')=="checked"){
+				$('#dateStrFormat').parents('span:first').show();
+			}else{
+				$('#dateStrFormat').parents('span:first').hide();
+			}
+		});
+		
+	}
+	//获取所有验证规则
+	function getAllRules(){
+		var url=__ctx+"/platform/form/bpmFormRule/getAllRules.ht";
+		$.get(url,function(data){
+			if(!data)return;
+			var html=['<th>验证规则:</th><td colspan="3"><select eid="content" prenode="valueFrom"><option value="">无</option>'];
+			for(var i=0,c;c=data[i++];){
+				html.push('<option value="'+c.name+'">'+c.name+'</option>');
+			}
+			html.push('</select></td></td>');
+			$(".valuefrom0").html(html.join(''));
+			getAllSerialnum();
+		});
+	};
+	//获取所有流水号
+	function getAllSerialnum(){
+		var url=__ctx+"/platform/system/indetity/getAllIndetity.ht";
+		$.get(url,function(data){
+			if(!data)return;
+			var html=['<th>流水号:</th><td colspan="3"><select eid="content" prenode="valueFrom">'];
+			for(var i=0,c;c=data[i++];){
+				html.push('<option value="'+c.alias+'">'+c.name+'</option>');
+			}
+			html.push('</select></td>');
+			$(".valuefrom3").html(html.join(''));
+			bindData();
+		});
+	};	
+	//加载完inputPanel的内容以后触发该事件
+	function initComplete(){
+		$("[eid='type']").bind("change",typeChange);
+		$("[eid='value']").bind("change",valueChange);
+		$("#isQuery").bind("click",conditionChange);
+		$("[eid='searchFrom']").bind("change",searchFromChange);
+		typeChange.call($("[eid='type']")[0]);		
+	};	
+	function conditionChange(){
+		$(".condition_tr").toggleClass("hidden");
+	};
+	//值类型变化
+	function typeChange(){
+		$(".dbformat_td").html(getFormatHtml($(this).val()));
+		if(editor.curInputType=="attachement"){//附件设置长度为2000
+			$("[eid='length']").val('2000');
+		}
+	
+	};
+	//值来源变化
+	function valueChange(){
+		var val = $(this).val();
+		$("tr[class^='valuefrom']").each(function(){
+			if($(this).attr('class').indexOf(val)>-1){
+				$(this).removeClass('hidden');
+			}
+			else{
+				$(this).addClass('hidden');
+			}
+		});
+	};
+	//查询条件值来源变化
+	function searchFromChange(){
+		var val = $(this).val();
+		if(val=="fromForm")
+			$(".searchValue-td").addClass('hidden');
+		else
+			$(".searchValue-td").removeClass('hidden');
+	};
+	//修改状态下的初始化
+	function bindData(){
+		oldElement = null;
+		if(!editor.curInputElement)return;
+		var externalStr= $(editor.curInputElement).attr("external");
+		externalStr = htmlDecode(externalStr);
+		var external=eval("("+externalStr+")");
+		oldElement = editor.curInputElement;
+		editor.curInputElement=null;
+		
+		bind(external);
+		if($('#isDateString').attr('checked')=="checked"){
+			$('#dateStrFormat').parents('span:first').show();
+		}
+	}
+	//递归绑定值 
+	function bind(d){	
+	     for (var k in d){
+	    	 var val= d[k];
+	    	 if(typeof val == 'object' && val != null){
+	    		 bind(val);
+	    	 }
+   	 		 else if(val===1){
+				$("[eid='"+k+"']").attr("checked","checked");
+				if(k=='isQuery'){
+					conditionChange();
+				}
+				if(editor.canEditColumnNameAndType){
+					 if(k=='displayDate')
+						 $("[eid='"+k+"']").attr("disabled","disabled");
+				 }
+			 }
+			 else{
+				 val=val.toString().replace(/#newline#/g,'\n');
+				 $("[eid='"+k+"']:visible").val(val);
+				 if(k==="dateStrFormat"){
+				 	 $("[eid='"+k+"']").val(val);
+				 }
+				 if(k=='type'){
+					 typeChange.call($("[eid='"+k+"']")[0]);
+				 }
+				 if(k=='value'){
+					 valueChange.call($("[eid='"+k+"']")[0]);
+				 }
+				 if(k=='searchFrom'){
+					 searchFromChange.call($("[eid='"+k+"']")[0]);
+				 }
+				 if(editor.canEditColumnNameAndType){
+					 if(k=='name'||k=='type'||k=='length'||k=='intLen'||k=='decimalLen'||k=='format'){//编辑时不能修改字段的这些属性
+						 $("[eid='"+k+"']").attr("disabled","disabled");
+					 }
+				 }
+			 }
+	     }
+	}
+	//切换数据格式
+	function getFormatHtml(type){
+		var html=[''];
+		switch(type){
+			case 'varchar':
+				html.push('长度:<input eid="length" prenode="dbType" style="width:60px;" type="text" value="50"/>');
+				$(".defaultValue_tr").removeClass('hidden');
+				break;
+			case 'number':
+				html.push('整数位:<input eid="intLen" prenode="dbType" style="width:30px;" type="text" value="14"/> 小数位:<input eid="decimalLen" prenode="dbType" style="width:25px;" type="text" value="0"/>');
+				$(".defaultValue_tr").addClass('hidden');
+				break;
+			case 'date':
+				html.push('<select eid="format" prenode="dbType"><option value="yyyy-MM-dd">yyyy-MM-dd</option><option value="yyyy-MM-dd HH:mm:ss">yyyy-MM-dd HH:mm:ss</option><option value="yyyy-MM-dd HH:mm:00">yyyy-MM-dd HH:mm:00</option><option value="HH:mm:ss">HH:mm:ss</option></select><br /><label for="displayDate"><input id="displayDate" eid="displayDate" prenode="dbType" type="checkbox" />当前时间</label>');
+				$(".defaultValue_tr").addClass('hidden');
+				break;
+		}
+		return html.join('');
+	};
+	
+	dialog.onok = function() {
+		var rtn=valid.valid();
+		if(!rtn)return false;
+		var data=[];
+		$("#inputPanel").find("*:visible").each(function(){
+			var id = $(this).attr("eid"),
+				val = $(this).val(),
+				dictType=$("#dictType").val(),
+				prenode = $(this).attr("prenode");
+			if($(this).attr("type")){
+				if($(this).attr("type")=="checkbox"||$(this).attr("type")=="radio"){
+					val = (!!$(this).attr("checked")) ? 1 : 0;
+				}
+			}
+			//数据字典取值
+			if(dictType){
+				data.push({id:'dictType',val:dictType});
+			}
+			if((id&&val)||(id&&val==0)){
+				var item = {id:id,val:val};
+				if(prenode) item.prenode = prenode;
+				data.push(item);
+			}
+		});
+		editor.execCommand(editor.curInputType,data,oldElement);
+	};	
+	//解码单引号和双引号
+	function htmlDecode(str){
+		return str.replace(/\&quot\;/g, '\"').replace(/\&\#39\;/g, '\'');
+	};
+	
+function getKeyName(obj){
+    var value=$(obj).val()
+	Share.getPingyin({
+			input:value,
+			postCallback:function(data){
+				var inputObj=	$("input[eid='name']");
+					if(inputObj.val().length<1){
+							inputObj.val(data.output);
+					}			
+			}
+	});
+}
+</script>
+</head>
+<body>
+	<div id="inputPanel">		
+	</div>
+</body>
+</html>

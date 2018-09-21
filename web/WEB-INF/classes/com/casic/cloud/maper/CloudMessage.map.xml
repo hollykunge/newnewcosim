@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.console.cloudMessage.CloudMessage">
+	<resultMap id="CloudMessage" type="com.casic.cloud.model.console.cloudMessage.CloudMessage">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="senderId" column="sender_id" jdbcType="VARCHAR"/>
+		<result property="sendentId" column="sendent_id" jdbcType="NUMERIC"/>
+		<result property="receiverId" column="receiver_id" jdbcType="VARCHAR"/>
+		<result property="receiveentId" column="receiveent_id" jdbcType="NUMERIC"/>
+		<result property="sendtime" column="sendtime" jdbcType="DATE"/>
+		<result property="outtime" column="outtime" jdbcType="DATE"/>
+		<result property="result" column="result" jdbcType="NUMERIC"/>
+		<result property="link" column="link" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="NUMERIC"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="sourceId" column="source_id" jdbcType="NUMERIC"/>
+		<result property="title" column="title" jdbcType="VARCHAR"/>
+		<result property="readtime" column="readtime" jdbcType="DATE"/>
+		<association property="sendEnt" column="sendent_id"  resultMap="com.casic.cloud.model.config.info.Info"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,sender_id,sendent_id,receiver_id,receiveent_id,sendtime,outtime,result,link,type,content,source_id,title,readtime
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(senderId)"> AND sender_id  LIKE #{senderId}  </if>
+			<if test="@Ognl@isNotEmpty(sendentId)"> AND sendent_id  =#{sendentId} </if>
+			<if test="@Ognl@isNotEmpty(receiverId)"> AND receiver_id  LIKE #{receiverId}  </if>
+			<if test="@Ognl@isNotEmpty(receiveentId)"> AND receiveent_id  =#{receiveentId} </if>
+			<if test="@Ognl@isNotEmpty(sendtime)"> AND sendtime  =#{sendtime} </if>
+			<if test="@Ognl@isNotEmpty(beginsendtime)"> AND sendtime  >=#{beginsendtime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endsendtime)"> AND sendtime <![CDATA[ <=#{endsendtime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(outtime)"> AND outtime  =#{outtime} </if>
+			<if test="@Ognl@isNotEmpty(beginouttime)"> AND outtime  >=#{beginouttime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endouttime)"> AND outtime <![CDATA[ <=#{endouttime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(result)"> AND result  =#{result} </if>
+			<if test="@Ognl@isNotEmpty(link)"> AND link  LIKE #{link}  </if>
+			<if test="@Ognl@isNotEmpty(type)"> AND type  =#{type} </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(sourceId)"> AND source_id  =#{sourceId} </if>
+			<if test="@Ognl@isNotEmpty(title)"> AND title  LIKE #{title}  </if>
+			<if test="@Ognl@isNotEmpty(readtime)"> AND readtime  =#{readtime} </if>
+			<if test="@Ognl@isNotEmpty(beginreadtime)"> AND readtime  >=#{beginreadtime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endreadtime)"> AND readtime <![CDATA[ <=#{endreadtime,jdbcType=DATE}]]> </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.console.cloudMessage.CloudMessage">
+		INSERT INTO CLOUD_MESSAGE
+		(id,sender_id,sendent_id,receiver_id,receiveent_id,sendtime,outtime,result,link,type,content,source_id,title,readtime)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{senderId,jdbcType=VARCHAR}, #{sendentId,jdbcType=NUMERIC}, #{receiverId,jdbcType=VARCHAR}, #{receiveentId,jdbcType=NUMERIC}, #{sendtime,jdbcType=DATE}, #{outtime,jdbcType=DATE}, #{result,jdbcType=NUMERIC}, #{link,jdbcType=VARCHAR}, #{type,jdbcType=NUMERIC}, #{content,jdbcType=VARCHAR}, #{sourceId,jdbcType=NUMERIC}, #{title,jdbcType=VARCHAR}, #{readtime,jdbcType=DATE})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM CLOUD_MESSAGE 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.console.cloudMessage.CloudMessage">
+		UPDATE CLOUD_MESSAGE SET
+		sender_id=#{senderId,jdbcType=VARCHAR},
+		sendent_id=#{sendentId,jdbcType=NUMERIC},
+		receiver_id=#{receiverId,jdbcType=VARCHAR},
+		receiveent_id=#{receiveentId,jdbcType=NUMERIC},
+		sendtime=#{sendtime,jdbcType=DATE},
+		outtime=#{outtime,jdbcType=DATE},
+		result=#{result,jdbcType=NUMERIC},
+		link=#{link,jdbcType=VARCHAR},
+		type=#{type,jdbcType=NUMERIC},
+		content=#{content,jdbcType=VARCHAR},
+		source_id=#{sourceId,jdbcType=NUMERIC},
+		title=#{title,jdbcType=VARCHAR},
+		readtime=#{readtime,jdbcType=DATE}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="CloudMessage">
+		SELECT m.id,m.sender_id,m.sendent_id,m.receiver_id,m.receiveent_id,m.sendtime,m.outtime,m.result,m.link,m.type,m.content,m.source_id,m.title,m.readtime 
+		,i.SYS_ORG_INFO_ID,i.logo,i.name 
+		FROM CLOUD_MESSAGE m
+		LEFT JOIN  sys_org_info i ON m.sendent_id=i.SYS_ORG_INFO_ID
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="CloudMessage">
+		SELECT m.id,m.sender_id,m.sendent_id,m.receiver_id,m.receiveent_id,m.sendtime,m.outtime,m.result,m.link,m.type,m.content,m.source_id,m.title,m.readtime 
+		,i.SYS_ORG_INFO_ID,i.logo,i.name 
+		FROM CLOUD_MESSAGE m
+		LEFT JOIN  sys_org_info i ON m.sendent_id=i.SYS_ORG_INFO_ID
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+</mapper>

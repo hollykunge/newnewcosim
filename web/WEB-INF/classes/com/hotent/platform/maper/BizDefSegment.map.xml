@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.hotent.platform.model.biz.BizDefSegment">
+	<resultMap id="BizDefSegment" type="com.hotent.platform.model.biz.BizDefSegment">
+		<id property="bizDefSegmentId" column="BIZ_DEF_SEGMENT_ID" jdbcType="NUMERIC"/>
+		<result property="bizDefId" column="BIZ_DEF_ID" jdbcType="NUMERIC"/>
+		<result property="bizDefSegmentNo" column="BIZ_DEF_SEGMENT_NO" jdbcType="VARCHAR"/>
+		<result property="segmentName" column="SEGMENT_NAME" jdbcType="VARCHAR"/>
+		<result property="segmentDescription" column="SEGMENT_DESCRIPTION" jdbcType="VARCHAR"/>
+		<result property="actDefKey" column="ACT_DEF_KEY" jdbcType="VARCHAR"/>
+		<result property="status" column="STATUS" jdbcType="NUMERIC"/>
+		<result property="sortOrder" column="SORT_ORDER" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<sql id="columns">
+		BIZ_DEF_SEGMENT_ID,BIZ_DEF_ID,BIZ_DEF_SEGMENT_NO,SEGMENT_NAME,SEGMENT_DESCRIPTION,ACT_DEF_KEY,STATUS,SORT_ORDER
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(bizDefSegmentId)"> AND BIZ_DEF_SEGMENT_ID  =#{bizDefSegmentId} </if>
+			<if test="@Ognl@isNotEmpty(bizDefId)"> AND BIZ_DEF_ID  =#{bizDefId} </if>
+			<if test="@Ognl@isNotEmpty(bizDefSegmentNo)"> AND BIZ_DEF_SEGMENT_NO  LIKE #{bizDefSegmentNo}  </if>
+			<if test="@Ognl@isNotEmpty(segmentName)"> AND SEGMENT_NAME  LIKE #{segmentName}  </if>
+			<if test="@Ognl@isNotEmpty(segmentDescription)"> AND SEGMENT_DESCRIPTION  LIKE #{segmentDescription}  </if>
+			<if test="@Ognl@isNotEmpty(actDefKey)"> AND ACT_DEF_KEY  LIKE #{actDefKey}  </if>
+			<if test="@Ognl@isNotEmpty(status)"> AND STATUS  =#{status} </if>
+			<if test="@Ognl@isNotEmpty(sortOrder)"> AND SORT_ORDER  =#{sortOrder} </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.hotent.platform.model.biz.BizDefSegment">
+		INSERT INTO BIZ_DEF_SEGMENT
+		(BIZ_DEF_SEGMENT_ID,BIZ_DEF_ID,BIZ_DEF_SEGMENT_NO,SEGMENT_NAME,SEGMENT_DESCRIPTION,ACT_DEF_KEY,STATUS,SORT_ORDER)
+		VALUES
+		(#{bizDefSegmentId,jdbcType=NUMERIC}, #{bizDefId,jdbcType=NUMERIC}, #{bizDefSegmentNo,jdbcType=VARCHAR}, #{segmentName,jdbcType=VARCHAR}, #{segmentDescription,jdbcType=VARCHAR}, #{actDefKey,jdbcType=VARCHAR}, #{status,jdbcType=NUMERIC}, #{sortOrder,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM BIZ_DEF_SEGMENT 
+		WHERE
+		BIZ_DEF_SEGMENT_ID=#{bizDefSegmentId}
+	</delete>
+	
+	<update id="update" parameterType="com.hotent.platform.model.biz.BizDefSegment">
+		UPDATE BIZ_DEF_SEGMENT SET
+		BIZ_DEF_ID=#{bizDefId,jdbcType=NUMERIC},
+		BIZ_DEF_SEGMENT_NO=#{bizDefSegmentNo,jdbcType=VARCHAR},
+		SEGMENT_NAME=#{segmentName,jdbcType=VARCHAR},
+		SEGMENT_DESCRIPTION=#{segmentDescription,jdbcType=VARCHAR},
+		ACT_DEF_KEY=#{actDefKey,jdbcType=VARCHAR},
+		STATUS=#{status,jdbcType=NUMERIC},
+		SORT_ORDER=#{sortOrder,jdbcType=NUMERIC}
+		WHERE
+		BIZ_DEF_SEGMENT_ID=#{bizDefSegmentId}
+	</update>
+	<delete id="delByMainId">
+	    DELETE FROM BIZ_DEF_SEGMENT
+	    WHERE
+	    Biz_Def_ID=#{bizDefId}
+	</delete>    
+	
+	<select id="getBizDefSegmentList" resultMap="BizDefSegment">
+	    SELECT <include refid="columns"/>
+	    FROM BIZ_DEF_SEGMENT 
+	    WHERE Biz_Def_ID=#{bizDefId}
+	</select>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="BizDefSegment">
+		SELECT <include refid="columns"/>
+		FROM BIZ_DEF_SEGMENT
+		WHERE
+		BIZ_DEF_SEGMENT_ID=#{bizDefSegmentId}
+	</select>
+	
+	<select id="getAll" resultMap="BizDefSegment">
+		SELECT <include refid="columns"/>
+		FROM BIZ_DEF_SEGMENT   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by BIZ_DEF_SEGMENT_ID  desc
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.modelcenter.ModelCenterModel">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.modelcenter.ModelCenterModel">
+    <id column="dd_model_id" jdbcType="BIGINT" property="ddModelId" />
+    <result column="dd_model_name" jdbcType="VARCHAR" property="ddModelName" />
+    <result column="dd_model_explain" jdbcType="VARCHAR" property="ddModelExplain" />
+    <result column="dd_task_id" jdbcType="BIGINT" property="ddTaskId" />
+    <result column="dd_model_version" jdbcType="VARCHAR" property="ddModelVersion" />
+    <result column="dd_model_url" jdbcType="VARCHAR" property="ddModelUrl" />
+    <result column="dd_model_type" jdbcType="BIGINT" property="ddModelType" />
+    <result column="dd_model_sm" jdbcType="VARCHAR" property="ddModelsm" />
+    <result column="dd_model_jg" jdbcType="VARCHAR" property="ddModeljg" />
+    <result column="dd_model_bf1" jdbcType="VARCHAR" property="ddModelBf1" />
+    <result column="dd_model_bf2" jdbcType="BIGINT" property="ddModelBf2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    dd_model_id, dd_model_name, dd_model_explain, dd_task_id,dd_model_version, dd_model_url, dd_model_type,dd_model_sm,dd_model_jg,
+    dd_model_bf1, dd_model_bf2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_modelcenter
+    where dd_model_id = #{ddModelId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_modelcenter
+    where dd_model_id = #{ddModelId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="add" parameterType="com.casic.datadriver.model.modelcenter.ModelCenterModel">
+    insert into dd_modelcenter (dd_model_id, dd_model_name, dd_model_explain,
+      dd_task_id, dd_model_version,dd_model_url, dd_model_type,dd_model_sm,dd_model_jg,
+      dd_model_bf1, dd_model_bf2)
+    values (#{ddModelId,jdbcType=BIGINT}, #{ddModelName,jdbcType=VARCHAR}, #{ddModelExplain,jdbcType=VARCHAR},
+      #{ddTaskId,jdbcType=BIGINT},#{ddModelVersion,jdbcType=VARCHAR}, #{ddModelUrl,jdbcType=VARCHAR}, #{ddModelType,jdbcType=BIGINT},
+       #{ddModelsm,jdbcType=VARCHAR}, #{ddModeljg,jdbcType=VARCHAR},
+      #{ddModelBf1,jdbcType=VARCHAR}, #{ddModelBf2,jdbcType=BIGINT})
+  </insert>
+
+    <select id="querytoolBymodeltype" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_modelcenter
+        where dd_model_type = #{modeltype} AND dd_model_bf2 = 1
+    </select>
+
+    <select id="querytoolBymodeltypeF" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_modelcenter
+        where dd_model_type = #{id} AND dd_model_bf2 = 1 limit #{pageSize},#{pageNumber}
+    </select>
+
+  <select id="querytoolBytaskid" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_modelcenter
+    where dd_task_id = #{id}
+  </select>
+
+  <select id="querytoolBytaskidF" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_modelcenter
+    where dd_task_id = #{id} limit #{pageSize},#{pageNumber}
+  </select>
+
+    <select id="querytoolBymodelname" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_modelcenter
+        where dd_model_type = #{id} AND dd_model_name = #{Name}
+    </select>
+
+  <select id="getByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_modelcenter
+    where dd_task_id = #{taskId}
+  </select>
+
+    <delete id="delmodel" parameterType="java.lang.Long">
+        delete from dd_modelcenter
+        where dd_model_id = #{id,jdbcType=NUMERIC}
+    </delete>
+
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.modelcenter.ModelCenterModel">
+    insert into dd_modelcenter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddModelId != null">
+        dd_model_id,
+      </if>
+      <if test="ddModelName != null">
+        dd_model_name,
+      </if>
+      <if test="ddModelExplain != null">
+        dd_model_explain,
+      </if>
+      <if test="ddTaskId != null">
+        dd_task_id,
+      </if>
+      <if test="ddModelVersion != null">
+        dd_model_version,
+      </if>
+      <if test="ddModelUrl != null">
+        dd_model_url,
+      </if>
+      <if test="ddModelType != null">
+        dd_model_type,
+      </if>
+      <if test="ddModelsm != null">
+        dd_model_sm,
+      </if>
+      <if test="ddModeljg != null">
+        dd_model_jg,
+      </if>
+      <if test="ddModelBf1 != null">
+        dd_model_bf1,
+      </if>
+      <if test="ddModelBf2 != null">
+        dd_model_bf2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddModelId != null">
+        #{ddModelId,jdbcType=BIGINT},
+      </if>
+      <if test="ddModelName != null">
+        #{ddModelName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelExplain != null">
+        #{ddModelExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="ddTaskId != null">
+        #{ddTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="ddModelVersion != null">
+        #{ddModelVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelUrl != null">
+        #{ddModelUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelType != null">
+        #{ddModelType,jdbcType=BIGINT},
+      </if>
+      <if test="ddModelsm != null">
+        #{ddModelsm,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModeljg != null">
+        #{ddModeljg,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelBf1 != null">
+        #{ddModelBf1,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelBf2 != null">
+        #{ddModelBf2,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.modelcenter.ModelCenterModel">
+    update dd_modelcenter
+    <set>
+      <if test="ddModelName != null">
+        dd_model_name = #{ddModelName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelExplain != null">
+        dd_model_explain = #{ddModelExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="ddTaskId != null">
+        dd_task_id = #{ddTaskId,jdbcType=BIGINT},
+      </if>
+      <if test="ddModelVersion != null">
+        dd_model_version = #{ddModelVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelUrl != null">
+        dd_model_url = #{ddModelUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelType != null">
+        dd_model_type = #{ddModelType,jdbcType=BIGINT},
+      </if>
+      <if test="ddModelsm != null">
+        dd_model_sm = #{ddModelsm,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModeljg != null">
+        dd_model_jg = #{ddModeljg,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelBf1 != null">
+        dd_model_bf1 = #{ddModelBf1,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelBf2 != null">
+        dd_model_bf2 = #{ddModelBf2,jdbcType=BIGINT},
+      </if>
+    </set>
+    where dd_model_id = #{ddModelId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.modelcenter.ModelCenterModel">
+    update dd_modelcenter
+    set dd_model_name = #{ddModelName,jdbcType=VARCHAR},
+      dd_model_explain = #{ddModelExplain,jdbcType=VARCHAR},
+      dd_task_id = #{ddTaskId,jdbcType=BIGINT},
+      dd_model_version = #{ddModelVersion,jdbcType=VARCHAR},
+      dd_model_url = #{ddModelUrl,jdbcType=VARCHAR},
+      dd_model_type = #{ddModelType,jdbcType=BIGINT},
+       dd_model_sm = #{ddModelsm,jdbcType=VARCHAR},
+        dd_model_jg = #{ddModeljg,jdbcType=VARCHAR},
+      dd_model_bf1 = #{ddModelBf1,jdbcType=VARCHAR},
+      dd_model_bf2 = #{ddModelBf2,jdbcType=BIGINT}
+    where dd_model_id = #{ddModelId,jdbcType=BIGINT}
+  </update>
+</mapper>

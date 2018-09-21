@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.cloud.model.taskfile.TaskFileNode">
+	<resultMap id="taskFileNode" type="com.casic.cloud.model.taskfile.TaskFileNode">
+		<id property="taskfileNodeId" column="taskfileNodeId" jdbcType="NUMERIC" />
+		<result property="taskfileId" column="taskfileId" jdbcType="NUMERIC" />
+		<result property="setId" column="setId" jdbcType="NUMERIC" />
+		<result property="nodeName" column="nodeName" jdbcType="VARCHAR"/>
+		<result property="fileName" column="fileName" jdbcType="VARCHAR"/>
+		<result property="ext" column="ext" jdbcType="NUMERIC"/>
+		<result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+		<result property="totalBytes" column="totalBytes" jdbcType="NUMERIC"/>
+	</resultMap>
+
+
+	<sql id="columns">
+		taskfileNodeId,taskfileId,setId
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(taskfileNodeId)"> AND taskfileNodeId =#{taskfileNodeId} </if>
+			<if test="@Ognl@isNotEmpty(taskfileId)"> AND taskfileId =#{taskfileId} </if>
+			<if test="@Ognl@isNotEmpty(setId)"> AND setId =#{setId} </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.tool.ToolBpmNode">
+		INSERT INTO task_file_right
+		(
+		<include refid="columns" />
+		)
+		VALUES
+		(#{taskfileNodeId,jdbcType=NUMERIC}, #{taskfileId,jdbcType=NUMERIC},
+		#{setId,jdbcType=NUMERIC})
+	</insert>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM
+		task_file_right
+		WHERE
+		taskfileNodeId=#{taskfileNodeId}
+	</delete>
+
+	<select id="getAll" resultMap="taskFileNode" parameterType="java.util.Map">
+		SELECT
+		a.setId,a.taskfileId,a.taskfileNodeId,b.fileName,b.ext,b.createtime
+		FROM
+		task_file_right a LEFT JOIN cloud_tool b ON
+		a.taskfileId=b.taskfileId
+		WHERE a.setId=#{setId}
+		<if test="@Ognl@isNotEmpty(fileName)"> AND fileName like #{fileName} </if>
+		<if test="@Ognl@isNotEmpty(ext)"> AND ext =#{ext} </if>
+		<if test="@Ognl@isNotEmpty(orderField)">
+			order by b.${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+			order by taskfileNodeId desc
+		</if>
+	</select>
+
+	<select id="getTaskFileNode" resultMap="taskFileNode" parameterType="java.util.Map">
+		SELECT
+		a.setId,a.taskfileId,a.taskfileNodeId
+		FROM
+		task_file_right a
+		WHERE a.setId=#{setId} AND a.taskfileId=#{taskfileId}
+	</select>
+	
+	<select id="getById" resultMap="taskFileNode" parameterType="java.util.Map">
+		SELECT
+		a.setId,a.taskfileId,a.taskfileNodeId,b.fileName,b.ext,b.createtime,b.totalBytes
+		FROM
+		(task_file_right a INNER JOIN task_file b ON a.taskfileId=b.fileId) INNER JOIN bpm_node_set c ON a.setId=c.setId  
+		WHERE a.taskfileNodeId=#{taskfileNodeId}
+	</select>	
+	
+	<select id="getTaskFileNodesByDefId" resultMap="taskFileNode" parameterType="java.util.Map">
+		SELECT a.setId,a.taskfileId,a.taskfileNodeId
+		FROM (task_file_right a INNER JOIN bpm_node_set b ON a.setId=b.setId) 
+		WHERE b.defId=#{defId}   
+	</select>
+	<select id="getTaskFileNodesByTaskfileId" resultMap="taskFileNode" parameterType="java.util.Map">
+		SELECT a.setId,a.taskfileId,a.taskfileNodeId
+		FROM (task_file_right a INNER JOIN bpm_node_set b ON a.setId=b.setId) 
+		WHERE a.taskfileId=#{taskfileId}   
+	</select>	
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.research.fileVerify.FileVerifyResult">
+	<resultMap id="FileVerifyResult" type="com.casic.cloud.model.research.fileVerify.FileVerifyResult">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="verifierId" column="VERIFIER_ID" jdbcType="NUMERIC"/>
+		<result property="verifierName" column="VERIFIER_NAME" jdbcType="VARCHAR"/>
+		<result property="verifyTime" column="VERIFY_TIME" jdbcType="DATE"/>
+		<result property="verifyResult" column="VERIFY_RESULT" jdbcType="VARCHAR"/>
+		<result property="sourceId" column="SOURCE_ID" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<sql id="columns">
+		ID,VERIFIER_ID,VERIFIER_NAME,VERIFY_TIME,VERIFY_RESULT,SOURCE_ID
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(verifierId)"> AND VERIFIER_ID  =#{verifierId} </if>
+			<if test="@Ognl@isNotEmpty(verifierName)"> AND VERIFIER_NAME  LIKE #{verifierName}  </if>
+			<if test="@Ognl@isNotEmpty(verifyTime)"> AND VERIFY_TIME  =#{verifyTime} </if>
+			<if test="@Ognl@isNotEmpty(beginverifyTime)"> AND VERIFY_TIME  >=#{beginverifyTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endverifyTime)"> AND VERIFY_TIME <![CDATA[ <=#{endverifyTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(verifyResult)"> AND VERIFY_RESULT  LIKE #{verifyResult}  </if>
+			<if test="@Ognl@isNotEmpty(sourceId)"> AND SOURCE_ID  =#{sourceId} </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.research.fileVerify.FileVerifyResult">
+		INSERT INTO CLOUD_RESEARCH_VERIFY_RESULT
+		(ID,VERIFIER_ID,VERIFIER_NAME,VERIFY_TIME,VERIFY_RESULT,SOURCE_ID)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{verifierId,jdbcType=NUMERIC}, #{verifierName,jdbcType=VARCHAR}, #{verifyTime,jdbcType=DATE}, #{verifyResult,jdbcType=VARCHAR}, #{sourceId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM CLOUD_RESEARCH_VERIFY_RESULT 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.research.fileVerify.FileVerifyResult">
+		UPDATE CLOUD_RESEARCH_VERIFY_RESULT SET
+		VERIFIER_ID=#{verifierId,jdbcType=NUMERIC},
+		VERIFIER_NAME=#{verifierName,jdbcType=VARCHAR},
+		VERIFY_TIME=#{verifyTime,jdbcType=DATE},
+		VERIFY_RESULT=#{verifyResult,jdbcType=VARCHAR},
+		SOURCE_ID=#{sourceId,jdbcType=NUMERIC}
+		WHERE
+		ID=#{id}
+	</update>
+	<delete id="delByMainId">
+	    DELETE FROM CLOUD_RESEARCH_VERIFY_RESULT
+	    WHERE
+	    source_id=#{sourceId}
+	</delete>    
+	
+	<select id="getFileVerifyResultList" resultMap="FileVerifyResult">
+	    SELECT <include refid="columns"/>
+	    FROM CLOUD_RESEARCH_VERIFY_RESULT 
+	    WHERE source_id=#{sourceId}
+	</select>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="FileVerifyResult">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_RESEARCH_VERIFY_RESULT
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="FileVerifyResult">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_RESEARCH_VERIFY_RESULT   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+</mapper>

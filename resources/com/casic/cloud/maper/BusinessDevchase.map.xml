@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.businessDevchase.BusinessDevchase">
+	<resultMap id="BusinessDevchase" type="com.casic.cloud.model.config.businessDevchase.BusinessDevchase">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time" jdbcType="DATE"/>
+		<result property="endTime" column="end_time" jdbcType="DATE"/>
+		<result property="image" column="image" jdbcType="VARCHAR"/>
+		<result property="companyId" column="company_id" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="NUMERIC"/>
+		<result property="operateTime" column="operate_time" jdbcType="DATE"/>
+		<result property="companyName" column="company_name" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="publishState" column="publish_state" jdbcType="VARCHAR"/>
+		<result property="classid" column="classid" jdbcType="VARCHAR"/>
+		<result property="yfhbzzyq" column="yfhbzzyq" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="publishInfo" column="publish_info" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<resultMap id="BusinessChaseSS" type="com.casic.cloud.model.config.businessDevchase.BusinessDevchase">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time" jdbcType="DATE"/>
+		<result property="endTime" column="end_time" jdbcType="DATE"/>
+		<result property="image" column="image" jdbcType="VARCHAR"/>
+		<result property="companyId" column="company_id" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="NUMERIC"/>
+		<result property="operateTime" column="operate_time" jdbcType="DATE"/>
+		<result property="companyName" column="company_name" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="publishState" column="publish_state" jdbcType="VARCHAR"/>
+		<result property="classid" column="classid" jdbcType="VARCHAR"/>
+		<result property="yfhbzzyq" column="yfhbzzyq" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+			<result property="fwqy" column="fwqy" jdbcType="VARCHAR"/>
+		 <result property="fwqy2" column="fwqy2" jdbcType="VARCHAR"/>
+		<result property="dlsj" column="dlsj" jdbcType="DATE"/>
+		<result property="hzfwqyzzyq" column="hzfwqyzzyq" jdbcType="VARCHAR"/>
+			<result property="purnum" column="purnum" jdbcType="NUMERIC"/>
+		 
+		<result property="jhqyq" column="jhqyq" jdbcType="VARCHAR"/>
+		<result property="gyszzyq" column="gyszzyq" jdbcType="VARCHAR"/>
+		<result property="scgyyq" column="scgyyq" jdbcType="VARCHAR"/>
+		 
+		<result property="scgm" column="scgm" jdbcType="VARCHAR"/>
+		<result property="gjsbyq" column="gjsbyq" jdbcType="VARCHAR"/>
+		<result property="cpzlyq" column="cpzlyq" jdbcType="VARCHAR"/>
+		<result property="hzjgqyzzyq" column="hzjgqyzzyq" jdbcType="VARCHAR"/>
+			<result property="dlqy" column="dlqy" jdbcType="VARCHAR"/>
+		 <result property="dlqy2" column="dlqy2" jdbcType="VARCHAR"/>
+		<result property="dlsjyq" column="dlsjyq" jdbcType="VARCHAR"/>
+		<result property="yxhbzzyq" column="yxhbzzyq" jdbcType="VARCHAR"/>
+		<result property="country" column="COUNTRY" jdbcType="VARCHAR"/>
+		<result property="province" column="PROVINCE" jdbcType="VARCHAR"/>
+		<result property="city" column="CITY" jdbcType="VARCHAR"/>
+		<result property="flaglogo" column="FLAGLOGO" jdbcType="VARCHAR"/>
+		<result property="industry" column="industry" jdbcType="VARCHAR"/>
+		<result property="industry2" column="industry2" jdbcType="VARCHAR"/>
+		<result property="publishInfo" column="publish_info" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,name,content,start_time,end_time,image,company_id,user_id,operate_time,company_name,user_name,publish_state,classid,yfhbzzyq,type,publish_info
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(startTime)"> AND start_time  =#{startTime} </if>
+			<if test="@Ognl@isNotEmpty(beginstartTime)"> AND start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endstartTime)"> AND start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND end_time  =#{endTime} </if>
+			<if test="@Ognl@isNotEmpty(beginendTime)"> AND end_time  >=#{beginendTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endendTime)"> AND end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+			 
+			<if test="@Ognl@isNotEmpty(operateTime)"> AND operate_time  =#{operateTime} </if>
+			<if test="@Ognl@isNotEmpty(beginoperateTime)"> AND operate_time  >=#{beginoperateTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endoperateTime)"> AND operate_time <![CDATA[ <=#{endoperateTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(companyName)"> AND company_name  LIKE #{companyName}  </if>
+			<if test="@Ognl@isNotEmpty(userName)"> AND user_name  LIKE #{userName}  </if>
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+			<if test="@Ognl@isNotEmpty(classid)"> AND classid  LIKE #{classid}  </if>
+			<if test="@Ognl@isNotEmpty(yfhbzzyq)"> AND yfhbzzyq  LIKE #{yfhbzzyq}  </if>
+			<if test="@Ognl@isNotEmpty(type)"> AND type  LIKE #{type}  </if>
+			<if test="@Ognl@isNotEmpty(publishInfo)"> AND publish_info  LIKE #{publishInfo}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.businessDevchase.BusinessDevchase">
+		INSERT INTO cloud_business_devchase
+		(id,name,publish_info,content,start_time,end_time,image,company_id,user_id,operate_time,company_name,user_name,publish_state,classid,yfhbzzyq,type)
+		VALUES
+		(#{id,jdbcType=NUMERIC},#{name,jdbcType=VARCHAR}, #{publishInfo,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, #{image,jdbcType=VARCHAR}, #{companyId,jdbcType=NUMERIC}, #{userId,jdbcType=NUMERIC}, #{operateTime,jdbcType=DATE}, #{companyName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{publishState,jdbcType=VARCHAR}, #{classid,jdbcType=VARCHAR}, #{yfhbzzyq,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_business_devchase 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.businessDevchase.BusinessDevchase">
+		UPDATE cloud_business_devchase SET
+		name=#{name,jdbcType=VARCHAR},
+		content=#{content,jdbcType=VARCHAR},
+		start_time=#{startTime,jdbcType=DATE},
+		end_time=#{endTime,jdbcType=DATE},
+		image=#{image,jdbcType=VARCHAR},
+		company_id=#{companyId,jdbcType=NUMERIC},
+		user_id=#{userId,jdbcType=NUMERIC},
+		operate_time=#{operateTime,jdbcType=DATE},
+		company_name=#{companyName,jdbcType=VARCHAR},
+		user_name=#{userName,jdbcType=VARCHAR},
+		publish_state=#{publishState,jdbcType=VARCHAR},
+		classid=#{classid,jdbcType=VARCHAR},
+		yfhbzzyq=#{yfhbzzyq,jdbcType=VARCHAR},
+		type=#{type,jdbcType=VARCHAR},
+		publish_info=#{publishInfo,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="BusinessDevchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_devchase
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAllByType" parameterType="java.lang.String" resultMap="BusinessChaseSS">
+		SELECT *
+		FROM cloud_business_view   
+		 WHERE  
+		
+		type=#{type} 
+		and publish_state='审核通过'
+		order by operate_time  desc
+	</select>
+	
+	<select id="getAll" resultMap="BusinessDevchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_devchase   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	
+	<select id="getTT" resultMap="BusinessChaseSS">
+		SELECT *
+		FROM cloud_business_view  
+		where  publish_state='审核通过'
+	</select>
+	
+	<select id="getAllTT" resultMap="BusinessChaseSS">
+		SELECT *
+		FROM cloud_business_view  where 1=1 
+		<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if> 
+		 <if test="@Ognl@isNotEmpty(type)"> AND type  LIKE #{type}  </if>
+	 <if test="@Ognl@isNotEmpty(startTime)"> AND start_time  =#{startTime} </if>
+			<if test="@Ognl@isNotEmpty(beginstartTime)"> AND start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endstartTime)"> AND start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND end_time  =#{endTime} </if>
+			<if test="@Ognl@isNotEmpty(beginendTime)"> AND end_time  >=#{beginendTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endendTime)"> AND end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+	</select>
+	
+	
+	<select id="myChase" resultMap="BusinessChaseSS">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_devchase    where  
+		 company_id=#{company_id,jdbcType=NUMERIC}
+		 and user_id=#{user_id,jdbcType=NUMERIC}
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if> 
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+		   <if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	
+	
+	
+	<select id="getAllForCompass" resultMap="BusinessChaseSS">
+		SELECT *
+		FROM cloud_business_view 
+		where  publish_state='审核通过'  	 
+	</select>
+	
+	  <select id="getByIdAnd"  resultMap="BusinessChaseSS">
+		SELECT *
+		FROM cloud_business_view
+		 WHERE  
+		 id=#{id,jdbcType=NUMERIC}
+		 and type=#{type,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="getAllByEntid" resultMap="BusinessDevchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_devchase  
+		 WHERE   company_id=#{company_id,jdbcType=NUMERIC} 
+		
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(startTime)"> AND start_time  =#{startTime} </if>
+			<if test="@Ognl@isNotEmpty(beginstartTime)"> AND start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endstartTime)"> AND start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND end_time  =#{endTime} </if>
+			<if test="@Ognl@isNotEmpty(beginendTime)"> AND end_time  >=#{beginendTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endendTime)"> AND end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(operateTime)"> AND operate_time  =#{operateTime} </if>
+			<if test="@Ognl@isNotEmpty(beginoperateTime)"> AND operate_time  >=#{beginoperateTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endoperateTime)"> AND operate_time <![CDATA[ <=#{endoperateTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(companyName)"> AND company_name  LIKE #{companyName}  </if>
+			<if test="@Ognl@isNotEmpty(userName)"> AND user_name  LIKE #{userName}  </if>
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+			<if test="@Ognl@isNotEmpty(classid)"> AND classid  LIKE #{classid}  </if>
+			<if test="@Ognl@isNotEmpty(yfhbzzyq)"> AND yfhbzzyq  LIKE #{yfhbzzyq}  </if>
+
+
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+</mapper>

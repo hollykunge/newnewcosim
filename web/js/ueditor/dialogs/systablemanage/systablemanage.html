@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>插入自定义表管理</title>
+    <script type="text/javascript" src="../../../dynamic.jsp"></script>
+	<script type="text/javascript" src="../internal.js"></script>
+	<script type="text/javascript" src="../../../jquery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../../../jquery/jquery.form.js"></script>
+    <style type="text/css">
+        * {color: #838383}
+        body {font-size: 12px;width: 450px;height: 230px;overflow: hidden; margin: 0;padding: 0; }
+        .warp {padding: 20px 0 0 15px;height: 100%;position: relative;}
+        table{width: 430px}
+        table td{padding:5px 0;}
+    </style>
+	<script type="text/javascript">
+		$(function() {
+			$("input:[name='selectcomp']:[type='button']").click(function(){
+			   	var url=__ctx+ "/platform/system/sysTableManageDialog.ht";
+				var winArgs="dialogWidth=1024px;dialogHeight=700px;help=0;status=0;scroll=0;center=1";
+				var rtn=window.open(url,{},winArgs);
+				if(rtn && rtn.status){
+					$('#manageName').val(rtn.name);
+					$('#manageId').val(rtn.id);
+				}
+			});
+			
+			$("#name").bind("blur",function(){
+				var name=$("#name").val();
+				if (!/^[a-zA-Z_]{1}[\w\d_]*$/.test(name)) {
+					alert("名称必须由字母、下划线和数字组成，并由字母或下划线开头！");
+				}
+
+			});
+			
+			dialog.onok=function(){
+				var displayId =$.trim($('#manageId').val());
+	            if(!displayId){
+	            	 alert("请输入选择组件！");
+	                 return false;
+	            }
+	            var name = $.trim($('#name').val());
+	            if(!name){
+	            	 alert("请输入名称！");
+	                 return false;
+	            }else{
+	            	if (!/^[a-zA-Z_]{1}[\w\d_]*$/.test(name)) {
+						alert("名称必须由字母、下划线和数字组成，并由字母或下划线开头！");
+						return false;
+					}
+	            }
+	            
+				var width = $("#width").val();
+                var height = $("#height").val();
+                var div = $("<div></div>");
+                div.attr("manageId",displayId);
+                div.attr("customName",name);
+                div.addClass("custom-tablemanage");
+                div.attr("comptype","custom-tablemanage");
+	            if(/^[1-9]+[.]?\d*(%|px)?$/g.test( width )){
+	            	div.css("width",width);
+	            }
+	            if(/^[1-9]+[.]?\d*(%|px)?$/g.test( height )){
+	            	div.css("height",height);
+	            }
+	            var mockiframe=$("<iframe width='100%' height='100%' frameborder='0'></iframe>");
+	            var iframesrc=__ctx+ "/platform/system/sysTableManage/preview.ht?__manageid__="+displayId;
+	            mockiframe.attr("src",iframesrc);
+	            div.append(mockiframe);
+                editor.execCommand("inserthtml",$('<div></div>').append(div).html());
+	            dialog.close();
+			}
+		});
+	</script>
+</head>
+<body>
+<div class="warp">
+		<table cellpadding="0" cellspacing="0">
+			<tr >
+				<td>
+					<span>名称：</span>
+				</td>
+				<td>
+					<input style="width: 200px" id="name" type="text" value="" />
+					<font color="blue">请使用唯一名称</font>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+					<span>自定义显示：</span>
+				</td>
+				<td>
+					<input style="width: 200px" id="manageName" type="text" value="" />
+					<input style="width: 200px" id="manageId" type="hidden"/>
+					<input name="selectcomp" type="button" value="选择组件" />
+				</td>
+					
+			</tr>
+			<tr>
+				<td>
+					<span>宽度：</span>
+				</td>
+				<td><input style="width: 200px" type="text" id="width" />如：10px 、100%</td>
+			</tr>
+			<tr>
+				<td><span>高度：</span></td>
+				<td><input style="width: 200px" type="text" id="height" />如：10px 、100%</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

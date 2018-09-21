@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.mapper.ProOwnerSysConfigMapper">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.publicClass.ProOwnerSysConfig">
+    <id column="DD_OWNER_SYSTEM_ID" jdbcType="INTEGER" property="ddOwnerSystemId" />
+    <result column="DD_OWNER_SYSTEM_NAME" jdbcType="VARCHAR" property="ddOwnerSystemName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_OWNER_SYSTEM_ID, DD_OWNER_SYSTEM_NAME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_project_owner_system_config
+    where DD_OWNER_SYSTEM_ID = #{ddOwnerSystemId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_project_owner_system_config
+    where DD_OWNER_SYSTEM_ID = #{ddOwnerSystemId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.casic.datadriver.publicClass.ProOwnerSysConfig">
+    insert into dd_project_owner_system_config (DD_OWNER_SYSTEM_ID, DD_OWNER_SYSTEM_NAME
+      )
+    values (#{ddOwnerSystemId,jdbcType=INTEGER}, #{ddOwnerSystemName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.publicClass.ProOwnerSysConfig">
+    insert into dd_project_owner_system_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddOwnerSystemId != null">
+        DD_OWNER_SYSTEM_ID,
+      </if>
+      <if test="ddOwnerSystemName != null">
+        DD_OWNER_SYSTEM_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddOwnerSystemId != null">
+        #{ddOwnerSystemId,jdbcType=INTEGER},
+      </if>
+      <if test="ddOwnerSystemName != null">
+        #{ddOwnerSystemName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.publicClass.ProOwnerSysConfig">
+    update dd_project_owner_system_config
+    <set>
+      <if test="ddOwnerSystemName != null">
+        DD_OWNER_SYSTEM_NAME = #{ddOwnerSystemName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DD_OWNER_SYSTEM_ID = #{ddOwnerSystemId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.publicClass.ProOwnerSysConfig">
+    update dd_project_owner_system_config
+    set DD_OWNER_SYSTEM_NAME = #{ddOwnerSystemName,jdbcType=VARCHAR}
+    where DD_OWNER_SYSTEM_ID = #{ddOwnerSystemId,jdbcType=INTEGER}
+  </update>
+</mapper>

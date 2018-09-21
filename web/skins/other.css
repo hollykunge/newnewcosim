@@ -1,0 +1,28 @@
+@charset "utf-8";
+/* CSS Document */
+.box_vv{ 
+height:auto !important;
+height:200px; /*假定最低高度是200px*/
+min-height:200px;
+}
+
+.cmdesc{padding-bottom:10px;}
+.cmdesc a:link,.cmdesc a:visited{color:#005085; text-decoration:none;font-size:14px; font-family:"宋体";}
+.cmdesc a:hover{color:red;}
+.cmdesc_two { line-height:200%;}
+#colspan td{padding-bottom:10px;}
+#colspan td span{ font-family:tahoma}
+#qiyezizhi .cmdesc p{padding-bottom:5px;}
+#qiyezizhi .cmdesc font{color:#005085;}
+
+/* 能力详细页面 表格样式 */
+.table_cxx_title{
+	padding-top:10px; font-size:14px;
+}
+.table_cxx_01{
+	background-color:#f5f5f5; padding-left:10px; font-weight:bold;
+}
+
+.table_cxx_02{
+	background-color:#ffffff; padding-left:10px; line-height:24px; padding-top:5px; padding-bottom:5px;
+}

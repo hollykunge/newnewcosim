@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--  An excerpt of an egocentric social network  -->
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+	<graph edgedefault="undirected">
+
+		<!-- data schema -->
+		<key id="name" for="node" attr.name="name" attr.type="string" />
+		<key id="color" for="node" attr.name="color" attr.type="string" />
+		<key id="url" for="node" attr.name="url" attr.type="string" />
+
+		<!-- nodes -->
+		<node id="1">
+			<data key="name">制造能力和资源 </data>
+			<data key="color">01</data>
+			<data key="url">http://www.baidu.com</data>
+
+		</node>
+		<node id="2">
+			<data key="name">制造资源</data>
+			<data key="color">05</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="3">
+			<data key="name">制造能力</data>
+			<data key="color">02</data>
+		</node>
+		<node id="4">
+			<data key="name">系统设置</data>
+			<data key="color">04</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="5">
+			<data key="name">联系我们</data>
+			<data key="color">03</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="6">
+			<data key="name">设计资源</data>
+			<data key="color">05</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="7">
+			<data key="name">仿真资源</data>
+			<data key="color">05</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="8">
+			<data key="name">生产加工资源</data>
+			<data key="color">05</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="9">
+			<data key="name">经营管理资源</data>
+			<data key="color">05</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="10">
+			<data key="name">设计能力</data>
+			<data key="color">02</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="11">
+			<data key="name">仿真能力</data>
+			<data key="color">02</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="12">
+			<data key="name">生产加工能力</data>
+			<data key="color">02</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="13">
+			<data key="name">经营管理能力</data>
+			<data key="color">02</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+		<node id="14">
+			<data key="name">经营管理能力2</data>
+			<data key="color">05</data>
+			<data key="url">http://www.baidu.com</data>
+		</node>
+
+		<!-- edges -->
+		<edge source="1" target="2"></edge>
+		<edge source="1" target="3"></edge>
+		<edge source="1" target="4"></edge>
+		<edge source="1" target="5"></edge>
+		<edge source="2" target="6"></edge>
+		<edge source="2" target="7"></edge>
+		<edge source="2" target="8"></edge>
+		<edge source="2" target="9"></edge>
+		<edge source="3" target="10"></edge>
+		<edge source="3" target="11"></edge>
+		<edge source="3" target="12"></edge>
+		<edge source="3" target="13"></edge>
+		<edge source="13" target="14"></edge>
+	</graph>
+</graphml>

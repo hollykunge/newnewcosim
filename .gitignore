@@ -1,0 +1,6 @@
+/out/
+*.class
+/.idea/
+neiwangcosim.iml:
+GitDesign.iml:
+cosimCA.iml:

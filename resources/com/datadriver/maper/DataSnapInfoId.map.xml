@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.data.DataSnapInfoId">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.data.DataSnapInfoId">
+    <id column="DD_DATA_SNAPSHOT_ID" jdbcType="NUMERIC" property="ddDataSnapShotId" />
+    <result column="DD_SNAPSHOT_PERSON_ID" jdbcType="NUMERIC" property="ddSnapShotPersonId" />
+    <result column="DD_SNAPSHOT_TIME" jdbcType="DATE" property="ddSnapShotTime" />
+    <result column="DD_SNAPSHOT_REASON_ID" jdbcType="VARCHAR" property="ddSnapShotReasonId" />
+    <result column="DD_PROJECT_ID" jdbcType="NUMERIC" property="ddProjectId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_DATA_SNAPSHOT_ID, DD_SNAPSHOT_PERSON_ID, DD_SNAPSHOT_TIME, DD_SNAPSHOT_REASON_ID, 
+    DD_PROJECT_ID
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_data_snapShot_information_id
+    where DD_DATA_SNAPSHOT_ID = #{ddDataSnapShotId,jdbcType=NUMERIC}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_data_snapShot_information_id
+    where DD_DATA_SNAPSHOT_ID = #{ddDataSnapShotId,jdbcType=NUMERIC}
+  </delete>
+
+  <insert id="insert" parameterType="com.casic.datadriver.model.data.DataSnapInfoId">
+    insert into dd_data_snapShot_information_id (DD_DATA_SNAPSHOT_ID, DD_SNAPSHOT_PERSON_ID, 
+      DD_SNAPSHOT_TIME, DD_SNAPSHOT_REASON_ID, DD_PROJECT_ID
+      )
+    values (#{ddDataSnapShotId,jdbcType=NUMERIC}, #{ddSnapShotPersonId,jdbcType=NUMERIC},
+      #{ddSnapShotTime,jdbcType=DATE}, #{ddSnapShotReasonId,jdbcType=VARCHAR}, #{ddProjectId,jdbcType=NUMERIC}
+      )
+  </insert>
+
+  <insert id="add" parameterType="com.casic.datadriver.model.data.DataSnapInfoId">
+    insert into dd_data_snapShot_information_id (DD_DATA_SNAPSHOT_ID, DD_SNAPSHOT_PERSON_ID,
+    DD_SNAPSHOT_TIME, DD_SNAPSHOT_REASON_ID, DD_PROJECT_ID
+    )
+    values (#{ddDataSnapShotId,jdbcType=NUMERIC}, #{ddSnapShotPersonId,jdbcType=NUMERIC},
+    #{ddSnapShotTime,jdbcType=DATE}, #{ddSnapShotReasonId,jdbcType=VARCHAR}, #{ddProjectId,jdbcType=NUMERIC}
+    )
+  </insert>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_data_snapShot_information_id
+  </select>
+
+  <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM dd_data_snapShot_information_id
+    WHERE
+    DD_DATA_SNAPSHOT_ID=#{ddDataSnapShotId}
+  </select>
+
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.data.DataSnapInfoId">
+    insert into dd_data_snapShot_information_id
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddDataSnapShotId != null">
+        DD_DATA_SNAPSHOT_ID,
+      </if>
+      <if test="ddSnapShotPersonId != null">
+        DD_SNAPSHOT_PERSON_ID,
+      </if>
+      <if test="ddSnapShotTime != null">
+        DD_SNAPSHOT_TIME,
+      </if>
+      <if test="ddSnapShotReasonId != null">
+        DD_SNAPSHOT_REASON_ID,
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddDataSnapShotId != null">
+        #{ddDataSnapShotId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddSnapShotPersonId != null">
+        #{ddSnapShotPersonId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddSnapShotTime != null">
+        #{ddSnapShotTime,jdbcType=DATE},
+      </if>
+      <if test="ddSnapShotReasonId != null">
+        #{ddSnapShotReasonId,jdbcType=VARCHAR},
+      </if>
+      <if test="ddProjectId != null">
+        #{ddProjectId,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+
+
+
+  <select id="queryDataSnapInfoIdBasicInfoList"
+          parameterType="java.util.Map"
+          resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dd_data_snapShot_information_id
+    where 1=1
+    <if test="@Ognl@isNotEmpty(id)"> AND DD_DATA_SNAPSHOT_ID = #{id}  </if>
+
+
+  </select>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.data.DataSnapInfoId">
+    update dd_data_snapShot_information_id
+    <set>
+      <if test="ddSnapShotPersonId != null">
+        DD_SNAPSHOT_PERSON_ID = #{ddSnapShotPersonId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddSnapShotTime != null">
+        DD_SNAPSHOT_TIME = #{ddSnapShotTime,jdbcType=DATE},
+      </if>
+      <if test="ddSnapShotReasonId != null">
+        DD_SNAPSHOT_REASON_ID = #{ddSnapShotReasonId,jdbcType=VARCHAR},
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC},
+      </if>
+    </set>
+    where DD_DATA_SNAPSHOT_ID = #{ddDataSnapShotId,jdbcType=NUMERIC}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.data.DataSnapInfoId">
+    update dd_data_snapShot_information_id
+    set DD_SNAPSHOT_PERSON_ID = #{ddSnapShotPersonId,jdbcType=NUMERIC},
+      DD_SNAPSHOT_TIME = #{ddSnapShotTime,jdbcType=DATE},
+      DD_SNAPSHOT_REASON_ID = #{ddSnapShotReasonId,jdbcType=VARCHAR},
+      DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC}
+    where DD_DATA_SNAPSHOT_ID = #{ddDataSnapShotId,jdbcType=NUMERIC}
+  </update>
+</mapper>

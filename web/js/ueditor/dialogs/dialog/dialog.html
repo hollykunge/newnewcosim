@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>自定义对话框</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../input/input.css">
+<script type="text/javascript" src="../internal.js"></script>
+<script type="text/javascript" src="../../../dynamic.jsp"></script>
+<script type="text/javascript" src="../../../jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../../util/util.js"></script>
+<script type="text/javascript" src="../../../jquery/plugins/jquery.dragdiv.js"></script>
+<link rel="stylesheet" href="../../../jquery/plugins/jquery.dragdiv.css" type="text/css" />
+<link rel="stylesheet" href="../../../tree/v33/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="../../../tree/v33/jquery.ztree.core-3.3.js"></script>
+<script type="text/javascript" src="../../../tree/v33/jquery.ztree.exedit-3.3.js"></script>
+<style type="text/css">
+.field-ul {
+	width: 95%;
+	height: 95%;
+	margin: 0;
+	padding: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.fields-div {
+	float: left;
+	border: 1px solid #828790;
+	width: 160px;
+	height: 260px;
+}
+.domBtnDiv {
+	display: block;
+	margin-left:5px;
+	float:left;
+	width:340px;
+	height:260px;
+	background-color: powderblue
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+</style>
+</head>
+<body>
+	<div id="inputPanel">
+		<fieldset class="base">
+			<legend>对话框设置</legend>
+			<table>
+				<tr>
+					<th>选择对话框:</th>
+					<td>
+					<select id="dialog-type" onchange="dialogChange()">
+						<option value="0">--请选择--</option>
+					</select>
+					</td>
+				</tr>					
+			</table>
+		</fieldset>
+		<fieldset class="base">
+			<legend>回填值设置</legend>
+				<div class="fields-div">
+					<ul id="fields-tree" class="ztree field-ul"></ul>
+				</div>
+				<div class="domBtnDiv">
+				</div>
+		</fieldset>
+	</div>
+	
+	<script type="text/javascript">
+	
+		var setting = {
+				edit: {
+					enable: true,
+					showRemoveBtn: false,
+					showRenameBtn: false,	
+					drag:{}
+				},				
+				data: {
+					keep: {
+						parent: true,
+						leaf: true
+					},
+					simpleData: {
+						enable: true
+					}
+				},				
+				view: {
+					selectedMulti: false
+				}
+			};
+		
+		$(function() {
+			$(".button-td").bind("mouseenter mouseleave", function() {
+				$(this).toggleClass("button-td-hover");
+			});
+			getDialogs();
+			
+		});		
+		//编辑时绑定数据
+		function bindData(dialogStr) {
+			var dialog = eval("("+dialogStr+")" ),field;
+			if(!dialog)return;
+			$("#dialog-type").find("option[value='"+dialog.name+"']").each(function(){
+					$(this).attr("selected","selected");
+					dialogChange();
+				}
+			);
+			while(field=dialog.fields.pop()){
+				var src=field.src,
+					targets=field.target.split(','),target;
+				while(target=targets.pop()){
+					var item = $("span.item-span[itemId='"+target+"']").toggleClass("item-span item-span-Disabled");
+					if(item.length>0){
+						var node = {id:target, name: item.text()};
+						addNode(src,node);
+					}
+				}
+			}
+		};
+		//添加树节点
+		function addNode(id,node){
+			var zTree = $.fn.zTree.getZTreeObj('fields-tree');
+			if(!zTree)return;
+			var parentNode = zTree.getNodeByParam("id",id,null);
+			if(parentNode) zTree.addNodes(parentNode,node);
+		};
+		
+		//获取自定义对话框
+		function getDialogs(){
+			var url = __ctx + '/platform/form/bpmFormDialog/getAllDialogs.ht';
+			$.get(url,function(data){
+				if (data) {
+					for(var i=0,c;c=data[i++];){
+						$("#dialog-type").append('<option value="'+c.alias+'" fields="'+c.returnFields+'">'+c.name+'</option>');
+					}
+					getFileds(editor.tableId);
+				}
+			});
+		};		
+		//选择不同的对话框
+		function dialogChange(){
+			var v=$("#dialog-type").find("option:selected").attr("fields");
+			if(v){				
+				var nodes=[],
+					fields=v.split(",");
+				for(var i=0,c;c=fields[i++];){
+					if(c){
+						nodes.push({id:c,pId:0,name:c,isParent: true, open:true});
+					}
+				}
+				$("span.item-span-Disabled").each(function(){
+						$(this).toggleClass("item-span-Disabled");
+						$(this).toggleClass("item-span");
+					}						
+				);
+				var tree = $.fn.zTree.init($("#fields-tree"), setting, nodes);
+			}
+		}
+
+		dialog.onok = function() {
+			var name=$("#dialog-type").val();
+			if(!name){
+				$(editor.curInput).removeAttr("dialog");
+				return;
+			}
+			var zTree = $.fn.zTree.getZTreeObj("fields-tree"),
+			nodes=zTree.getNodes(),fields=[];
+			
+			for(var i=0,c;c=nodes[i++];){
+				if(!c.children)continue;
+				var target=[],child=null;				
+				while(child=c.children.pop()){
+					target.push(child.id);
+				}
+				var sub="{src:'"+c.id+"',target:'"+target.join(',')+"'}";
+				fields.push(sub);
+			}
+			var json="{name:'"+name+"',fields:["+fields.join(',')+"]}";
+			$(editor.curInput).attr("dialog",json);
+		};
+		//初始化字段面板
+		function initFieldsDiv(data){
+			var mainTable = data.table, data = {};
+			data.name = mainTable.tableDesc + '(主表)';
+			data.id = mainTable.tableName;
+			data.desc = mainTable.tableId;
+
+			var items = [];
+			for ( var i = 0, c; c = mainTable.fieldList[i++];) {
+				items.push({
+					name : c.fieldDesc,
+					id : c.fieldName
+				});
+			}
+
+			for ( var i = 0, c; c = mainTable.subTableList[i++];) {
+				var sub = {};
+				sub.name = c.tableDesc + '(子表)';
+				sub.id = c.tableName;
+				sub.desc = c.tableId;
+
+				var subItems = [];
+				for ( var y = 0, t; t = c.fieldList[y++];) {
+					subItems.push({
+						name : t.fieldDesc,
+						id : t.fieldName
+					});
+				}
+				sub.items = subItems;
+				items.push(sub);
+			}
+			data.items = items;
+			dragDiv = $(".domBtnDiv").dragdiv({
+				buddy : 'fields-tree',
+				data : data
+			});
+			//var dialogStr = $(editor.curInput).attr("dialog");
+			var dialogStr = $(editor.curInput).get(0).getAttribute("dialog");
+			if (dialogStr) {
+				bindData(dialogStr);
+			}
+		};
+
+		//加载字段面板
+		function getFileds(tableId) {
+			if(tableId){
+				var url = __ctx
+						+ '/platform/form/bpmFormTable/getTableById.ht?tableId='
+						+ tableId;
+				$.post(url, function(data) {
+					initFieldsDiv(data);
+				});
+			}
+			else{	//编辑器设计表单时获取字段并验证字段
+				var html = editor.getContent();		
+				var params={};
+				params.html=html;
+				params.formDefId=editor.formDefId;
+				
+				
+				$.post(__ctx + '/platform/form/bpmFormDef/validDesign.ht', params, function(data){
+					if(data.valid){
+						initFieldsDiv(data);
+					}
+					else{
+						alert(data.errorMsg);
+					}
+				});
+			}
+		};
+	</script>
+</body>
+</html>

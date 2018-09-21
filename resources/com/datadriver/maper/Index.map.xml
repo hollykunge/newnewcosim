@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.index.IndexInfo">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.index.IndexInfo">
+        <id column="DD_INDEX_ID" jdbcType="NUMERIC" property="ddIndexId"/>
+        <result column="DD_INDEX_PROJECT_ID" jdbcType="NUMERIC" property="ddIndexProjectId"/>
+        <result column="DD_INDEX_NAME" jdbcType="VARCHAR" property="ddIndexName"/>
+        <result column="DD_INDEX_TYPE_ID" jdbcType="VARCHAR" property="ddIndexTypeId"/>
+        <result column="DD_INDEX_PROPERTY" jdbcType="NUMERIC" property="ddIndexProperty"/>
+        <result column="DD_INDEX_OPTIMUM" jdbcType="VARCHAR" property="ddIndexOptimum"/>
+        <result column="DD_INDEX_RESPONSIBLE_PERSON_ID" jdbcType="NUMERIC" property="ddIndexResponsiblePersonId"/>
+        <result column="DD_INDEX_SENSITIVENESS" jdbcType="NUMERIC" property="ddIndexSensitiveness"/>
+        <result column="DD_INDEX_LASTEST_VALUE" jdbcType="VARCHAR" property="ddIndexLastestValue"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DD_INDEX_ID, DD_INDEX_PROJECT_ID, DD_INDEX_NAME, DD_INDEX_TYPE_ID, DD_INDEX_PROPERTY,
+        DD_INDEX_OPTIMUM, DD_INDEX_RESPONSIBLE_PERSON_ID, DD_INDEX_SENSITIVENESS, DD_INDEX_LASTEST_VALUE
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_index
+        where DD_INDEX_ID = #{ddIndexId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getByProjectIdF" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_index
+        where DD_INDEX_PROJECT_ID = #{id} limit #{pageSize},#{pageNumber}
+    </select>
+
+    <select id="getIndexInfoList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_index
+        WHERE
+        DD_INDEX_PROJECT_ID=#{ddIndexProjectId}
+    </select>
+
+    <delete id="delById" parameterType="java.lang.Integer">
+        delete from dd_index
+        where DD_INDEX_ID = #{ddIndexId,jdbcType=NUMERIC}
+    </delete>
+
+    <insert id="add" parameterType="com.casic.datadriver.model.index.IndexInfo">
+    insert into dd_index (DD_INDEX_ID, DD_INDEX_PROJECT_ID, DD_INDEX_NAME, 
+      DD_INDEX_TYPE_ID, DD_INDEX_PROPERTY, DD_INDEX_OPTIMUM, 
+      DD_INDEX_RESPONSIBLE_PERSON_ID, DD_INDEX_SENSITIVENESS, 
+      DD_INDEX_LASTEST_VALUE)
+    values (#{ddIndexId,jdbcType=NUMERIC}, #{ddIndexProjectId,jdbcType=NUMERIC}, #{ddIndexName,jdbcType=VARCHAR},
+      #{ddIndexTypeId,jdbcType=VARCHAR}, #{ddIndexProperty,jdbcType=NUMERIC}, #{ddIndexOptimum,jdbcType=VARCHAR},
+      #{ddIndexResponsiblePersonId,jdbcType=NUMERIC}, #{ddIndexSensitiveness,jdbcType=NUMERIC},
+      #{ddIndexLastestValue,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.casic.datadriver.model.index.IndexInfo">
+        insert into dd_index
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ddIndexId != null">
+                DD_INDEX_ID,
+            </if>
+            <if test="ddIndexProjectId != null">
+                DD_INDEX_PROJECT_ID,
+            </if>
+            <if test="ddIndexName != null">
+                DD_INDEX_NAME,
+            </if>
+            <if test="ddIndexTypeId != null">
+                DD_INDEX_TYPE_ID,
+            </if>
+            <if test="ddIndexProperty != null">
+                DD_INDEX_PROPERTY,
+            </if>
+            <if test="ddIndexOptimum != null">
+                DD_INDEX_OPTIMUM,
+            </if>
+            <if test="ddIndexResponsiblePersonId != null">
+                DD_INDEX_RESPONSIBLE_PERSON_ID,
+            </if>
+            <if test="ddIndexSensitiveness != null">
+                DD_INDEX_SENSITIVENESS,
+            </if>
+            <if test="ddIndexLastestValue != null">
+                DD_INDEX_LASTEST_VALUE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ddIndexId != null">
+                #{ddIndexId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexProjectId != null">
+                #{ddIndexProjectId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexName != null">
+                #{ddIndexName,jdbcType=VARCHAR},
+            </if>
+            <if test="ddIndexTypeId != null">
+                #{ddIndexTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ddIndexProperty != null">
+                #{ddIndexProperty,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexOptimum != null">
+                #{ddIndexOptimum,jdbcType=VARCHAR},
+            </if>
+            <if test="ddIndexResponsiblePersonId != null">
+                #{ddIndexResponsiblePersonId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexSensitiveness != null">
+                #{ddIndexSensitiveness,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexLastestValue != null">
+                #{ddIndexLastestValue,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.casic.datadriver.model.index.IndexInfo">
+        update dd_index
+        <set>
+            <if test="ddIndexProjectId != null">
+                DD_INDEX_PROJECT_ID = #{ddIndexProjectId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexName != null">
+                DD_INDEX_NAME = #{ddIndexName,jdbcType=VARCHAR},
+            </if>
+            <if test="ddIndexTypeId != null">
+                DD_INDEX_TYPE_ID = #{ddIndexTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ddIndexProperty != null">
+                DD_INDEX_PROPERTY = #{ddIndexProperty,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexOptimum != null">
+                DD_INDEX_OPTIMUM = #{ddIndexOptimum,jdbcType=VARCHAR},
+            </if>
+            <if test="ddIndexResponsiblePersonId != null">
+                DD_INDEX_RESPONSIBLE_PERSON_ID = #{ddIndexResponsiblePersonId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexSensitiveness != null">
+                DD_INDEX_SENSITIVENESS = #{ddIndexSensitiveness,jdbcType=NUMERIC},
+            </if>
+            <if test="ddIndexLastestValue != null">
+                DD_INDEX_LASTEST_VALUE = #{ddIndexLastestValue,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where DD_INDEX_ID = #{ddIndexId,jdbcType=NUMERIC}
+    </update>
+    <!--<update id="update" parameterType="com.casic.datadriver.model.index.IndexInfo">-->
+    <!--update dd_index-->
+    <!--set DD_INDEX_PROJECT_ID = #{ddIndexProjectId,jdbcType=NUMERIC},-->
+      <!--DD_INDEX_NAME = #{ddIndexName,jdbcType=VARCHAR},-->
+      <!--DD_INDEX_TYPE_ID = #{ddIndexTypeId,jdbcType=VARCHAR},-->
+      <!--DD_INDEX_PROPERTY = #{ddIndexProperty,jdbcType=NUMERIC},-->
+      <!--DD_INDEX_OPTIMUM = #{ddIndexOptimum,jdbcType=VARCHAR},-->
+      <!--DD_INDEX_RESPONSIBLE_PERSON_ID = #{ddIndexResponsiblePersonId,jdbcType=NUMERIC},-->
+      <!--DD_INDEX_SENSITIVENESS = #{ddIndexSensitiveness,jdbcType=NUMERIC},-->
+      <!--DD_INDEX_LASTEST_VALUE = #{ddIndexLastestValue,jdbcType=VARCHAR}-->
+    <!--where DD_INDEX_ID = #{ddIndexId,jdbcType=NUMERIC}-->
+  <!--</update>-->
+</mapper>

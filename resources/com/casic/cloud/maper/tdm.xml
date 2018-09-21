@@ -1,0 +1,34 @@
+<Project OptType="1">
+    <ID IsMust="true" Type="String">TBPM201708020005</ID>
+    <NAME IsMust="true" Type="String">测试项目1<2017-08-02 16:50:40></NAME>
+    <CODE IsMust="true" Type="String">TBPB201708020002</CODE>
+    <CREATEDATE IsMust="false" Type="DateTime">2017/8/2 16:50:40</CREATEDATE>
+    <MANAGER IsMust="true" Type="String"></MANAGER>
+    <MODELID IsMust="true" Type="String">6cac6ab4-5e39-4deb-915d-d91e1e33fd21</MODELID>
+    <STAGE IsMust="true" Type="String">0151DC48D8994BF9B0786DEFDC90C3E5</STAGE>
+    <TESTCATEGORY IsMust="false" Type="String">ACD20170700007</TESTCATEGORY>
+    <MODELPRODUCT IsMust="false" Type="String">0ec75a48-d0e9-45aa-b4ac-fc680a57bc6d</MODELPRODUCT>
+    <PRODUCT1 IsMust="false" Type="String">0ec75a48-d0e9-45aa-b4ac-fc680a57bc6d</PRODUCT1>
+    <PRODUCT2 IsMust="false" Type="String"></PRODUCT2>
+    <PRODUCT3 IsMust="false" Type="String"></PRODUCT3>
+    <PRODUCT4 IsMust="false" Type="String"></PRODUCT4>
+    <PRODUCT5 IsMust="false" Type="String"></PRODUCT5>
+    <PRODUCT6 IsMust="false" Type="String"></PRODUCT6>
+    <PRODUCT7 IsMust="false" Type="String"></PRODUCT7>
+    <PRODUCT8 IsMust="false" Type="String"></PRODUCT8>
+    <PRODUCT9 IsMust="false" Type="String"></PRODUCT9>
+    <PRODUCT10 IsMust="false" Type="String"></PRODUCT10>
+    <OTHERMANAGER IsMust="false" Type="String"></OTHERMANAGER>
+    <TESTAPARTMENT IsMust="false" Type="String"></TESTAPARTMENT>
+    <TESTPLACE IsMust="false" Type="String"></TESTPLACE>
+    <TASKSOURCE IsMust="false" Type="String"></TASKSOURCE>
+    <TESTBASIS IsMust="false" Type="String"></TESTBASIS>
+    <DATASHORTNAME IsMust="false" Type="String"></DATASHORTNAME>
+    <DATAANALYSISRESUME IsMust="false" Type="String"></DATAANALYSISRESUME>
+    <TECHNIQUEQUESTION IsMust="false" Type="String"></TECHNIQUEQUESTION>
+    <TESTCONCLUSION IsMust="false" Type="String"></TESTCONCLUSION>
+    <CONCLUSIONEXPLAIN IsMust="false" Type="String"></CONCLUSIONEXPLAIN>
+    <INTENTION IsMust="false" Type="String"></INTENTION>
+    <CREATOR IsMust="false" Type="String"></CREATOR>
+    <URL>http://10.12.99.12:2030/Projects/Detection/ProjectManage/Html/ProjectManage.htm?ProjectId=TBPM201708020005&amp;objType=project&amp;CanEdit=null&amp;UserType=1&amp;ProjectState=null&amp;RD=1&amp;MenuType=Full&amp;FormId=TVW20160705000000001,TVW20160822000000001,TVW20160817000000001&amp;NodeType=project&amp;oop=1</URL>
+</Project>

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.data.PrivateVersion">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.data.PrivateVersion">
+    <id column="DD_VERSION_ID" jdbcType="NUMERIC" property="ddVersionId" />
+    <result column="DD_DATA_ID" jdbcType="NUMERIC" property="ddDataId" />
+    <result column="DD_DATA_NAME" jdbcType="VARCHAR" property="ddDataName" />
+    <result column="DD_DATA_TYPE" jdbcType="TINYINT" property="ddDataType" />
+    <result column="DD_DATA_DESCRIPTION" jdbcType="VARCHAR" property="ddDataDescription" />
+    <result column="DD_DATA_TASK_ID" jdbcType="NUMERIC" property="ddDataTaskId" />
+    <result column="DD_DATA_PUBLISH_STATE" jdbcType="TINYINT" property="ddDataPublishState" />
+    <result column="DD_DATA_ORDER_STATE" jdbcType="SMALLINT" property="ddDataOrderState" />
+    <result column="DD_DATA_IS_SUBMIT" jdbcType="SMALLINT" property="ddDataIsSubmit" />
+    <result column="DD_DATA_CREATE_TIME" jdbcType="DATE" property="ddDataCreateTime" />
+    <result column="DD_DATA_CREATOR" jdbcType="VARCHAR" property="ddDataCreator" />
+    <result column="DD_DATA_CREATOR_ID" jdbcType="NUMERIC" property="ddDataCreatorId" />
+    <result column="DD_DATA_SEN_MIN" jdbcType="VARCHAR" property="ddDataSenMin" />
+    <result column="DD_DATA_SEN_MAX" jdbcType="VARCHAR" property="ddDataSenMax" />
+    <result column="DD_DATA_PARENT_ID" jdbcType="NUMERIC" property="ddDataParentId" />
+    <result column="DD_DATA_LASTEST_VALUE" jdbcType="VARCHAR" property="ddDataLastestValue" />
+    <result column="DD_DATA_UNIT" jdbcType="VARCHAR" property="ddDataUnit" />
+    <result column="DD_DATA_TASK_NAME" jdbcType="VARCHAR" property="ddDataTaskName" />
+    <result column="DD_DATA_ENG_NAME" jdbcType="VARCHAR" property="ddDataEngName" />
+    <result column="DD_DATA_PATH" jdbcType="VARCHAR" property="ddDataPath" />
+    <result column="DD_DATA_NODE_PATH" jdbcType="VARCHAR" property="ddDataNodePath" />
+    <result column="DD_DATA_DEPTH" jdbcType="SMALLINT" property="ddDataDepth" />
+    <result column="DD_DATA_IS_LEAF" jdbcType="SMALLINT" property="ddDataIsLeaf" />
+    <result column="DD_DATA_PROJ_ID" jdbcType="NUMERIC" property="ddDataProjId" />
+    <result column="DD_DATA_RESERVED1" jdbcType="NUMERIC" property="ddDataReserved1" />
+    <result column="DD_DATA_RESERVED2" jdbcType="VARCHAR" property="ddDataReserved2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_VERSION_ID, DD_DATA_ID, DD_DATA_NAME, DD_DATA_TYPE, DD_DATA_DESCRIPTION, DD_DATA_TASK_ID, 
+    DD_DATA_PUBLISH_STATE, DD_DATA_ORDER_STATE, DD_DATA_IS_SUBMIT, DD_DATA_CREATE_TIME, 
+    DD_DATA_CREATOR, DD_DATA_CREATOR_ID, DD_DATA_SEN_MIN, DD_DATA_SEN_MAX, DD_DATA_PARENT_ID, 
+    DD_DATA_LASTEST_VALUE, DD_DATA_UNIT, DD_DATA_TASK_NAME, DD_DATA_ENG_NAME, DD_DATA_PATH, 
+    DD_DATA_NODE_PATH, DD_DATA_DEPTH, DD_DATA_IS_LEAF, DD_DATA_PROJ_ID, DD_DATA_RESERVED1, 
+    DD_DATA_RESERVED2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_private_version
+    where DD_VERSION_ID = #{ddVersionId,jdbcType=NUMERIC}
+  </select>
+  <select id="getListByVerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dd_private_version
+    where DD_DATA_RESERVED1 = #{ddVersionId,jdbcType=NUMERIC}
+  </select>
+  <select id="getListBytaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dd_private_version
+    where DD_DATA_TASK_ID = #{taskId,jdbcType=NUMERIC}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  delete from dd_private_version
+  where DD_VERSION_ID = #{ddVersionId,jdbcType=NUMERIC}
+</delete>
+  <delete id="deleteByTaskId" parameterType="java.lang.Long">
+    delete from dd_private_version
+    where DD_DATA_TASK_ID = #{taskId,jdbcType=NUMERIC}
+  </delete>
+  <insert id="add" parameterType="com.casic.datadriver.model.data.PrivateVersion">
+    insert into dd_private_version (DD_VERSION_ID, DD_DATA_ID, DD_DATA_NAME, 
+      DD_DATA_TYPE, DD_DATA_DESCRIPTION, DD_DATA_TASK_ID, 
+      DD_DATA_PUBLISH_STATE, DD_DATA_ORDER_STATE, 
+      DD_DATA_IS_SUBMIT, DD_DATA_CREATE_TIME, DD_DATA_CREATOR, 
+      DD_DATA_CREATOR_ID, DD_DATA_SEN_MIN, DD_DATA_SEN_MAX, 
+      DD_DATA_PARENT_ID, DD_DATA_LASTEST_VALUE, DD_DATA_UNIT, 
+      DD_DATA_TASK_NAME, DD_DATA_ENG_NAME, DD_DATA_PATH, 
+      DD_DATA_NODE_PATH, DD_DATA_DEPTH, DD_DATA_IS_LEAF, 
+      DD_DATA_PROJ_ID, DD_DATA_RESERVED1, DD_DATA_RESERVED2
+      )
+    values (#{ddVersionId,jdbcType=NUMERIC}, #{ddDataId,jdbcType=NUMERIC}, #{ddDataName,jdbcType=VARCHAR}, 
+      #{ddDataType,jdbcType=TINYINT}, #{ddDataDescription,jdbcType=VARCHAR}, #{ddDataTaskId,jdbcType=NUMERIC}, 
+      #{ddDataPublishState,jdbcType=TINYINT}, #{ddDataOrderState,jdbcType=SMALLINT}, 
+      #{ddDataIsSubmit,jdbcType=SMALLINT}, #{ddDataCreateTime,jdbcType=DATE}, #{ddDataCreator,jdbcType=VARCHAR},
+      #{ddDataCreatorId,jdbcType=NUMERIC}, #{ddDataSenMin,jdbcType=VARCHAR}, #{ddDataSenMax,jdbcType=VARCHAR},
+      #{ddDataParentId,jdbcType=NUMERIC}, #{ddDataLastestValue,jdbcType=VARCHAR}, #{ddDataUnit,jdbcType=VARCHAR}, 
+      #{ddDataTaskName,jdbcType=VARCHAR}, #{ddDataEngName,jdbcType=VARCHAR}, #{ddDataPath,jdbcType=VARCHAR}, 
+      #{ddDataNodePath,jdbcType=VARCHAR}, #{ddDataDepth,jdbcType=SMALLINT}, #{ddDataIsLeaf,jdbcType=SMALLINT}, 
+      #{ddDataProjId,jdbcType=NUMERIC}, #{ddDataReserved1,jdbcType=NUMERIC}, #{ddDataReserved2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.data.PrivateVersion">
+    insert into dd_private_version
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddVersionId != null">
+        DD_VERSION_ID,
+      </if>
+      <if test="ddDataId != null">
+        DD_DATA_ID,
+      </if>
+      <if test="ddDataName != null">
+        DD_DATA_NAME,
+      </if>
+      <if test="ddDataType != null">
+        DD_DATA_TYPE,
+      </if>
+      <if test="ddDataDescription != null">
+        DD_DATA_DESCRIPTION,
+      </if>
+      <if test="ddDataTaskId != null">
+        DD_DATA_TASK_ID,
+      </if>
+      <if test="ddDataPublishState != null">
+        DD_DATA_PUBLISH_STATE,
+      </if>
+      <if test="ddDataOrderState != null">
+        DD_DATA_ORDER_STATE,
+      </if>
+      <if test="ddDataIsSubmit != null">
+        DD_DATA_IS_SUBMIT,
+      </if>
+      <if test="ddDataCreateTime != null">
+        DD_DATA_CREATE_TIME,
+      </if>
+      <if test="ddDataCreator != null">
+        DD_DATA_CREATOR,
+      </if>
+      <if test="ddDataCreatorId != null">
+        DD_DATA_CREATOR_ID,
+      </if>
+      <if test="ddDataSenMin != null">
+        DD_DATA_SEN_MIN,
+      </if>
+      <if test="ddDataSenMax != null">
+        DD_DATA_SEN_MAX,
+      </if>
+      <if test="ddDataParentId != null">
+        DD_DATA_PARENT_ID,
+      </if>
+      <if test="ddDataLastestValue != null">
+        DD_DATA_LASTEST_VALUE,
+      </if>
+      <if test="ddDataUnit != null">
+        DD_DATA_UNIT,
+      </if>
+      <if test="ddDataTaskName != null">
+        DD_DATA_TASK_NAME,
+      </if>
+      <if test="ddDataEngName != null">
+        DD_DATA_ENG_NAME,
+      </if>
+      <if test="ddDataPath != null">
+        DD_DATA_PATH,
+      </if>
+      <if test="ddDataNodePath != null">
+        DD_DATA_NODE_PATH,
+      </if>
+      <if test="ddDataDepth != null">
+        DD_DATA_DEPTH,
+      </if>
+      <if test="ddDataIsLeaf != null">
+        DD_DATA_IS_LEAF,
+      </if>
+      <if test="ddDataProjId != null">
+        DD_DATA_PROJ_ID,
+      </if>
+      <if test="ddDataReserved1 != null">
+        DD_DATA_RESERVED1,
+      </if>
+      <if test="ddDataReserved2 != null">
+        DD_DATA_RESERVED2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddVersionId != null">
+        #{ddVersionId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataId != null">
+        #{ddDataId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataName != null">
+        #{ddDataName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataType != null">
+        #{ddDataType,jdbcType=TINYINT},
+      </if>
+      <if test="ddDataDescription != null">
+        #{ddDataDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataTaskId != null">
+        #{ddDataTaskId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataPublishState != null">
+        #{ddDataPublishState,jdbcType=TINYINT},
+      </if>
+      <if test="ddDataOrderState != null">
+        #{ddDataOrderState,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataIsSubmit != null">
+        #{ddDataIsSubmit,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataCreateTime != null">
+        #{ddDataCreateTime,jdbcType=DATE},
+      </if>
+      <if test="ddDataCreator != null">
+        #{ddDataCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataCreatorId != null">
+        #{ddDataCreatorId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataSenMin != null">
+        #{ddDataSenMin,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataSenMax != null">
+        #{ddDataSenMax,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataParentId != null">
+        #{ddDataParentId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataLastestValue != null">
+        #{ddDataLastestValue,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataUnit != null">
+        #{ddDataUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataTaskName != null">
+        #{ddDataTaskName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataEngName != null">
+        #{ddDataEngName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataPath != null">
+        #{ddDataPath,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataNodePath != null">
+        #{ddDataNodePath,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataDepth != null">
+        #{ddDataDepth,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataIsLeaf != null">
+        #{ddDataIsLeaf,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataProjId != null">
+        #{ddDataProjId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataReserved1 != null">
+        #{ddDataReserved1,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataReserved2 != null">
+        #{ddDataReserved2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.casic.datadriver.model.data.PrivateVersion">
+    update dd_private_version
+    <set>
+      <if test="ddDataId != null">
+        DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataName != null">
+        DD_DATA_NAME = #{ddDataName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataType != null">
+        DD_DATA_TYPE = #{ddDataType,jdbcType=TINYINT},
+      </if>
+      <if test="ddDataDescription != null">
+        DD_DATA_DESCRIPTION = #{ddDataDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataTaskId != null">
+        DD_DATA_TASK_ID = #{ddDataTaskId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataPublishState != null">
+        DD_DATA_PUBLISH_STATE = #{ddDataPublishState,jdbcType=TINYINT},
+      </if>
+      <if test="ddDataOrderState != null">
+        DD_DATA_ORDER_STATE = #{ddDataOrderState,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataIsSubmit != null">
+        DD_DATA_IS_SUBMIT = #{ddDataIsSubmit,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataCreateTime != null">
+        DD_DATA_CREATE_TIME = #{ddDataCreateTime,jdbcType=DATE},
+      </if>
+      <if test="ddDataCreator != null">
+        DD_DATA_CREATOR = #{ddDataCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataCreatorId != null">
+        DD_DATA_CREATOR_ID = #{ddDataCreatorId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataSenMin != null">
+        DD_DATA_SEN_MIN = #{ddDataSenMin,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataSenMax != null">
+        DD_DATA_SEN_MAX = #{ddDataSenMax,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataParentId != null">
+        DD_DATA_PARENT_ID = #{ddDataParentId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataLastestValue != null">
+        DD_DATA_LASTEST_VALUE = #{ddDataLastestValue,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataUnit != null">
+        DD_DATA_UNIT = #{ddDataUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataTaskName != null">
+        DD_DATA_TASK_NAME = #{ddDataTaskName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataEngName != null">
+        DD_DATA_ENG_NAME = #{ddDataEngName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataPath != null">
+        DD_DATA_PATH = #{ddDataPath,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataNodePath != null">
+        DD_DATA_NODE_PATH = #{ddDataNodePath,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDataDepth != null">
+        DD_DATA_DEPTH = #{ddDataDepth,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataIsLeaf != null">
+        DD_DATA_IS_LEAF = #{ddDataIsLeaf,jdbcType=SMALLINT},
+      </if>
+      <if test="ddDataProjId != null">
+        DD_DATA_PROJ_ID = #{ddDataProjId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataReserved1 != null">
+        DD_DATA_RESERVED1 = #{ddDataReserved1,jdbcType=NUMERIC},
+      </if>
+      <if test="ddDataReserved2 != null">
+        DD_DATA_RESERVED2 = #{ddDataReserved2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DD_VERSION_ID = #{ddVersionId,jdbcType=NUMERIC}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.data.PrivateVersion">
+    update dd_private_version
+    set DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC},
+      DD_DATA_NAME = #{ddDataName,jdbcType=VARCHAR},
+      DD_DATA_TYPE = #{ddDataType,jdbcType=TINYINT},
+      DD_DATA_DESCRIPTION = #{ddDataDescription,jdbcType=VARCHAR},
+      DD_DATA_TASK_ID = #{ddDataTaskId,jdbcType=NUMERIC},
+      DD_DATA_PUBLISH_STATE = #{ddDataPublishState,jdbcType=TINYINT},
+      DD_DATA_ORDER_STATE = #{ddDataOrderState,jdbcType=SMALLINT},
+      DD_DATA_IS_SUBMIT = #{ddDataIsSubmit,jdbcType=SMALLINT},
+      DD_DATA_CREATE_TIME = #{ddDataCreateTime,jdbcType=DATE},
+      DD_DATA_CREATOR = #{ddDataCreator,jdbcType=VARCHAR},
+      DD_DATA_CREATOR_ID = #{ddDataCreatorId,jdbcType=NUMERIC},
+      DD_DATA_SEN_MIN = #{ddDataSenMin,jdbcType=VARCHAR},
+      DD_DATA_SEN_MAX = #{ddDataSenMax,jdbcType=VARCHAR},
+      DD_DATA_PARENT_ID = #{ddDataParentId,jdbcType=NUMERIC},
+      DD_DATA_LASTEST_VALUE = #{ddDataLastestValue,jdbcType=VARCHAR},
+      DD_DATA_UNIT = #{ddDataUnit,jdbcType=VARCHAR},
+      DD_DATA_TASK_NAME = #{ddDataTaskName,jdbcType=VARCHAR},
+      DD_DATA_ENG_NAME = #{ddDataEngName,jdbcType=VARCHAR},
+      DD_DATA_PATH = #{ddDataPath,jdbcType=VARCHAR},
+      DD_DATA_NODE_PATH = #{ddDataNodePath,jdbcType=VARCHAR},
+      DD_DATA_DEPTH = #{ddDataDepth,jdbcType=SMALLINT},
+      DD_DATA_IS_LEAF = #{ddDataIsLeaf,jdbcType=SMALLINT},
+      DD_DATA_PROJ_ID = #{ddDataProjId,jdbcType=NUMERIC},
+      DD_DATA_RESERVED1 = #{ddDataReserved1,jdbcType=NUMERIC},
+      DD_DATA_RESERVED2 = #{ddDataReserved2,jdbcType=VARCHAR}
+    where DD_VERSION_ID = #{ddVersionId,jdbcType=NUMERIC}
+  </update>
+</mapper>

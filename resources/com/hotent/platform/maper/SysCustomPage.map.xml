@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.hotent.platform.model.system.SysCustomPage">
+	<resultMap id="SysCustomPage" type="com.hotent.platform.model.system.SysCustomPage">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="title" column="TITLE" jdbcType="VARCHAR"/>
+		<result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+		<result property="template" column="template" jdbcType="CLOB"/>
+	</resultMap>
+
+	<sql id="columns">
+		ID,NAME,TITLE,DESCRIPTION,template
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND NAME  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(title)"> AND TITLE  LIKE #{title}  </if>
+			<if test="@Ognl@isNotEmpty(description)"> AND DESCRIPTION  LIKE #{description}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.hotent.platform.model.system.SysCustomPage">
+		INSERT INTO SYS_CUSTOM_PAGE
+		(ID,NAME,TITLE,DESCRIPTION,template)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},  #{description,jdbcType=VARCHAR}, #{template,jdbcType=CLOB})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM SYS_CUSTOM_PAGE 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.hotent.platform.model.system.SysCustomPage">
+		UPDATE SYS_CUSTOM_PAGE SET
+		NAME=#{name,jdbcType=VARCHAR},
+		TITLE=#{title,jdbcType=VARCHAR},
+		DESCRIPTION=#{description,jdbcType=VARCHAR},
+		template=#{template,jdbcType=CLOB}
+		WHERE
+		ID=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="SysCustomPage">
+		SELECT <include refid="columns"/>
+		FROM SYS_CUSTOM_PAGE
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="SysCustomPage">
+		SELECT <include refid="columns"/>
+		FROM SYS_CUSTOM_PAGE   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+</mapper>

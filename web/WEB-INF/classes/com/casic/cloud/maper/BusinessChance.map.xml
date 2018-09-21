@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.business.BusinessChance">
+	<resultMap id="BusinessChance" type="com.casic.cloud.model.config.business.BusinessChance">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time" jdbcType="DATE"/>
+		<result property="endTime" column="end_time" jdbcType="DATE"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="image" column="image" jdbcType="VARCHAR"/>
+		<result property="properties" column="properties" jdbcType="VARCHAR"/>
+		<result property="companyId" column="company_id" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="NUMERIC"/>
+		<result property="operateTime" column="operate_time" jdbcType="DATE"/>
+		<result property="companyName" column="company_name" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="publishState" column="publish_state" jdbcType="VARCHAR"/>
+		<association property="info" column="company_id"  resultMap="com.casic.cloud.model.config.info.Info"/>   
+	</resultMap>
+
+	<resultMap id="BusinessChanceForCompass" type="com.casic.cloud.model.config.business.BusinessChance">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time" jdbcType="DATE"/>
+		<result property="endTime" column="end_time" jdbcType="DATE"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="image" column="image" jdbcType="VARCHAR"/>
+		<result property="properties" column="properties" jdbcType="VARCHAR"/>
+		<result property="companyId" column="company_id" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="NUMERIC"/>
+		<result property="operateTime" column="operate_time" jdbcType="DATE"/>
+		<result property="companyName" column="company_name" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="publishState" column="publish_state" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="columns">
+		id,name,content,start_time,end_time,type,image,properties,company_id,user_id,operate_time,company_name,user_name,publish_state
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(startTime)"> AND start_time  =#{startTime} </if>
+			<if test="@Ognl@isNotEmpty(beginstartTime)"> AND start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endstartTime)"> AND start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND end_time  =#{endTime} </if>
+			<if test="@Ognl@isNotEmpty(beginendTime)"> AND end_time  >=#{beginendTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endendTime)"> AND end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(type)"> AND type  LIKE #{type}  </if>
+			<if test="@Ognl@isNotEmpty(image)"> AND image  LIKE #{image}  </if>
+			<if test="@Ognl@isNotEmpty(properties)"> AND properties  LIKE #{properties}  </if>
+			<if test="@Ognl@isNotEmpty(companyId)"> AND company_id  =#{companyId} </if>
+			<if test="@Ognl@isNotEmpty(userId)"> AND user_id  =#{userId} </if>
+			<if test="@Ognl@isNotEmpty(operateTime)"> AND operate_time  =#{operateTime} </if>
+			<if test="@Ognl@isNotEmpty(beginoperateTime)"> AND operate_time  >=#{beginoperateTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endoperateTime)"> AND operate_time <![CDATA[ <=#{endoperateTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(companyName)"> AND company_name  LIKE #{companyName}  </if>
+			<if test="@Ognl@isNotEmpty(userName)"> AND user_name  LIKE #{userName}  </if>
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.business.BusinessChance">
+		INSERT INTO cloud_business_chance
+		(id,name,content,start_time,end_time,type,image,properties,company_id,user_id,operate_time,company_name,user_name,publish_state)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{name,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, #{type,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{properties,jdbcType=VARCHAR}, #{companyId,jdbcType=NUMERIC}, #{userId,jdbcType=NUMERIC}, #{operateTime,jdbcType=DATE}, #{companyName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{publishState,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_business_chance 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.business.BusinessChance">
+		UPDATE cloud_business_chance SET
+		name=#{name,jdbcType=VARCHAR},
+		content=#{content,jdbcType=VARCHAR},
+		start_time=#{startTime,jdbcType=DATE},
+		end_time=#{endTime,jdbcType=DATE},
+		type=#{type,jdbcType=VARCHAR},
+		image=#{image,jdbcType=VARCHAR},
+		properties=#{properties,jdbcType=VARCHAR},
+		company_id=#{companyId,jdbcType=NUMERIC},
+		user_id=#{userId,jdbcType=NUMERIC},
+		operate_time=#{operateTime,jdbcType=DATE},
+		company_name=#{companyName,jdbcType=VARCHAR},
+		user_name=#{userName,jdbcType=VARCHAR},
+		publish_state=#{publishState,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="BusinessChance">
+			SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY 
+		FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getType" parameterType="java.lang.String" resultMap="BusinessChance">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY 
+		FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID
+		 WHERE  
+		
+		c.type=#{type} 
+		 and company_id=#{company_id}
+		order by c.operate_time  desc
+	</select>
+	
+	<select id="getAllByType" parameterType="java.lang.String" resultMap="BusinessChance">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY,i.FLAGLOGO  
+		FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID
+		 WHERE  
+		
+		c.type=#{type} 
+		and c.publish_state='审核通过'
+		order by c.operate_time  desc
+	</select>
+	
+  <select id="getByIdAnd" parameterType="java.lang.Long" resultMap="BusinessChance">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY 
+		FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID
+		 WHERE  
+		c.id=#{businessChance_id} 
+	</select>
+	
+	
+	<select id="getAll" resultMap="BusinessChance">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID 
+		where c.publish_state='审核通过'
+		order by c.operate_time  desc
+	</select>
+	
+	<select id="getAllForCompass" resultMap="BusinessChanceForCompass">
+			SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY 
+		FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID
+		 
+		where c.publish_state='审核通过'
+		order by c.operate_time  desc
+	</select>
+	
+	<select id="getAllbcs" resultMap="BusinessChance">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID  
+		where 1 = 1  
+		<if test="@Ognl@isNotEmpty(name)"> AND c.name  LIKE #{name}  </if>
+		<if test="@Ognl@isNotEmpty(content)"> AND c. content  LIKE #{content}  </if>
+		<if test="@Ognl@isNotEmpty(startTime)"> AND c.start_time  =#{startTime} </if>
+		<if test="@Ognl@isNotEmpty(beginstartTime)"> AND c.start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+		<if test="@Ognl@isNotEmpty(endstartTime)"> AND c.start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(endTime)"> AND c.end_time  =#{endTime} </if>
+		<if test="@Ognl@isNotEmpty(beginendTime)"> AND c.end_time  >=#{beginendTime,jdbcType=DATE} </if>
+		<if test="@Ognl@isNotEmpty(endendTime)"> AND c.end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(type)"> AND c.type  LIKE #{type}  </if> 
+		order by c.operate_time  desc
+	</select>
+	
+	
+	<select id="getAllList" resultMap="BusinessChance">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID
+		 where 1 = 1  and c.publish_state in('审核通过' ,'审核未通过')
+	    <if test="@Ognl@isNotEmpty(name)"> AND c.name  LIKE #{name}  </if>
+		<if test="@Ognl@isNotEmpty(content)"> AND c. content  LIKE #{content}  </if>
+		
+		<if test="@Ognl@isNotEmpty(startTime)"> AND c.start_time  =#{startTime} </if>
+			<if test="@Ognl@isNotEmpty(beginstartTime)"> AND c.start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endstartTime)"> AND c.start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND c.end_time  =#{endTime} </if>
+			<if test="@Ognl@isNotEmpty(beginendTime)"> AND c.end_time  >=#{beginendTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endendTime)"> AND c.end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(operateTime)"> AND c.operate_time  =#{operateTime} </if>
+			<if test="@Ognl@isNotEmpty(beginoperateTime)"> AND c.operate_time  >=#{beginoperateTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(type)"> AND c.type  LIKE #{type}  </if>
+			 order by c.operate_time  desc
+	</select>
+	 
+	<select id="getAll_query"  parameterType="java.lang.String"  resultMap="BusinessChance">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.COUNTRY,i.PROVINCE,i.CITY FROM cloud_business_chance  c LEFT JOIN sys_org_info i ON c.company_id=i.SYS_ORG_INFO_ID 
+		WHERE
+	    c.name  LIKE #{name,jdbcType=VARCHAR} 
+	    order by c.operate_time  desc
+	</select>
+	
+	<select id="getAllChangeCount" resultType="java.lang.Integer" useCache="false">
+		SELECT count(t.id) from(
+			SELECT id from cloud_business_devchase d where d.publish_state='审核通过'
+			union ALL
+			SELECT id from cloud_business_marketingchase m where m.publish_state='审核通过'
+			union ALL
+			SELECT id from cloud_business_producechase p where p.publish_state='审核通过'
+			union ALL
+			SELECT id from cloud_business_purchase pu where pu.publish_state='审核通过'
+			union ALL
+			SELECT id from cloud_business_servechase s where s.publish_state='审核通过')t
+	</select>
+	
+	<!-- 按时间查询协同采购业务数量 -->
+	<select id="getPurchaseBusinessCount" resultType="java.lang.Integer" useCache="false">
+		select count(t.id) from(
+			select id from cloud_pur_order o where 1=1
+			<if test="@Ognl@isNotEmpty(beginTime)"> AND o.operate_date <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND o.operate_date <![CDATA[ 《=#{endTime,jdbcType=DATE}]]>  </if>
+			<if test="@Ognl@isNotEmpty(compId)"> AND o.purenterp_id = #{compId} </if>
+			union ALL
+			select id from cloud_pur_enq en where 1=1
+			<if test="@Ognl@isNotEmpty(beginTime)"> AND en.operate_date <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND en.operate_date <![CDATA[ <=#{endTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(compId)"> AND en.enterprise_id = #{compId} </if>
+			union ALL
+			select id from cloud_pur_bidplan bp where 1=1
+			<if test="@Ognl@isNotEmpty(beginTime)"> AND bp.operatedate <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND bp.operatedate <![CDATA[ <=#{endTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(compId)"> AND bp.enterprise_id = #{compId} </if>
+		)t
+	</select>
+	
+ 
+	
+	<!-- 按时间查询协同销售业务数量 -->
+	<select id="getSaleBusinessCount" resultType="java.lang.Integer" useCache="false">
+		select count(p.id) from cloud_sale_copplan p where 1=1
+		<if test="@Ognl@isNotEmpty(beginTime)"> AND p.operate_date <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(endTime)"> AND p.operate_date <![CDATA[ <=#{endTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(compId)"> AND p.enterprise_id = #{compId} </if>
+	</select>
+	
+	<!-- 按时间查询协同生产业务数量 -->
+	<select id="getManuBusinessCount" resultType="java.lang.Integer" useCache="false">
+		select count(en.id) from cloud_manuf_enquiry en where 1=1
+		<if test="@Ognl@isNotEmpty(beginTime)"> AND en.operate_date <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(endTime)"> AND en.operate_date <![CDATA[ <=#{endTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(compId)"> AND en.ENTERPRISE_ID = #{compId} </if>
+	</select>
+	
+	<!-- 按时间查询协同研发业务数量 -->
+	<select id="getResearchBusinessCount" resultType="java.lang.Integer" useCache="false">
+		select count(r.id) from cloud_research_verify r where 1=1
+		<if test="@Ognl@isNotEmpty(beginTime)"> AND r.time <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(endTime)"> AND r.time <![CDATA[ <=#{endTime,jdbcType=DATE}]]> </if>
+		<if test="@Ognl@isNotEmpty(compId)"> AND r.VERIFY_ENTERP_IDS = #{compId} </if>
+	</select>
+	
+	<!-- 按时间查询协同服务业务数量 -->
+	<select id="getServiceBusinessCount" resultType="java.lang.Integer" useCache="false">
+		select count(t.id) from(
+			select id from cloud_service_task t where 1=1
+			<if test="@Ognl@isNotEmpty(beginTime)"> AND t.tdate <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND t.tdate <![CDATA[ <=#{endTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(compId)"> AND t.purenterp_id = #{compId} </if>
+			union ALL
+			select id from cloud_service_returntask t where 1=1
+			<if test="@Ognl@isNotEmpty(beginTime)"> AND t.operatedate <![CDATA[ >=#{beginTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND t.operatedate <![CDATA[ <=#{endTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(compId)"> AND t.purenterid = #{compId} </if>
+		)t
+	</select>
+</mapper>

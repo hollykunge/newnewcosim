@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.research.fileVerify.FileVerifyUpload">
+	<resultMap id="FileVerifyUpload" type="com.casic.cloud.model.research.fileVerify.FileVerifyUpload">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"/>
+		<result property="fileInfo" column="FILE_INFO" jdbcType="VARCHAR"/>
+		<result property="fileUrl" column="FILE_URL" jdbcType="VARCHAR"/>
+		<result property="sourceId" column="SOURCE_ID" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<sql id="columns">
+		ID,FILE_NAME,FILE_INFO,FILE_URL,SOURCE_ID
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(fileName)"> AND FILE_NAME  LIKE #{fileName}  </if>
+			<if test="@Ognl@isNotEmpty(fileInfo)"> AND FILE_INFO  LIKE #{fileInfo}  </if>
+			<if test="@Ognl@isNotEmpty(fileUrl)"> AND FILE_URL  LIKE #{fileUrl}  </if>
+			<if test="@Ognl@isNotEmpty(sourceId)"> AND SOURCE_ID  =#{sourceId} </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.research.fileVerify.FileVerifyUpload">
+		INSERT INTO CLOUD_RESEARCH_VERIFY_UPLOADINFO
+		(ID,FILE_NAME,FILE_INFO,FILE_URL,SOURCE_ID)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{fileName,jdbcType=VARCHAR}, #{fileInfo,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{sourceId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM CLOUD_RESEARCH_VERIFY_UPLOADINFO 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.research.fileVerify.FileVerifyUpload">
+		UPDATE CLOUD_RESEARCH_VERIFY_UPLOADINFO SET
+		FILE_NAME=#{fileName,jdbcType=VARCHAR},
+		FILE_INFO=#{fileInfo,jdbcType=VARCHAR},
+		FILE_URL=#{fileUrl,jdbcType=VARCHAR},
+		SOURCE_ID=#{sourceId,jdbcType=NUMERIC}
+		WHERE
+		ID=#{id}
+	</update>
+	<delete id="delByMainId">
+	    DELETE FROM CLOUD_RESEARCH_VERIFY_UPLOADINFO
+	    WHERE
+	    source_id=#{sourceId}
+	</delete>    
+	
+	<select id="getFileVerifyUploadList" resultMap="FileVerifyUpload">
+	    SELECT <include refid="columns"/>
+	    FROM CLOUD_RESEARCH_VERIFY_UPLOADINFO 
+	    WHERE source_id=#{sourceId}
+	</select>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="FileVerifyUpload">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_RESEARCH_VERIFY_UPLOADINFO
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="FileVerifyUpload">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_RESEARCH_VERIFY_UPLOADINFO   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+</mapper>

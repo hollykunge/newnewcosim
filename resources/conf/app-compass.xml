@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- compass注解 
+	<bean id="annotationConfiguration" class="org.compass.annotations.config.CompassAnnotationsConfiguration"/>
+	-->
+	<bean id="compass" class="org.compass.spring.LocalCompassBean">  
+
+		
+		<property name="resourceLocations">
+            <list>
+                <!--  <value>classpath:/compass/conf/*.*.xml</value> -->
+                
+                <value>classpath:/compass/conf/sysOrgInfo.cmd.xml</value>
+                <value>classpath:/compass/conf/sysOrgInfo.cpm.xml</value>
+                 
+                <value>classpath:/compass/conf/compassNews.cmd.xml</value>
+                <value>classpath:/compass/conf/compassNews.cpm.xml</value>
+                
+                <value>classpath:/compass/conf/capability.cmd.xml</value>
+                <value>classpath:/compass/conf/capability.cpm.xml</value>
+        
+                <value>classpath:/compass/conf/businessDevchase.cmd.xml</value>
+                <value>classpath:/compass/conf/businessDevchase.cpm.xml</value>
+                <value>classpath:/compass/conf/businessMarketingchase.cmd.xml</value>
+                <value>classpath:/compass/conf/businessMarketingchase.cpm.xml</value>
+                <value>classpath:/compass/conf/businessPproducechase.cmd.xml</value>
+                <value>classpath:/compass/conf/businessPproducechase.cpm.xml</value>
+                <value>classpath:/compass/conf/businessPurchase.cmd.xml</value>
+                <value>classpath:/compass/conf/businessPurchase.cpm.xml</value>
+                <value>classpath:/compass/conf/businessServechase.cmd.xml</value>
+                <value>classpath:/compass/conf/businessServechase.cpm.xml</value>
+                
+            </list>
+        </property>
+		
+		
+		<!-- 配置compass的配置文件所在位置 ,compass与Springle集成后，下面的property name="compassSettings" 可以替代compass.cfg.xml文件
+		<property name="configLocation">
+			<value>classpath:/compass/conf/mycompass.cfg.xml</value> 
+  		</property>
+  		-->
+
+		<property name="compassSettings">  
+			<props>  
+				<!-- 索引文件保存路径   -->
+				<prop key="compass.engine.connection">file://c:/compassIndex_bpm</prop>
+				
+				<!-- 高亮开始 -->
+				<prop key="compass.engine.highlighter.default.formatter.simple.pre"><![CDATA[<font color='red'>]]></prop>
+				<!-- 高亮结束 -->
+				<prop key="compass.engine.highlighter.default.formatter.simple.post"><![CDATA[</font>]]></prop>
+				<!-- 配置事务管理工厂 -->
+				<prop key="compass.transaction.factory">org.compass.spring.transaction.SpringSyncTransactionFactory</prop>
+				<!--指定分词器  -->
+				<prop key="compass.engine.analyzer.default.type">net.paoding.analysis.analyzer.PaodingAnalyzer</prop>  
+			   
+			</props>  
+		</property>  
+		<!--  
+		<property name="compassConfiguration" ref="annotationConfiguration" />	
+			
+		<property name="classMappings">   
+			<list>  
+				<value>com.hotent.platform.model.system.SysOrg</value>
+
+			</list>  
+		</property>  
+		-->	
+		<!--  使用注解配置
+		<property name="compassConfiguration" ref="annotationConfiguration" />
+  		-->
+		<!-- 配置事务管理 -->
+		<property name="transactionManager" ref="transactionManager" />
+	</bean> 
+
+	<bean id="mybatisGpsDevice" class="com.hotent.platform.service.compass.SqlMapClientGpsDevice">  
+		<property name="name" value="mybatis" />  
+		<property name="sqlSessionFactory">  
+			<ref bean="sqlSessionFactory" /> <!-- 引用项目中已经定义的ibatis的sqlMapClient -->  
+		</property>  
+		<property name="selectStatementsIds"> <!-- 对这些SQL查询的结果进行索引 -->  
+			<list>  
+				
+		
+	<!--  <value>com.casic.cloud.model.compass.compassNews.CompassNews.getAllForCompass</value>		
+  
+    <value>com.casic.cloud.model.manufacture.manufEnquiry.ManufEnquiry.getAllForCompass</value>-->
+    <value>com.casic.cloud.model.config.info.Info.getAllForCompass</value>
+     <value>com.casic.cloud.model.config.capability.Capability.getAllForCompass</value>
+     
+    <value>com.casic.cloud.model.config.businessDevchase.BusinessDevchase.getAllForCompass</value>   
+    <value>com.casic.cloud.model.config.businessMarketingchase.BusinessMarketingchase.getAllForCompass</value>  
+    <value>com.casic.cloud.model.config.businessPproducechase.BusinessPproducechase.getAllForCompass</value>  
+    <value>com.casic.cloud.model.config.businessPurchase.BusinessPurchase.getAllForCompass</value>  
+    <value>com.casic.cloud.model.config.businessServechase.BusinessServechase.getAllForCompass</value>  
+
+			</list>  
+		</property>  
+	</bean>
+	 
+	 
+	<!--  
+	<bean id="compassGps" class="org.compass.gps.impl.SingleCompassGps" init-method="start" destroy-method="stop">  
+		  <property name="compass" ref="compass" />  
+		  <property name="gpsDevices">  
+		   <list>
+			 <ref local="mybatisGpsDevice"/>  
+			</list>
+		  </property>  
+		</bean> 
+   -->
+ 
+	<bean id="compassGps" class="org.compass.gps.impl.SingleCompassGps" init-method="start" destroy-method="stop">
+		<property name="compass" ref="compass" />
+		<property name="gpsDevices">
+			<list>
+				<bean class="org.compass.spring.device.SpringSyncTransactionGpsDeviceWrapper">
+					<property name="gpsDevice" ref="mybatisGpsDevice" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="compassTemplate" class="org.compass.core.CompassTemplate">
+		<property name="compass" ref="compass" />
+	</bean>
+	
+
+	
+	<!-- 定时重建索引(利用quartz)或随Spring ApplicationContext启动而重建索引 -->
+	<bean id="compassIndexBuilder" class="com.casic.cloud.service.compass.CompassIndexBuilder"
+		lazy-init="false">
+		<property name="compassGps" ref="compassGps" />
+		<property name="buildIndex" value="true" />
+		<property name="lazyTime" value="10" />
+	</bean>
+	
+</beans>

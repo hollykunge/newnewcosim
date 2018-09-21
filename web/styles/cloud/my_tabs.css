@@ -1,0 +1,307 @@
+/* 婢垛晜娅ょ純锟介崯鍡楁惂閸掓銆僓I tab 閺嶅洨顒烽弽宄扮础 */
+
+/* Additional IE specific bug fixes... */
+* html .ui-tabs-nav { /* auto clear, @ IE 6 & IE 7 Quirks Mode */
+    display: inline-block;
+}
+*:first-child+html .ui-tabs-nav  { /* @ IE 7 Standards Mode - do not group selectors, otherwise IE 6 will ignore complete rule (because of the unknown + combinator)... */
+    display: inline-block;
+}
+.table01_1{
+	width:350px; height:115px; float:left;  font-size:12px; padding-left:10px; padding-top:10px; border-bottom:1px #9ccefd dotted;
+}
+.table01_2{
+	width:340px; float:left;  
+}
+.table01_3{
+	width:80px; height:84px; float:left;
+}
+.table01_4{
+	width:230px; height:20px; float:left; padding-left:10px;
+}
+.table01_5{
+	width:250px; height:55px; float:left; padding-left:10px; line-height:20px; padding-top:15px;
+}
+.table01_6{
+	width:200px; padding-left:90px; font-size:12px; color:#999;
+}
+.tab01{
+	width:100%; height:760px; float:left; 
+}
+.tab01_1{
+	width:490px; height:105px; float:left;  font-size:12px; padding-left:20px; padding-top:10px; border-bottom:1px #9ccefd dotted;
+}
+.tab01_1{
+	width:490px; height:105px; float:left;  font-size:12px; padding-left:20px; padding-top:10px; border-bottom:1px #9ccefd dotted;
+}
+.tab01_7{
+	width:720px; height:105px; float:left;  font-size:12px; padding-left:10px; padding-top:10px; border-bottom:1px #9ccefd dotted;
+}
+.tab01_8{
+	width:720px; float:left;  
+}
+.tab01_9{
+	width:630px; height:20px; float:left; padding-left:10px;
+}
+.tab01_10{
+	width:630px; height:40px; float:left; padding-left:10px; line-height:20px; padding-top:5px; line-height:24px;
+}
+.tab01_2{
+	width:430px; float:left;  
+}
+.tab01_3{
+	width:80px; height:84px; float:left;
+}
+.tab_space{
+	width:80px; height:115px; float:left; padding-left:20px; padding-top:10px; border-bottom:1px #9ccefd dotted;
+}
+.tab01_4{
+	width:250px; height:20px; float:left; padding-left:10px;
+}
+.tab01_5{
+	width:330px; height:50px; float:left; padding-left:10px; line-height:20px; padding-top:5px;
+}
+.tab01_6{
+	width:200px; padding-left:90px; font-size:12px; color:#999;
+}
+.tab02_01{
+	width:450px; height:115px; float:left;  font-size:12px; padding-left:20px; padding-top:10px; border-bottom:1px #9ccefd dotted;
+}
+.tab02_02{
+	width:280px; float:left;padding:1px;
+}
+.tab02_4{
+	width:350px; height:20px; float:left; padding-left:10px;margin-left:100px;
+}
+.tab02_5{
+	width:350px; height:20px; float:left; padding-left:10px; line-height:20px; padding-top:5px;margin-left:100px;
+}
+.tab02_6{
+	width:350px;height:50px; padding-left:10px;font-size:12px;margin-left:100px;margin-top:5px;
+}
+.tab02_7{
+	width:50px;height:50px; font-size:12px;float:left;padding-top:5px;
+}
+.tab02_8{
+	width:300px;height:50px; font-size:12px;float:left;
+}
+.tab02_7_span{
+	height:50px; font-size:12px;color:#666;float:left;margin-right:10px;
+}
+.tab02_8_span{
+	height:20px; font-size:12px;color:#666;float:left;margin-right:10px;
+}
+
+
+#mytable {
+width: 1008px;
+padding: 0;
+margin: 0;
+border-left: 1px solid #C1DAD7;
+border-top: 1px solid #C1DAD7;
+}
+
+#mytable caption {
+padding: 0 0 5px 20px;
+width: 700px;
+font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+color: #4f6b72;
+text-align: right;
+font-weight:bold;
+text-align:center;
+}
+
+#mytable th {
+font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+color: #4f6b72;
+border-right: 1px solid #C1DAD7;
+border-bottom: 1px solid #C1DAD7;
+border-top: 1px solid #C1DAD7;
+letter-spacing: 2px;
+text-transform: uppercase;
+text-align: left;
+padding: 6px 6px 6px 12px;
+background: #CAE8EA  no-repeat;
+}
+
+#mytable th.nobg {
+border-top: 0;
+border-left: 0;
+border-right: 1px solid #C1DAD7;
+background: none;
+}
+
+#mytable td {
+border-right: 1px solid #C1DAD7;
+border-bottom: 1px solid #C1DAD7;
+background: #fff;
+font-size:12px;
+padding: 6px 6px 6px 12px;
+color: #4f6b72;
+}
+
+
+#mytable td.alt {
+background: #F5FAFA;
+color: #797268;
+}
+
+#mytable th.spec {
+border-left: 1px solid #C1DAD7;
+border-top: 0;
+background: #fff no-repeat;
+font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+#mytable th.specalt {
+border-left: 1px solid #C1DAD7;
+border-top: 0;
+background: #f5fafa no-repeat;
+font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+color: #797268;
+} 
+#newsList{
+	width:1000px;
+	height:570px;
+	border:1px solid #C1DAD7;
+	margin:0 auto;
+	padding:10px;
+}
+#newsList2{
+	width:1000px;
+	height:590px;
+	border:1px solid #C1DAD7;
+	margin:0 auto;
+	padding:10px;
+}
+#newsList #newsTitle{
+	width:980px;
+	height:20px;
+	border-bottom:1px solid #C1DAD7;
+	margin:0 auto;
+	padding:10px;
+}
+#newsList #model01{
+	width:1000px;
+	height:500px;
+	float:left;
+}
+#newsList #newsTitle #title01{
+	font:bold 16px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+#newsList #model01 li{
+	font-size:14px; color:#005085; text-decoration:none;  width:960px; line-height:30px; float:left;
+}
+#newsList #model01 .link{
+	font-size:14px; color:#005085; text-decoration:none;  width:600px; float:left;
+}
+#newsList #model01 .date{
+	widht:100px;font-size:12px; color:#005085;float:right;
+}
+#newsList .pub_tab{
+	font-size:14px; color:#005085; text-decoration:none;  width:1000px; overflow:hidden;float:left;
+}
+#newsList .fenye{
+	font-size:14px; color:#005085; text-decoration:none;  width:1000px; text-align:center;
+}
+
+.fenye_nb{
+	margin:0 auto; width:900px; height:30px; padding-top:30px; text-align:center;
+}
+
+#main .pub_tab{
+	font-size:14px; color:#005085; text-decoration:none;  width:1024px; overflow:hidden;float:left;
+}
+#main .fenye{
+	font-size:14px; color:#005085; text-decoration:none;  width:1000px; text-align:center;
+}
+
+/*-----------------------閸熷棙婧�幖婊呭偍妞ょ敻娼�----------------------*/
+#chanceList01{
+	width:1000px;
+	height:610px;
+	border:1px solid #C1DAD7;
+	margin:0 auto;
+	padding:10px;
+}
+#chanceTitle01 {
+	border-bottom:1px solid #C1DAD7;
+}
+#chanceTitle01 .title01{
+	font:bold 16px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+#chanceList01 .div01_1{
+	width:470px; height:130px; float:left;  font-size:12px; padding-left:20px; padding-top:10px; border-bottom:1px #9ccefd dotted;
+}
+#chanceList01 .div01_2{
+	width:430px; float:left;  
+}
+#chanceList01 .div01_3{
+	width:100px; height:100px; float:left;
+}
+#chanceList01 .div01_4{
+	width:250px; height:20px; float:left; padding-left:10px;overflow:hidden;
+}
+#chanceList01 .div01_5{
+	width:300px; height:80px; float:left; padding-left:10px; line-height:20px; padding-top:5px;
+}
+#chanceList01 .div01_6{
+	width:200px; padding-left:110px; font-size:12px; color:#999;
+}
+#chanceList01 .pub_tab{
+	font-size:14px; color:#005085; text-decoration:none;  width:1000px; overflow:hidden;float:left;
+}
+
+#chanceList01 .fenye{
+	float:center; padding-right:230px; font-size:12px; color:#333333; padding-top:2px;
+}
+#chanceList01 .fenye_link{
+	font-size:12px; color:#333333; padding:3px; text-decoration:none; border:1px #d3d3d3 solid;
+}
+#chanceList01 .fenye_link:hover{
+	font-size:12px; color:#ffffff; padding:3px; text-decoration:none; background-color:#36a6e6; border:1px #36a6e6 solid; 
+}
+/*------------------------------------閺備即妞堥崚妤勩�----------------------------*/
+#mynewslist{
+	width:1000px;
+	height:570px;
+	border:1px solid #C1DAD7;
+	margin:0 auto;
+	padding:10px;
+}
+
+#newscontent{
+	width:1000px;
+	height:500px;
+	float:left;
+}
+#newsTitle .title01{
+	font:bold 16px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+#newsTitle2{
+	width:980px;
+	height:20px;
+	border-bottom:1px solid #C1DAD7;
+	margin:0 auto;
+	padding-top:20px;
+	padding-bottom:30px;
+	text-align:center;
+	font-size:24px;
+	font-weight:bold;
+}
+#newscontent .newsTitle3{
+	width:1000px;
+	font-size:12px; text-align:center; padding-top:10px; color:#666;
+	margin:0 auto;
+}
+#newscontent .data-ctrl3{padding:20px;position: relative;zoom: 1; font-size:14px; color:#333; line-height:30px; text-indent:2em; text-align:left;}
+#mynewslist .pub_tab{
+	font-size:14px; color:#005085; text-decoration:none;  width:1000px; overflow:hidden;float:left;
+}
+#mynewslist .fenye{
+	font-size:14px; color:#005085; text-decoration:none;  width:1000px; text-align:center;
+}
+
+.fenye_nb{
+	margin:0 auto; width:900px; height:30px; padding-top:30px; text-align:center;
+}

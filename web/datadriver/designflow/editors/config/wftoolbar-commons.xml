@@ -1,0 +1,35 @@
+<mxDefaultToolbar>
+	<add as="save" action="save" icon="images/save.gif"/>
+
+	<add as="选择" mode="select" icon="images/select.gif"/>
+	<add as="拖拽" mode="pan" icon="images/pan.gif"/>
+	<add as="连接" mode="connect" icon="images/connect.gif"><![CDATA[
+		function (editor)
+		{
+			if (editor.defaultEdge != null)
+			{
+				editor.defaultEdge.style = null;
+			}
+		}
+	]]></add>
+
+	<br/><hr/>
+	<add as="撤销" action="undo" icon="images/undo.gif"/>
+	<add as="重复" action="redo" icon="images/redo.gif"/>
+	<br/><hr/>
+
+	<add as="删除" action="delete" icon="images/delete.gif"/>
+	<br/><hr/>
+
+
+	<add as="任务" template="task" icon="images/rectangle.gif"/>
+	<add as="决策点" template="shape" style="rhombus" icon="images/rhombus.gif"/>
+	<add as="开始" template="symbol" style="symbol;image=images/symbols/event.png" icon="images/symbols/small_event.gif"/>
+
+	<add as="截止" template="symbol" style="symbol;image=images/symbols/event_end.png" icon="images/symbols/small_event_end.gif"/>
+
+	<add as="中止" template="symbol" style="symbol;image=images/symbols/cancel_intermediate.png" icon="images/symbols/small_cancel_intermediate.gif"/>
+	<add as="分支" template="symbol" style="symbol;image=images/symbols/fork.png" icon="images/symbols/small_fork.gif"/>
+
+
+</mxDefaultToolbar>

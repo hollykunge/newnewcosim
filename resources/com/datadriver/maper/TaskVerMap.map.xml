@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.data.TaskVerMap">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.data.TaskVerMap">
+    <id column="DD_TASK_VER_ID" jdbcType="NUMERIC" property="ddTaskVerId" />
+    <result column="DD_VERSION_TIME" jdbcType="DATE" property="ddVersionTime" />
+    <result column="DD_TASK_ID" jdbcType="NUMERIC" property="ddTaskId" />
+    <result column="DD_VERSION_NUM" jdbcType="INTEGER" property="ddVersionNum" />
+    <result column="DD_VERSION_DESCRIPTION" jdbcType="VARCHAR" property="ddVersionDescription" />
+    <result column="DD_RESERVED1" jdbcType="NUMERIC" property="ddReserved1" />
+    <result column="DD_RESERVED2" jdbcType="VARCHAR" property="ddReserved2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_TASK_VER_ID, DD_VERSION_TIME, DD_TASK_ID, DD_VERSION_NUM, DD_VERSION_DESCRIPTION,
+    DD_RESERVED1, DD_RESERVED2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_task_ver_map
+    where DD_TASK_VER_ID = #{ddTaskVerId,jdbcType=NUMERIC}
+  </select>
+  <select id="getVersionNum" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select
+    MAX(DD_VERSION_NUM)
+    from dd_task_ver_map
+    where DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC}
+  </select>
+  <select id="getListByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dd_task_ver_map
+    where DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dd_task_ver_map
+    where DD_TASK_VER_ID = #{ddTaskVerId,jdbcType=NUMERIC}
+  </delete>
+  <insert id="add" parameterType="com.casic.datadriver.model.data.TaskVerMap">
+    insert into dd_task_ver_map (DD_TASK_VER_ID, DD_VERSION_TIME, DD_TASK_ID,
+      DD_VERSION_NUM, DD_VERSION_DESCRIPTION, DD_RESERVED1, 
+      DD_RESERVED2)
+    values (#{ddTaskVerId,jdbcType=NUMERIC}, #{ddVersionTime,jdbcType=DATE}, #{ddTaskId,jdbcType=NUMERIC},
+      #{ddVersionNum,jdbcType=INTEGER}, #{ddVersionDescription,jdbcType=VARCHAR}, #{ddReserved1,jdbcType=NUMERIC}, 
+      #{ddReserved2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.data.TaskVerMap">
+    insert into dd_task_ver_map
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddTaskVerId != null">
+        DD_TASK_VER_ID,
+      </if>
+      <if test="ddVersionTime != null">
+        DD_VERSION_TIME,
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID,
+      </if>
+      <if test="ddVersionNum != null">
+        DD_VERSION_NUM,
+      </if>
+      <if test="ddVersionDescription != null">
+        DD_VERSION_DESCRIPTION,
+      </if>
+      <if test="ddReserved1 != null">
+        DD_RESERVED1,
+      </if>
+      <if test="ddReserved2 != null">
+        DD_RESERVED2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddTaskVerId != null">
+        #{ddTaskVerId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddVersionTime != null">
+        #{ddVersionTime,jdbcType=DATE},
+      </if>
+      <if test="ddTaskId != null">
+        #{ddTaskId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddVersionNum != null">
+        #{ddVersionNum,jdbcType=INTEGER},
+      </if>
+      <if test="ddVersionDescription != null">
+        #{ddVersionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="ddReserved1 != null">
+        #{ddReserved1,jdbcType=NUMERIC},
+      </if>
+      <if test="ddReserved2 != null">
+        #{ddReserved2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.casic.datadriver.model.data.TaskVerMap">
+    update dd_task_ver_map
+    <set>
+      <if test="ddVersionTime != null">
+        DD_VERSION_TIME = #{ddVersionTime,jdbcType=DATE},
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddVersionNum != null">
+        DD_VERSION_NUM = #{ddVersionNum,jdbcType=INTEGER},
+      </if>
+      <if test="ddVersionDescription != null">
+        DD_VERSION_DESCRIPTION = #{ddVersionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="ddReserved1 != null">
+        DD_RESERVED1 = #{ddReserved1,jdbcType=NUMERIC},
+      </if>
+      <if test="ddReserved2 != null">
+        DD_RESERVED2 = #{ddReserved2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DD_TASK_VER_ID = #{ddTaskVerId,jdbcType=NUMERIC}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.data.TaskVerMap">
+    update dd_task_ver_map
+    set DD_VERSION_TIME = #{ddVersionTime,jdbcType=DATE},
+      DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
+      DD_VERSION_NUM = #{ddVersionNum,jdbcType=INTEGER},
+      DD_VERSION_DESCRIPTION = #{ddVersionDescription,jdbcType=VARCHAR},
+      DD_RESERVED1 = #{ddReserved1,jdbcType=NUMERIC},
+      DD_RESERVED2 = #{ddReserved2,jdbcType=VARCHAR}
+    where DD_TASK_VER_ID = #{ddTaskVerId,jdbcType=NUMERIC}
+  </update>
+</mapper>

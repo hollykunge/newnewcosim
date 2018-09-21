@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	<template name="个人信息" serviceMethod="desktopService.getUser" templateName="个人信息模板" templateId="getUser" columnUrl="" isSys="1"></template>
+	<template name="未读消息" serviceMethod="desktopService.getMessage" templateName="内部消息栏目模板" templateId="getMessage" columnUrl="/platform/system/sysTemplate/list.ht" isSys="1"></template>
+	<template name="待办事项" serviceMethod="desktopService.forMe" templateName="待办任务栏目模板" templateId="getForMe" columnUrl="/platform/bpm/taskInfo/forMe.ht" isSys="1"></template>
+	<template name="审批流程" serviceMethod="desktopService.myAttend" templateName="审批流程模板" templateId="getMyAttend" columnUrl="/platform/bpm/processRun/myAttend.ht" isSys="1"></template>
+	<template name="发起的流程" serviceMethod="desktopService.myStart" templateName="发起的流程模板" templateId="getMyStart" columnUrl="/platform/bpm/processRun/myStart.ht" isSys="1"></template>
+	<template name="代理任务" serviceMethod="desktopService.forAgent" templateName="代理任务模板" templateId="getForAgent" columnUrl="/platform/bpm/bpmAgent/manage.ht" isSys="1"></template>
+	<template name="未读邮件" serviceMethod="desktopService.myNewMail" templateName="未读模板" templateId="getMyNewMail" columnUrl="/platform/mail/outMail/warn.ht" isSys="1"></template>
+</templates>

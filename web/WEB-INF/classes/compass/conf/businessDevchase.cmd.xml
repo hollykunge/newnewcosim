@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE compass-core-meta-data PUBLIC 
+     "-//Compass/Compass Core Meta Data DTD 2.2//EN"
+     "http://www.compass-project.org/dtd/compass-core-meta-data-2.2.dtd">
+
+<compass-core-meta-data>
+	<meta-data-group id="businessDevchases" displayName="研发商机">
+ 
+		<description>研发商机列表</description>
+ 		<uri>http://compass/businessDevchases</uri>
+
+		<alias id="BusinessDevchase" displayName="BusinessDevchase">
+ 			<description>BusinessDevchase alias</description>
+ 			<uri>http://compass/businessDevchases/BusinessDevchase</uri>
+			<name>BusinessDevchase</name>
+ 		</alias>
+
+		<meta-data id="busname" displayName="busname">
+ 			<description>busname alias</description>
+ 			<uri>http://compass/businessDevchases/busname</uri>
+ 			<name>name</name>
+ 		</meta-data>
+ 
+ 		<meta-data id="buscontent" displayName="buscontent">
+ 			<description>buscontent alias</description>
+ 			<uri>http://compass/businessDevchases/buscontent</uri>
+ 			<name>content</name>
+ 		</meta-data>
+ 
+ 		<meta-data id="bustype" displayName="bustype">
+ 			<description>bustype alias</description>
+ 			<uri>http://compass/businessDevchases/bustype</uri>
+ 			<name>type</name>
+ 		</meta-data>
+  		 
+  			<meta-data id="busclassid" displayName="busclassid">
+ 			<description>busclassid alias</description>
+ 			<uri>http://compass/businessDevchases/busclassid</uri>
+ 			<name>classid</name>
+ 		</meta-data>
+ 		 
+ 		<meta-data id="buscompanyName" displayName="buscompanyName">
+ 			<description>buscompanyName alias</description>
+ 			<uri>http://compass/businessDevchases/buscompanyName</uri>
+ 			<name>companyName</name>
+ 		</meta-data>
+ 		
+ 		<meta-data id="bususerName" displayName="bususerName">
+ 			<description>bususerName alias</description>
+ 			<uri>http://compass/businessDevchases/bususerName</uri>
+ 			<name>userName</name>
+ 		</meta-data>
+ 		
+		<meta-data id="buscountry" displayName="buscountry">
+ 			<description>buscountry alias</description>
+ 			<uri>http://compass/businessDevchases/buscountry</uri>
+ 			<name>country</name>
+ 		</meta-data>
+ 		<meta-data id="busprovince" displayName="busprovince">
+ 			<description>busprovince alias</description>
+ 			<uri>http://compass/businessDevchases/busprovince</uri>
+ 			<name>province</name>
+ 		</meta-data>
+ 		
+ 		<meta-data id="buscity" displayName="buscity">
+ 			<description>buscity alias</description>
+ 			<uri>http://compass/businessDevchases/buscity</uri>
+ 			<name>city</name>
+ 		</meta-data>
+ 		
+ 		
+ 		<meta-data id="buspurnum" displayName="buspurnum">
+ 			<description>buspurnum alias</description>
+ 			<uri>http://compass/businessDevchases/buspurnum</uri>
+ 			<name>purnum</name>
+ 		</meta-data>
+ 		<meta-data id="busdlqy" displayName="busdlqy">
+ 			<description>busdlqy alias</description>
+ 			<uri>http://compass/businessDevchases/busdlqy</uri>
+ 			<name>dlqy</name>
+ 		</meta-data>
+ 		<meta-data id="busscgyyq" displayName="busscgyyq">
+ 			<description>busscgyyq alias</description>
+ 			<uri>http://compass/businessDevchases/busscgyyq</uri>
+ 			<name>scgyyq</name>
+ 		</meta-data>
+ 		<meta-data id="busfwqy" displayName="busfwqy">
+ 			<description>busfwqy alias</description>
+ 			<uri>http://compass/businessDevchases/busfwqy</uri>
+ 			<name>fwqy</name>
+ 		</meta-data>
+ 		<meta-data id="busyfhbzzyq" displayName="busyfhbzzyq">
+ 			<description>busyfhbzzyq alias</description>
+ 			<uri>http://compass/businessDevchases/busyfhbzzyq</uri>
+ 			<name>yfhbzzyq</name>
+ 		</meta-data>
+ 		
+ 		
+
+ 
+
+
+	</meta-data-group>
+ 
+</compass-core-meta-data>
+ 

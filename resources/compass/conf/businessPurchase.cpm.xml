@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE compass-core-mapping PUBLIC
+"-//Compass/Compass Core Mapping DTD 2.2//EN"
+"http://www.compass-project.org/dtd/compass-core-mapping-2.2.dtd">
+
+
+	<!-- 这里的包名必须和pojo的包名一致 -->
+<compass-core-mapping package="com.casic.cloud.model.config.businessPurchase">
+<!-- 定义实体及其字段的对应关系 -->
+<!-- 注意实体及其字段的名称的大小写应当与pojo对象一致，而不是与数据库一致关于pojo与数据库的对应表的一致性关系由hibernate的映谢文件定义，而不是这个文件当前映射文件只定义compass与hibernate的关系 -->
+<class name="BusinessPurchase" alias="${businessPurchases.BusinessPurchase}">
+	<id name="id" />
+	
+	<property name="name">
+  		<meta-data boost="2">${businessPurchases.buspname}</meta-data>
+	</property>
+	
+	<property name="content">
+  		<meta-data >${businessPurchases.buspcontent}</meta-data>
+	</property>
+	
+	<property name="type">
+  		<meta-data >${businessPurchases.busptype}</meta-data>
+	</property>
+ 
+	 	<property name="classid">
+  		<meta-data >${businessPurchases.buspclassid}</meta-data>
+	</property>
+ 
+	 
+	<property name="companyName">
+  		<meta-data >${businessPurchases.buspcompanyName}</meta-data>
+	</property>
+  
+  	<property name="userName">
+  		<meta-data >${businessPurchases.buspuserName}</meta-data>
+	</property>
+	
+
+	<property name="jhqyq">
+  		<meta-data >${businessPurchases.buspjhqyq}</meta-data>
+	</property>
+	
+	<property name="gyszzyq">
+  		<meta-data >${businessPurchases.buspgyszzyq}</meta-data>
+	</property>
+
+
+</class>
+</compass-core-mapping>

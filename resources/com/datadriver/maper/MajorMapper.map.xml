@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.major.Major">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.major.Major">
+    <result column="DD_MAJOR_ID" jdbcType="NUMERIC" property="ddMajorId" />
+    <result column="DD_LEVEL" jdbcType="SMALLINT" property="ddLevel" />
+    <result column="DD_MAJOR_NAME" jdbcType="VARCHAR" property="name" />
+    <result column="DD_MAJOR_DESP" jdbcType="VARCHAR" property="ddMajorDesp" />
+    <result column="DD_MAJOR_PARENT_ID" jdbcType="NUMERIC" property="ddMajorParentId" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.casic.datadriver.model.major.Major">
+    insert into dd_major (DD_MAJOR_ID, DD_LEVEL, DD_MAJOR_NAME, 
+      DD_MAJOR_DESP, DD_MAJOR_PARENT_ID)
+    values (#{ddMajorId,jdbcType=NUMERIC}, #{ddLevel,jdbcType=SMALLINT}, #{name,jdbcType=VARCHAR},
+      #{ddMajorDesp,jdbcType=VARCHAR}, #{ddMajorParentId,jdbcType=NUMERIC})
+  </insert>
+
+  <sql id="Base_Column_List">
+    DD_MAJOR_ID, DD_LEVEL, DD_MAJOR_NAME,
+      DD_MAJOR_DESP, DD_MAJOR_PARENT_ID
+  </sql>
+
+  <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_major
+    WHERE DD_MAJOR_ID = #{id}
+  </select>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_major
+  </select>
+
+  <select id="findByPid" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_major
+    WHERE  DD_MAJOR_PARENT_ID= #{pid}
+  </select>
+
+
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.major.Major">
+    insert into dd_major
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddMajorId != null">
+        DD_MAJOR_ID,
+      </if>
+      <if test="ddLevel != null">
+        DD_LEVEL,
+      </if>
+      <if test="name != null">
+        DD_MAJOR_NAME,
+      </if>
+      <if test="ddMajorDesp != null">
+        DD_MAJOR_DESP,
+      </if>
+      <if test="ddMajorParentId != null">
+        DD_MAJOR_PARENT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddMajorId != null">
+        #{ddMajorId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddLevel != null">
+        #{ddLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ddMajorDesp != null">
+        #{ddMajorDesp,jdbcType=VARCHAR},
+      </if>
+      <if test="ddMajorParentId != null">
+        #{ddMajorParentId,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+</mapper>

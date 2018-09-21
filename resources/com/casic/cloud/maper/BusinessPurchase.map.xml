@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.businessPurchase.BusinessPurchase">
+	<resultMap id="BusinessPurchase" type="com.casic.cloud.model.config.businessPurchase.BusinessPurchase">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="startTime" column="start_time" jdbcType="DATE"/>
+		<result property="endTime" column="end_time" jdbcType="DATE"/>
+		<result property="image" column="image" jdbcType="VARCHAR"/>
+		<result property="companyId" column="company_id" jdbcType="NUMERIC"/>
+		<result property="userId" column="user_id" jdbcType="NUMERIC"/>
+		<result property="operateTime" column="operate_time" jdbcType="DATE"/>
+		<result property="companyName" column="company_name" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="publishState" column="publish_state" jdbcType="VARCHAR"/>
+		<result property="purnum" column="purnum" jdbcType="NUMERIC"/>
+		<result property="classid" column="classid" jdbcType="VARCHAR"/>
+		<result property="jhqyq" column="jhqyq" jdbcType="VARCHAR"/>
+		<result property="gyszzyq" column="gyszzyq" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="publishInfo" column="publish_info" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,name,content,start_time,end_time,image,publish_info,company_id,user_id,operate_time,company_name,user_name,publish_state,purnum,classid,jhqyq,gyszzyq,type
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(startTime)"> AND start_time  =#{startTime} </if>
+			<if test="@Ognl@isNotEmpty(beginstartTime)"> AND start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endstartTime)"> AND start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND end_time  =#{endTime} </if>
+			<if test="@Ognl@isNotEmpty(beginendTime)"> AND end_time  >=#{beginendTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endendTime)"> AND end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(image)"> AND image  LIKE #{image}  </if>
+			<if test="@Ognl@isNotEmpty(companyId)"> AND company_id  =#{companyId} </if>
+			<if test="@Ognl@isNotEmpty(userId)"> AND user_id  =#{userId} </if>
+			<if test="@Ognl@isNotEmpty(operateTime)"> AND operate_time  =#{operateTime} </if>
+			<if test="@Ognl@isNotEmpty(beginoperateTime)"> AND operate_time  >=#{beginoperateTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endoperateTime)"> AND operate_time <![CDATA[ <=#{endoperateTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(companyName)"> AND company_name  LIKE #{companyName}  </if>
+			<if test="@Ognl@isNotEmpty(userName)"> AND user_name  LIKE #{userName}  </if>
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+			<if test="@Ognl@isNotEmpty(purnum)"> AND purnum  =#{purnum} </if>
+			<if test="@Ognl@isNotEmpty(classid)"> AND classid  LIKE #{classid}  </if>
+			<if test="@Ognl@isNotEmpty(jhqyq)"> AND jhqyq  LIKE #{jhqyq}  </if>
+			<if test="@Ognl@isNotEmpty(gyszzyq)"> AND gyszzyq  LIKE #{gyszzyq}  </if>
+			<if test="@Ognl@isNotEmpty(type)"> AND type  LIKE #{type}  </if>
+			<if test="@Ognl@isNotEmpty(publishInfo)"> AND publish_info  LIKE #{publishInfo}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.businessPurchase.BusinessPurchase">
+		INSERT INTO cloud_business_purchase
+		(id,name,publish_info,content,start_time,end_time,image,company_id,user_id,operate_time,company_name,user_name,publish_state,purnum,classid,jhqyq,gyszzyq,type)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{name,jdbcType=VARCHAR}, #{publishInfo,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, #{image,jdbcType=VARCHAR}, #{companyId,jdbcType=NUMERIC}, #{userId,jdbcType=NUMERIC}, #{operateTime,jdbcType=DATE}, #{companyName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{publishState,jdbcType=VARCHAR}, #{purnum,jdbcType=NUMERIC}, #{classid,jdbcType=VARCHAR}, #{jhqyq,jdbcType=VARCHAR}, #{gyszzyq,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_business_purchase 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.businessPurchase.BusinessPurchase">
+		UPDATE cloud_business_purchase SET
+		name=#{name,jdbcType=VARCHAR},
+		content=#{content,jdbcType=VARCHAR},
+		start_time=#{startTime,jdbcType=DATE},
+		end_time=#{endTime,jdbcType=DATE},
+		image=#{image,jdbcType=VARCHAR},
+		company_id=#{companyId,jdbcType=NUMERIC},
+		user_id=#{userId,jdbcType=NUMERIC},
+		operate_time=#{operateTime,jdbcType=DATE},
+		company_name=#{companyName,jdbcType=VARCHAR},
+		user_name=#{userName,jdbcType=VARCHAR},
+		publish_state=#{publishState,jdbcType=VARCHAR},
+		purnum=#{purnum,jdbcType=NUMERIC},
+		classid=#{classid,jdbcType=VARCHAR},
+		jhqyq=#{jhqyq,jdbcType=VARCHAR},
+		gyszzyq=#{gyszzyq,jdbcType=VARCHAR},
+		type=#{type,jdbcType=VARCHAR},
+		publish_info=#{publishInfo,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="BusinessPurchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_purchase
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="BusinessPurchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_purchase   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	<select id="myChase" resultMap="BusinessPurchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_purchase   
+		where  
+		 company_id=#{company_id,jdbcType=NUMERIC}
+		 and user_id=#{user_id,jdbcType=NUMERIC}
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if> 
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+		   <if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	<select id="getAllForCompass" resultMap="BusinessPurchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_purchase   
+	    where publish_state = '审核通过'
+	</select>
+	
+		<select id="getAllByEntid" resultMap="BusinessPurchase">
+		SELECT <include refid="columns"/>
+		FROM cloud_business_purchase   
+		 WHERE   company_id=#{company_id,jdbcType=NUMERIC}
+		<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(startTime)"> AND start_time  =#{startTime} </if>
+			<if test="@Ognl@isNotEmpty(beginstartTime)"> AND start_time  >=#{beginstartTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endstartTime)"> AND start_time <![CDATA[ <=#{endstartTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(endTime)"> AND end_time  =#{endTime} </if>
+			<if test="@Ognl@isNotEmpty(beginendTime)"> AND end_time  >=#{beginendTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endendTime)"> AND end_time <![CDATA[ <=#{endendTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(operateTime)"> AND operate_time  =#{operateTime} </if>
+			<if test="@Ognl@isNotEmpty(beginoperateTime)"> AND operate_time  >=#{beginoperateTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endoperateTime)"> AND operate_time <![CDATA[ <=#{endoperateTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(companyName)"> AND company_name  LIKE #{companyName}  </if>
+			<if test="@Ognl@isNotEmpty(userName)"> AND user_name  LIKE #{userName}  </if>
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+			<if test="@Ognl@isNotEmpty(purnum)"> AND purnum  =#{purnum} </if>
+			<if test="@Ognl@isNotEmpty(classid)"> AND classid  LIKE #{classid}  </if>
+			<if test="@Ognl@isNotEmpty(jhqyq)"> AND jhqyq  LIKE #{jhqyq}  </if>
+			<if test="@Ognl@isNotEmpty(gyszzyq)"> AND gyszzyq  LIKE #{gyszzyq}  </if>
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+</mapper>

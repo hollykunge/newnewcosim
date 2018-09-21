@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE compass-core-meta-data PUBLIC 
+     "-//Compass/Compass Core Meta Data DTD 2.2//EN"
+     "http://www.compass-project.org/dtd/compass-core-meta-data-2.2.dtd">
+
+<compass-core-meta-data>
+	<meta-data-group id="businessPurchases" displayName="采购商机">
+ 
+		<description>采购商机列表</description>
+ 		<uri>http://compass/businessPurchases</uri>
+
+		<alias id="BusinessPurchase" displayName="BusinessPurchase">
+ 			<description>BusinessPurchase alias</description>
+ 			<uri>http://compass/businessPurchases/BusinessPurchase</uri>
+			<name>BusinessPurchase</name>
+ 		</alias>
+
+		<meta-data id="buspname" displayName="buspname">
+ 			<description>buspname alias</description>
+ 			<uri>http://compass/businessPurchases/buspname</uri>
+ 			<name>name</name>
+ 		</meta-data>
+ 
+ 		<meta-data id="buspcontent" displayName="buspcontent">
+ 			<description>buspcontent alias</description>
+ 			<uri>http://compass/businessPurchases/buspcontent</uri>
+ 			<name>content</name>
+ 		</meta-data>
+ 
+ 		<meta-data id="busptype" displayName="busptype">
+ 			<description>busptype alias</description>
+ 			<uri>http://compass/businessPurchases/busptype</uri>
+ 			<name>type</name>
+ 		</meta-data>
+  		 
+  			<meta-data id="buspclassid" displayName="buspclassid">
+ 			<description>buspclassid alias</description>
+ 			<uri>http://compass/businessPurchases/buspclassid</uri>
+ 			<name>classid</name>
+ 		</meta-data>
+ 		 
+ 		<meta-data id="buspcompanyName" displayName="buspcompanyName">
+ 			<description>buspcompanyName alias</description>
+ 			<uri>http://compass/businessPurchases/buspcompanyName</uri>
+ 			<name>companyName</name>
+ 		</meta-data>
+ 		
+ 		<meta-data id="buspuserName" displayName="buspuserName">
+ 			<description>buspuserName alias</description>
+ 			<uri>http://compass/businessPurchases/buspuserName</uri>
+ 			<name>userName</name>
+ 		</meta-data>
+ 			
+ 		<meta-data id="buspjhqyq" displayName="buspjhqyq">
+ 			<description>buspjhqyq alias</description>
+ 			<uri>http://compass/businessPurchases/buspjhqyq</uri>
+ 			<name>jhqyq</name>
+ 		</meta-data>
+ 		
+ 	
+ 		<meta-data id="buspgyszzyq" displayName="buspgyszzyq">
+ 			<description>buspgyszzyq alias</description>
+ 			<uri>http://compass/businessPurchases/buspgyszzyq</uri>
+ 			<name>gyszzyq</name>
+ 		</meta-data>
+ 		
+ 
+	</meta-data-group>
+ 
+</compass-core-meta-data>
+ 

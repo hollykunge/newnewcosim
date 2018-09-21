@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.compass.compassNews.CompassNews">
+	<resultMap id="CompassNews" type="com.casic.cloud.model.compass.compassNews.CompassNews">
+		<id property="newsid" column="newsid" jdbcType="NUMERIC"/>
+		<result property="subject" column="subject" jdbcType="VARCHAR"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="createtime" column="createtime" jdbcType="DATE"/>
+	</resultMap>
+
+	<sql id="columns">
+		newsid,subject,content,createtime
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(newsid)"> AND newsid  =#{newsid} </if>
+			<if test="@Ognl@isNotEmpty(subject)"> AND subject  LIKE #{subject}  </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(createtime)"> AND createtime  =#{createtime} </if>
+			<if test="@Ognl@isNotEmpty(begincreatetime)"> AND createtime  >=#{begincreatetime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endcreatetime)"> AND createtime <![CDATA[ <=#{endcreatetime,jdbcType=DATE}]]> </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.compass.compassNews.CompassNews">
+		INSERT INTO cloud_compass_news
+		(newsid,subject,content,createtime)
+		VALUES
+		(#{newsid,jdbcType=NUMERIC}, #{subject,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_compass_news 
+		WHERE
+		newsid=#{newsid}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.compass.compassNews.CompassNews">
+		UPDATE cloud_compass_news SET
+		subject=#{subject,jdbcType=VARCHAR},
+		content=#{content,jdbcType=VARCHAR},
+		createtime=#{createtime,jdbcType=DATE}
+		WHERE
+		newsid=#{newsid}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="CompassNews">
+		SELECT <include refid="columns"/>
+		FROM cloud_compass_news
+		WHERE
+		newsid=#{newsid}
+	</select>
+	
+	<select id="getAll" resultMap="CompassNews">
+		SELECT <include refid="columns"/>
+		FROM cloud_compass_news   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by newsid  desc
+		</if>
+	</select>
+</mapper>

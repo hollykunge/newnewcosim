@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.materialProperty.MaterialProperty">
+	<resultMap id="MaterialProperty" type="com.casic.cloud.model.config.materialProperty.MaterialProperty">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="classId" column="class_id" jdbcType="NUMERIC"/>
+		<result property="propertySequence" column="property_sequence" jdbcType="VARCHAR"/>
+		<result property="propertyName" column="property_name" jdbcType="VARCHAR"/>
+		<result property="propertyType" column="property_type" jdbcType="VARCHAR"/>
+		<result property="value" column="value" jdbcType="VARCHAR"/>
+		<result property="className" column="class_name" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,class_id,property_sequence,property_name,property_type,value,class_name
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(classId)"> AND class_id  =#{classId} </if>
+			<if test="@Ognl@isNotEmpty(propertySequence)"> AND property_sequence  LIKE #{propertySequence}  </if>
+			<if test="@Ognl@isNotEmpty(propertyName)"> AND property_name  LIKE #{propertyName}  </if>
+			<if test="@Ognl@isNotEmpty(propertyType)"> AND property_type  LIKE #{propertyType}  </if>
+			<if test="@Ognl@isNotEmpty(value)"> AND value  LIKE #{value}  </if>
+			<if test="@Ognl@isNotEmpty(className)"> AND class_name  LIKE #{className}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.materialProperty.MaterialProperty">
+		INSERT INTO CLOUD_MATERIAL_PROPERTY
+		(id,class_id,property_sequence,property_name,property_type,value,class_name)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{classId,jdbcType=NUMERIC}, #{propertySequence,jdbcType=VARCHAR}, #{propertyName,jdbcType=VARCHAR}, #{propertyType,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM CLOUD_MATERIAL_PROPERTY 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.materialProperty.MaterialProperty">
+		UPDATE CLOUD_MATERIAL_PROPERTY SET
+		class_id=#{classId,jdbcType=NUMERIC},
+		property_sequence=#{propertySequence,jdbcType=VARCHAR},
+		property_name=#{propertyName,jdbcType=VARCHAR},
+		property_type=#{propertyType,jdbcType=VARCHAR},
+		value=#{value,jdbcType=VARCHAR},
+		class_name=#{className,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="MaterialProperty">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_MATERIAL_PROPERTY
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="MaterialProperty">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_MATERIAL_PROPERTY   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	
+	<select id="getMaterialProperty"  parameterType="java.lang.Long"  resultMap="MaterialProperty">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_MATERIAL_PROPERTY
+		WHERE
+		class_id=#{class_id}
+		 
+	</select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.task.ProTaskDependance">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.task.ProTaskDependance">
+    <id column="DD_DEPENGANCE_ID" jdbcType="NUMERIC" property="ddDepenganceId" />
+    <result column="DD_PROJECT_ID" jdbcType="NUMERIC" property="ddProjectId" />
+    <result column="DD_TASK_ID" jdbcType="NUMERIC" property="ddTaskId" />
+    <result column="DD_PREPOSITION_TASK_ID" jdbcType="NUMERIC" property="ddPrepositionTaskId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_DEPENGANCE_ID, DD_PROJECT_ID, DD_TASK_ID, DD_PREPOSITION_TASK_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_project_task_dependance
+    where DD_DEPENGANCE_ID = #{ddDepenganceId,jdbcType=NUMERIC}
+  </select>
+  <select id="getProTaskDependanceList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dd_project_task_dependance
+    where DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dd_project_task_dependance
+    where DD_DEPENGANCE_ID = #{ddDepenganceId,jdbcType=NUMERIC}
+  </delete>
+
+  <delete id="delByTaskId">
+    DELETE FROM dd_project_task_dependance
+    WHERE
+    DD_TASK_ID=#{ddTaskId}
+  </delete>
+
+  <delete id="deleteById" parameterType="java.lang.Long">
+    delete from dd_project_task_dependance
+    where DD_DEPENGANCE_ID = #{ddDepenganceId,jdbcType=NUMERIC}
+
+  </delete>
+
+  <select id="getProjectIdbyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT  DD_PROJECT_ID
+    FROM dd_project_task_dependance
+    WHERE
+    DD_DATA_TASK_ID=#{id}
+  </select>
+
+  <delete id="deleteByProjectIdAndTaskId" parameterType="com.casic.datadriver.model.task.ProTaskDependance">
+    delete from dd_project_task_dependance
+    where DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC} and
+           DD_TASK_ID = #{ddTaskID,jdbcType=NUMERIC}
+  </delete>
+
+  <insert id="add" parameterType="com.casic.datadriver.model.task.ProTaskDependance">
+    insert into dd_project_task_dependance (DD_DEPENGANCE_ID, DD_PROJECT_ID, DD_TASK_ID, 
+      DD_PREPOSITION_TASK_ID)
+    values (#{ddDepenganceId,jdbcType=NUMERIC}, #{ddProjectId,jdbcType=NUMERIC}, #{ddTaskId,jdbcType=NUMERIC},
+      #{ddPrepositionTaskId,jdbcType=NUMERIC})
+  </insert>
+
+
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.task.ProTaskDependance">
+    insert into dd_project_task_dependance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddDepenganceId != null">
+        DD_DEPENGANCE_ID,
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID,
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID,
+      </if>
+      <if test="ddPrepositionTaskId != null">
+        DD_PREPOSITION_TASK_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddDepenganceId != null">
+        #{ddDepenganceId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddProjectId != null">
+        #{ddProjectId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddTaskId != null">
+        #{ddTaskId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddPrepositionTaskId != null">
+        #{ddPrepositionTaskId,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.task.ProTaskDependance">
+    update dd_project_task_dependance
+    <set>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddPrepositionTaskId != null">
+        DD_PREPOSITION_TASK_ID = #{ddPrepositionTaskId,jdbcType=NUMERIC},
+      </if>
+    </set>
+    where DD_DEPENGANCE_ID = #{ddDepenganceId,jdbcType=NUMERIC}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.task.ProTaskDependance">
+    update dd_project_task_dependance
+    set DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC},
+      DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
+      DD_PREPOSITION_TASK_ID = #{ddPrepositionTaskId,jdbcType=NUMERIC}
+    where DD_DEPENGANCE_ID = #{ddDepenganceId,jdbcType=NUMERIC}
+  </update>
+
+</mapper>

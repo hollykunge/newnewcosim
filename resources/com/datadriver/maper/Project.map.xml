@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.project.Project">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.project.Project">
+        <id column="DD_PROJECT_ID" jdbcType="NUMERIC" property="ddProjectId"/>
+        <result column="DD_PROJECT_NAME" jdbcType="VARCHAR" property="ddProjectName"/>
+        <result column="DD_PROJECT_RESPONSIBLE_UNITS" jdbcType="VARCHAR"
+                property="ddProjectResponsibleUnits"/>
+        <result column="DD_PROJECT_PHASE_ID" jdbcType="NUMERIC"
+                property="ddProjectPhaseId"/>
+        <result column="DD_PROJECT_CREATE_DATATIME" jdbcType="DATE"
+                property="ddProjectCreateDatatime"/>
+        <result column="DD_PROJECT_DESCRIPTION" jdbcType="VARCHAR"
+                property="ddProjectDescription"/>
+        <result column="DD_PROJECT_OWNER_SYSTEM_ID" jdbcType="NUMERIC"
+                property="ddProjectOwnerSystemId"/>
+        <result column="DD_PROJECT_CREATOR_ID" jdbcType="NUMERIC"
+                property="ddProjectCreatorId"/>
+        <result column="DD_PROJECT_FIXED_PATTERN" jdbcType="BIT"
+                property="ddProjectFixedPattern"/>
+        <result column="DD_PROJECT_RESPONSIBLE_PERSON_ID" jdbcType="NUMERIC"
+                property="ddProjectResponsiblePersonId"/>
+        <result column="DD_PROJECT_TYPE" jdbcType="VARCHAR" property="ddProjectType"/>
+        <result column="DD_PROJECT_BELONG_MODEL" jdbcType="VARCHAR"
+                property="ddProjectBelongModel"/>
+        <result column="DD_PROJECT_SECRET_LEVEL" jdbcType="VARCHAR"
+                property="ddProjectSecretLevel"/>
+        <result column="DD_PROJECT_CHANGE_PERSON_ID" jdbcType="NUMERIC"
+                property="ddProjectChangePersonId"/>
+        <result column="DD_PROJECT_PRIORITY" jdbcType="NUMERIC"
+                property="ddProjectPriority"/>
+        <result column="DD_PROJECT_REMARK" jdbcType="VARCHAR" property="ddProjectRemark"/>
+        <result column="DD_PROJECT_STATE" jdbcType="SMALLINT" property="ddProjectState"/>
+        <result column="DD_PROJECT_PLAN_START_DATE" jdbcType="DATE"
+                property="ddProjectPlanStartDate"/>
+        <result column="DD_PROJECT_COMPLETE_DATE" jdbcType="DATE"
+                property="ddProjectCompleteDate"/>
+        <result column="DD_PROJECT_ACTUAL_START_DATE" jdbcType="DATE"
+                property="ddProjectActualStartDate"/>
+        <result column="DD_PROJECT_ACTUAL_COMPLETE_DATA" jdbcType="DATE"
+                property="ddProjectActualCompleteData"/>
+        <result column="DD_PROJECT_CURRENT_STAGE" jdbcType="VARCHAR"
+                property="ddProjectCurrentStage"/>
+        <result column="DD_PROJECT_SCHEDULE_STATE" jdbcType="VARCHAR"
+                property="ddProjectScheduleState"/>
+        <result column="DD_PROJECT_PHASE_NAME" jdbcType="VARCHAR"
+                property="ddProjectPhaseName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		DD_PROJECT_ID, DD_PROJECT_NAME,
+		DD_PROJECT_RESPONSIBLE_UNITS, DD_PROJECT_PHASE_ID,
+		DD_PROJECT_CREATE_DATATIME, DD_PROJECT_DESCRIPTION,
+		DD_PROJECT_OWNER_SYSTEM_ID, DD_PROJECT_CREATOR_ID,
+		DD_PROJECT_FIXED_PATTERN, DD_PROJECT_RESPONSIBLE_PERSON_ID,
+		DD_PROJECT_TYPE, DD_PROJECT_BELONG_MODEL,
+		DD_PROJECT_SECRET_LEVEL,
+		DD_PROJECT_CHANGE_PERSON_ID, DD_PROJECT_PRIORITY, DD_PROJECT_REMARK,
+		DD_PROJECT_STATE, DD_PROJECT_PLAN_START_DATE,
+		DD_PROJECT_COMPLETE_DATE, DD_PROJECT_ACTUAL_START_DATE,
+		DD_PROJECT_ACTUAL_COMPLETE_DATA, DD_PROJECT_CURRENT_STAGE,
+		DD_PROJECT_SCHEDULE_STATE,DD_PROJECT_PHASE_NAME
+	</sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_project
+        where DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getProjectListbyUserId" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_project
+        where DD_PROJECT_CREATOR_ID = #{ddProjectCreatorId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_project
+        WHERE
+        DD_PROJECT_ID=#{ddProjectId}
+    </select>
+
+    <select id="queryProjectBasicInfoList"
+            parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_project
+        where 1=1
+        <if test="@Ognl@isNotEmpty(id)">AND DD_PROJECT_ID = #{id}</if>
+        <if test="@Ognl@isNotEmpty(name)">AND DD_PROJECT_NAME = #{name}</if>
+        <if test="@Ognl@isNotEmpty(createStartDate)">AND DD_PROJECT_CREATE_DATATIME >= #{createStartDate}</if>
+        <if test="@Ognl@isNotEmpty(createEndDate)">AND DD_PROJECT_CREATE_DATATIME &lt;= #{createEndDate}</if>
+    </select>
+
+    <select id="queryProjectlistByRes"
+            parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_project
+        where
+        DD_PROJECT_RESPONSIBLE_PERSON_ID = #{ddProjectResponsiblePersonId,jdbcType=NUMERIC}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		dd_project
+		where DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC}
+	</delete>
+
+    <delete id="delById" parameterType="java.lang.Long">
+		delete from
+		dd_project
+		where DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC}
+	</delete>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_project
+    </select>
+
+
+    <insert id="add" parameterType="com.casic.datadriver.model.project.Project">
+		insert into dd_project
+		(DD_PROJECT_ID, DD_PROJECT_NAME,
+		DD_PROJECT_RESPONSIBLE_UNITS,
+		DD_PROJECT_PHASE_ID, DD_PROJECT_CREATE_DATATIME,
+		DD_PROJECT_DESCRIPTION, DD_PROJECT_OWNER_SYSTEM_ID,
+		DD_PROJECT_CREATOR_ID, DD_PROJECT_FIXED_PATTERN,
+		DD_PROJECT_RESPONSIBLE_PERSON_ID, DD_PROJECT_TYPE,
+		DD_PROJECT_BELONG_MODEL, DD_PROJECT_SECRET_LEVEL,
+		DD_PROJECT_CHANGE_PERSON_ID, DD_PROJECT_PRIORITY,
+		DD_PROJECT_REMARK,
+		DD_PROJECT_STATE, DD_PROJECT_PLAN_START_DATE,
+		DD_PROJECT_COMPLETE_DATE, DD_PROJECT_ACTUAL_START_DATE,
+		DD_PROJECT_ACTUAL_COMPLETE_DATA, DD_PROJECT_CURRENT_STAGE,
+		DD_PROJECT_SCHEDULE_STATE,DD_PROJECT_PHASE_NAME)
+		values (#{ddProjectId,jdbcType=NUMERIC},
+		#{ddProjectName,jdbcType=VARCHAR},
+		#{ddProjectResponsibleUnits,jdbcType=VARCHAR},
+		#{ddProjectPhaseId,jdbcType=NUMERIC},
+		#{ddProjectCreateDatatime,jdbcType=DATE},
+		#{ddProjectDescription,jdbcType=VARCHAR},
+		#{ddProjectOwnerSystemId,jdbcType=NUMERIC},
+		#{ddProjectCreatorId,jdbcType=NUMERIC},
+		#{ddProjectFixedPattern,jdbcType=BIT},
+		#{ddProjectResponsiblePersonId,jdbcType=NUMERIC},
+		#{ddProjectType,jdbcType=VARCHAR},
+		#{ddProjectBelongModel,jdbcType=VARCHAR},
+		#{ddProjectSecretLevel,jdbcType=VARCHAR},
+		#{ddProjectChangePersonId,jdbcType=NUMERIC},
+		#{ddProjectPriority,jdbcType=NUMERIC},
+		#{ddProjectRemark,jdbcType=VARCHAR},
+		#{ddProjectState,jdbcType=SMALLINT},
+		#{ddProjectPlanStartDate,jdbcType=DATE},
+		#{ddProjectCompleteDate,jdbcType=DATE},
+		#{ddProjectActualStartDate,jdbcType=DATE},
+		#{ddProjectActualCompleteData,jdbcType=DATE},
+		#{ddProjectCurrentStage,jdbcType=VARCHAR},
+		#{ddProjectScheduleState,jdbcType=VARCHAR},
+		#{ddProjectPhaseName,jdbcType=VARCHAR}
+        )
+	</insert>
+
+
+    <update id="update" parameterType="com.casic.datadriver.model.project.Project">
+		update dd_project
+		set DD_PROJECT_NAME = #{ddProjectName,jdbcType=VARCHAR},
+		DD_PROJECT_RESPONSIBLE_UNITS =
+		#{ddProjectResponsibleUnits,jdbcType=VARCHAR},
+		DD_PROJECT_PHASE_ID =
+		#{ddProjectPhaseId,jdbcType=NUMERIC},
+		DD_PROJECT_CREATE_DATATIME =
+		#{ddProjectCreateDatatime,jdbcType=DATE},
+		DD_PROJECT_DESCRIPTION =
+		#{ddProjectDescription,jdbcType=VARCHAR},
+		DD_PROJECT_OWNER_SYSTEM_ID =
+		#{ddProjectOwnerSystemId,jdbcType=NUMERIC},
+		DD_PROJECT_CREATOR_ID =
+		#{ddProjectCreatorId,jdbcType=NUMERIC},
+		DD_PROJECT_FIXED_PATTERN =
+		#{ddProjectFixedPattern,jdbcType=BIT},
+		DD_PROJECT_RESPONSIBLE_PERSON_ID =
+		#{ddProjectResponsiblePersonId,jdbcType=NUMERIC},
+		DD_PROJECT_TYPE =
+		#{ddProjectType,jdbcType=VARCHAR},
+		DD_PROJECT_BELONG_MODEL =
+		#{ddProjectBelongModel,jdbcType=VARCHAR},
+		DD_PROJECT_SECRET_LEVEL =
+		#{ddProjectSecretLevel,jdbcType=VARCHAR},
+		DD_PROJECT_CHANGE_PERSON_ID =
+		#{ddProjectChangePersonId,jdbcType=NUMERIC},
+		DD_PROJECT_PRIORITY =
+		#{ddProjectPriority,jdbcType=NUMERIC},
+		DD_PROJECT_REMARK =
+		#{ddProjectRemark,jdbcType=VARCHAR},
+		DD_PROJECT_STATE =
+		#{ddProjectState,jdbcType=SMALLINT},
+		DD_PROJECT_PLAN_START_DATE =
+		#{ddProjectPlanStartDate,jdbcType=DATE},
+		DD_PROJECT_COMPLETE_DATE
+		=
+		#{ddProjectCompleteDate,jdbcType=DATE},
+		DD_PROJECT_ACTUAL_START_DATE =
+		#{ddProjectActualStartDate,jdbcType=DATE},
+		DD_PROJECT_ACTUAL_COMPLETE_DATA =
+		#{ddProjectActualCompleteData,jdbcType=DATE},
+		DD_PROJECT_CURRENT_STAGE = #{ddProjectCurrentStage,jdbcType=VARCHAR},
+		DD_PROJECT_SCHEDULE_STATE = #{ddProjectScheduleState,jdbcType=VARCHAR},
+		DD_PROJECT_PHASE_NAME =
+		#{ddProjectPhaseName,jdbcType=VARCHAR}
+		where DD_PROJECT_ID = #{ddProjectId}
+	</update>
+
+    <insert id="insertSelective" parameterType="com.casic.datadriver.model.project.Project">
+        insert into dd_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ddProjectId != null">
+                DD_PROJECT_ID,
+            </if>
+            <if test="ddProjectName != null">
+                DD_PROJECT_NAME,
+            </if>
+            <if test="ddProjectResponsibleUnits != null">
+                DD_PROJECT_RESPONSIBLE_UNITS,
+            </if>
+            <if test="ddProjectPhaseId != null">
+                DD_PROJECT_PHASE_ID,
+            </if>
+            <if test="ddProjectCreateDatatime != null">
+                DD_PROJECT_CREATE_DATATIME,
+            </if>
+            <if test="ddProjectDescription != null">
+                DD_PROJECT_DESCRIPTION,
+            </if>
+            <if test="ddProjectOwnerSystemId != null">
+                DD_PROJECT_OWNER_SYSTEM_ID,
+            </if>
+            <if test="ddProjectCreatorId != null">
+                DD_PROJECT_CREATOR_ID,
+            </if>
+            <if test="ddProjectFixedPattern != null">
+                DD_PROJECT_FIXED_PATTERN,
+            </if>
+            <if test="ddProjectResponsiblePersonId != null">
+                DD_PROJECT_RESPONSIBLE_PERSON_ID,
+            </if>
+            <if test="ddProjectType != null">
+                DD_PROJECT_TYPE,
+            </if>
+            <if test="ddProjectBelongModel != null">
+                DD_PROJECT_BELONG_MODEL,
+            </if>
+            <if test="ddProjectSecretLevel != null">
+                DD_PROJECT_SECRET_LEVEL,
+            </if>
+            <if test="ddProjectChangePersonId != null">
+                DD_PROJECT_CHANGE_PERSON_ID,
+            </if>
+            <if test="ddProjectPriority != null">
+                DD_PROJECT_PRIORITY,
+            </if>
+            <if test="ddProjectRemark != null">
+                DD_PROJECT_REMARK,
+            </if>
+            <if test="ddProjectState != null">
+                DD_PROJECT_STATE,
+            </if>
+            <if test="ddProjectPlanStartDate != null">
+                DD_PROJECT_PLAN_START_DATE,
+            </if>
+            <if test="ddProjectCompleteDate != null">
+                DD_PROJECT_COMPLETE_DATE,
+            </if>
+            <if test="ddProjectActualStartDate != null">
+                DD_PROJECT_ACTUAL_START_DATE,
+            </if>
+            <if test="ddProjectActualCompleteData != null">
+                DD_PROJECT_ACTUAL_COMPLETE_DATA,
+            </if>
+            <if test="ddProjectCurrentStage != null">
+                DD_PROJECT_CURRENT_STAGE,
+            </if>
+            <if test="ddProjectScheduleState != null">
+                DD_PROJECT_SCHEDULE_STATE,
+            </if>
+            <if test="ddProjectPhaseName != null">
+                DD_PROJECT_PHASE_NAME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ddProjectId != null">
+                #{ddProjectId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectName != null">
+                #{ddProjectName,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectResponsibleUnits != null">
+                #{ddProjectResponsibleUnits,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectPhaseId != null">
+                #{ddProjectPhaseId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectCreateDatatime != null">
+                #{ddProjectCreateDatatime,jdbcType=DATE},
+            </if>
+            <if test="ddProjectDescription != null">
+                #{ddProjectDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectOwnerSystemId != null">
+                #{ddProjectOwnerSystemId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectCreatorId != null">
+                #{ddProjectCreatorId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectFixedPattern != null">
+                #{ddProjectFixedPattern,jdbcType=BIT},
+            </if>
+            <if test="ddProjectResponsiblePersonId != null">
+                #{ddProjectResponsiblePersonId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectType != null">
+                #{ddProjectType,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectBelongModel != null">
+                #{ddProjectBelongModel,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectSecretLevel != null">
+                #{ddProjectSecretLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectChangePersonId != null">
+                #{ddProjectChangePersonId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectPriority != null">
+                #{ddProjectPriority,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectRemark != null">
+                #{ddProjectRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectState != null">
+                #{ddProjectState,jdbcType=SMALLINT},
+            </if>
+            <if test="ddProjectPlanStartDate != null">
+                #{ddProjectPlanStartDate,jdbcType=DATE},
+            </if>
+            <if test="ddProjectCompleteDate != null">
+                #{ddProjectCompleteDate,jdbcType=DATE},
+            </if>
+            <if test="ddProjectActualStartDate != null">
+                #{ddProjectActualStartDate,jdbcType=DATE},
+            </if>
+            <if test="ddProjectActualCompleteData != null">
+                #{ddProjectActualCompleteData,jdbcType=DATE},
+            </if>
+            <if test="ddProjectCurrentStage != null">
+                #{ddProjectCurrentStage,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectScheduleState != null">
+                #{ddProjectScheduleState,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectPhaseName != null">
+                #{ddProjectPhaseName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.project.Project">
+        update dd_project
+        <set>
+            <if test="ddProjectName != null">
+                DD_PROJECT_NAME = #{ddProjectName,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectResponsibleUnits != null">
+                DD_PROJECT_RESPONSIBLE_UNITS =
+                #{ddProjectResponsibleUnits,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectPhaseId != null">
+                DD_PROJECT_PHASE_ID =
+                #{ddProjectPhaseId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectCreateDatatime != null">
+                DD_PROJECT_CREATE_DATATIME =
+                #{ddProjectCreateDatatime,jdbcType=DATE},
+            </if>
+            <if test="ddProjectDescription != null">
+                DD_PROJECT_DESCRIPTION =
+                #{ddProjectDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectOwnerSystemId != null">
+                DD_PROJECT_OWNER_SYSTEM_ID =
+                #{ddProjectOwnerSystemId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectCreatorId != null">
+                DD_PROJECT_CREATOR_ID =
+                #{ddProjectCreatorId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectFixedPattern != null">
+                DD_PROJECT_FIXED_PATTERN =
+                #{ddProjectFixedPattern,jdbcType=BIT},
+            </if>
+            <if test="ddProjectResponsiblePersonId != null">
+                DD_PROJECT_RESPONSIBLE_PERSON_ID =
+                #{ddProjectResponsiblePersonId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectType != null">
+                DD_PROJECT_TYPE = #{ddProjectType,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectBelongModel != null">
+                DD_PROJECT_BELONG_MODEL =
+                #{ddProjectBelongModel,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectSecretLevel != null">
+                DD_PROJECT_SECRET_LEVEL =
+                #{ddProjectSecretLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectChangePersonId != null">
+                DD_PROJECT_CHANGE_PERSON_ID =
+                #{ddProjectChangePersonId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectPriority != null">
+                DD_PROJECT_PRIORITY =
+                #{ddProjectPriority,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectRemark != null">
+                DD_PROJECT_REMARK = #{ddProjectRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectState != null">
+                DD_PROJECT_STATE = #{ddProjectState,jdbcType=SMALLINT},
+            </if>
+            <if test="ddProjectPlanStartDate != null">
+                DD_PROJECT_PLAN_START_DATE =
+                #{ddProjectPlanStartDate,jdbcType=DATE},
+            </if>
+            <if test="ddProjectCompleteDate != null">
+                DD_PROJECT_COMPLETE_DATE =
+                #{ddProjectCompleteDate,jdbcType=DATE},
+            </if>
+            <if test="ddProjectActualStartDate != null">
+                DD_PROJECT_ACTUAL_START_DATE =
+                #{ddProjectActualStartDate,jdbcType=DATE},
+            </if>
+            <if test="ddProjectActualCompleteData != null">
+                DD_PROJECT_ACTUAL_COMPLETE_DATA =
+                #{ddProjectActualCompleteData,jdbcType=DATE},
+            </if>
+            <if test="ddProjectCurrentStage != null">
+                DD_PROJECT_CURRENT_STAGE =
+                #{ddProjectCurrentStage,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectScheduleState != null">
+                DD_PROJECT_SCHEDULE_STATE =
+                #{ddProjectScheduleState,jdbcType=VARCHAR},
+            </if>
+            <if test="ddProjectPhaseName != null">
+                DD_PROJECT_PHASE_NAME =
+                #{ddProjectPhaseName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.project.Project">
+		update dd_project
+		set DD_PROJECT_NAME = #{ddProjectName,jdbcType=VARCHAR},
+		DD_PROJECT_RESPONSIBLE_UNITS =
+		#{ddProjectResponsibleUnits,jdbcType=VARCHAR},
+		DD_PROJECT_PHASE_ID =
+		#{ddProjectPhaseId,jdbcType=NUMERIC},
+		DD_PROJECT_CREATE_DATATIME =
+		#{ddProjectCreateDatatime,jdbcType=DATE},
+		DD_PROJECT_DESCRIPTION =
+		#{ddProjectDescription,jdbcType=VARCHAR},
+		DD_PROJECT_OWNER_SYSTEM_ID =
+		#{ddProjectOwnerSystemId,jdbcType=NUMERIC},
+		DD_PROJECT_CREATOR_ID =
+		#{ddProjectCreatorId,jdbcType=NUMERIC},
+		DD_PROJECT_FIXED_PATTERN =
+		#{ddProjectFixedPattern,jdbcType=BIT},
+		DD_PROJECT_RESPONSIBLE_PERSON_ID =
+		#{ddProjectResponsiblePersonId,jdbcType=NUMERIC},
+		DD_PROJECT_TYPE =
+		#{ddProjectType,jdbcType=VARCHAR},
+		DD_PROJECT_BELONG_MODEL =
+		#{ddProjectBelongModel,jdbcType=VARCHAR},
+		DD_PROJECT_SECRET_LEVEL =
+		#{ddProjectSecretLevel,jdbcType=VARCHAR},
+		DD_PROJECT_CHANGE_PERSON_ID =
+		#{ddProjectChangePersonId,jdbcType=NUMERIC},
+		DD_PROJECT_PRIORITY =
+		#{ddProjectPriority,jdbcType=NUMERIC},
+		DD_PROJECT_REMARK =
+		#{ddProjectRemark,jdbcType=VARCHAR},
+		DD_PROJECT_STATE =
+		#{ddProjectState,jdbcType=SMALLINT},
+		DD_PROJECT_PLAN_START_DATE =
+		#{ddProjectPlanStartDate,jdbcType=DATE},
+		DD_PROJECT_COMPLETE_DATE
+		=
+		#{ddProjectCompleteDate,jdbcType=DATE},
+		DD_PROJECT_ACTUAL_START_DATE =
+		#{ddProjectActualStartDate,jdbcType=DATE},
+		DD_PROJECT_ACTUAL_COMPLETE_DATA =
+		#{ddProjectActualCompleteData,jdbcType=DATE},
+		DD_PROJECT_CURRENT_STAGE = #{ddProjectCurrentStage,jdbcType=VARCHAR},
+		DD_PROJECT_SCHEDULE_STATE = #{ddProjectScheduleState,jdbcType=VARCHAR},
+		DD_PROJECT_PHASE_NAME =
+		#{ddProjectPhaseName,jdbcType=VARCHAR},
+		where DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC}
+	</update>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  An excerpt of an egocentric social network  -->
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+<graph edgedefault="undirected">
+ 
+<!-- data schema -->
+<key id="name" for="node" attr.name="name" attr.type="string"/>
+<key id="color" for="node" attr.name="color" attr.type="string"/>
+  
+<!-- nodes -->
+<node id="1">
+ <data key="name">北京仿真中心</data>
+ <data key="color">01</data>
+ </node>
+<node id="2">
+ <data key="name">航天23所</data>
+ <data key="color">02</data>
+</node>
+<node id="3">
+ <data key="name">航天25所</data>
+ <data key="color">05</data>
+</node>
+<node id="4">
+ <data key="name">航天206所</data>
+ <data key="color">05</data>
+</node>
+<node id="5">
+ <data key="name"></data>
+ <data key="color">05</data>
+</node> 
+<node id="6">
+ <data key="name">电子科技</data>
+ <data key="color">05</data>
+</node>
+<node id="7">
+ <data key="name">苹果科技</data>
+ <data key="color">05</data>
+</node>
+<node id="8">
+ <data key="name">王子陶瓷</data>
+ <data key="color">05</data>
+</node>
+<node id="9">
+ <data key="name">STAR Manufacture</data>
+ <data key="color">05</data>
+</node>
+<node id="10">
+ <data key="name">EAST LTD.CO</data>
+ <data key="color">05</data>
+</node>
+<node id="11">
+ <data key="name">佛山鹰牌照明</data>
+ <data key="color">05</data>
+</node>
+<node id="12">
+ <data key="name">华为科技</data>
+ <data key="color">05</data>
+</node>
+<node id="13">
+ <data key="name">卓唯科技</data>
+ <data key="color">05</data>
+</node>
+<node id="14">
+ <data key="name">佛山金牌陶瓷</data>
+ <data key="color">05</data>
+</node>
+<node id="15">
+ <data key="name">佛山攻筑照明</data>
+ <data key="color">05</data>
+</node>
+  <!-- edges -->
+<edge source="1" target="2"></edge>
+<edge source="1" target="3"></edge>
+<edge source="1" target="4"></edge>
+<edge source="2" target="4"></edge>
+<edge source="1" target="5"></edge>
+<edge source="5" target="6"></edge>
+<edge source="5" target="7"></edge>
+<edge source="5" target="8"></edge>
+<edge source="5" target="9"></edge>
+<edge source="5" target="10"></edge>
+<edge source="9" target="10"></edge>
+<edge source="5" target="11"></edge>
+<edge source="5" target="12"></edge>
+<edge source="1" target="13"></edge>
+<edge source="5" target="13"></edge>
+<edge source="13" target="14"></edge>
+<edge source="11" target="15"></edge>
+<edge source="5" target="15"></edge>
+</graph>
+</graphml>

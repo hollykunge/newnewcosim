@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DatasourceManager xmlVersion="20120529" releaseVersion="7.0.0">
+<ConnectionMap>
+<Connection name="bpm3" class="com.fr.data.impl.JDBCDatabaseConnection">
+<DatabaseAttr/>
+<JDBCDatabaseAttr url="jdbc:mysql://192.168.1.100:3306/cloud?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=round" driver="com.mysql.jdbc.Driver" user="root" password="___0022007c0039003b005100e3" encryptPassword="true">
+<DBCPAttr/>
+</JDBCDatabaseAttr>
+</Connection>
+</ConnectionMap>
+</DatasourceManager>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.hotent.platform.model.system.SysCustomDisplay">
+	<resultMap id="SysCustomDisplay" type="com.hotent.platform.model.system.SysCustomDisplay">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="template" column="TEMPLATE" jdbcType="CLOB"/>
+		<result property="paged" column="PAGED" jdbcType="NUMERIC"/>
+		<result property="pageSize" column="PAGESIZE" jdbcType="NUMERIC"/>
+		<result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+		<result property="script" column="SCRIPT" jdbcType="CLOB"/>
+		<result property="scriptType" column="SCRIPTTYPE" jdbcType="NUMERIC" />
+		<result property="dsName" column="DSNAME" jdbcType="VARCHAR"/>
+		<result property="conditionField" column="CONDITIONFIELD" jdbcType="CLOB"/>
+		<result property="fieldSetting" column="FIELDSETTING" jdbcType="CLOB"/>
+		<result property="setting" column="SETTING" jdbcType="CLOB"/>
+		<result property="dspTemplate" column="DSPTEMPLATE" jdbcType="CLOB"/>
+	</resultMap>
+
+	<sql id="columns">
+		ID,NAME,TEMPLATE,DESCRIPTION,SCRIPT,SCRIPTTYPE,DSNAME,CONDITIONFIELD,FIELDSETTING,SETTING,DSPTEMPLATE,PAGED,PAGESIZE
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND NAME  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(description)"> AND DESCRIPTION  LIKE #{description}  </if>
+			<if test="@Ognl@isNotEmpty(dsName)"> AND DSNAME  LIKE #{dsName}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.hotent.platform.model.system.SysCustomDisplay">
+		INSERT INTO SYS_CUSTOM_DISPLAY
+		(ID,NAME,TEMPLATE,DESCRIPTION,SCRIPT,SCRIPTTYPE,DSNAME,CONDITIONFIELD,FIELDSETTING,SETTING,DSPTEMPLATE,PAGED,PAGESIZE)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{name,jdbcType=VARCHAR}, #{template,jdbcType=CLOB}, #{description,jdbcType=VARCHAR}, #{script,jdbcType=CLOB},#{scriptType,jdbcType=NUMERIC}, #{dsName,jdbcType=VARCHAR}, #{conditionField,jdbcType=CLOB}, #{fieldSetting,jdbcType=CLOB},#{setting,jdbcType=CLOB},#{dspTemplate,jdbcType=CLOB},#{paged,jdbcType=NUMERIC},#{pageSize,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM SYS_CUSTOM_DISPLAY 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.hotent.platform.model.system.SysCustomDisplay">
+		UPDATE SYS_CUSTOM_DISPLAY SET
+		NAME=#{name,jdbcType=VARCHAR},
+		TEMPLATE=#{template,jdbcType=CLOB},
+		DESCRIPTION=#{description,jdbcType=VARCHAR},
+		SCRIPT=#{script,jdbcType=CLOB},
+		SCRIPTTYPE=#{scriptType,jdbcType=NUMERIC},
+		DSNAME=#{dsName,jdbcType=VARCHAR},
+		CONDITIONFIELD=#{conditionField,jdbcType=CLOB},
+		FIELDSETTING=#{fieldSetting,jdbcType=CLOB},
+		SETTING=#{setting,jdbcType=CLOB},
+		DSPTEMPLATE=#{dspTemplate,jdbcType=CLOB},
+		PAGED=#{paged,jdbcType=NUMERIC},
+		PAGESIZE=#{pageSize,jdbcType=NUMERIC}
+		WHERE
+		ID=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="SysCustomDisplay">
+		SELECT <include refid="columns"/>
+		FROM SYS_CUSTOM_DISPLAY
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="SysCustomDisplay">
+		SELECT <include refid="columns"/>
+		FROM SYS_CUSTOM_DISPLAY   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+</mapper>

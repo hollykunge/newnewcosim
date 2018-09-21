@@ -1,0 +1,131 @@
+﻿<mxGraphModel>
+    <root>
+        <Workflow label="Swimlanes" description="" href="" id="0">
+            <mxCell/>
+        </Workflow>
+        <Layer label="Default Layer" description="" href="" id="1">
+            <mxCell parent="0"/>
+        </Layer>
+        <Task label="武器快速概念设计" 任务类型="" 基本描述="" id="43">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" vertex="1">
+                <mxGeometry x="849" y="39" width="102" height="51" as="geometry"/>
+            </mxCell>
+        </Task>
+        <Task label="导弹指标分解" 任务类型="" 基本描述="" id="44">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" vertex="1">
+                <mxGeometry x="849" y="120" width="102" height="51" as="geometry"/>
+            </mxCell>
+        </Task>
+        <Task label="总体参数计算" 任务类型="" 基本描述="" id="45">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" vertex="1">
+                <mxGeometry x="849" y="420.5" width="102" height="51" as="geometry"/>
+            </mxCell>
+        </Task>
+        <Task label="气动参数计算" 任务类型="" 基本描述="" id="46">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" vertex="1">
+                <mxGeometry x="981" y="310" width="102" height="51" as="geometry"/>
+            </mxCell>
+        </Task>
+        <Task label="动力系统设计" 任务类型="" 基本描述="" id="47">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" vertex="1">
+                <mxGeometry x="720" y="250" width="102" height="51" as="geometry"/>
+            </mxCell>
+        </Task>
+        <Task label="气动外形设计" 任务类型="" 基本描述="" id="48">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" vertex="1">
+                <mxGeometry x="981" y="240" width="102" height="51" as="geometry"/>
+            </mxCell>
+        </Task>
+        <Task label="理论弹道仿真" 任务类型="" 基本描述="" id="49">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" vertex="1">
+                <mxGeometry x="849" y="500" width="102" height="51" as="geometry"/>
+            </mxCell>
+        </Task>
+        <Symbol label="" description="" href="" id="51">
+            <mxCell style="symbol;image=images/symbols/fork.png;fontSize=13;fontFamily=黑体;rounded=1" parent="1"
+                    vertex="1">
+                <mxGeometry x="880" y="210" width="32" height="32" as="geometry"/>
+            </mxCell>
+        </Symbol>
+        <Symbol label="" description="" href="" id="52">
+            <mxCell style="symbol;image=images/symbols/fork.png;fontSize=13;fontFamily=黑体;rounded=1" parent="1"
+                    vertex="1">
+                <mxGeometry x="884" y="372" width="32" height="32" as="geometry"/>
+            </mxCell>
+        </Symbol>
+        <Symbol label="" description="" href="" id="53">
+            <mxCell style="symbol;image=images/symbols/event_end.png;fontSize=13;fontFamily=黑体;rounded=1" parent="1"
+                    vertex="1">
+                <mxGeometry x="884" y="610" width="32" height="32" as="geometry"/>
+            </mxCell>
+        </Symbol>
+        <Edge label="" description="" id="54">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="43" target="44" edge="1">
+                <mxGeometry relative="1" as="geometry"/>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="55">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="44" target="51" edge="1">
+                <mxGeometry relative="1" as="geometry"/>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="57">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="51" target="47" edge="1">
+                <mxGeometry relative="1" as="geometry">
+                    <Array as="points">
+                        <mxPoint x="771" y="250"/>
+                    </Array>
+                </mxGeometry>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="58">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="51" target="48" edge="1">
+                <mxGeometry relative="1" as="geometry">
+                    <Array as="points">
+                        <mxPoint x="1030" y="230"/>
+                    </Array>
+                </mxGeometry>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="59">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="48" target="46" edge="1">
+                <mxGeometry relative="1" as="geometry"/>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="60">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="47" target="52" edge="1">
+                <mxGeometry relative="1" as="geometry">
+                    <Array as="points">
+                        <mxPoint x="771" y="320"/>
+                    </Array>
+                </mxGeometry>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="61">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="46" target="52" edge="1">
+                <mxGeometry relative="1" as="geometry">
+                    <Array as="points">
+                        <mxPoint x="1032" y="360"/>
+                    </Array>
+                </mxGeometry>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="62">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="52" target="45" edge="1">
+                <mxGeometry relative="1" as="geometry"/>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="63">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="45" target="49" edge="1">
+                <mxGeometry relative="1" as="geometry"/>
+            </mxCell>
+        </Edge>
+        <Edge label="" description="" id="64">
+            <mxCell style="fontSize=13;fontFamily=黑体;rounded=1" parent="1" source="49" target="53" edge="1">
+                <mxGeometry relative="1" as="geometry">
+                    <mxPoint x="900" y="590" as="targetPoint"/>
+                </mxGeometry>
+            </mxCell>
+        </Edge>
+    </root>
+</mxGraphModel>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.mapper.TaskDisposeMapper">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.publicClass.TaskDispose">
+    <id column="DD_TASK_DISPOSE_ID" jdbcType="INTEGER" property="ddTaskDisposeId" />
+    <result column="DD_TASK_ID" jdbcType="INTEGER" property="ddTaskId" />
+    <result column="DD_SUBMITE_PERSON_ID" jdbcType="INTEGER" property="ddSubmitePersonId" />
+    <result column="DD_SUBMITE_TIME" jdbcType="TIMESTAMP" property="ddSubmiteTime" />
+    <result column="DD_APPROVAL_PERSON_ID" jdbcType="INTEGER" property="ddApprovalPersonId" />
+    <result column="DD_STATE" jdbcType="INTEGER" property="ddState" />
+    <result column="DD_CHANGE_TIME" jdbcType="TIMESTAMP" property="ddChangeTime" />
+    <result column="DD_CHANGE_PERSON_ID" jdbcType="INTEGER" property="ddChangePersonId" />
+    <result column="DD_CHANGE_REASON" jdbcType="VARCHAR" property="ddChangeReason" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_TASK_DISPOSE_ID, DD_TASK_ID, DD_SUBMITE_PERSON_ID, DD_SUBMITE_TIME, DD_APPROVAL_PERSON_ID, 
+    DD_STATE, DD_CHANGE_TIME, DD_CHANGE_PERSON_ID, DD_CHANGE_REASON
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_task_dispose
+    where DD_TASK_DISPOSE_ID = #{ddTaskDisposeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_task_dispose
+    where DD_TASK_DISPOSE_ID = #{ddTaskDisposeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.casic.datadriver.publicClass.TaskDispose">
+    insert into dd_task_dispose (DD_TASK_DISPOSE_ID, DD_TASK_ID, DD_SUBMITE_PERSON_ID, 
+      DD_SUBMITE_TIME, DD_APPROVAL_PERSON_ID, DD_STATE, 
+      DD_CHANGE_TIME, DD_CHANGE_PERSON_ID, DD_CHANGE_REASON
+      )
+    values (#{ddTaskDisposeId,jdbcType=INTEGER}, #{ddTaskId,jdbcType=INTEGER}, #{ddSubmitePersonId,jdbcType=INTEGER}, 
+      #{ddSubmiteTime,jdbcType=TIMESTAMP}, #{ddApprovalPersonId,jdbcType=INTEGER}, #{ddState,jdbcType=INTEGER}, 
+      #{ddChangeTime,jdbcType=TIMESTAMP}, #{ddChangePersonId,jdbcType=INTEGER}, #{ddChangeReason,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.publicClass.TaskDispose">
+    insert into dd_task_dispose
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddTaskDisposeId != null">
+        DD_TASK_DISPOSE_ID,
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID,
+      </if>
+      <if test="ddSubmitePersonId != null">
+        DD_SUBMITE_PERSON_ID,
+      </if>
+      <if test="ddSubmiteTime != null">
+        DD_SUBMITE_TIME,
+      </if>
+      <if test="ddApprovalPersonId != null">
+        DD_APPROVAL_PERSON_ID,
+      </if>
+      <if test="ddState != null">
+        DD_STATE,
+      </if>
+      <if test="ddChangeTime != null">
+        DD_CHANGE_TIME,
+      </if>
+      <if test="ddChangePersonId != null">
+        DD_CHANGE_PERSON_ID,
+      </if>
+      <if test="ddChangeReason != null">
+        DD_CHANGE_REASON,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddTaskDisposeId != null">
+        #{ddTaskDisposeId,jdbcType=INTEGER},
+      </if>
+      <if test="ddTaskId != null">
+        #{ddTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="ddSubmitePersonId != null">
+        #{ddSubmitePersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddSubmiteTime != null">
+        #{ddSubmiteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddApprovalPersonId != null">
+        #{ddApprovalPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddState != null">
+        #{ddState,jdbcType=INTEGER},
+      </if>
+      <if test="ddChangeTime != null">
+        #{ddChangeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddChangePersonId != null">
+        #{ddChangePersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddChangeReason != null">
+        #{ddChangeReason,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.publicClass.TaskDispose">
+    update dd_task_dispose
+    <set>
+      <if test="ddTaskId != null">
+        DD_TASK_ID = #{ddTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="ddSubmitePersonId != null">
+        DD_SUBMITE_PERSON_ID = #{ddSubmitePersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddSubmiteTime != null">
+        DD_SUBMITE_TIME = #{ddSubmiteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddApprovalPersonId != null">
+        DD_APPROVAL_PERSON_ID = #{ddApprovalPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddState != null">
+        DD_STATE = #{ddState,jdbcType=INTEGER},
+      </if>
+      <if test="ddChangeTime != null">
+        DD_CHANGE_TIME = #{ddChangeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddChangePersonId != null">
+        DD_CHANGE_PERSON_ID = #{ddChangePersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddChangeReason != null">
+        DD_CHANGE_REASON = #{ddChangeReason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DD_TASK_DISPOSE_ID = #{ddTaskDisposeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.publicClass.TaskDispose">
+    update dd_task_dispose
+    set DD_TASK_ID = #{ddTaskId,jdbcType=INTEGER},
+      DD_SUBMITE_PERSON_ID = #{ddSubmitePersonId,jdbcType=INTEGER},
+      DD_SUBMITE_TIME = #{ddSubmiteTime,jdbcType=TIMESTAMP},
+      DD_APPROVAL_PERSON_ID = #{ddApprovalPersonId,jdbcType=INTEGER},
+      DD_STATE = #{ddState,jdbcType=INTEGER},
+      DD_CHANGE_TIME = #{ddChangeTime,jdbcType=TIMESTAMP},
+      DD_CHANGE_PERSON_ID = #{ddChangePersonId,jdbcType=INTEGER},
+      DD_CHANGE_REASON = #{ddChangeReason,jdbcType=VARCHAR}
+    where DD_TASK_DISPOSE_ID = #{ddTaskDisposeId,jdbcType=INTEGER}
+  </update>
+</mapper>

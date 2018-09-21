@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE compass-core-mapping PUBLIC
+"-//Compass/Compass Core Mapping DTD 2.2//EN"
+"http://www.compass-project.org/dtd/compass-core-mapping-2.2.dtd">
+
+<compass-core-mapping package="beans">
+    <class name="ServiceProjectBean" alias="${config.serviceProjectBean}"> 
+        <!-- 你可以通过这个配置来在底层给这个对象加一个Field("type","java") -->  
+        <id name="id" />
+        <!-- 配置一下属性 -->  
+        <property name="projectName">  
+            <meta-data>projectNameIndex</meta-data>  
+        </property> 
+        <property name="feeExplain">
+         	<meta-data>feeExplainIndex</meta-data>
+        </property>
+   		<property name="serviceExplain">
+        	<meta-data>serviceExplainIndex</meta-data>
+        </property>      
+    </class>
+    
+</compass-core-mapping>

@@ -1,0 +1,137 @@
+<mxEditor defaultGroup="group" defaultEdge="edge" urlPost="DataSave_zx.ht"
+		  helpWindowImage="images/help.gif"
+		  tasksWindowImage="images/tasks.gif"
+		  forcedInserting="0"
+		  swimlaneRequired="0">
+	<include name="editors/config/editor-commons.xml"/>
+	<add as="onInit">
+		function ()
+		{
+
+		this.dblClickAction = 'showProperties';
+		this.showTasks();
+		//this.showTaskinfo();
+
+
+		}
+	</add>
+	<Array as="cycleAttributeValues">
+		<add value="#83027F"/>
+		<add value="#66B922"/>
+		<add value="#808913"/>
+		<add value="#CF0056"/>
+		<add value="#4679B6"/>
+	</Array>
+	<Array as="templates">
+		<add as="group">
+			<Group label="" description="" href="">
+				<mxCell vertex="1" style="group" connectable="0"/>
+			</Group>
+		</add>
+		<add as="edge">
+			<Edge label="" description="">
+				<mxCell edge="1">
+					<mxGeometry as="geometry" relative="1"/>
+				</mxCell>
+			</Edge>
+		</add>
+		<add as="swimlane">
+			<Swimlane label="泳道" description="" href="">
+				<mxCell vertex="1" style="swimlane" connectable="0">
+					<mxGeometry as="geometry" width="300" height="160"/>
+				</mxCell>
+			</Swimlane>
+		</add>
+		<add as="task">
+			<Task label="任务"  任务类型="" 基本描述="" >
+				<mxCell vertex="1" style="fontSize=13;fontFamily=黑体;rounded=1">
+					<mxGeometry as="geometry" width="90" height="40"/>
+				</mxCell>
+			</Task>
+		</add>
+		<add as="subprocess">
+			<Subprocess label="Subprocess" description="" href="">
+				<mxCell vertex="1" style="rounded">
+					<mxGeometry as="geometry" width="72" height="32"/>
+				</mxCell>
+			</Subprocess>
+		</add>
+		<add as="shape">
+			<Shape label="" description="" href="">
+				<mxCell vertex="1" style="ellipse">
+					<mxGeometry as="geometry" width="32" height="32"/>
+				</mxCell>
+			</Shape>
+		</add>
+		<add as="symbol">
+			<Symbol label="" description="" href="">
+				<mxCell vertex="1" style="symbol;image=images/symbols/event.png">
+					<mxGeometry as="geometry" width="32" height="32"/>
+				</mxCell>
+			</Symbol>
+		</add>
+	</Array>
+	<add as="createTasks"><![CDATA[
+		function (div)
+		{
+			var off = 30;
+
+			if (this.graph != null)
+			{
+				var layer = this.graph.model.root.getChildAt(0);
+				mxUtils.para(div,  "常用模板");
+				mxUtils.linkInvoke(div, "武器系统总体设计", this,
+					'open_new', 'diagrams/missile.xml', off);
+				mxUtils.br(div);
+
+				mxUtils.linkInvoke(div, "导弹总体设计", this,
+					'open_new', 'diagrams/missile_2.xml', off);
+				mxUtils.br(div);
+								mxUtils.linkInvoke(div, "制导控制系统设计", this,
+					'open_new', 'diagrams/empty.xml', off);
+								mxUtils.br(div);
+
+
+				mxUtils.para(div,  "  ");
+			}
+		}
+	]]></add>
+	<add as="createTaskinfo"><![CDATA[
+		function (div)
+		{
+			var off = 30;
+
+			if (this.graph != null)
+			{
+				var layer = this.graph.model.root.getChildAt(0);
+				mxUtils.para(div,  "武器系统总体");
+				mxUtils.linkInvoke(div, "武器系统作战模型设计任务", this,
+					'open', 'diagrams/empty.xml', off);
+				mxUtils.br(div);
+				mxUtils.linkInvoke(div, "目标与战场环境研究", this,
+					'open', 'diagrams/swimlanes.xml', off);
+				mxUtils.br(div);
+				mxUtils.br(div);
+
+				mxUtils.para(div,  "导弹气动设计");
+				mxUtils.linkInvoke(div, "气动布局设计任务", this,
+					'open', 'diagrams/empty.xml', off);
+				mxUtils.br(div);
+				mxUtils.linkInvoke(div, '部件外形设计任务', this,
+					'open', 'diagrams/swimlanes.xml', off);
+				mxUtils.br(div);
+				mxUtils.linkInvoke(div, '气动力计算', this,
+					'open', 'diagrams/travel-booking.xml', off);
+
+				mxUtils.br(div);
+				mxUtils.linkInvoke(div, '载荷分析', this,
+					'open', 'diagrams/travel-booking.xml', off);
+					mxUtils.br(div);
+				mxUtils.linkInvoke(div, '气动热分析', this,
+					'open', 'diagrams/travel-booking.xml', off);
+					mxUtils.para(div,  "  ");
+
+			}
+		}
+	]]></add>
+</mxEditor>

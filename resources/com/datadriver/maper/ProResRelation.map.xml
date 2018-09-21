@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.project.ProResRelation">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.project.ProResRelation">
+    <id column="DD_PROJECT_RESPONCE_RELATION_ID" jdbcType="NUMERIC" property="ddProjectResponceRelationId" />
+    <result column="DD_PROJECT_ID" jdbcType="NUMERIC" property="ddProjectId" />
+    <result column="DD_RESPONCE_PERSON_ID" jdbcType="NUMERIC" property="ddResponcePersonId" />
+    <result column="DD_PROJECT_NAME" jdbcType="VARCHAR" property="ddProjectName" />
+    <result column="DD_RESPONCE_PERSON_NAME" jdbcType="VARCHAR" property="ddResponcePersonName" />
+    <result column="DD_RESPONCE_TIME" jdbcType="TIMESTAMP" property="ddResponceTime" />
+    <result column="DD_AUTHORITY" jdbcType="SMALLINT" property="ddAuthority" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_PROJECT_RESPONCE_RELATION_ID, DD_PROJECT_ID, DD_RESPONCE_PERSON_ID, DD_PROJECT_NAME, 
+    DD_RESPONCE_PERSON_NAME, DD_RESPONCE_TIME, DD_AUTHORITY
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_project_responce_relation
+    where DD_PROJECT_RESPONCE_RELATION_ID = #{ddProjectResponceRelationId,jdbcType=NUMERIC}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dd_project_responce_relation
+    where DD_PROJECT_RESPONCE_RELATION_ID = #{ddProjectResponceRelationId,jdbcType=NUMERIC}
+  </delete>
+  <insert id="insert" parameterType="com.casic.datadriver.model.project.ProResRelation">
+    insert into dd_project_responce_relation (DD_PROJECT_RESPONCE_RELATION_ID, DD_PROJECT_ID, 
+      DD_RESPONCE_PERSON_ID, DD_PROJECT_NAME, DD_RESPONCE_PERSON_NAME, 
+      DD_RESPONCE_TIME, DD_AUTHORITY)
+    values (#{ddProjectResponceRelationId,jdbcType=NUMERIC}, #{ddProjectId,jdbcType=NUMERIC}, 
+      #{ddResponcePersonId,jdbcType=NUMERIC}, #{ddProjectName,jdbcType=VARCHAR}, #{ddResponcePersonName,jdbcType=VARCHAR}, 
+      #{ddResponceTime,jdbcType=TIMESTAMP}, #{ddAuthority,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.project.ProResRelation">
+    insert into dd_project_responce_relation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddProjectResponceRelationId != null">
+        DD_PROJECT_RESPONCE_RELATION_ID,
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID,
+      </if>
+      <if test="ddResponcePersonId != null">
+        DD_RESPONCE_PERSON_ID,
+      </if>
+      <if test="ddProjectName != null">
+        DD_PROJECT_NAME,
+      </if>
+      <if test="ddResponcePersonName != null">
+        DD_RESPONCE_PERSON_NAME,
+      </if>
+      <if test="ddResponceTime != null">
+        DD_RESPONCE_TIME,
+      </if>
+      <if test="ddAuthority != null">
+        DD_AUTHORITY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddProjectResponceRelationId != null">
+        #{ddProjectResponceRelationId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddProjectId != null">
+        #{ddProjectId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddResponcePersonId != null">
+        #{ddResponcePersonId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddProjectName != null">
+        #{ddProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddResponcePersonName != null">
+        #{ddResponcePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddResponceTime != null">
+        #{ddResponceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddAuthority != null">
+        #{ddAuthority,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.project.ProResRelation">
+    update dd_project_responce_relation
+    <set>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddResponcePersonId != null">
+        DD_RESPONCE_PERSON_ID = #{ddResponcePersonId,jdbcType=NUMERIC},
+      </if>
+      <if test="ddProjectName != null">
+        DD_PROJECT_NAME = #{ddProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddResponcePersonName != null">
+        DD_RESPONCE_PERSON_NAME = #{ddResponcePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddResponceTime != null">
+        DD_RESPONCE_TIME = #{ddResponceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddAuthority != null">
+        DD_AUTHORITY = #{ddAuthority,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where DD_PROJECT_RESPONCE_RELATION_ID = #{ddProjectResponceRelationId,jdbcType=NUMERIC}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.project.ProResRelation">
+    update dd_project_responce_relation
+    set DD_PROJECT_ID = #{ddProjectId,jdbcType=NUMERIC},
+      DD_RESPONCE_PERSON_ID = #{ddResponcePersonId,jdbcType=NUMERIC},
+      DD_PROJECT_NAME = #{ddProjectName,jdbcType=VARCHAR},
+      DD_RESPONCE_PERSON_NAME = #{ddResponcePersonName,jdbcType=VARCHAR},
+      DD_RESPONCE_TIME = #{ddResponceTime,jdbcType=TIMESTAMP},
+      DD_AUTHORITY = #{ddAuthority,jdbcType=SMALLINT}
+    where DD_PROJECT_RESPONCE_RELATION_ID = #{ddProjectResponceRelationId,jdbcType=NUMERIC}
+  </update>
+</mapper>

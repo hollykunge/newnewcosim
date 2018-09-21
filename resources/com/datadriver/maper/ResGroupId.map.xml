@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.publicClass.ResGroupId">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.publicClass.ResGroupId">
+    <id column="DD_RESOURCE_GROUP_ID" jdbcType="INTEGER" property="ddResourceGroupId" />
+    <result column="DD_MEMBER_ID" jdbcType="INTEGER" property="ddMemberId" />
+    <result column="DD_IS_AVAILABLE" jdbcType="INTEGER" property="ddIsAvailable" />
+    <result column="DD_IS_RESPONSIBLE_PERSON" jdbcType="INTEGER" property="ddIsResponsiblePerson" />
+    <result column="DD_DOCUMENT_ID" jdbcType="INTEGER" property="ddDocumentId" />
+    <result column="DD_PROJECT_ID" jdbcType="INTEGER" property="ddProjectId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_RESOURCE_GROUP_ID, DD_MEMBER_ID, DD_IS_AVAILABLE, DD_IS_RESPONSIBLE_PERSON, DD_DOCUMENT_ID, 
+    DD_PROJECT_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_resource_group_id
+    where DD_RESOURCE_GROUP_ID = #{ddResourceGroupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_resource_group_id
+    where DD_RESOURCE_GROUP_ID = #{ddResourceGroupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.casic.datadriver.publicClass.ResGroupId">
+    insert into dd_resource_group_id (DD_RESOURCE_GROUP_ID, DD_MEMBER_ID, DD_IS_AVAILABLE, 
+      DD_IS_RESPONSIBLE_PERSON, DD_DOCUMENT_ID, DD_PROJECT_ID
+      )
+    values (#{ddResourceGroupId,jdbcType=INTEGER}, #{ddMemberId,jdbcType=INTEGER}, #{ddIsAvailable,jdbcType=INTEGER}, 
+      #{ddIsResponsiblePerson,jdbcType=INTEGER}, #{ddDocumentId,jdbcType=INTEGER}, #{ddProjectId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.publicClass.ResGroupId">
+    insert into dd_resource_group_id
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddResourceGroupId != null">
+        DD_RESOURCE_GROUP_ID,
+      </if>
+      <if test="ddMemberId != null">
+        DD_MEMBER_ID,
+      </if>
+      <if test="ddIsAvailable != null">
+        DD_IS_AVAILABLE,
+      </if>
+      <if test="ddIsResponsiblePerson != null">
+        DD_IS_RESPONSIBLE_PERSON,
+      </if>
+      <if test="ddDocumentId != null">
+        DD_DOCUMENT_ID,
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddResourceGroupId != null">
+        #{ddResourceGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="ddMemberId != null">
+        #{ddMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="ddIsAvailable != null">
+        #{ddIsAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="ddIsResponsiblePerson != null">
+        #{ddIsResponsiblePerson,jdbcType=INTEGER},
+      </if>
+      <if test="ddDocumentId != null">
+        #{ddDocumentId,jdbcType=INTEGER},
+      </if>
+      <if test="ddProjectId != null">
+        #{ddProjectId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.publicClass.ResGroupId">
+    update dd_resource_group_id
+    <set>
+      <if test="ddMemberId != null">
+        DD_MEMBER_ID = #{ddMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="ddIsAvailable != null">
+        DD_IS_AVAILABLE = #{ddIsAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="ddIsResponsiblePerson != null">
+        DD_IS_RESPONSIBLE_PERSON = #{ddIsResponsiblePerson,jdbcType=INTEGER},
+      </if>
+      <if test="ddDocumentId != null">
+        DD_DOCUMENT_ID = #{ddDocumentId,jdbcType=INTEGER},
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID = #{ddProjectId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DD_RESOURCE_GROUP_ID = #{ddResourceGroupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.publicClass.ResGroupId">
+    update dd_resource_group_id
+    set DD_MEMBER_ID = #{ddMemberId,jdbcType=INTEGER},
+      DD_IS_AVAILABLE = #{ddIsAvailable,jdbcType=INTEGER},
+      DD_IS_RESPONSIBLE_PERSON = #{ddIsResponsiblePerson,jdbcType=INTEGER},
+      DD_DOCUMENT_ID = #{ddDocumentId,jdbcType=INTEGER},
+      DD_PROJECT_ID = #{ddProjectId,jdbcType=INTEGER}
+    where DD_RESOURCE_GROUP_ID = #{ddResourceGroupId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<decorators defaultdir="/decorators">
+    <!--excludes结点则指定了哪些路径的请求不使用任何模板-->
+    <excludes>
+    	<pattern>/index*</pattern>
+        <pattern>/login*</pattern>
+        <pattern>/error*</pattern>
+    </excludes>    
+
+    <!-- 左边是树,右边是介绍,一级菜单使用 -->
+    <decorator name="outline" page="decOutline.jsp">
+        <pattern>/cloud/aftersale/outline.ht</pattern>          
+        <pattern>/cloud/purchase/outline.ht</pattern>
+        <pattern>/cloud/sale/outline.ht</pattern>
+        <pattern>/cloud/produce/outline.ht</pattern>
+        <pattern>/cloud/finance/outline.ht</pattern>
+        <pattern>/cloud/config/outline.ht</pattern>
+        <pattern>/cloud/console/outline.ht</pattern>
+        <pattern>/cloud/warehouse/outline.ht</pattern>
+        <pattern>/cloud/busarea/chance/outline.ht</pattern>
+        <pattern>/cloud/system/outline.ht</pattern>
+    </decorator>
+    <!-- 个人中心  
+    <decorator name="home" page="decHome.jsp">
+        <pattern>/cloud/console/home.ht</pattern>
+    </decorator>
+    -->
+</decorators>

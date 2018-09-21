@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.casic.datadriver.model.coin.DdScoreOutflow" >
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdScoreOutflow" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="expend_score" property="expendScore" jdbcType="BIGINT" />
+    <result column="expend_detail" property="expendDetail" jdbcType="VARCHAR" />
+    <result column="udp_time" property="udpTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

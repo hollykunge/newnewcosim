@@ -1,0 +1,90 @@
+﻿<Array>
+  <Subprocess label="武器shabishiabishfiafif" description="" href="" id="26">
+    <mxCell style="rounded" parent="1" vertex="1">
+      <mxGeometry x="650" y="100" width="102" height="50" as="geometry"/>
+    </mxCell>
+  </Subprocess>
+  <Subprocess label="导弹指标分解" description="" href="" id="27">
+    <mxCell style="rounded" parent="1" vertex="1">
+      <mxGeometry x="650" y="180" width="102" height="50" as="geometry"/>
+    </mxCell>
+  </Subprocess>
+  <Symbol label="Symbol" description="" href="" id="28">
+    <mxCell style="symbol;image=images/symbols/fork.png" parent="1" vertex="1">
+      <mxGeometry x="685" y="260" width="32" height="32" as="geometry"/>
+    </mxCell>
+  </Symbol>
+  <Edge label="" description="" id="29">
+    <mxCell parent="1" source="26" target="27" edge="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+  </Edge>
+  <Edge label="" description="" id="30">
+    <mxCell parent="1" source="27" target="28" edge="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="700" y="260" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+  </Edge>
+  <Subprocess label="动力系统设计" description="" href="" id="31">
+    <mxCell style="rounded" parent="1" vertex="1">
+      <mxGeometry x="548" y="340" width="102" height="50" as="geometry"/>
+    </mxCell>
+  </Subprocess>
+  <Subprocess label="导弹参数计算" description="" href="" id="32">
+    <mxCell style="rounded" parent="1" vertex="1">
+      <mxGeometry x="740" y="340" width="102" height="50" as="geometry"/>
+    </mxCell>
+  </Subprocess>
+  <Edge label="" description="" id="33">
+    <mxCell parent="1" source="28" target="31" edge="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="599" y="310"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+  </Edge>
+  <Edge label="" description="" id="34">
+    <mxCell parent="1" source="28" target="32" edge="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="800" y="320"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+  </Edge>
+  <Symbol label="Symbol" description="" href="" id="35">
+    <mxCell style="symbol;image=images/symbols/fork.png" parent="1" vertex="1">
+      <mxGeometry x="685" y="418" width="32" height="32" as="geometry"/>
+    </mxCell>
+  </Symbol>
+  <Edge label="" description="" id="38">
+    <mxCell parent="1" source="31" target="35" edge="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="599" y="420"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+  </Edge>
+  <Edge label="" description="" id="39">
+    <mxCell parent="1" source="32" target="35" edge="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="800" y="430"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+  </Edge>
+  <Symbol label="Symbol" description="" href="" id="40">
+    <mxCell style="symbol;image=images/symbols/event_end.png" parent="1" vertex="1">
+      <mxGeometry x="685" y="490" width="32" height="32" as="geometry"/>
+    </mxCell>
+  </Symbol>
+  <Edge label="" description="" id="41">
+    <mxCell parent="1" source="35" target="40" edge="1">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+  </Edge>
+</Array>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.orginfation.OrgInfation">
+	<resultMap id="OrgInfation" type="com.casic.cloud.model.config.orginfation.OrgInfation">
+		<id property="sysOrgInfoId" column="SYS_ORG_INFO_ID" jdbcType="NUMERIC"/>
+		<result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="industry" column="INDUSTRY" jdbcType="VARCHAR"/>
+		<result property="scale" column="SCALE" jdbcType="VARCHAR"/>
+		<result property="address" column="ADDRESS" jdbcType="VARCHAR"/>
+		<result property="postcode" column="POSTCODE" jdbcType="VARCHAR"/>
+		<result property="connecter" column="CONNECTER" jdbcType="VARCHAR"/>
+		<result property="tel" column="TEL" jdbcType="VARCHAR"/>
+		<result property="fax" column="FAX" jdbcType="VARCHAR"/>
+		<result property="homephone" column="HOMEPHONE" jdbcType="VARCHAR"/>
+		<result property="logo" column="LOGO" jdbcType="VARCHAR"/>
+		<result property="industry2" column="INDUSTRY2" jdbcType="VARCHAR"/>
+		<result property="member" column="MEMBER" jdbcType="VARCHAR"/>
+		<result property="info" column="INFO" jdbcType="VARCHAR"/>
+		<result property="country" column="COUNTRY" jdbcType="VARCHAR"/>
+		<result property="province" column="PROVINCE" jdbcType="VARCHAR"/>
+		<result property="city" column="CITY" jdbcType="VARCHAR"/>
+		<result property="isPublic" column="IS_PUBLIC" jdbcType="NUMERIC"/>
+		<result property="code" column="CODE" jdbcType="VARCHAR"/>
+		<result property="type" column="TYPE" jdbcType="VARCHAR"/>
+		<result property="model" column="MODEL" jdbcType="VARCHAR"/>
+		<result property="product" column="PRODUCT" jdbcType="VARCHAR"/>
+		<result property="website" column="WEBSITE" jdbcType="VARCHAR"/>
+		<result property="registertime" column="REGISTERTIME" jdbcType="DATE"/>
+	</resultMap>
+
+	<sql id="columns">
+		SYS_ORG_INFO_ID,EMAIL,NAME,INDUSTRY,SCALE,ADDRESS,POSTCODE,CONNECTER,TEL,FAX,HOMEPHONE,LOGO,INDUSTRY2,MEMBER,INFO,COUNTRY,PROVINCE,CITY,IS_PUBLIC,CODE,TYPE,MODEL,PRODUCT,WEBSITE,REGISTERTIME
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(sysOrgInfoId)"> AND SYS_ORG_INFO_ID  =#{sysOrgInfoId} </if>
+			<if test="@Ognl@isNotEmpty(email)"> AND EMAIL  LIKE #{email}  </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND NAME  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(industry)"> AND INDUSTRY  LIKE #{industry}  </if>
+			<if test="@Ognl@isNotEmpty(scale)"> AND SCALE  LIKE #{scale}  </if>
+			<if test="@Ognl@isNotEmpty(address)"> AND ADDRESS  LIKE #{address}  </if>
+			<if test="@Ognl@isNotEmpty(postcode)"> AND POSTCODE  LIKE #{postcode}  </if>
+			<if test="@Ognl@isNotEmpty(connecter)"> AND CONNECTER  LIKE #{connecter}  </if>
+			<if test="@Ognl@isNotEmpty(tel)"> AND TEL  LIKE #{tel}  </if>
+			<if test="@Ognl@isNotEmpty(fax)"> AND FAX  LIKE #{fax}  </if>
+			<if test="@Ognl@isNotEmpty(homephone)"> AND HOMEPHONE  LIKE #{homephone}  </if>
+			<if test="@Ognl@isNotEmpty(logo)"> AND LOGO  LIKE #{logo}  </if>
+			<if test="@Ognl@isNotEmpty(industry2)"> AND INDUSTRY2  LIKE #{industry2}  </if>
+			<if test="@Ognl@isNotEmpty(member)"> AND MEMBER  LIKE #{member}  </if>
+			<if test="@Ognl@isNotEmpty(info)"> AND INFO  LIKE #{info}  </if>
+			<if test="@Ognl@isNotEmpty(country)"> AND COUNTRY  LIKE #{country}  </if>
+			<if test="@Ognl@isNotEmpty(province)"> AND PROVINCE  LIKE #{province}  </if>
+			<if test="@Ognl@isNotEmpty(city)"> AND CITY  LIKE #{city}  </if>
+			<if test="@Ognl@isNotEmpty(isPublic)"> AND IS_PUBLIC  =#{isPublic} </if>
+			<if test="@Ognl@isNotEmpty(code)"> AND CODE  LIKE #{code}  </if>
+			<if test="@Ognl@isNotEmpty(type)"> AND TYPE  LIKE #{type}  </if>
+			<if test="@Ognl@isNotEmpty(model)"> AND MODEL  LIKE #{model}  </if>
+			<if test="@Ognl@isNotEmpty(product)"> AND PRODUCT  LIKE #{product}  </if>
+			<if test="@Ognl@isNotEmpty(website)"> AND WEBSITE  LIKE #{website}  </if>
+			<if test="@Ognl@isNotEmpty(registertime)"> AND REGISTERTIME  =#{registertime} </if>
+			<if test="@Ognl@isNotEmpty(beginregistertime)"> AND REGISTERTIME  >=#{beginregistertime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endregistertime)"> AND REGISTERTIME <![CDATA[ <=#{endregistertime,jdbcType=DATE}]]> </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.orginfation.OrgInfation">
+		INSERT INTO sys_org_info
+		(SYS_ORG_INFO_ID,EMAIL,NAME,INDUSTRY,SCALE,ADDRESS,POSTCODE,CONNECTER,TEL,FAX,HOMEPHONE,LOGO,INDUSTRY2,MEMBER,INFO,COUNTRY,PROVINCE,CITY,IS_PUBLIC,CODE,TYPE,MODEL,PRODUCT,WEBSITE,REGISTERTIME)
+		VALUES
+		(#{sysOrgInfoId,jdbcType=NUMERIC}, #{email,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{scale,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{connecter,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{homephone,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{industry2,jdbcType=VARCHAR}, #{member,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{isPublic,jdbcType=NUMERIC}, #{code,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{product,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, #{registertime,jdbcType=DATE})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM sys_org_info 
+		WHERE
+		SYS_ORG_INFO_ID=#{sysOrgInfoId}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.orginfation.OrgInfation">
+		UPDATE sys_org_info SET
+		EMAIL=#{email,jdbcType=VARCHAR},
+		NAME=#{name,jdbcType=VARCHAR},
+		INDUSTRY=#{industry,jdbcType=VARCHAR},
+		SCALE=#{scale,jdbcType=VARCHAR},
+		ADDRESS=#{address,jdbcType=VARCHAR},
+		POSTCODE=#{postcode,jdbcType=VARCHAR},
+		CONNECTER=#{connecter,jdbcType=VARCHAR},
+		TEL=#{tel,jdbcType=VARCHAR},
+		FAX=#{fax,jdbcType=VARCHAR},
+		HOMEPHONE=#{homephone,jdbcType=VARCHAR},
+		LOGO=#{logo,jdbcType=VARCHAR},
+		INDUSTRY2=#{industry2,jdbcType=VARCHAR},
+		MEMBER=#{member,jdbcType=VARCHAR},
+		INFO=#{info,jdbcType=VARCHAR},
+		COUNTRY=#{country,jdbcType=VARCHAR},
+		PROVINCE=#{province,jdbcType=VARCHAR},
+		CITY=#{city,jdbcType=VARCHAR},
+		IS_PUBLIC=#{isPublic,jdbcType=NUMERIC},
+		CODE=#{code,jdbcType=VARCHAR},
+		TYPE=#{type,jdbcType=VARCHAR},
+		MODEL=#{model,jdbcType=VARCHAR},
+		PRODUCT=#{product,jdbcType=VARCHAR},
+		WEBSITE=#{website,jdbcType=VARCHAR},
+		REGISTERTIME=#{registertime,jdbcType=DATE}
+		WHERE
+		SYS_ORG_INFO_ID=#{sysOrgInfoId}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="OrgInfation">
+		SELECT <include refid="columns"/>
+		FROM sys_org_info
+		WHERE
+		SYS_ORG_INFO_ID=#{sysOrgInfoId}
+	</select>
+	
+	<select id="getAll" resultMap="OrgInfation">
+		SELECT <include refid="columns"/>
+		FROM sys_org_info   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by SYS_ORG_INFO_ID  desc
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>插入自定义数据查询显示组件</title>
+    <script type="text/javascript" src="../../../dynamic.jsp"></script>
+	<script type="text/javascript" src="../internal.js"></script>
+	<script type="text/javascript" src="../../../jquery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../../../jquery/jquery.form.js"></script>
+    <style type="text/css">
+        * {color: #838383}
+        body {font-size: 12px;width: 375px;height: 230px;overflow: hidden; margin: 0;padding: 0; }
+        .warp {padding: 20px 0 0 15px;height: 100%;position: relative;}
+        #url {width: 290px; margin-bottom: 2px}
+        table td{padding:5px 0;}
+
+    </style>
+
+	<script type="text/javascript">
+		$(function() {
+			var oldComp = editor.t_currentComp;
+			var isAdd=true;
+			if(oldComp){
+				var oldComp=$(oldComp);
+				$('#displayId').val( oldComp.attr("displayId"));
+				$('#name').val(oldComp.attr("customName"));
+				$("#width").val(oldComp.css("width"));
+                $("#height").val(oldComp.css("height"));
+                $('#displayName').val(oldComp.attr("displayName"));
+                isAdd=false;
+			}
+			
+			
+			$("input:[name='selectcomp']:[type='button']").click(function(){
+			   	var url=__ctx+ "/platform/system/sysCustomDisplayDialog.ht";
+				var winArgs="dialogWidth=1024px;dialogHeight=700px;help=0;status=0;scroll=0;center=1";
+				var isiframe=$("input:[name='isiframe']:checked").val();
+				var params={};
+				var rtn=window.open(url,params,winArgs);
+				if(rtn && rtn.status){
+					$('#displayName').val(rtn.name);
+					$('#displayId').val(rtn.id);
+				}
+			});
+			dialog.onok=function(){
+				var displayId =$.trim($('#displayId').val());
+				var displayName =$.trim($('#displayName').val());
+	            if(!displayId){
+	            	 alert("请输入选择组件！");
+	                 return false;
+	            }
+	            var name = $.trim($('#name').val());
+	            if(!name){
+	            	 alert("请输入名称！");
+	                 return false;
+	            }
+	            
+				var width = $("#width").val();
+                var height = $("#height").val();
+                if(isAdd){
+	                var div = $("<div></div>");
+	                div.attr("displayId",displayId);
+	                div.attr("displayName",displayName);
+	                div.attr("customName",name);
+	                div.addClass("custom-display");
+	                div.attr("comptype","custom-display");
+	                if(/^[1-9]+[.]?\d*(%|px)?$/g.test( width )){
+		            	div.css("width",width);
+		            }
+		            if(/^[1-9]+[.]?\d*(%|px)?$/g.test( height )){
+		            	div.css("height",height);
+		            }
+		            
+		            var mockiframe=$("<iframe width='80%' height='80%' frameborder='0'></iframe>");
+		            var iframesrc=__ctx+"/platform/system/sysCustomDisplay/preview.ht?__displayId="+displayId;
+		            mockiframe.attr("src",iframesrc);
+		            div.append(mockiframe);
+	                editor.execCommand("inserthtml",$('<div></div>').append(div).html());
+		            dialog.close();
+                }else{
+                	oldComp.attr("displayId",displayId);
+                	oldComp.attr("displayName",displayName);
+                	oldComp.attr("customName",name);
+                	oldComp.addClass("custom-display");
+                	oldComp.attr("comptype","custom-display");
+	                if(/^[1-9]+[.]?\d*(%|px)?$/g.test( width )){
+	                	oldComp.css("width",width);
+		            }
+		            if(/^[1-9]+[.]?\d*(%|px)?$/g.test( height )){
+		            	oldComp.css("height",height);
+		            }
+		            oldComp.html("");
+		            var mockiframe=$("<iframe width='80%' height='80%' frameborder='0'></iframe>");
+		            var iframesrc=__ctx+"/platform/system/sysCustomDisplay/preview.ht?__displayId="+displayId;
+		            mockiframe.attr("src",iframesrc);
+		            oldComp.append(mockiframe);
+                }
+			}
+		});
+	</script>
+</head>
+<body>
+<div class="warp">
+		<table width="370" cellpadding="0" cellspacing="0">
+			<tr >
+				<td>
+					<span>名称：</span>
+				</td>
+				<td>
+					<input style="width: 200px" id="name" type="text" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span>自定义显示：</span>
+				</td>
+				<td>
+					<input style="width: 200px" id="displayName" type="text" value="" />
+					<input style="width: 200px" id="displayId" type="hidden"/>
+					<input name="selectcomp" type="button" value="选择组件" style="margin-left: 1px!important" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span>宽度：</span>
+				</td>
+				<td>
+					<input style="width: 200px" type="text" id="width" />如：10px 、100%
+				</td>
+			</tr>
+			<tr>
+				<td><span>高度：</span></td>
+				<td><input style="width: 200px" type="text" id="height" />如：10px 、100%</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

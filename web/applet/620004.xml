@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--An excerpt of an egocentric social network-->
+<graphml>
+  <graph edgedefault="undirected">
+    <key id="name" for="node" attr.name="name" attr.type="string"/>
+    <key id="color" for="node" attr.name="color" attr.type="string"/>
+    <node id="1">
+      <data key="name">中国汽车经济技术信息研究所</data>
+      <data key="color">01</data>
+    </node>
+  </graph>
+</graphml>

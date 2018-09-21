@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>添加按钮</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="input.css">
+<link rel="stylesheet" type="text/css" href="../../../../styles/default/css/form.css">
+<style type="text/css">
+ a.extend{
+   display:inline;
+ }
+</style>
+</head>
+<body>
+	<div id="inputPanel">
+		<fieldset class="base">
+			<legend>按钮属性</legend>
+			<table>
+				<tr>
+					<th>按钮标签:</th>
+					<td><input id="a-label" type="text" /></td>
+				</tr>
+				<tr>
+					<th>按钮图标:</th>
+					<td>
+						<a href="javascript:;" id="preview-button"></a>				
+						<div class="button-td" onclick="openIconDialog()">
+						   	选择图标
+						</div>
+					</td>
+				</tr>				
+			</table>
+		</fieldset>
+	</div>
+	<script type="text/javascript" src="../internal.js"></script>
+	<script type="text/javascript" src="../../../jquery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript">
+		var _element;
+		$(".button-td").bind("mouseenter mouseleave",function(){
+			$(this).toggleClass("button-td-hover");
+		});
+		$(function() {
+			_element = null;
+			_element = editor.curInput;
+			if (_element) {
+				//todo:获取输入框的值，并绑定到页面上
+				bindData();
+			}			
+		});
+		
+		function openIconDialog() {
+			var url= "icons.html";			
+			var dialogWidth=400;
+			var dialogHeight=300;
+			conf=$.extend({},{dialogWidth:dialogWidth ,dialogHeight:dialogHeight ,help:0,status:0,scroll:0,center:1});
+
+			var winArgs="dialogWidth="+conf.dialogWidth+"px;dialogHeight="+conf.dialogHeight
+				+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;			
+			var rtn=window.open(url,"",winArgs);
+			if(rtn!=undefined){				
+				$("#preview-button").attr("class",rtn.cla);
+			}
+		};
+
+		function bindData() {
+			var child = _element.childNodes[0];
+			if (child) {
+				var cla = $(child).attr("class"), label = $(child).text();
+				$("#preview-button").attr("class", cla);
+				$("#a-label").val(label);
+			}
+		};
+
+		dialog.onok = function() {
+			var html = '<span name="editable-input" style="display:inline-block;">';
+			var label = $("#a-label").val(),
+			cla = $("#preview-button").attr("class");
+			html += '<a href="javascript:;" ';
+			if(cla)html+='class="'+cla+'"';
+			html +='>' + label + '</a>';
+			html += '</span> ';
+			if(_element){
+				editor.curInput.innerHTML=html;
+			}
+			else{
+				editor.execCommand('insertHtml', html);
+			}
+		};
+	</script>
+</body>
+</html>

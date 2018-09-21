@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.task.TaskProceAssociation">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.task.TaskProceAssociation">
+    <id column="DD_TASK_PROCESS_ASSOCIATION_ID" jdbcType="INTEGER" property="ddTaskProcessAssociationId" />
+
+    <result column="DD_TASK_ID" jdbcType="INTEGER" property="ddTaskId" />
+    <result column="DD_PROCESS_ID" jdbcType="INTEGER" property="ddProcessId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_TASK_PROCESS_ASSOCIATION_ID, DD_TASK_ID, DD_PROCESS_ID
+  </sql>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_task_process_association
+    where DD_TASK_PROCESS_ASSOCIATION_ID = #{ddTaskProcessAssociationId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_task_process_association
+    where DD_TASK_PROCESS_ASSOCIATION_ID = #{ddTaskProcessAssociationId,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from dd_task_process_association
+    where DD_TASK_PROCESS_ASSOCIATION_ID = #{ddTaskProcessAssociationId,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="add" parameterType="com.casic.datadriver.model.task.TaskProceAssociation">
+    insert into dd_task_process_association (DD_TASK_PROCESS_ASSOCIATION_ID, DD_TASK_ID, 
+      DD_PROCESS_ID)
+    values (#{ddTaskProcessAssociationId,jdbcType=INTEGER}, #{ddTaskId,jdbcType=INTEGER}, 
+      #{ddProcessId,jdbcType=INTEGER})
+  </insert>
+
+
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.task.TaskProceAssociation">
+    insert into dd_task_process_association
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddTaskProcessAssociationId != null">
+        DD_TASK_PROCESS_ASSOCIATION_ID,
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID,
+      </if>
+      <if test="ddProcessId != null">
+        DD_PROCESS_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddTaskProcessAssociationId != null">
+        #{ddTaskProcessAssociationId,jdbcType=INTEGER},
+      </if>
+      <if test="ddTaskId != null">
+        #{ddTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="ddProcessId != null">
+        #{ddProcessId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.task.TaskProceAssociation">
+    update dd_task_process_association
+    <set>
+      <if test="ddTaskId != null">
+        DD_TASK_ID = #{ddTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="ddProcessId != null">
+        DD_PROCESS_ID = #{ddProcessId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DD_TASK_PROCESS_ASSOCIATION_ID = #{ddTaskProcessAssociationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.task.TaskProceAssociation">
+    update dd_task_process_association
+    set DD_TASK_ID = #{ddTaskId,jdbcType=INTEGER},
+      DD_PROCESS_ID = #{ddProcessId,jdbcType=INTEGER}
+    where DD_TASK_PROCESS_ASSOCIATION_ID = #{ddTaskProcessAssociationId,jdbcType=INTEGER}
+  </update>
+</mapper>

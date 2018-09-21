@@ -1,0 +1,12 @@
+#divCloudTag {position:relative; width:240px; height:189px; margin: 20px auto 0; }
+#divCloudTag a {position:absolute; top:0px; left:0px; font-family: Microsoft YaHei; color:#fff; 
+font-weight:bold; text-decoration:none; padding: 3px 6px; }
+#divCloudTag a:hover {border: 1px solid #eee; background: #7bbfea; }
+#divCloudTag .blue {color:#009ad6;}
+#divCloudTag .red {color:#ed1941;}
+#divCloudTag .green {color:#7fb80e;}
+#divCloudTag .purple {color:#8552a1;}
+
+#divCloudTag p { font: 16px Microsoft YaHei; text-align: center; color: #ba0c0c; }
+#divCloudTag p a { font-size: 14px; color: #ba0c0c; }
+#divCloudTag p a:hover { color: red; }

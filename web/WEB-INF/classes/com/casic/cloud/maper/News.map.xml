@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.system.news.News">
+	<resultMap id="News" type="com.casic.cloud.model.system.news.News">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="title" column="title" jdbcType="VARCHAR"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+		<result property="publisher" column="publisher" jdbcType="VARCHAR"/>
+		<result property="publishtime" column="publishtime" jdbcType="DATE"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,title,content,publisher,publishtime
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(title)"> AND title  LIKE #{title}  </if>
+			<if test="@Ognl@isNotEmpty(content)"> AND content  LIKE #{content}  </if>
+			<if test="@Ognl@isNotEmpty(publisher)"> AND publisher  LIKE #{publisher}  </if>
+			<if test="@Ognl@isNotEmpty(publishtime)"> AND publishtime  =#{publishtime} </if>
+			<if test="@Ognl@isNotEmpty(beginpublishtime)"> AND publishtime  >=#{beginpublishtime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endpublishtime)"> AND publishtime <![CDATA[ <=#{endpublishtime,jdbcType=DATE}]]> </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.system.news.News">
+		INSERT INTO CLOUD_NEWS
+		(id,title,content,publisher,publishtime)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, #{publishtime,jdbcType=DATE})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM CLOUD_NEWS 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.system.news.News">
+		UPDATE CLOUD_NEWS SET
+		title=#{title,jdbcType=VARCHAR},
+		content=#{content,jdbcType=VARCHAR},
+		publisher=#{publisher,jdbcType=VARCHAR},
+		publishtime=#{publishtime,jdbcType=DATE}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="News">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_NEWS
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="News">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_NEWS   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	<select id="getLastNews" resultMap="News">
+		SELECT <include refid="columns"/>
+		FROM CLOUD_NEWS   
+		order by id  desc
+	</select>	
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.materialPropertyValue.MaterialPropertyValue">
+	<resultMap id="MaterialPropertyValue" type="com.casic.cloud.model.config.materialPropertyValue.MaterialPropertyValue">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="materialId" column="material_id" jdbcType="NUMERIC"/>
+		<result property="propertyId" column="property_id" jdbcType="NUMERIC"/>
+		<result property="propertyValue" column="property_value" jdbcType="VARCHAR"/>
+		<result property="propertyName" column="property_name" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,material_id,property_id,property_value,property_name
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(materialId)"> AND material_id  =#{materialId} </if>
+			<if test="@Ognl@isNotEmpty(propertyId)"> AND property_id  =#{propertyId} </if>
+			<if test="@Ognl@isNotEmpty(propertyValue)"> AND property_value  LIKE #{propertyValue}  </if>
+			<if test="@Ognl@isNotEmpty(propertyName)"> AND property_name  LIKE #{propertyName}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.materialPropertyValue.MaterialPropertyValue">
+		INSERT INTO cloud_material_property_value
+		(id,material_id,property_id,property_value,property_name)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{materialId,jdbcType=NUMERIC}, #{propertyId,jdbcType=NUMERIC}, #{propertyValue,jdbcType=VARCHAR}, #{propertyName,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_material_property_value 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.materialPropertyValue.MaterialPropertyValue">
+		UPDATE cloud_material_property_value SET
+		material_id=#{materialId,jdbcType=NUMERIC},
+		property_id=#{propertyId,jdbcType=NUMERIC},
+		property_value=#{propertyValue,jdbcType=VARCHAR},
+		property_name=#{propertyName,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="delByMainId">
+	    DELETE FROM cloud_material_property_value
+	    WHERE
+	    material_id=#{materialId}
+	</delete>    
+	
+	<select id="getPropertyValueList" resultMap="MaterialPropertyValue">
+	    SELECT <include refid="columns"/>
+	    FROM cloud_material_property_value 
+	    WHERE material_id=#{materialId}
+	</select>
+	
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="MaterialPropertyValue">
+		SELECT <include refid="columns"/>
+		FROM cloud_material_property_value
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="MaterialPropertyValue">
+		SELECT <include refid="columns"/>
+		FROM cloud_material_property_value   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	
+	<select id="getBymid" parameterType="java.lang.Long" resultMap="MaterialPropertyValue">
+		SELECT <include refid="columns"/>
+		FROM cloud_material_property_value
+		WHERE
+		material_id=#{material_id}
+	</select>
+</mapper>

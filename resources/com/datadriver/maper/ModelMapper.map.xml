@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.model.Model">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.model.Model">
+    <result column="DD_MODELTYPE_ID" jdbcType="BIGINT" property="ddModeltypeId" />
+    <result column="DD_MODELTYPE_NAME" jdbcType="VARCHAR" property="name" />
+    <result column="DD_MODEL_VERSION" jdbcType="INTEGER" property="ddModelVersion" />
+    <result column="DD_MODEL_PID" jdbcType="BIGINT" property="ddModelPid" />
+    <result column="DD_MODEL_BZ1" jdbcType="VARCHAR" property="ddModelBz1" />
+    <result column="DD_MODEL_BZ2" jdbcType="BIGINT" property="ddModelBz2" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.casic.datadriver.model.model.Model">
+    insert into dd_model (DD_MODELTYPE_ID, DD_MODELTYPE_NAME, DD_MODEL_VERSION,
+      DD_MODEL_PID, DD_MODEL_BZ1, DD_MODEL_BZ2
+      )
+    values (#{ddModeltypeId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{ddModelVersion,jdbcType=INTEGER},
+      #{ddModelPid,jdbcType=BIGINT}, #{ddModelBz1,jdbcType=VARCHAR}, #{ddModelBz2,jdbcType=BIGINT}
+      )
+  </insert>
+
+  <sql id="Base_Column_List">
+    DD_MODELTYPE_ID, DD_MODELTYPE_NAME, DD_MODEL_VERSION,
+      DD_MODEL_PID, DD_MODEL_BZ1, DD_MODEL_BZ2
+  </sql>
+
+  <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_model
+    WHERE DD_MODELTYPE_ID = #{id}
+  </select>
+
+  <select id="findByPid" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_model
+    WHERE  DD_MODEL_PID= #{pid}
+  </select>
+
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.model.Model">
+    insert into dd_model
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddModeltypeId != null">
+        DD_MODELTYPE_ID,
+      </if>
+      <if test="name != null">
+        DD_MODELTYPE_NAME,
+      </if>
+      <if test="ddModelVersion != null">
+        DD_MODEL_LEVEL,
+      </if>
+      <if test="ddModelPid != null">
+        DD_MODEL_PID,
+      </if>
+      <if test="ddModelBz1 != null">
+        DD_MODEL_BZ1,
+      </if>
+      <if test="ddModelBz2 != null">
+        DD_MODEL_BZ2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddModeltypeId != null">
+        #{ddModeltypeId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{ddModeltypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelVersion != null">
+        #{ddModelLevel,jdbcType=INTEGER},
+      </if>
+      <if test="ddModelPid != null">
+        #{ddModelPid,jdbcType=BIGINT},
+      </if>
+      <if test="ddModelBz1 != null">
+        #{ddModelBz1,jdbcType=VARCHAR},
+      </if>
+      <if test="ddModelBz2 != null">
+        #{ddModelBz2,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

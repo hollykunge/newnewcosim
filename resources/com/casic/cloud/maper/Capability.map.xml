@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.capability.Capability">
+	<resultMap id="Capability" type="com.casic.cloud.model.config.capability.Capability">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="typeId" column="type_id" jdbcType="NUMERIC"/>
+		<result property="currentLevl" column="current_levl" jdbcType="VARCHAR"/>
+		<result property="entId" column="ent_id" jdbcType="NUMERIC"/>
+		<result property="info" column="info" jdbcType="VARCHAR"/>
+		<result property="pic" column="pic" jdbcType="VARCHAR"/>
+		<result property="publisher" column="publisher" jdbcType="VARCHAR"/>
+		<result property="publishDate" column="publish_date" jdbcType="DATE"/>
+		<result property="useScope" column="use_scope" jdbcType="VARCHAR"/>
+		<result property="publishState" column="publish_state" jdbcType="VARCHAR"/>
+		<result property="prokey" column="prokey" jdbcType="VARCHAR"/>
+		<result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+		<result property="entName" column="ent_name" jdbcType="VARCHAR"/>
+		<association property="entinfo" column="ent_id"  resultMap="com.casic.cloud.model.config.info.Info"/>   
+	</resultMap>
+	
+	<resultMap id="CapabilityForCompass" type="com.casic.cloud.model.config.capability.Capability">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="typeId" column="type_id" jdbcType="NUMERIC"/>
+		<result property="currentLevl" column="current_levl" jdbcType="VARCHAR"/>
+		<result property="entId" column="ent_id" jdbcType="NUMERIC"/>
+		<result property="info" column="info" jdbcType="VARCHAR"/>
+		<result property="pic" column="pic" jdbcType="VARCHAR"/>
+		<result property="publisher" column="publisher" jdbcType="VARCHAR"/>
+		<result property="publishDate" column="publish_date" jdbcType="DATE"/>
+		<result property="useScope" column="use_scope" jdbcType="VARCHAR"/>
+		<result property="publishState" column="publish_state" jdbcType="VARCHAR"/>
+		<result property="prokey" column="prokey" jdbcType="VARCHAR"/>
+		<result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+		<result property="entName" column="ent_name" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,name,type_id,current_levl,ent_id,info,pic,publisher,publish_date,use_scope,publish_state,prokey,type_name,ent_name
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(typeId)"> AND type_id  =#{typeId} </if>
+			<if test="@Ognl@isNotEmpty(currentLevl)"> AND current_levl  =#{currentLevl} </if>
+			<if test="@Ognl@isNotEmpty(entId)"> AND ent_id  =#{entId} </if>
+			<if test="@Ognl@isNotEmpty(info)"> AND info  LIKE #{info}  </if>
+			<if test="@Ognl@isNotEmpty(pic)"> AND pic  LIKE #{pic}  </if>
+			<if test="@Ognl@isNotEmpty(publisher)"> AND publisher  LIKE #{publisher}  </if>
+			<if test="@Ognl@isNotEmpty(publishDate)"> AND publish_date  =#{publishDate} </if>
+			<if test="@Ognl@isNotEmpty(beginpublishDate)"> AND publish_date  >=#{beginpublishDate,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endpublishDate)"> AND publish_date <![CDATA[ <=#{endpublishDate,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(useScope)"> AND use_scope  LIKE #{useScope}  </if>
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state  LIKE #{publishState}  </if>
+			<if test="@Ognl@isNotEmpty(prokey)"> AND prokey  LIKE #{prokey}  </if>
+			<if test="@Ognl@isNotEmpty(typeName)"> AND type_name  LIKE #{typeName}  </if>
+			<if test="@Ognl@isNotEmpty(entName)"> AND ent_name  LIKE #{entName}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.capability.Capability">
+		INSERT INTO cloud_capability
+		(id,name,type_id,current_levl,ent_id,info,pic,publisher,publish_date,use_scope,publish_state,prokey,type_name,ent_name)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{name,jdbcType=VARCHAR}, #{typeId,jdbcType=NUMERIC}, #{currentLevl,jdbcType=VARCHAR}, #{entId,jdbcType=NUMERIC}, #{info,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, #{publishDate,jdbcType=DATE}, #{useScope,jdbcType=VARCHAR}, #{publishState,jdbcType=VARCHAR}, #{prokey,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{entName,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_capability 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.capability.Capability">
+		UPDATE cloud_capability SET
+		name=#{name,jdbcType=VARCHAR},
+		type_id=#{typeId,jdbcType=NUMERIC},
+		current_levl=#{currentLevl,jdbcType=VARCHAR},
+		ent_id=#{entId,jdbcType=NUMERIC},
+		info=#{info,jdbcType=VARCHAR},
+		pic=#{pic,jdbcType=VARCHAR},
+		publisher=#{publisher,jdbcType=VARCHAR},
+		publish_date=#{publishDate,jdbcType=DATE},
+		use_scope=#{useScope,jdbcType=VARCHAR},
+		publish_state=#{publishState,jdbcType=VARCHAR},
+		prokey=#{prokey,jdbcType=VARCHAR},
+		type_name=#{typeName,jdbcType=VARCHAR},
+		ent_name=#{entName,jdbcType=VARCHAR}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="Capability">
+	SELECT c.*,i.SYS_ORG_INFO_ID,i.ADDRESS,i.industry
+		FROM cloud_capability  c LEFT JOIN sys_org_info i ON c.ent_id=i.SYS_ORG_INFO_ID
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="Capability">
+	SELECT c.*,i.SYS_ORG_INFO_ID,i.ADDRESS,i.industry
+		FROM cloud_capability  c LEFT JOIN sys_org_info i ON c.ent_id=i.SYS_ORG_INFO_ID  
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+	<select id="getAllCapabilityCount" resultType="java.lang.Integer" useCache="false">
+		SELECT count(t.id) from cloud_capability t where t.current_levl=#{current_levl,jdbcType=VARCHAR}
+			 
+	</select>
+	<select id="getAllForCompass" resultMap="CapabilityForCompass">
+	SELECT c.*,i.SYS_ORG_INFO_ID,i.ADDRESS,i.industry
+		FROM cloud_capability  c LEFT JOIN sys_org_info i ON c.ent_id=i.SYS_ORG_INFO_ID
+        where publish_state = '发布'
+	</select>
+	
+	<select id="getAllCg"     resultMap="Capability">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.ADDRESS,i.industry
+		FROM cloud_capability  c LEFT JOIN sys_org_info i ON c.ent_id=i.SYS_ORG_INFO_ID
+		WHERE
+		c.publish_state=#{publish_state,jdbcType=VARCHAR} 
+		and c.ent_id=#{ent_id,jdbcType=NUMERIC}
+	 
+			<if test="@Ognl@isNotEmpty(name)"> AND c.name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(publishDate)"> AND  c.publish_date  =#{publishDate} </if>
+			<if test="@Ognl@isNotEmpty(beginpublishDate)"> AND  c.publish_date  >=#{beginpublishDate,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endpublishDate)"> AND  c.publish_date <![CDATA[ <=#{endpublishDate,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(prokey)"> AND  c.prokey  LIKE #{prokey}  </if>
+			<if test="@Ognl@isNotEmpty(typeName)"> AND  c.type_name  LIKE #{typeName}  </if>
+			<if test="@Ognl@isNotEmpty(entName)"> AND  c.ent_name  LIKE #{entName}  </if>
+	</select>
+	
+	
+		<select id="getLastCapabilitys"     resultMap="Capability">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.ADDRESS,i.industry
+		FROM cloud_capability  c LEFT JOIN sys_org_info i ON c.ent_id=i.SYS_ORG_INFO_ID
+		WHERE
+		c.publish_state=#{publish_state,jdbcType=VARCHAR} 
+		and c.ent_id=#{ent_id,jdbcType=NUMERIC}
+	 order by id  desc limit 0,3
+		 
+	</select>
+	
+	
+	
+	<select id="getAll_query"  parameterType="java.lang.String"  resultMap="Capability">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.ADDRESS,i.industry
+		FROM cloud_capability  c LEFT JOIN sys_org_info i ON c.ent_id=i.SYS_ORG_INFO_ID
+		WHERE
+	    name  LIKE #{name,jdbcType=VARCHAR} OR prokey  LIKE #{name,jdbcType=VARCHAR} 
+	</select>
+	
+	<select id="capabilityList"   resultMap="Capability">
+		SELECT c.*,i.SYS_ORG_INFO_ID,i.ADDRESS,i.industry
+		FROM cloud_capability  c LEFT JOIN sys_org_info i ON c.ent_id=i.SYS_ORG_INFO_ID
+		WHERE
+		type_id=#{type_id,jdbcType=NUMERIC}
+			<if test="@Ognl@isNotEmpty(publishState)"> AND publish_state=#{publish_state,jdbcType=VARCHAR}  </if>
+		
+		  
+		order by id  desc
+	</select>
+</mapper>

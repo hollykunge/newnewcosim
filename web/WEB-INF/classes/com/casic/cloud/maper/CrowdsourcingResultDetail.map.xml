@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResultDetail">
+	<resultMap id="CrowdsourcingResultDetail" type="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResultDetail">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="resultName" column="RESULT_NAME" jdbcType="VARCHAR"/>
+		<result property="resultInfo" column="RESULT_INFO" jdbcType="VARCHAR"/>
+		<result property="auditType" column="AUDIT_TYPE" jdbcType="VARCHAR"/>
+		<result property="auditOpinion" column="AUDIT_OPINION" jdbcType="VARCHAR"/>
+		<result property="resultAttachmentIds" column="RESULT_ATTACHMENT_IDS" jdbcType="VARCHAR"/>
+		<result property="submitTime" column="SUBMIT_TIME" jdbcType="DATE"/>
+		<result property="auditTime" column="AUDIT_TIME" jdbcType="DATE"/>
+		<result property="resultId" column="RESULT_ID" jdbcType="NUMERIC"/>
+
+	</resultMap>
+
+	<sql id="columns">
+		ID,RESULT_NAME,RESULT_INFO,AUDIT_TYPE,AUDIT_OPINION,RESULT_ATTACHMENT_IDS,SUBMIT_TIME,AUDIT_TIME,RESULT_ID
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(resultName)"> AND RESULT_NAME  LIKE #{resultName}  </if>
+			<if test="@Ognl@isNotEmpty(resultInfo)"> AND RESULT_INFO  LIKE #{resultInfo}  </if>
+			<if test="@Ognl@isNotEmpty(auditType)"> AND AUDIT_TYPE  LIKE #{auditType}  </if>
+			<if test="@Ognl@isNotEmpty(auditOpinion)"> AND AUDIT_OPINION  LIKE #{auditOpinion}  </if>
+			<if test="@Ognl@isNotEmpty(resultAttachmentIds)"> AND RESULT_ATTACHMENT_IDS  LIKE #{resultAttachmentIds}  </if>
+			<if test="@Ognl@isNotEmpty(submitTime)"> AND SUBMIT_TIME  =#{submitTime} </if>
+			<if test="@Ognl@isNotEmpty(beginsubmitTime)"> AND SUBMIT_TIME  >=#{beginsubmitTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endsubmitTime)"> AND SUBMIT_TIME <![CDATA[ <=#{endsubmitTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(auditTime)"> AND AUDIT_TIME  =#{auditTime} </if>
+			<if test="@Ognl@isNotEmpty(beginauditTime)"> AND AUDIT_TIME  >=#{beginauditTime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endauditTime)"> AND AUDIT_TIME <![CDATA[ <=#{endauditTime,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(resultId)"> AND RESULT_ID  =#{resultId} </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResultDetail">
+		INSERT INTO cloud_crowdsourcing_result_detail
+		(ID,RESULT_NAME,RESULT_INFO,AUDIT_TYPE,AUDIT_OPINION,RESULT_ATTACHMENT_IDS,SUBMIT_TIME,AUDIT_TIME,RESULT_ID)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{resultName,jdbcType=VARCHAR}, #{resultInfo,jdbcType=VARCHAR}, #{auditType,jdbcType=VARCHAR}, #{auditOpinion,jdbcType=VARCHAR}, #{resultAttachmentIds,jdbcType=VARCHAR}, #{submitTime,jdbcType=DATE}, #{auditTime,jdbcType=DATE}, #{resultId,jdbcType=NUMERIC})
+
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_crowdsourcing_result_detail 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResultDetail">
+		UPDATE cloud_crowdsourcing_result_detail SET
+		RESULT_NAME=#{resultName,jdbcType=VARCHAR},
+		RESULT_INFO=#{resultInfo,jdbcType=VARCHAR},
+		AUDIT_TYPE=#{auditType,jdbcType=VARCHAR},
+		AUDIT_OPINION=#{auditOpinion,jdbcType=VARCHAR},
+		RESULT_ATTACHMENT_IDS=#{resultAttachmentIds,jdbcType=VARCHAR},
+		SUBMIT_TIME=#{submitTime,jdbcType=DATE},
+		AUDIT_TIME=#{auditTime,jdbcType=DATE},
+		RESULT_ID=#{resultId,jdbcType=NUMERIC}
+		WHERE
+		ID=#{id}
+	</update>
+	<delete id="delByMainId">
+	    DELETE FROM cloud_crowdsourcing_result_detail
+	    WHERE
+	    result_id=#{resultId}
+	</delete>    
+	
+	<select id="getCrowdsourcingResultDetailList" resultMap="CrowdsourcingResultDetail">
+	    SELECT <include refid="columns"/>
+	    FROM cloud_crowdsourcing_result_detail 
+	    WHERE result_id=#{resultId}
+	</select>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="CrowdsourcingResultDetail">
+		SELECT <include refid="columns"/>
+		FROM cloud_crowdsourcing_result_detail
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="CrowdsourcingResultDetail">
+		SELECT <include refid="columns"/>
+		FROM cloud_crowdsourcing_result_detail   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+</mapper>

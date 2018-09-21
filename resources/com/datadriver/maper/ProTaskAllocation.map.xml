@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.mapper.ProTaskAllocationMapper">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.publicClass.ProTaskAllocation">
+    <id column="DD_ALLOCATION_ID" jdbcType="INTEGER" property="ddAllocationId" />
+    <result column="DD_PROJECT_ID" jdbcType="INTEGER" property="ddProjectId" />
+    <result column="DD_TASK_ID" jdbcType="INTEGER" property="ddTaskId" />
+    <result column="DD_RESOURCE_GROUP_ID" jdbcType="INTEGER" property="ddResourceGroupId" />
+    <result column="DD_RESPONSOBLE_PERSON_ID" jdbcType="INTEGER" property="ddResponsoblePersonId" />
+    <result column="DD_START_TIME" jdbcType="TIMESTAMP" property="ddStartTime" />
+    <result column="DD_END_TIME" jdbcType="TIMESTAMP" property="ddEndTime" />
+    <result column="DD_TOTAL_TIME" jdbcType="VARCHAR" property="ddTotalTime" />
+    <result column="DD_DESTRIBUTION_RATE" jdbcType="INTEGER" property="ddDestributionRate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_ALLOCATION_ID, DD_PROJECT_ID, DD_TASK_ID, DD_RESOURCE_GROUP_ID, DD_RESPONSOBLE_PERSON_ID, 
+    DD_START_TIME, DD_END_TIME, DD_TOTAL_TIME, DD_DESTRIBUTION_RATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_project_task_allocation
+    where DD_ALLOCATION_ID = #{ddAllocationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_project_task_allocation
+    where DD_ALLOCATION_ID = #{ddAllocationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.casic.datadriver.publicClass.ProTaskAllocation">
+    insert into dd_project_task_allocation (DD_ALLOCATION_ID, DD_PROJECT_ID, DD_TASK_ID, 
+      DD_RESOURCE_GROUP_ID, DD_RESPONSOBLE_PERSON_ID, 
+      DD_START_TIME, DD_END_TIME, DD_TOTAL_TIME, 
+      DD_DESTRIBUTION_RATE)
+    values (#{ddAllocationId,jdbcType=INTEGER}, #{ddProjectId,jdbcType=INTEGER}, #{ddTaskId,jdbcType=INTEGER}, 
+      #{ddResourceGroupId,jdbcType=INTEGER}, #{ddResponsoblePersonId,jdbcType=INTEGER}, 
+      #{ddStartTime,jdbcType=TIMESTAMP}, #{ddEndTime,jdbcType=TIMESTAMP}, #{ddTotalTime,jdbcType=VARCHAR}, 
+      #{ddDestributionRate,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.publicClass.ProTaskAllocation">
+    insert into dd_project_task_allocation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddAllocationId != null">
+        DD_ALLOCATION_ID,
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID,
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID,
+      </if>
+      <if test="ddResourceGroupId != null">
+        DD_RESOURCE_GROUP_ID,
+      </if>
+      <if test="ddResponsoblePersonId != null">
+        DD_RESPONSOBLE_PERSON_ID,
+      </if>
+      <if test="ddStartTime != null">
+        DD_START_TIME,
+      </if>
+      <if test="ddEndTime != null">
+        DD_END_TIME,
+      </if>
+      <if test="ddTotalTime != null">
+        DD_TOTAL_TIME,
+      </if>
+      <if test="ddDestributionRate != null">
+        DD_DESTRIBUTION_RATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddAllocationId != null">
+        #{ddAllocationId,jdbcType=INTEGER},
+      </if>
+      <if test="ddProjectId != null">
+        #{ddProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="ddTaskId != null">
+        #{ddTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="ddResourceGroupId != null">
+        #{ddResourceGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="ddResponsoblePersonId != null">
+        #{ddResponsoblePersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddStartTime != null">
+        #{ddStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddEndTime != null">
+        #{ddEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddTotalTime != null">
+        #{ddTotalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDestributionRate != null">
+        #{ddDestributionRate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.publicClass.ProTaskAllocation">
+    update dd_project_task_allocation
+    <set>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID = #{ddProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="ddTaskId != null">
+        DD_TASK_ID = #{ddTaskId,jdbcType=INTEGER},
+      </if>
+      <if test="ddResourceGroupId != null">
+        DD_RESOURCE_GROUP_ID = #{ddResourceGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="ddResponsoblePersonId != null">
+        DD_RESPONSOBLE_PERSON_ID = #{ddResponsoblePersonId,jdbcType=INTEGER},
+      </if>
+      <if test="ddStartTime != null">
+        DD_START_TIME = #{ddStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddEndTime != null">
+        DD_END_TIME = #{ddEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ddTotalTime != null">
+        DD_TOTAL_TIME = #{ddTotalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="ddDestributionRate != null">
+        DD_DESTRIBUTION_RATE = #{ddDestributionRate,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DD_ALLOCATION_ID = #{ddAllocationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.publicClass.ProTaskAllocation">
+    update dd_project_task_allocation
+    set DD_PROJECT_ID = #{ddProjectId,jdbcType=INTEGER},
+      DD_TASK_ID = #{ddTaskId,jdbcType=INTEGER},
+      DD_RESOURCE_GROUP_ID = #{ddResourceGroupId,jdbcType=INTEGER},
+      DD_RESPONSOBLE_PERSON_ID = #{ddResponsoblePersonId,jdbcType=INTEGER},
+      DD_START_TIME = #{ddStartTime,jdbcType=TIMESTAMP},
+      DD_END_TIME = #{ddEndTime,jdbcType=TIMESTAMP},
+      DD_TOTAL_TIME = #{ddTotalTime,jdbcType=VARCHAR},
+      DD_DESTRIBUTION_RATE = #{ddDestributionRate,jdbcType=INTEGER}
+    where DD_ALLOCATION_ID = #{ddAllocationId,jdbcType=INTEGER}
+  </update>
+</mapper>

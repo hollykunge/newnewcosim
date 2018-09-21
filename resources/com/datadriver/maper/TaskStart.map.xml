@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.task.TaskStart">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.task.TaskStart">
+        <result column="DD_TASK_START_ID" jdbcType="NUMERIC" property="ddTaskStartId"/>
+        <result column="DD_PROJECT_START_ID" jdbcType="NUMERIC" property="ddProjectStartId"/>
+        <result column="DD_TASK_ID" jdbcType="NUMERIC" property="ddTaskId"/>
+        <result column="ACT_INST_ID" jdbcType="NUMERIC" property="actInstId"/>
+        <result column="DD_TASK_STATUS" jdbcType="SMALLINT" property="ddTaskStatus"/>
+        <result column="SORT_ORDER" jdbcType="NUMERIC" property="sortOrder"/>
+        <result column="DD_TASK_RESPONCE_PERSON" jdbcType="NUMERIC" property="ddTaskResponcePerson"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DD_TASK_START_ID,DD_PROJECT_START_ID,DD_TASK_ID,ACT_INST_ID,DD_TASK_STATUS,SORT_ORDER,DD_TASK_RESPONCE_PERSON
+    </sql>
+
+    <insert id="add" parameterType="com.casic.datadriver.model.task.TaskStart">
+    insert into dd_task_start (DD_TASK_START_ID, DD_PROJECT_START_ID,
+      DD_TASK_ID, ACT_INST_ID, DD_TASK_STATUS,
+      SORT_ORDER,DD_TASK_RESPONCE_PERSON)
+    values (#{ddTaskStartId,jdbcType=NUMERIC}, #{ddProjectStartId,jdbcType=NUMERIC},
+      #{ddTaskId,jdbcType=NUMERIC}, #{actInstId,jdbcType=NUMERIC}, #{ddTaskStatus,jdbcType=SMALLINT},
+      #{sortOrder,jdbcType=NUMERIC},#{ddTaskResponcePerson,jdbcType=NUMERIC})
+   </insert>
+
+    <select id="queryTaskStartByResponceId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_task_start
+        WHERE
+        DD_TASK_RESPONCE_PERSON=#{taskResponcePerson}
+    </select>
+
+    <select id="queryTaskStartByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_task_start
+        WHERE
+        DD_TASK_ID=#{ddTaskID}
+    </select>
+
+    <select id="getByProjectId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_task_start
+        WHERE
+        DD_PROJECT_ID=#{ddProjectID}
+    </select>
+
+    <update id="update" parameterType="com.casic.datadriver.model.task.TaskStart">
+    update dd_task_start
+    set DD_TASK_START_ID = #{ddTaskStartId,jdbcType=NUMERIC},
+    DD_PROJECT_START_ID = #{ddProjectStartId,jdbcType=NUMERIC},
+    DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
+    ACT_INST_ID = #{actInstId,jdbcType=NUMERIC},
+    DD_TASK_STATUS = #{ddTaskStatus,jdbcType=SMALLINT},
+    SORT_ORDER = #{sortOrder,jdbcType=NUMERIC},
+    DD_TASK_RESPONCE_PERSON = #{ddTaskResponcePerson,jdbcType=NUMERIC}
+
+    where DD_TASK_START_ID = #{ddTaskStartId}
+  </update>
+
+    <select id="getByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_task_start
+        WHERE
+        DD_TASK_ID=#{ddTaskID}
+    </select>
+
+    <delete id="delByTaskId" parameterType="java.lang.Long">
+    delete from dd_task_start
+    where DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC}
+  </delete>
+
+    <delete id="delById" parameterType="java.lang.Long">
+    delete from
+    dd_task_start
+    where DD_TASK_START_ID = #{ddTaskStartId,jdbcType=NUMERIC}
+  </delete>
+</mapper>

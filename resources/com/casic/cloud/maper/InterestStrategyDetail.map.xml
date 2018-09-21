@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.interestStrategy.InterestStrategyDetail">
+	<resultMap id="InterestStrategyDetail" type="com.casic.cloud.model.config.interestStrategy.InterestStrategyDetail">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="capsNumber" column="caps_number" jdbcType="NUMERIC"/>
+		<result property="lowerNumber" column="lower_number" jdbcType="NUMERIC"/>
+		<result property="interestValue" column="interest_value" jdbcType="NUMERIC"/>
+		<result property="strategyId" column="strategy_id" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,caps_number,lower_number,interest_value,strategy_id
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(capsNumber)"> AND caps_number  =#{capsNumber} </if>
+			<if test="@Ognl@isNotEmpty(lowerNumber)"> AND lower_number  =#{lowerNumber} </if>
+			<if test="@Ognl@isNotEmpty(interestValue)"> AND interest_value  =#{interestValue} </if>
+			<if test="@Ognl@isNotEmpty(strategyId)"> AND strategy_id  =#{strategyId} </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.interestStrategy.InterestStrategyDetail">
+		INSERT INTO cloud_interest_strategy_detail
+		(id,caps_number,lower_number,interest_value,strategy_id)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{capsNumber,jdbcType=NUMERIC}, #{lowerNumber,jdbcType=NUMERIC}, #{interestValue,jdbcType=NUMERIC}, #{strategyId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_interest_strategy_detail 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.interestStrategy.InterestStrategyDetail">
+		UPDATE cloud_interest_strategy_detail SET
+		caps_number=#{capsNumber,jdbcType=NUMERIC},
+		lower_number=#{lowerNumber,jdbcType=NUMERIC},
+		interest_value=#{interestValue,jdbcType=NUMERIC},
+		strategy_id=#{strategyId,jdbcType=NUMERIC}
+		WHERE
+		id=#{id}
+	</update>
+	<delete id="delByMainId">
+	    DELETE FROM cloud_interest_strategy_detail
+	    WHERE
+	    strategy_id=#{strategyId}
+	</delete>    
+	
+	<select id="getInterestStrategyDetailList" resultMap="InterestStrategyDetail">
+	    SELECT <include refid="columns"/>
+	    FROM cloud_interest_strategy_detail 
+	    WHERE strategy_id=#{strategyId}
+	</select>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="InterestStrategyDetail">
+		SELECT <include refid="columns"/>
+		FROM cloud_interest_strategy_detail
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="InterestStrategyDetail">
+		SELECT <include refid="columns"/>
+		FROM cloud_interest_strategy_detail   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  desc
+		</if>
+	</select>
+</mapper>

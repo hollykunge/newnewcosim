@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE compass-core-mapping PUBLIC
+"-//Compass/Compass Core Mapping DTD 2.2//EN"
+"http://www.compass-project.org/dtd/compass-core-mapping-2.2.dtd">
+
+
+	<!-- 这里的包名必须和pojo的包名一致 -->
+<compass-core-mapping package="com.casic.cloud.model.manufacture.manufEnquiry">
+<!-- 定义实体及其字段的对应关系 -->
+<!-- 注意实体及其字段的名称的大小写应当与pojo对象一致，而不是与数据库一致关于pojo与数据库的对应表的一致性关系由hibernate的映谢文件定义，而不是这个文件当前映射文件只定义compass与hibernate的关系 -->
+<class name="ManufEnquiry" alias="${manufEnquirys.ManufEnquiry}">
+	<id name="id" />
+	
+	<property name="code">
+  		<meta-data >${manufEnquirys.manufEnquiryNo}</meta-data>
+	</property>
+	
+	<property name="operatorName">
+  		<meta-data >${manufEnquirys.operatorName}</meta-data>
+	</property>
+	
+	<property name="enterpriseName">
+  		<meta-data >${manufEnquirys.enterpriseName}</meta-data>
+	</property>
+	
+	<constant>
+		<meta-data>${manufEnquirys.manuftype}</meta-data>
+		<meta-data-value>${manufEnquirys.manuftype.mdmanufEnquiry}</meta-data-value>
+	</constant>
+
+</class>
+</compass-core-mapping>

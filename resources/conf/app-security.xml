@@ -1,0 +1,213 @@
+﻿<beans 
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
+	
+	<security:http  entry-point-ref="multipleAuthenticationLoginEntry" lowercase-comparisons="true" servlet-api-provision="true">
+		<security:intercept-url pattern="/js/**" filters="none" />
+		<security:intercept-url pattern="/commons/**" filters="none" />
+		<security:intercept-url pattern="/media/**" filters="none" />
+		<security:intercept-url pattern="/403*" filters="none" />
+		<security:intercept-url pattern="/404*" filters="none" />
+		<security:intercept-url pattern="/500*" filters="none" />
+		<security:intercept-url pattern="/servlet/ValidCode" filters="none"/>
+		<security:intercept-url pattern="/coin/**" filters="none"/>
+		<!--
+		<security:session-management invalid-session-url="/loginRedirect.ht">
+			<security:concurrency-control error-if-maximum-exceeded="false" max-sessions="1" expired-url="/loginRedirect.ht"/>
+		</security:session-management>
+		-->
+		<!--使用表单登录-->
+		<security:remember-me key="bpm3PrivateKey"/> 
+		<security:logout logout-url="/logout" logout-success-url="/loginRedirect.ht"/> 
+		<security:custom-filter  ref="aopFilter" position="FIRST" />
+		<security:custom-filter  ref="currentProfileFilter" position="LAST"/>
+		<security:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="permissionFilter" />
+		<security:access-denied-handler ref="htAccessDeniedHandler"/>
+		<security:custom-filter position="SWITCH_USER_FILTER" ref="switchUserProcessingFilter"/>
+	</security:http>
+	
+	<bean id="actionPageMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="cloud" value="/loginCloud.ht"></entry>
+				<entry key="bpmx" value="/loginBpmx.jsp"></entry>
+				<entry key="system" value="/loginSystem.ht"></entry>				
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="switchUserProcessingFilter" class="com.hotent.core.web.filter.HtSwitchUserFilter">
+            <property name="userDetailsService" ref="sysUserDao" />
+            <property name="switchUserUrl" value="/j_spring_security_switch_user" />
+            <property name="exitUserUrl" value="/j_spring_security_exit_user" />
+            <property name="targetUrl" value="/platform/console/main.ht" />
+    </bean>
+	
+	<!--登录入口定义-->
+	<!-- 
+	<bean id="multipleAuthenticationLoginEntry"    class="com.hotent.core.web.security.MultipleAuthenticationLoginEntry">  
+	 -->
+	<bean id="multipleAuthenticationLoginEntry"    class="com.casic.cloud.web.security.MultipleAuthenticationLoginEntry2">  
+        <property name="defaultLoginUrl" value="/loginCloud.ht"/>  
+        <property name="directUrlResolvers">  
+            <list>  
+                <ref bean="mobileLoginEntry"/>  
+                <ref bean="bpmxLoginEntry"/>
+                <ref bean="systemLoginEntry"/>  
+            </list>  
+        </property>  
+    </bean>  
+  	
+  	<!-- 跳转到手机登陆页 -->
+    <bean id="mobileLoginEntry" class="com.hotent.core.web.security.RequestUriDirectUrlResolver">  
+        <property name="pattern" value="/mobile"/>  
+        <property name="directUrl" value="/mobileLogin.jsp"/>  
+    </bean>
+    <!-- BPMX3管理 -->  
+    <bean id="bpmxLoginEntry" class="com.hotent.core.web.security.RequestUriDirectUrlResolver">  
+        <property name="pattern" value="/platform"/>  
+        <property name="directUrl" value="/loginCloud.ht"/>  
+    </bean>    
+    <!-- 平台管理 -->
+    <bean id="systemLoginEntry" class="com.hotent.core.web.security.RequestUriDirectUrlResolver">  
+        <property name="pattern" value="/cloud/system"/>  
+        <property name="directUrl" value="/loginSystem.ht"/>  
+    </bean> 
+     
+	<bean id="htAccessDeniedHandler" class="com.hotent.core.web.security.HtAccessDeniedHandler">
+		<property name="accessDeniedUrl" value="/commons/403.jsp"></property>
+	</bean>
+		
+	<!-- 认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
+	<security:authentication-manager alias="authenticationManager" >
+		<security:authentication-provider user-service-ref="sysUserDao">
+		<security:password-encoder hash="sha-256" base64="true"/>
+		</security:authentication-provider>
+		<security:authentication-provider user-service-ref="sysUserDao">
+		<security:password-encoder hash="plaintext"/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+	
+	<bean id="aopFilter" class="com.hotent.core.web.filter.AopFilter"></bean>
+	<bean id="currentProfileFilter" class="com.hotent.platform.web.filter.CurrentProfileFilter"></bean>
+	<!-- 一个自定义的filter，必须包含authenticationManager,accessDecisionManager,securityMetadataSource三个属性，我们的所有控制将在这三个类中实现 -->
+
+	<bean id="permissionFilter" class="com.hotent.core.web.filter.PermissionFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="accessDecisionManager" ref="accessDecisionManager" />
+		<property name="securityMetadataSource" ref="securityMetadataSource" />
+	</bean>
+
+	<!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+	<bean id="accessDecisionManager" class="com.hotent.core.web.security.HtDecisionManager" />
+
+	<!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+	<bean id="securityMetadataSource"
+		class="com.hotent.core.web.security.HtSecurityMetadataSource" scope="singleton" >
+		<property name="anonymousUrls">
+			<set>
+				<value>/</value>
+				<value>/mobileLogin.jsp</value>
+				<value>/mobileLogin.ht</value>
+				<value>/loginRedirect.ht</value>
+				<value>/login.ht</value>
+				<value>/loginBpmx.jsp</value>
+				<value>/loginSystem.ht</value>
+				<value>/loginSystemPost.ht</value>				
+				<value>/loginCloud.ht</value>
+				<value>/loginCloudPost.ht</value>
+				<value>/loginiwork.ht</value>
+				<value>/iworkproject.ht</value>
+				<value>/iworktask.ht</value>
+				<value>/CA/CAPost.ht</value>
+				<value>/CA/changeUser.ht</value>	
+				<value>/index.ht</value>
+				<value>/car_mainpage.ht</value>
+				<value>/topMarquee.ht</value>
+				<value>/reg.ht</value>
+				<value>/regPost.ht</value>
+				<value>/login.ht</value>
+				<value>/bpmImage</value>
+				<value>/platform/bpm/processRun/userImage.ht</value>
+				<value>/platform/bpm/processRun/getFlowStatusByInstanceId.ht</value>
+				<value>/platform/bpm/processRun/taskUser.ht</value>
+				<value>/platform/bpm/taskOpinion/list.ht</value>
+				<!-- flex附件上传的 -->
+				<value>/platform/bpm/bpmDefinition/getXmlImport.ht</value>
+				
+				<!-- 过滤 -->
+				<value>/contactus.jsp</value>
+				<value>/law.jsp</value>
+				<value>/cloud/system/news/more.ht</value>
+				<value>/cloud/system/news/get.ht</value>
+				<value>/cloud/config/capabilityClass/listClasses.ht</value>
+				<value>/cloud/config/businessDevchase/businessChance_list.ht</value>
+				<value>/cloud/config/capability/capabilityList.ht</value>
+				<value>/cloud/config/businessDevchase/indexview.ht</value>
+				
+				<value>/cloud/cloudResource/resourceManagement/resource.ht</value>	
+				<value>/cloud/cloudResource/resourceManagement/showResource.ht</value>	
+				<value>/cloud/cloudResource/resourceManagement/listResourceInstance.ht</value>	
+				
+	
+				<value>/cloud/config/info/getCascadeJsonData.ht</value>	
+				<value>/cloud/config/business/moreBusinessChance.ht</value>	
+				<value>/cloud/config/capability/search.ht</value>	
+				<value>/cloud/config/cloudSrc/search.ht</value>		
+				<value>/cloud/config/business/search.ht</value>	
+				<value>/cloud/system/enterprises/search.ht</value>	
+				<value>/cloud/config/material/search.ht</value>	
+				<value>/cloud/config/capability/capabilityDetail.ht</value>	
+				<value>/cloud/config/business/moreBusinessChance.ht</value>		
+				<value>/cloud/system/enterprises/emailValid.ht</value>
+				<value>/cloud/system/enterprises/nameValid.ht</value>
+				<value>/cloud/console/enterprise.ht</value>
+				<value>/cloud/console/busiarea/beFriend.ht</value>
+				<value>/cloud/config/info/list.ht</value>
+				<value>/cloud/console/showIndustry.ht</value>
+				<value>/cloud/console/companyList.ht</value>
+				<value>/platform/system/sysFile/*.ht</value>
+				<value>/toRegPass.ht</value>
+				<value>/regPass.ht</value>
+				<value>/search.ht</value>
+				<value>/cloud/system/enterprises/search_ind.ht</value>
+				<value>/cloud/cloudresource/3drp.ht</value>
+				<value>/cloud/research/avx.ht</value>
+				<value>/help/help_about01.jsp</value>
+				<value>/help/help_about02.jsp</value>
+				<value>/help/help_about03.jsp</value>
+				<value>/help/help_01.jsp</value>
+				<value>/help/help_02.jsp</value>
+				<value>/help/help_03.jsp</value>
+				<value>/help/help_04.jsp</value>
+				<value>/help/help_05.jsp</value>
+				<value>/help/help_06.jsp</value>
+				<value>/help/help_07.jsp</value>
+				<value>/help/help_08.jsp</value>
+				<value>/help/help_09.jsp</value>
+				<value>/help/help_10.jsp</value>
+				<value>/help/help_11.jsp</value>
+				<value>/cloud/reg/register/edit.ht</value>
+				<value>/cloud/reg/register/save.ht</value>
+				<value>/cloud/pub/image/toUpload.ht</value>
+				<value>/cloud/pub/toUpload.ht</value>
+				<value>/cloud/pub/upload.ht</value>
+				<value>/cloud/pub/toUploadFile.ht</value>
+				<value>/cloud/pub/uploadFile.ht</value>
+				<value>/cloud/console/personalReg.ht</value>
+				<value>/cloud/pub/personalRegtoUpload.ht</value>
+				<value>/cloud/pub/personalRegUpload.ht</value>
+				<value>/personalRegPost.ht</value>
+				
+				<!-- 单点登录入口 -->
+				<value>/CA/casLogin.ht</value>
+			</set>
+		</property>
+	</bean>
+</beans>

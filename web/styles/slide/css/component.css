@@ -1,0 +1,140 @@
+/* General styles for all menus */
+.cbp-spmenu {
+	background: transparent;
+	position: fixed;
+}
+/* Orientation-dependent styles for the content of the menu */
+
+.cbp-spmenu-vertical {
+	width: 450px;
+	height: 100%;
+	top: 0;
+	z-index: 1000;
+}
+.height-nonav {
+	position: absolute;
+	top: 50px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.entity-well .entity-well-header {
+	padding: 7px 0 7px 20px;
+	border-bottom: solid 1px #bfbfbf;
+	position: relative;
+}
+.entity-well .entity-well-content {
+	padding-left: 56px;
+	padding-right: 30px;
+	padding-bottom: 20px;
+	padding-top: 10px;
+	position: relative;
+}
+.nav-pills>li {
+	float: left;
+}
+.nav>li {
+	position: relative;
+	display: block;
+}
+.entity-well .entity-well-header a.entity-project-name {
+	color: #797979;
+	font-size: 15px;
+	line-height: 280%;
+	/*position: absolute;*/
+	right: 450px;
+	left: 23px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	cursor:pointer;
+}
+.entity-well .entity-well-header ul.entity-well-header-nav {
+	float: left;
+	margin-left: 0;
+	font-size: 14px;
+}
+.entity-well .entity-well-header ul.entity-well-header-nav li>a:link {
+	color: #6c6a67;
+}
+.entity-well .entity-well-header ul.entity-well-header-nav>li>a:link {
+	padding: 10px 9px;
+}
+.nav-pills>li>a {
+	border-radius: 3px;
+}
+.nav>li>a {
+	position: relative;
+	display: block;
+	padding: 10px 15px;
+	cursor:pointer;
+}
+.entity-well .entity-well-header ul.entity-well-header-nav li>a:link i {
+	color: #d9d7d3;
+}
+
+/* Vertical menu that slides from the left or right */
+
+.cbp-spmenu-left {
+	left: -240px;
+}
+
+.cbp-spmenu-right {
+	right: -480px;
+}
+
+.cbp-spmenu-left.cbp-spmenu-open {
+	left: 0px;
+}
+
+.cbp-spmenu-right.cbp-spmenu-open {
+	right: 0px;
+}
+
+/* Horizontal menu that slides from the top or bottom */
+
+.cbp-spmenu-top {
+	top: -150px;
+}
+
+.cbp-spmenu-bottom {
+	bottom: -150px;
+}
+
+.cbp-spmenu-top.cbp-spmenu-open {
+	top: 0px;
+}
+
+.cbp-spmenu-bottom.cbp-spmenu-open {
+	bottom: 0px;
+}
+
+/* Push classes applied to the body */
+
+.cbp-spmenu-push {
+	overflow-x: hidden;
+	position: relative;
+	left: 0;
+}
+
+.cbp-spmenu-push-toright {
+	left: 240px;
+}
+
+.cbp-spmenu-push-toleft {
+	left: -450px;
+}
+
+/* Transitions */
+
+.cbp-spmenu,
+.cbp-spmenu-push {
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+
+
+
+
+

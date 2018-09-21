@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.cloud.model.tool.ToolBpmNode">
+	<resultMap id="toolBpmNode" type="com.casic.cloud.model.tool.ToolBpmNode">
+		<id property="toolNodeId" column="toolNodeId" jdbcType="NUMERIC" />
+		<result property="toolUserId" column="toolUserId" jdbcType="NUMERIC" />
+		<result property="setId" column="setId" jdbcType="NUMERIC" />
+		<result property="toolName" column="toolName" jdbcType="VARCHAR"/>
+		<result property="toolType" column="toolType" jdbcType="NUMERIC"/>
+		<result property="toolAddress" column="toolAddress" jdbcType="VARCHAR"/>
+		<result property="myToolAddress" column="myToolAddress" jdbcType="VARCHAR"/>
+		<result property="toolDesc" column="toolDesc" jdbcType="VARCHAR"/>
+	</resultMap>
+
+
+	<sql id="columns">
+		toolNodeId,toolUserId,setId
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(toolNodeId)"> AND toolNodeId =#{toolNodeId} </if>
+			<if test="@Ognl@isNotEmpty(toolUserId)"> AND toolUserId =#{toolUserId} </if>
+			<if test="@Ognl@isNotEmpty(setId)"> AND setId =#{setId} </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.tool.ToolBpmNode">
+		INSERT INTO cloud_tool_bpm_node
+		(
+		<include refid="columns" />
+		)
+		VALUES
+		(#{toolNodeId,jdbcType=NUMERIC}, #{toolUserId,jdbcType=NUMERIC},
+		#{setId,jdbcType=NUMERIC})
+	</insert>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM
+		cloud_tool_bpm_node
+		WHERE
+		toolNodeId=#{toolNodeId}
+	</delete>
+
+	<select id="getAll" resultMap="toolBpmNode" parameterType="java.util.Map">
+		SELECT
+		a.setId,a.toolUserId,a.toolNodeId,b.myToolAddress,c.toolName,c.toolType,c.toolAddress
+		FROM
+		cloud_tool_bpm_node a LEFT JOIN cloud_tool_user b LEFT JOIN cloud_tool c ON b.toolId=c.toolId ON
+		a.toolUserId=b.toolUserId
+		WHERE a.setId=#{setId}
+		<if test="@Ognl@isNotEmpty(toolName)"> AND toolName like #{toolName} </if>
+		<if test="@Ognl@isNotEmpty(toolType)"> AND toolType =#{toolType} </if>
+		<if test="@Ognl@isNotEmpty(orderField)">
+			order by b.${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+			order by toolNodeId desc
+		</if>
+	</select>
+
+	<select id="getToolBpmNode" resultMap="toolBpmNode" parameterType="java.util.Map">
+		SELECT
+		a.setId,a.toolUserId,a.toolNodeId
+		FROM
+		cloud_tool_bpm_node a
+		WHERE a.setId=#{setId,jdbcType=NUMERIC} AND a.toolUserId=#{toolUserId,jdbcType=NUMERIC}
+	</select>
+	
+	<select id="getById" resultMap="toolBpmNode" parameterType="java.util.Map">
+		SELECT
+		a.setId,a.toolUserId,a.toolNodeId,b.myToolAddress,c.toolName,c.toolType,c.toolAddress,c.toolDesc
+		FROM
+		cloud_tool_bpm_node a LEFT JOIN cloud_tool_user b LEFT JOIN cloud_tool ON b.toolId=c.toolId ON
+		a.toolUserId=b.toolUserId
+		WHERE a.toolNodeId=#{toolNodeId}
+	</select>	
+	
+	<update id="update" parameterType="com.casic.cloud.model.tool.ToolBpmNode">
+		UPDATE cloud_tool_bpm_node SET
+		toolUserId=#{toolUserId,jdbcType=NUMERIC},
+		setId=#{setId,jdbcType=NUMERIC},
+		WHERE
+		toolNodeId=#{toolNodeId,jdbcType=NUMERIC}
+	</update>	
+	
+	<select id="getToolBpmNodesByDefId" resultMap="toolBpmNode" parameterType="java.util.Map">
+		SELECT a.setId,a.toolUserId,a.toolNodeId
+		FROM (cloud_tool_bpm_node a INNER JOIN bpm_node_set b ON a.setId=b.setId) 
+		WHERE b.defId=#{defId}   
+	</select>
+</mapper>

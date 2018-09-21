@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.casic.datadriver.model.coin.DdScoreInflow" >
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdScoreInflow" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="NUMERIC" />
+    <result column="uid" property="uid" jdbcType="NUMERIC" />
+    <result column="source_score" property="sourceScore" jdbcType="NUMERIC" />
+    <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
+    <result column="source_detail" property="sourceDetail" jdbcType="VARCHAR" />
+    <result column="upd_time" property="updTime" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+        id, uid, source_score, source_type, source_detail, upd_time
+    </sql>
+
+  <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
+    insert into dd_score_inflow (id, uid, source_score, source_type, source_detail, upd_time)
+    values (#{id,jdbcType=NUMERIC}, #{uid,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
+      #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR})
+    </insert>
+</mapper>

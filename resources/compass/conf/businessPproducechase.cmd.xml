@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE compass-core-meta-data PUBLIC 
+     "-//Compass/Compass Core Meta Data DTD 2.2//EN"
+     "http://www.compass-project.org/dtd/compass-core-meta-data-2.2.dtd">
+
+<compass-core-meta-data>
+	<meta-data-group id="businessPproducechases" displayName="生产商机">
+ 
+		<description>生产商机列表</description>
+ 		<uri>http://compass/businessPproducechases</uri>
+
+		<alias id="BusinessPproducechase" displayName="BusinessPproducechase">
+ 			<description>BusinessPproducechase alias</description>
+ 			<uri>http://compass/businessPproducechases/BusinessPproducechase</uri>
+			<name>BusinessPproducechase</name>
+ 		</alias>
+
+		<meta-data id="busppname" displayName="busppname">
+ 			<description>busppname alias</description>
+ 			<uri>http://compass/businessPproducechases/busppname</uri>
+ 			<name>name</name>
+ 		</meta-data>
+ 
+ 		<meta-data id="busppcontent" displayName="busppcontent">
+ 			<description>busppcontent alias</description>
+ 			<uri>http://compass/businessPproducechases/busppcontent</uri>
+ 			<name>content</name>
+ 		</meta-data>
+ 
+ 		<meta-data id="buspptype" displayName="buspptype">
+ 			<description>buspptype alias</description>
+ 			<uri>http://compass/businessPproducechases/buspptype</uri>
+ 			<name>type</name>
+ 		</meta-data>
+  		 
+  			<meta-data id="busppclassid" displayName="busppclassid">
+ 			<description>busppclassid alias</description>
+ 			<uri>http://compass/businessPproducechases/busppclassid</uri>
+ 			<name>classid</name>
+ 		</meta-data>
+ 		 
+ 		<meta-data id="busppcompanyName" displayName="busppcompanyName">
+ 			<description>busppcompanyName alias</description>
+ 			<uri>http://compass/businessPproducechases/busppcompanyName</uri>
+ 			<name>companyName</name>
+ 		</meta-data>
+ 		
+ 		<meta-data id="busppuserName" displayName="busppuserName">
+ 			<description>busppuserName alias</description>
+ 			<uri>http://compass/businessPproducechases/busppuserName</uri>
+ 			<name>userName</name>
+ 		</meta-data>
+ 			
+ 		<meta-data id="busppscgyyq" displayName="busppscgyyq">
+ 			<description>busppscgyyq alias</description>
+ 			<uri>http://compass/businessPproducechases/busppscgyyq</uri>
+ 			<name>scgyyq</name>
+ 		</meta-data>
+ 		
+ 	
+ 		<meta-data id="busppscgm" displayName="busppscgm">
+ 			<description>busppscgm alias</description>
+ 			<uri>http://compass/businessPproducechases/busppscgm</uri>
+ 			<name>scgm</name>
+ 		</meta-data>
+ 		<meta-data id="busppgjsbyq" displayName="busppgjsbyq">
+ 			<description>busppgjsbyq alias</description>
+ 			<uri>http://compass/businessPproducechases/busppgjsbyq</uri>
+ 			<name>gjsbyq</name>
+ 		</meta-data>
+ 		
+ 		
+ 		<meta-data id="busppcpzlyq" displayName="busppcpzlyq">
+ 			<description>busppcpzlyq alias</description>
+ 			<uri>http://compass/businessPproducechases/busppcpzlyq</uri>
+ 			<name>cpzlyq</name>
+ 		</meta-data>
+  		
+  		<meta-data id="buspphzjgqyzzyq" displayName="buspphzjgqyzzyq">
+ 			<description>buspphzjgqyzzyq alias</description>
+ 			<uri>http://compass/businessPproducechases/buspphzjgqyzzyq</uri>
+ 			<name>hzjgqyzzyq</name>
+ 		</meta-data>
+
+
+	</meta-data-group>
+ 
+</compass-core-meta-data>
+ 

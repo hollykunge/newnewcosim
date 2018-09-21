@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResult">
+	<resultMap id="CrowdsourcingResult" type="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResult">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="code" column="CODE" jdbcType="VARCHAR"/>
+		<result property="operateDate" column="OPERATE_DATE" jdbcType="DATE"/>
+		<result property="operaterId" column="OPERATER_ID" jdbcType="NUMERIC"/>
+		<result property="operaterName" column="OPERATER_NAME" jdbcType="VARCHAR"/>
+		<result property="operaterEnterpId" column="OPERATER_ENTERP_ID" jdbcType="NUMERIC"/>
+		<result property="operaterEnterpName" column="OPERATER_ENTERP_NAME" jdbcType="VARCHAR"/>
+		<result property="sourceformCrowdsourcingId" column="SOURCEFORM_CROWDSOURCING_ID" jdbcType="NUMERIC"/>
+		<result property="sourceformCrowdsourcingCode" column="SOURCEFORM_CROWDSOURCING_CODE" jdbcType="VARCHAR"/>
+		<result property="sourceformAgreementId" column="SOURCEFORM_AGREEMENT_ID" jdbcType="NUMERIC"/>
+		<result property="sourceformAgreementCode" column="SOURCEFORM_AGREEMENT_CODE" jdbcType="VARCHAR"/>
+		<result property="state" column="STATE" jdbcType="VARCHAR"/>
+		<result property="auditType" column="AUDIT_TYPE" jdbcType="VARCHAR"/>
+		<result property="auditOpinion" column="AUDIT_OPINION" jdbcType="VARCHAR"/>
+		<result property="resultAttachmentIds" column="RESULT_ATTACHMENT_IDS" jdbcType="VARCHAR"/>
+		<result property="resultName" column="RESULT_NAME" jdbcType="VARCHAR"/>
+		<result property="resultInfo" column="RESULT_INFO" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		ID,CODE,OPERATE_DATE,OPERATER_ID,OPERATER_NAME,OPERATER_ENTERP_ID,OPERATER_ENTERP_NAME,SOURCEFORM_CROWDSOURCING_ID,SOURCEFORM_CROWDSOURCING_CODE,SOURCEFORM_AGREEMENT_ID,SOURCEFORM_AGREEMENT_CODE,STATE,AUDIT_TYPE,AUDIT_OPINION,RESULT_ATTACHMENT_IDS,RESULT_NAME,RESULT_INFO
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(code)"> AND CODE  LIKE #{code}  </if>
+			<if test="@Ognl@isNotEmpty(operateDate)"> AND OPERATE_DATE  =#{operateDate} </if>
+			<if test="@Ognl@isNotEmpty(beginoperateDate)"> AND OPERATE_DATE  >=#{beginoperateDate,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endoperateDate)"> AND OPERATE_DATE <![CDATA[ <=#{endoperateDate,jdbcType=DATE}]]> </if>
+			<if test="@Ognl@isNotEmpty(operaterId)"> AND OPERATER_ID  =#{operaterId} </if>
+			<if test="@Ognl@isNotEmpty(operaterName)"> AND OPERATER_NAME  LIKE #{operaterName}  </if>
+			<if test="@Ognl@isNotEmpty(operaterEnterpId)"> AND OPERATER_ENTERP_ID  =#{operaterEnterpId} </if>
+			<if test="@Ognl@isNotEmpty(operaterEnterpName)"> AND OPERATER_ENTERP_NAME  LIKE #{operaterEnterpName}  </if>
+			<if test="@Ognl@isNotEmpty(sourceformCrowdsourcingId)"> AND SOURCEFORM_CROWDSOURCING_ID  =#{sourceformCrowdsourcingId} </if>
+			<if test="@Ognl@isNotEmpty(sourceformCrowdsourcingCode)"> AND SOURCEFORM_CROWDSOURCING_CODE  LIKE #{sourceformCrowdsourcingCode}  </if>
+			<if test="@Ognl@isNotEmpty(sourceformAgreementId)"> AND SOURCEFORM_AGREEMENT_ID  =#{sourceformAgreementId} </if>
+			<if test="@Ognl@isNotEmpty(sourceformAgreementCode)"> AND SOURCEFORM_AGREEMENT_CODE  LIKE #{sourceformAgreementCode}  </if>
+			<if test="@Ognl@isNotEmpty(state)"> AND STATE  LIKE #{state}  </if>
+			<if test="@Ognl@isNotEmpty(auditType)"> AND AUDIT_TYPE  LIKE #{auditType}  </if>
+			<if test="@Ognl@isNotEmpty(auditOpinion)"> AND AUDIT_OPINION  LIKE #{auditOpinion}  </if>
+			<if test="@Ognl@isNotEmpty(resultAttachmentIds)"> AND RESULT_ATTACHMENT_IDS  LIKE #{resultAttachmentIds}  </if>
+			<if test="@Ognl@isNotEmpty(resultName)"> AND RESULT_NAME  LIKE #{resultName}  </if>
+			<if test="@Ognl@isNotEmpty(resultInfo)"> AND RESULT_INFO  LIKE #{resultInfo}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResult">
+		INSERT INTO cloud_crowdsourcing_result
+		(ID,CODE,OPERATE_DATE,OPERATER_ID,OPERATER_NAME,OPERATER_ENTERP_ID,OPERATER_ENTERP_NAME,SOURCEFORM_CROWDSOURCING_ID,SOURCEFORM_CROWDSOURCING_CODE,SOURCEFORM_AGREEMENT_ID,SOURCEFORM_AGREEMENT_CODE,STATE,AUDIT_TYPE,AUDIT_OPINION,RESULT_ATTACHMENT_IDS,RESULT_NAME,RESULT_INFO)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{code,jdbcType=VARCHAR}, #{operateDate,jdbcType=DATE}, #{operaterId,jdbcType=NUMERIC}, #{operaterName,jdbcType=VARCHAR}, #{operaterEnterpId,jdbcType=NUMERIC}, #{operaterEnterpName,jdbcType=VARCHAR}, #{sourceformCrowdsourcingId,jdbcType=NUMERIC}, #{sourceformCrowdsourcingCode,jdbcType=VARCHAR}, #{sourceformAgreementId,jdbcType=NUMERIC}, #{sourceformAgreementCode,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{auditType,jdbcType=VARCHAR}, #{auditOpinion,jdbcType=VARCHAR}, #{resultAttachmentIds,jdbcType=VARCHAR}, #{resultName,jdbcType=VARCHAR}, #{resultInfo,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_crowdsourcing_result 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.crowdsourcing.crowdsourcingResult.CrowdsourcingResult">
+		UPDATE cloud_crowdsourcing_result SET
+		CODE=#{code,jdbcType=VARCHAR},
+		OPERATE_DATE=#{operateDate,jdbcType=DATE},
+		OPERATER_ID=#{operaterId,jdbcType=NUMERIC},
+		OPERATER_NAME=#{operaterName,jdbcType=VARCHAR},
+		OPERATER_ENTERP_ID=#{operaterEnterpId,jdbcType=NUMERIC},
+		OPERATER_ENTERP_NAME=#{operaterEnterpName,jdbcType=VARCHAR},
+		SOURCEFORM_CROWDSOURCING_ID=#{sourceformCrowdsourcingId,jdbcType=NUMERIC},
+		SOURCEFORM_CROWDSOURCING_CODE=#{sourceformCrowdsourcingCode,jdbcType=VARCHAR},
+		SOURCEFORM_AGREEMENT_ID=#{sourceformAgreementId,jdbcType=NUMERIC},
+		SOURCEFORM_AGREEMENT_CODE=#{sourceformAgreementCode,jdbcType=VARCHAR},
+		STATE=#{state,jdbcType=VARCHAR},
+		AUDIT_TYPE=#{auditType,jdbcType=VARCHAR},
+		AUDIT_OPINION=#{auditOpinion,jdbcType=VARCHAR},
+		RESULT_ATTACHMENT_IDS=#{resultAttachmentIds,jdbcType=VARCHAR},
+		RESULT_NAME=#{resultName,jdbcType=VARCHAR},
+		RESULT_INFO=#{resultInfo,jdbcType=VARCHAR}
+		WHERE
+		ID=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="CrowdsourcingResult">
+		SELECT <include refid="columns"/>
+		FROM cloud_crowdsourcing_result
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="CrowdsourcingResult">
+		SELECT <include refid="columns"/>
+		FROM cloud_crowdsourcing_result   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+</mapper>

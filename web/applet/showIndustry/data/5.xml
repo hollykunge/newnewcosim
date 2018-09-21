@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--An excerpt of an egocentric social network-->
+<graphml>
+  <graph edgedefault="undirected">
+    <key id="name" for="node" attr.name="name" attr.type="string"/>
+    <key id="gender" for="node" attr.name="gender" attr.type="string"/>
+    <node id="1">
+      <data key="name">卓越创造</data>
+    </node>
+    <edge source="1" target="2"></edge>
+    <node id="2">
+      <data key="name">华夏制造</data>
+    </node>
+    <edge source="1" target="2"></edge>
+  </graph>
+</graphml>

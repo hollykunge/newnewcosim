@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.hotent.platform.model.bpm.ProRunTblPk">
+	<resultMap id="ProRunTblPk" type="com.hotent.platform.model.bpm.ProRunTblPk">
+		<id property="tblPkId" column="TBL_PK_ID" jdbcType="NUMERIC"/>
+		<result property="runId" column="RUN_ID" jdbcType="NUMERIC"/>
+		<result property="tableId" column="TABLE_ID" jdbcType="NUMERIC"/>
+		<result property="pkId" column="PK_ID" jdbcType="NUMERIC"/>
+		<result property="mainTableId" column="MAIN_TABLE_ID" jdbcType="NUMERIC"/>
+		<result property="isMainTable" column="IS_MAIN_TABLE" jdbcType="NUMERIC"/>
+		<result property="mainTablePk" column="MAIN_TABLE_PK" jdbcType="NUMERIC"/>
+		<result property="pkName" column="PK_NAME" jdbcType="VARCHAR"/>
+		<result property="tableName" column="TABLE_NAME" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		TBL_PK_ID,RUN_ID,TABLE_ID,PK_ID,MAIN_TABLE_ID,IS_MAIN_TABLE,MAIN_TABLE_PK,PK_NAME,TABLE_NAME
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(tblPkId)"> AND TBL_PK_ID  =#{tblPkId} </if>
+			<if test="@Ognl@isNotEmpty(runId)"> AND RUN_ID  =#{runId} </if>
+			<if test="@Ognl@isNotEmpty(tableId)"> AND TABLE_ID  =#{tableId} </if>
+			<if test="@Ognl@isNotEmpty(pkId)"> AND PK_ID  =#{pkId} </if>
+			<if test="@Ognl@isNotEmpty(mainTableId)"> AND MAIN_TABLE_ID  =#{mainTableId} </if>
+			<if test="@Ognl@isNotEmpty(isMainTable)"> AND IS_MAIN_TABLE  =#{isMainTable} </if>
+			<if test="@Ognl@isNotEmpty(mainTablePk)"> AND MAIN_TABLE_PK  =#{mainTablePk} </if>
+			<if test="@Ognl@isNotEmpty(pkName)"> AND PK_NAME  LIKE #{pkName}  </if>
+			<if test="@Ognl@isNotEmpty(tableName)"> AND TABLE_NAME  LIKE #{tableName}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.hotent.platform.model.bpm.ProRunTblPk">
+		INSERT INTO BPM_PRO_RUN_TBL_PK
+		(TBL_PK_ID,RUN_ID,TABLE_ID,PK_ID,MAIN_TABLE_ID,IS_MAIN_TABLE,MAIN_TABLE_PK,PK_NAME,TABLE_NAME)
+		VALUES
+		(#{tblPkId,jdbcType=NUMERIC}, #{runId,jdbcType=NUMERIC}, #{tableId,jdbcType=NUMERIC}, #{pkId,jdbcType=NUMERIC}, #{mainTableId,jdbcType=NUMERIC}, #{isMainTable,jdbcType=NUMERIC}, #{mainTablePk,jdbcType=NUMERIC}, #{pkName,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM BPM_PRO_RUN_TBL_PK 
+		WHERE
+		TBL_PK_ID=#{tblPkId}
+	</delete>
+	
+	<update id="update" parameterType="com.hotent.platform.model.bpm.ProRunTblPk">
+		UPDATE BPM_PRO_RUN_TBL_PK SET
+		RUN_ID=#{runId,jdbcType=NUMERIC},
+		TABLE_ID=#{tableId,jdbcType=NUMERIC},
+		PK_ID=#{pkId,jdbcType=NUMERIC},
+		MAIN_TABLE_ID=#{mainTableId,jdbcType=NUMERIC},
+		IS_MAIN_TABLE=#{isMainTable,jdbcType=NUMERIC},
+		MAIN_TABLE_PK=#{mainTablePk,jdbcType=NUMERIC},
+		PK_NAME=#{pkName,jdbcType=VARCHAR},
+		TABLE_NAME=#{tableName,jdbcType=VARCHAR}
+		WHERE
+		TBL_PK_ID=#{tblPkId}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="ProRunTblPk">
+		SELECT <include refid="columns"/>
+		FROM BPM_PRO_RUN_TBL_PK
+		WHERE
+		TBL_PK_ID=#{tblPkId}
+	</select>
+	
+	<select id="getAll" resultMap="ProRunTblPk">
+		SELECT <include refid="columns"/>
+		FROM BPM_PRO_RUN_TBL_PK   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by TBL_PK_ID  desc
+		</if>
+	</select>
+	
+	<select id="getByRunId" parameterType="java.lang.Long" resultMap="ProRunTblPk">
+		SELECT <include refid="columns"/>
+		FROM BPM_PRO_RUN_TBL_PK
+		WHERE
+		RUN_ID=#{runId}
+	</select>
+	
+	<select id="getMainByRunId" parameterType="java.lang.Long" resultMap="ProRunTblPk">
+		SELECT <include refid="columns"/>
+		FROM BPM_PRO_RUN_TBL_PK
+		WHERE
+		RUN_ID=#{runId}
+		AND IS_MAIN_TABLE=1
+	</select>
+	
+	<select id="getSubByRunIdAndMain" resultMap="ProRunTblPk">
+		SELECT <include refid="columns"/>
+		FROM BPM_PRO_RUN_TBL_PK
+		WHERE
+		RUN_ID=#{runId,jdbcType=NUMERIC} 
+		AND MAIN_TABLE_ID=#{mainTableId,jdbcType=NUMERIC}
+		AND MAIN_TABLE_PK=#{maiPkId,jdbcType=NUMERIC}
+	</select>
+</mapper>

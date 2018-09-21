@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.mapper.ProPhaseConfigMapper">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.publicClass.ProPhaseConfig">
+    <id column="DD_PHASE_ID" jdbcType="INTEGER" property="ddPhaseId" />
+    <result column="DD_PHASE_NAME" jdbcType="VARCHAR" property="ddPhaseName" />
+    <result column="DD_PHASE_PARENT_ID" jdbcType="INTEGER" property="ddPhaseParentId" />
+    <result column="DD_PROJECT_ID" jdbcType="INTEGER" property="ddProjectId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DD_PHASE_ID, DD_PHASE_NAME, DD_PHASE_PARENT_ID, DD_PROJECT_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dd_project_phase_config
+    where DD_PHASE_ID = #{ddPhaseId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dd_project_phase_config
+    where DD_PHASE_ID = #{ddPhaseId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.casic.datadriver.publicClass.ProPhaseConfig">
+    insert into dd_project_phase_config (DD_PHASE_ID, DD_PHASE_NAME, DD_PHASE_PARENT_ID, 
+      DD_PROJECT_ID)
+    values (#{ddPhaseId,jdbcType=INTEGER}, #{ddPhaseName,jdbcType=VARCHAR}, #{ddPhaseParentId,jdbcType=INTEGER}, 
+      #{ddProjectId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.casic.datadriver.publicClass.ProPhaseConfig">
+    insert into dd_project_phase_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddPhaseId != null">
+        DD_PHASE_ID,
+      </if>
+      <if test="ddPhaseName != null">
+        DD_PHASE_NAME,
+      </if>
+      <if test="ddPhaseParentId != null">
+        DD_PHASE_PARENT_ID,
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddPhaseId != null">
+        #{ddPhaseId,jdbcType=INTEGER},
+      </if>
+      <if test="ddPhaseName != null">
+        #{ddPhaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddPhaseParentId != null">
+        #{ddPhaseParentId,jdbcType=INTEGER},
+      </if>
+      <if test="ddProjectId != null">
+        #{ddProjectId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.publicClass.ProPhaseConfig">
+    update dd_project_phase_config
+    <set>
+      <if test="ddPhaseName != null">
+        DD_PHASE_NAME = #{ddPhaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddPhaseParentId != null">
+        DD_PHASE_PARENT_ID = #{ddPhaseParentId,jdbcType=INTEGER},
+      </if>
+      <if test="ddProjectId != null">
+        DD_PROJECT_ID = #{ddProjectId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DD_PHASE_ID = #{ddPhaseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.publicClass.ProPhaseConfig">
+    update dd_project_phase_config
+    set DD_PHASE_NAME = #{ddPhaseName,jdbcType=VARCHAR},
+      DD_PHASE_PARENT_ID = #{ddPhaseParentId,jdbcType=INTEGER},
+      DD_PROJECT_ID = #{ddProjectId,jdbcType=INTEGER}
+    where DD_PHASE_ID = #{ddPhaseId,jdbcType=INTEGER}
+  </update>
+</mapper>

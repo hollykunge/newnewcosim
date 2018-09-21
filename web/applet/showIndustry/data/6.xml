@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--An excerpt of an egocentric social network-->
+<graphml>
+  <graph edgedefault="undirected">
+    <key id="name" for="node" attr.name="name" attr.type="string"/>
+    <key id="gender" for="node" attr.name="gender" attr.type="string"/>
+    <node id="1">
+      <data key="name">苹果科技</data>
+    </node>
+    <node id="2">
+      <data key="name">望时高科</data>
+    </node>
+    <node id="3">
+      <data key="name">三星电子</data>
+    </node>
+    <node id="4">
+      <data key="name">北辰科技</data>
+    </node>
+    <node id="5">
+      <data key="name">九州科技</data>
+    </node>
+    <node id="6">
+      <data key="name">电子科技</data>
+    </node>
+    <node id="7">
+      <data key="name">微蓝科技</data>
+    </node>
+    <node id="8">
+      <data key="name">STAR Manufacture</data>
+    </node>
+    <node id="9">
+      <data key="name">EAST LTD.CO</data>
+    </node>
+  </graph>
+</graphml>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--An excerpt of an egocentric social network-->
+<graphml>
+  <graph edgedefault="undirected">
+    <key id="name" for="node" attr.name="name" attr.type="string"/>
+    <key id="gender" for="node" attr.name="gender" attr.type="string"/>
+    <node id="4">
+      <data key="name">搜狐物流</data>
+    </node>
+    <edge source="4" target="1"></edge>
+    <edge source="4" target="2"></edge>
+    <edge source="4" target="3"></edge>
+    <edge source="4" target="4"></edge>
+    <node id="2">
+      <data key="name">元通快递</data>
+    </node>
+    <edge source="2" target="1"></edge>
+    <edge source="2" target="2"></edge>
+    <edge source="2" target="3"></edge>
+    <edge source="2" target="4"></edge>
+    <node id="3">
+      <data key="name">快达运输</data>
+    </node>
+    <edge source="3" target="1"></edge>
+    <edge source="3" target="2"></edge>
+    <edge source="3" target="3"></edge>
+    <edge source="3" target="4"></edge>
+    <node id="1">
+      <data key="name">simulation</data>
+    </node>
+    <edge source="1" target="1"></edge>
+    <edge source="1" target="2"></edge>
+    <edge source="1" target="3"></edge>
+    <edge source="1" target="4"></edge>
+  </graph>
+</graphml>

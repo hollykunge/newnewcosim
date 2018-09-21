@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- Database connection settings -->
+		
+		<!-- 
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/cloud</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">123</property>
+		<property name="connection.pool_size">40</property>
+		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+		 -->
+		<property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
+		<property name="connection.url">jdbc:oracle:thin:@localhost:1521:ORCL</property>
+		<property name="connection.username">CLOUD</property>
+		<property name="connection.password">123</property>
+		<!-- JDBC connection pool (use the built-in) -->
+		<property name="connection.pool_size">40</property>
+		<!-- SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.OracleDialect</property>
+		<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+		<!-- Disable the second-level cache -->
+		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+		<!-- 开启二级缓存 -->
+		<!-- <property name="hibernate.cache.use_second_level_cache">true</property> --> 
+		<!-- 设置缓存提供者 -->
+		<!-- <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property> -->
+		<!-- <mapping resource="cn/ineeke/entity/User.hbm.xml" /> -->
+		<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">false</property>
+		<!-- Drop and re-create the database schema on startup -->
+		<!-- 
+		<property name="hbm2ddl.auto">update</property>
+		 -->
+		
+		<!-- <mapping resource="cn/netjava/ml/bean/data.hbm.xml" /> -->
+		<mapping class="com.casic.cloud.toolEnvironment.bean.Cloud_tool_bpm_node" />
+		<mapping class="com.casic.cloud.toolEnvironment.bean.Cloud_tool_user" />
+		<mapping class="com.casic.cloud.toolEnvironment.bean.Cloud_tool" />
+		<mapping class="com.casic.cloud.toolEnvironment.bean.Cloud_tool_user_inputFile" />
+		<mapping class="com.casic.cloud.toolEnvironment.bean.Cloud_tool_user_outputFile" />
+		<mapping class="com.casic.cloud.toolEnvironment.bean.Cloud_tool_user_parasmapper" />
+	</session-factory>
+
+</hibernate-configuration>

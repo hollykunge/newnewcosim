@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* CSS Document */
+
+.flu_font01{
+	font-size:16px; font-weight:bold; text-align:left; float:left; padding-bottom:10px; padding-top:20px; padding-left:10px; padding-right:10px; width:100%; 
+}
+.flu_font02{
+	font-size:14px;  text-align:left; float:left; line-height:24px; padding-bottom:20px; border-bottom:1px #666666 dotted; padding-left:10px; padding-right:10px; ;
+}
+.flu_font03{
+	font-size:14px;  text-align:left; float:left; line-height:24px; padding:10px; width:600px;
+}
+.flu_link{
+	font-size:14px; color:#0d6aab; background-color:#ffffff; padding:3px; border:1px #0d6aab solid; text-decoration:none;
+}
+.flu_link:hover{
+	font-size:14px; color:#0d6aab; background-color:#ffffff; padding:3px; border:1px #0d6aab solid; text-decoration:none;
+}
+.flu_01{
+	border:#9db3c5 1px solid; position:absolute; margin-bottom:10px; float:left;
+}
+.flu_image{
+	float:left; padding:10px; width:200px;
+}

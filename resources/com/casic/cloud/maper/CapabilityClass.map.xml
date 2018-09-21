@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.casic.cloud.model.config.capabilityClass.CapabilityClass">
+	<resultMap id="CapabilityClass" type="com.casic.cloud.model.config.capabilityClass.CapabilityClass">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="parentId" column="parent_id" jdbcType="NUMERIC"/>
+		<result property="levels" column="levels" jdbcType="NUMERIC"/>
+		<result property="parentName" column="parent_name" jdbcType="VARCHAR"/>
+		<result property="isused" column="isused" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,name,parent_id,levels,parent_name,isused
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND id  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  LIKE #{name}  </if>
+			<if test="@Ognl@isNotEmpty(parentId)"> AND parent_id  =#{parentId} </if>
+			<if test="@Ognl@isNotEmpty(levels)"> AND levels  =#{levels} </if>
+			<if test="@Ognl@isNotEmpty(parentName)"> AND parent_name  LIKE #{parentName}  </if>
+			<if test="@Ognl@isNotEmpty(isused)"> AND isused  LIKE #{isused}  </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.casic.cloud.model.config.capabilityClass.CapabilityClass">
+		INSERT INTO cloud_capability_class
+		(id,name,parent_id,levels,parent_name,isused)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=NUMERIC}, #{levels,jdbcType=NUMERIC}, #{parentName,jdbcType=VARCHAR}, #{isused,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM cloud_capability_class 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.casic.cloud.model.config.capabilityClass.CapabilityClass">
+		UPDATE cloud_capability_class SET
+		name=#{name,jdbcType=VARCHAR},
+		parent_id=#{parentId,jdbcType=NUMERIC},
+		levels=#{levels,jdbcType=NUMERIC},
+		parent_name=#{parentName,jdbcType=VARCHAR},
+		isused=#{isused,jdbcType=NUMERIC}
+		
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="CapabilityClass">
+		SELECT <include refid="columns"/>
+		FROM cloud_capability_class
+		WHERE
+		id=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="CapabilityClass">
+		SELECT <include refid="columns"/>
+		FROM cloud_capability_class   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by id  asc
+		</if>
+	</select>
+	
+	
+	<select id="getChildren"  parameterType="java.lang.String"  resultMap="CapabilityClass">
+		SELECT <include refid="columns"/>
+		FROM cloud_capability_class
+		
+		<if test="@Ognl@isEmpty(id)">
+		WHERE parent_id is null 
+		</if>
+		
+		<if test="@Ognl@isNotEmpty(id)">
+		WHERE parent_id  =#{id} 
+		</if>
+		order by id  asc
+	</select>
+	
+	<select id="getClasses"  parameterType="java.lang.Long"  resultMap="CapabilityClass">
+		SELECT <include refid="columns"/>
+		FROM cloud_capability_class
+		WHERE levels=#{levels} 
+		order by id  asc
+	</select>
+</mapper>

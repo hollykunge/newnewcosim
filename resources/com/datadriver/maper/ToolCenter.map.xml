@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.datadriver.model.tool.ToolCenterModel">
+  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.tool.ToolCenterModel">
+    <result column="dd_tool_id" jdbcType="BIGINT" property="ddToolId" />
+    <result column="dd_tool_name" jdbcType="VARCHAR" property="ddToolName" />
+    <result column="dd_tool_url" jdbcType="VARCHAR" property="ddToolUrl" />
+    <result column="dd_tool_major" jdbcType="VARCHAR" property="ddToolMajor" />
+    <result column="dd_tool_stutus" jdbcType="VARCHAR" property="ddToolStutus" />
+    <result column="dd_tool_version" jdbcType="VARCHAR" property="ddToolVersion" />
+    <result column="dd_tool_user" jdbcType="VARCHAR" property="ddToolUser" />
+    <result column="dd_tool_data" jdbcType="VARCHAR" property="ddToolData" />
+    <result column="dd_tool_bf" jdbcType="VARCHAR" property="ddToolBf" />
+    <result column="dd_tool_bf2" jdbcType="VARCHAR" property="ddToolBf2" />
+  </resultMap>
+  <insert id="add" parameterType="com.casic.datadriver.model.tool.ToolCenterModel">
+    insert into dd_tools (dd_tool_id, dd_tool_name, dd_tool_url, 
+      dd_tool_major, dd_tool_stutus, dd_tool_version, 
+      dd_tool_user, dd_tool_data, dd_tool_bf, 
+      dd_tool_bf2)
+    values (#{ddToolId,jdbcType=BIGINT}, #{ddToolName,jdbcType=VARCHAR}, #{ddToolUrl,jdbcType=VARCHAR}, 
+      #{ddToolMajor,jdbcType=VARCHAR}, #{ddToolStutus,jdbcType=VARCHAR}, #{ddToolVersion,jdbcType=VARCHAR},
+      #{ddToolUser,jdbcType=VARCHAR}, #{ddToolData,jdbcType=VARCHAR}, #{ddToolBf,jdbcType=VARCHAR}, 
+      #{ddToolBf2,jdbcType=VARCHAR})
+  </insert>
+
+    <sql id="Base_Column_List">
+        dd_tool_id, dd_tool_name, dd_tool_url,
+      dd_tool_major, dd_tool_stutus, dd_tool_version,
+      dd_tool_user, dd_tool_data, dd_tool_bf,
+      dd_tool_bf2
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_tools
+    </select>
+
+    <!--<select id="querytoolBymajor" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+  <!--SELECT-->
+  <!--<include refid="Base_Column_List"/>-->
+  <!--FROM dd_tools-->
+  <!--where dd_tool_major = #{major} AND dd_tool_version=(select max(dd_tool_version) FROM dd_tools)-->
+<!--</select>-->
+
+  <select id="querytoolBymajor" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_tools
+    where dd_tool_major = #{major} AND dd_tool_bf2 = 1
+  </select>
+
+  <select id="querytoolByname" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_tools
+    where dd_tool_name = #{toolname}
+  </select>
+
+  <select id="querytoolBymajorF" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM dd_tools
+    where dd_tool_major = #{Name} AND dd_tool_bf2 = 1 limit #{pageSize},#{pageNumber}
+  </select>
+
+
+  <delete id="deltool" parameterType="java.lang.Long">
+    delete from dd_tools
+    where dd_tool_id = #{id,jdbcType=NUMERIC}
+  </delete>
+
+
+  <!--//dd_tool_bf2值为1代表工具新上传-->
+
+  <insert id="insertSelective" parameterType="com.casic.datadriver.model.tool.ToolCenterModel">
+    insert into dd_tools
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ddToolId != null">
+        dd_tool_id,
+      </if>
+      <if test="ddToolName != null">
+        dd_tool_name,
+      </if>
+      <if test="ddToolUrl != null">
+        dd_tool_url,
+      </if>
+      <if test="ddToolMajor != null">
+        dd_tool_major,
+      </if>
+      <if test="ddToolStutus != null">
+        dd_tool_stutus,
+      </if>
+      <if test="ddToolVersion != null">
+        dd_tool_version,
+      </if>
+      <if test="ddToolUser != null">
+        dd_tool_user,
+      </if>
+      <if test="ddToolData != null">
+        dd_tool_data,
+      </if>
+      <if test="ddToolBf != null">
+        dd_tool_bf,
+      </if>
+      <if test="ddToolBf2 != null">
+        dd_tool_bf2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ddToolId != null">
+        #{ddToolId,jdbcType=BIGINT},
+      </if>
+      <if test="ddToolName != null">
+        #{ddToolName,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolUrl != null">
+        #{ddToolUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolMajor != null">
+        #{ddToolMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolStutus != null">
+        #{ddToolStutus,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolVersion != null">
+        #{ddToolVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolUser != null">
+        #{ddToolUser,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolData != null">
+        #{ddToolData,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolBf != null">
+        #{ddToolBf,jdbcType=VARCHAR},
+      </if>
+      <if test="ddToolBf2 != null">
+        #{ddToolBf2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

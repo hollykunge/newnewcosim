@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE compass-core-mapping PUBLIC
+"-//Compass/Compass Core Mapping DTD 2.1//EN"
+"http://www.compass-project.org/dtd/compass-core-mapping-2.1.dtd">
+
+
+	<!-- 这里的包名必须和pojo的包名一致 -->
+<compass-core-mapping package="com.casic.cloud.model.compass.compassNews">
+<!-- 定义实体及其字段的对应关系 -->
+<!-- 注意实体及其字段的名称的大小写应当与pojo对象一致，而不是与数据库一致关于pojo与数据库的对应表的一致性关系由hibernate的映谢文件定义，而不是这个文件当前映射文件只定义compass与hibernate的关系 -->
+<class name="CompassNews" alias="${compassNewss.compassNews}">
+	<id name="newsid" />
+	
+	<property name="subject">
+  		<meta-data boost="2">${compassNewss.subject}</meta-data>
+	</property>
+	
+	<property name="content">
+  		<meta-data >${compassNewss.content}</meta-data>
+	</property>
+	
+	
+	<constant>
+		<meta-data>${compassNewss.type}</meta-data>
+		<meta-data-value>${compassNewss.type.mdcompassNews}</meta-data-value>
+	</constant>
+	
+</class>
+</compass-core-mapping>
