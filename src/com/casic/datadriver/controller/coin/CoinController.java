@@ -97,6 +97,7 @@ public class CoinController extends GenericController {
                         ddScoreInflow.setUpdTime(updTime);
                         ddScoreInflowService.add(ddScoreInflow);
                         resultMsg = getText("赚取积分成功", ddScoreInflow.toString());
+                        //添加总积分量
                         ddScoreService.increaseScore(ddScoreInflow.getUid(), ddScoreInflow);
                     } else {
                         resultMsg = getText("单日积分总量已满", "");
