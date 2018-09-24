@@ -68,10 +68,10 @@ public class CoinController extends GenericController {
             Boolean isNow = false;
             Date time = toDate(updTime);
             Date today = new Date();
-            if(time != null){
+            if (time != null) {
                 String nowDate = dateFormater2.get().format(today);
                 String timeDate = dateFormater2.get().format(time);
-                if(nowDate.equals(timeDate)){
+                if (nowDate.equals(timeDate)) {
                     isNow = true;
                 }
             }
@@ -117,75 +117,70 @@ public class CoinController extends GenericController {
 
     @RequestMapping("rank")
     @ResponseBody
-    public JSONArray getRank(String uid, HttpServletResponse response) throws Exception {
-        String resultMsg = null;
+    public JSONArray getRank(HttpServletResponse response) throws Exception {
+        //String resultMsg = null;
         JSONArray jsonR = null;
         try {
+            //初始化列表
+            List<DdScore> totalList = ddScoreService.getAllScore();
+            List<DdRank> quanjuList = new ArrayList<>();
+            List<DdRank> fengxianList = new ArrayList<>();
+            List<DdRank> qiushiList = new ArrayList<>();
 
-            if(uid != null) {
-
-                //初始化列表
-                List<DdScore> totalList = ddScoreService.selectAllScore();
-                List<DdRank> quanjuList = new ArrayList<>();
-                List<DdRank> fengxianList = new ArrayList<>();
-                List<DdRank> qiushiList = new ArrayList<>();
-
-                //列表填写
-                for (DdScore aTotalList : totalList) {
-                    DdRank e = new DdRank();
-                    e.setUserName(aTotalList.getUserName());
-                    e.setScoreTotal(aTotalList.getScoreTotal());
-                    if ("quanju".equals(aTotalList.getScoreType())) {
-                        e.setScoreType("quanju");
-                        quanjuList.add(e);
-                    } else if ("fengxian".equals(aTotalList.getScoreType())) {
-                        e.setScoreType("fengxian");
-                        fengxianList.add(e);
-                    } else if ("qiushi".equals(aTotalList.getScoreType())) {
-                        e.setScoreType("qiushi");
-                        qiushiList.add(e);
-                    }
+            //列表填写
+            for (DdScore aTotalList : totalList) {
+                DdRank e = new DdRank();
+                e.setUserName(aTotalList.getUserName());
+                e.setScoreTotal(aTotalList.getScoreTotal());
+                if ("quanju".equals(aTotalList.getScoreType())) {
+                    //e.setScoreType("quanju");
+                    quanjuList.add(e);
+                } else if ("fengxian".equals(aTotalList.getScoreType())) {
+                    //e.setScoreType("fengxian");
+                    fengxianList.add(e);
+                } else if ("qiushi".equals(aTotalList.getScoreType())) {
+                    //e.setScoreType("qiushi");
+                    qiushiList.add(e);
                 }
-                //列表排序
-                quanjuList.sort(new Comparator<DdRank>() {
-                    @Override
-                    public int compare(DdRank o1, DdRank o2) {
-                        return o1.getScoreTotal().compareTo(o2.getScoreTotal());
-                    }
-                });
-                fengxianList.sort(new Comparator<DdRank>() {
-                    @Override
-                    public int compare(DdRank o1, DdRank o2) {
-                        return o1.getScoreTotal().compareTo(o2.getScoreTotal());
-                    }
-                });
-                qiushiList.sort(new Comparator<DdRank>() {
-                    @Override
-                    public int compare(DdRank o1, DdRank o2) {
-                        return o1.getScoreTotal().compareTo(o2.getScoreTotal());
-                    }
-                });
-                //列表截断
-                if(quanjuList.size() > 25) {
-                    quanjuList = quanjuList.subList(0, 24);
-                }
-                if(fengxianList.size() > 5) {
-                    fengxianList = fengxianList.subList(0, 4);
-                }
-                if(qiushiList.size() > 15) {
-                    qiushiList = qiushiList.subList(0, 14);
-                }
-                //组装json
-                jsonR = JSONArray.fromObject(quanjuList);
-                jsonR.add(fengxianList);
-                jsonR.add(qiushiList);
-            } else {
-                resultMsg = getText("用户id为空");
             }
-            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+            //列表排序
+            quanjuList.sort(new Comparator<DdRank>() {
+                @Override
+                public int compare(DdRank o1, DdRank o2) {
+                    return o2.getScoreTotal().compareTo(o1.getScoreTotal());
+                }
+            });
+            fengxianList.sort(new Comparator<DdRank>() {
+                @Override
+                public int compare(DdRank o1, DdRank o2) {
+                    return o2.getScoreTotal().compareTo(o1.getScoreTotal());
+                }
+            });
+            qiushiList.sort(new Comparator<DdRank>() {
+                @Override
+                public int compare(DdRank o1, DdRank o2) {
+                    return o2.getScoreTotal().compareTo(o1.getScoreTotal());
+                }
+            });
+            //列表截断
+            if (quanjuList.size() > 25) {
+                quanjuList = quanjuList.subList(0, 25);
+            }
+            if (fengxianList.size() > 5) {
+                fengxianList = fengxianList.subList(0, 5);
+            }
+            if (qiushiList.size() > 15) {
+                qiushiList = qiushiList.subList(0, 15);
+            }
+            //组装json
+            Map<String, List<DdRank>> m = new HashMap<>(3);
+            m.put("quanju", quanjuList);
+            m.put("fengxian", fengxianList);
+            m.put("qiushi", qiushiList);
 
+            jsonR = JSONArray.fromObject(m);
         } catch (Exception e) {
-            writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
+            writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
         return jsonR;
     }

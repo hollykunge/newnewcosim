@@ -50,6 +50,10 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         }
     }
 
+    public List<DdScore> getAllScore() {
+        return ddScoreDao.getAll();
+    }
+
     public void delAll(Long[] lAryId) {
         for (Long id : lAryId) {
             ddScoreDao.delById(id);
