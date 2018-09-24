@@ -16,10 +16,10 @@ import java.util.List;
 @Repository
 public class DdScoreDao extends BaseDao<DdScore> {
     @Override
-    public Class getEntityClass() {return null; }
+    public Class getEntityClass() {return DdScore.class; }
 
-    public List<DdScore> selectAll(QueryFilter queryFilter) {
-        return this.getBySqlKey("queryTaskBasicInfoList", queryFilter);
+    public List<DdScore> selectAllScore(){
+        return this.getBySqlKey("selectAllScore");
     }
     /**
      * 更新积分账户
@@ -51,4 +51,5 @@ public class DdScoreDao extends BaseDao<DdScore> {
     public void delete(){
 
     }
+
 }

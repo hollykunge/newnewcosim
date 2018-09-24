@@ -21,7 +21,7 @@ public class DdScoreInflow extends BaseModel {
     /**
      * 获得积分
      */
-    private Long sourceScore;
+    private Integer sourceScore;
 
     /**
      * 积分来源
@@ -75,7 +75,7 @@ public class DdScoreInflow extends BaseModel {
      *
      * @return source_score - 获得积分
      */
-    public Long getSourceScore() {
+    public Integer getSourceScore() {
         return sourceScore;
     }
 
@@ -84,7 +84,7 @@ public class DdScoreInflow extends BaseModel {
      *
      * @param sourceScore 获得积分
      */
-    public void setSourceScore(Long sourceScore) {
+    public void setSourceScore(Integer sourceScore) {
         this.sourceScore = sourceScore;
     }
 

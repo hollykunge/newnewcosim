@@ -7,9 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
-@Table(name = "dd_score")
 public class DdScore extends BaseModel {
-    @Id
+
     private Long id;
 
     /**
@@ -18,33 +17,33 @@ public class DdScore extends BaseModel {
     private Long uid;
 
     /**
+     * 用户名称
+     */
+    private String userName;
+
+    /**
      * 积分总量
      */
-    @Column(name = "score_total")
-    private Long scoreTotal;
+    private Integer scoreTotal;
 
     /**
      * 创建时间
      */
-    @Column(name = "crt_time")
-    private Date crtTime;
+    private String crtTime;
 
     /**
      * 更新时间
      */
-    @Column(name = "udp_time")
-    private Date udpTime;
+    private String udpTime;
 
     /**
      * 积分类型
      */
-    @Column(name = "score_type")
     private String scoreType;
 
     /**
      * 积分产生动作
      */
-    @Column(name = "score_action")
     private String scoreAction;
 
     /**
@@ -79,12 +78,19 @@ public class DdScore extends BaseModel {
         this.uid = uid;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     /**
      * 获取积分总量
      *
      * @return score_total - 积分总量
      */
-    public Long getScoreTotal() {
+    public Integer getScoreTotal() {
         return scoreTotal;
     }
 
@@ -93,7 +99,7 @@ public class DdScore extends BaseModel {
      *
      * @param scoreTotal 积分总量
      */
-    public void setScoreTotal(Long scoreTotal) {
+    public void setScoreTotal(Integer scoreTotal) {
         this.scoreTotal = scoreTotal;
     }
 
@@ -102,7 +108,7 @@ public class DdScore extends BaseModel {
      *
      * @return crt_time - 创建时间
      */
-    public Date getCrtTime() {
+    public String getCrtTime() {
         return crtTime;
     }
 
@@ -111,7 +117,7 @@ public class DdScore extends BaseModel {
      *
      * @param crtTime 创建时间
      */
-    public void setCrtTime(Date crtTime) {
+    public void setCrtTime(String crtTime) {
         this.crtTime = crtTime;
     }
 
@@ -120,7 +126,7 @@ public class DdScore extends BaseModel {
      *
      * @return udp_time - 更新时间
      */
-    public Date getUdpTime() {
+    public String getUdpTime() {
         return udpTime;
     }
 
@@ -129,7 +135,7 @@ public class DdScore extends BaseModel {
      *
      * @param udpTime 更新时间
      */
-    public void setUdpTime(Date udpTime) {
+    public void setUdpTime(String udpTime) {
         this.udpTime = udpTime;
     }
 

@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.casic.datadriver.model.coin.DdScore" >
-  <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdScore" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="uid" property="uid" jdbcType="BIGINT" />
-    <result column="score_total" property="scoreTotal" jdbcType="BIGINT" />
-    <result column="crt_time" property="crtTime" jdbcType="TIMESTAMP" />
-    <result column="udp_time" property="udpTime" jdbcType="TIMESTAMP" />
-    <result column="score_type" property="scoreType" jdbcType="VARCHAR" />
-    <result column="score_action" property="scoreAction" jdbcType="VARCHAR" />
-  </resultMap>
+<mapper namespace="com.casic.datadriver.model.coin.DdScore">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdScore">
+        <id column="id" property="id" jdbcType="NUMERIC"/>
+        <result column="uid" property="uid" jdbcType="NUMERIC"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="score_total" property="scoreTotal" jdbcType="NUMERIC"/>
+        <result column="crt_time" property="crtTime" jdbcType="VARCHAR"/>
+        <result column="udp_time" property="udpTime" jdbcType="VARCHAR"/>
+        <result column="score_type" property="scoreType" jdbcType="VARCHAR"/>
+        <result column="score_action" property="scoreAction" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uid, user_name, score_total, crt_time, udp_time, score_type, score_action
+  </sql>
+    <select id="selectAllScore" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_score
+    </select>
+    <delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM dd_score
+		WHERE
+		id=#{id}
+	</delete>
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM dd_score
+    </select>
 </mapper>
