@@ -18,8 +18,10 @@ public class DdScoreDao extends BaseDao<DdScore> {
     @Override
     public Class getEntityClass() {return DdScore.class; }
 
+    //获取所有
     public List<DdScore> selectAllScore(){
-        return this.getBySqlKey("selectAllScore");
+    //    return this.getBySqlKey("selectAllScore");
+        return this.getAll();
     }
     /**
      * 更新积分账户

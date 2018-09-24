@@ -86,4 +86,8 @@ public class DdScoreService extends BaseService<DdScore> {
         // 一般是进行数据库查询，将查询的结果进行缓存
         scoreListCache.put(uid, ddScore);
     }
+
+    public List<DdScore> selectAllScore() {
+        return this.selectAllScore();
+    }
 }
