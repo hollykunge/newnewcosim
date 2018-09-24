@@ -18,8 +18,9 @@ public class DdScoreOutflow extends BaseModel {
     private Long uid;
 
     /**
-     * 用户id
+     * 积分来源
      */
+    @Column(name = "source_type")
     private String sourceType;
 
     /**
@@ -72,6 +73,24 @@ public class DdScoreOutflow extends BaseModel {
         this.uid = uid;
     }
 
+
+    /**
+     * 获取积分来源
+     *
+     * @return source_type - 积分来源
+     */
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    /**
+     * 设置积分来源
+     *
+     * @param sourceType 积分来源
+     */
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
     /**
      * 获取消耗积分
      *
@@ -126,12 +145,15 @@ public class DdScoreOutflow extends BaseModel {
         this.udpTime = udpTime;
     }
 
-
-    public String getSourceType() {
-        return sourceType;
-    }
-
-    public void setSourceType(String sourceType) {
-        this.sourceType = sourceType;
+    @Override
+    public String toString() {
+        return "DdScoreOutflow{" +
+                "id=" + id +
+                ", uid=" + uid +
+                ", sourceType='" + sourceType + '\'' +
+                ", expendScore=" + expendScore +
+                ", expendDetail='" + expendDetail + '\'' +
+                ", udpTime=" + udpTime +
+                '}';
     }
 }
