@@ -18,6 +18,11 @@ public class DdScoreOutflow extends BaseModel {
     private Long uid;
 
     /**
+     * 用户id
+     */
+    private String sourceType;
+
+    /**
      * 消耗积分
      */
     @Column(name = "expend_score")
@@ -119,5 +124,14 @@ public class DdScoreOutflow extends BaseModel {
      */
     public void setUdpTime(Date udpTime) {
         this.udpTime = udpTime;
+    }
+
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
     }
 }

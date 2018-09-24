@@ -65,7 +65,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         //生成积分统计对象
         DdScore ddScore = new DdScore();
         ddScore.setId(UniqueIdUtil.genId());
-        ddScore.setUserName(sysUserDao.getById(ddScoreInflow.getUid()).getUsername());
+        ddScore.setUserName(sysUserDao.getById(ddScoreInflow.getUid()).getFullname());
         ddScore.setScoreTotal(ddScoreInflow.getSourceScore());
         ddScore.setScoreType(ddScoreInflow.getSourceType());
         ddScore.setCrtTime(ddScoreInflow.getUpdTime());
