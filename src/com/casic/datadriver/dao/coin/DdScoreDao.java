@@ -18,9 +18,6 @@ public class DdScoreDao extends BaseDao<DdScore> {
     @Override
     public Class getEntityClass() {return DdScore.class; }
 
-    public List<DdScore> selectAllScore(){
-        return this.getBySqlKey("selectAllScore");
-    }
     /**
      * 更新积分账户
      *
@@ -29,7 +26,7 @@ public class DdScoreDao extends BaseDao<DdScore> {
      * @return the list
      */
     public void updateScore(DdScore ddScore){
-
+        this.update(ddScore);
     }
     /**
      * 插入

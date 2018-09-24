@@ -7,6 +7,7 @@ import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.query.QueryFilter;
 import com.hotent.core.web.util.RequestUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,8 +27,13 @@ import java.util.List;
 @RequestMapping("/datadriver/coin/")
 public class ScoreController extends AbstractController {
 
-    @Resource
     DdScoreService ddScoreService;
+
+    @Autowired
+    public ScoreController(DdScoreService ddScoreService) {
+        this.ddScoreService = ddScoreService;
+    }
+
     /**
      * 积分列表
      * @param request
@@ -69,7 +75,7 @@ public class ScoreController extends AbstractController {
     }
 
     /**
-     * 	编辑个人积分
+     * 编辑个人积分
      * @param request
      * @param response
      * @throws Exception
