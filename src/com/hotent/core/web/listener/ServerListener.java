@@ -31,6 +31,7 @@ public class ServerListener implements ServletContextListener {
 		logger.debug("[contextInitialized]开始初始化表单模版。");
 		//初始化系统模版。
 		BpmFormTemplateService.initTemplate();
+
 		logger.debug("[contextInitialized]开始初始化桌面设置。");
 		DesktopColumnService.initDesk();
 		DesktopLayoutcolService.initDefaultDesk();

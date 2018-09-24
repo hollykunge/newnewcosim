@@ -12,20 +12,55 @@
         <result column="score_action" property="scoreAction" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, uid, user_name, score_total, crt_time, udp_time, score_type, score_action
-  </sql>
-    <select id="selectAllScore" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM dd_score
-    </select>
+        id, uid, user_name, score_total, crt_time, udp_time, score_type, score_action
+    </sql>
+    <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScore">
+    insert into dd_score (id, uid, user_name, score_total, crt_time, udp_time, score_type, score_action)
+    values (#{id,jdbcType=NUMERIC},
+      #{uid,jdbcType=NUMERIC},
+      #{userName,jdbcType=VARCHAR},
+      #{scoreTotal,jdbcType=NUMERIC},
+      #{crtTime,jdbcType=VARCHAR},
+      #{udpTime,jdbcType=VARCHAR},
+      #{scoreType,jdbcType=VARCHAR},
+      #{scoreAction,jdbcType=VARCHAR})
+    </insert>
     <delete id="delById" parameterType="java.lang.Long">
 		DELETE FROM dd_score
 		WHERE
 		id=#{id}
 	</delete>
     <select id="getAll" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM dd_score
     </select>
+    <update id="update" parameterType="com.casic.datadriver.model.coin.DdScore">
+		UPDATE dd_score
+		<set>
+            <if test="uid !=null">
+                uid = #{uid,jdbcType=NUMERIC},
+            </if>
+            <if test="userName !=null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="scoreTotal !=null">
+                score_total = #{scoreTotal,jdbcType=NUMERIC},
+            </if>
+            <if test="crtTime !=null">
+                crt_time = #{crtTime,jdbcType=VARCHAR},
+            </if>
+            <if test="udpTime !=null">
+                udp_time = #{udpTime,jdbcType=VARCHAR},
+            </if>
+            <if test="scoreType !=null">
+                score_type = #{scoreType,jdbcType=VARCHAR},
+            </if>
+            <if test="scoreAction !=null">
+                score_action = #{scoreAction,jdbcType=VARCHAR}
+            </if>
+        </set>
+		WHERE
+        id = #{id, jdbcType=NUMERIC}
+	</update>
 </mapper>
