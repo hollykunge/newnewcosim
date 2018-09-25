@@ -9,6 +9,7 @@ import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.platform.dao.system.SysUserDao;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Modified:
  */
 @Service
-public class DdScoreService extends BaseService<DdScore> implements ApplicationListener {
+public class DdScoreService extends BaseService<DdScore> implements ApplicationListener<ContextRefreshedEvent> {
 
     public static final Map<String, DdScore> scoreListCache = new ConcurrentHashMap<String, DdScore>();
 
@@ -73,7 +74,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         //生成积分统计对象
         DdScore ddScore = new DdScore();
         ddScore.setId(UniqueIdUtil.genId());
-        ddScore.setUserName(sysUserDao.getById(ddScoreInflow.getUid()).getUsername());
+        ddScore.setUserName(sysUserDao.getById(ddScoreInflow.getUid()).getFullname());
         ddScore.setScoreTotal(ddScoreInflow.getSourceScore());
         ddScore.setScoreType(ddScoreInflow.getSourceType());
         ddScore.setCrtTime(ddScoreInflow.getUpdTime());
@@ -123,7 +124,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
     }
 
     @Override
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         this.initCacheList();
     }
 }
