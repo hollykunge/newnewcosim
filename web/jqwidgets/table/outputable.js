@@ -413,10 +413,9 @@ function outputTableInit(path, taskId, projectId) {
                     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
                     if (selection.length==1){
                         if (selection[0] == undefined) {
-                            // $("#jqxNotificationNull").jqxNotification({ width: "auto", position: "top-right",
-                            //     opacity: 0.9, autoOpen: true, autoClose: false, template: "warning"
-                            // });
-                            // alertify.success('jihaiann!!!!!');
+                            $("#jqxNotificationNull").jqxNotification({ width: "auto", position: "top-right",
+                                opacity: 0.9, autoOpen: true, autoClose: false, template: "warning"
+                            });
                             return;
                         }
                         if (selection[0].dataType=='模型'||selection[0].dataType == '文件'){
