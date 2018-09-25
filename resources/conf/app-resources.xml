@@ -150,6 +150,8 @@
 
 	<bean id="logAspect" class="com.hotent.core.aop.LogAspect" />
 
+	<bean id="coinAspect" class="com.casic.datadriver.aop.CoinAspect" />
+
 	<aop:config proxy-target-class="true">
 		<aop:advisor advice-ref="txAdvice"
 			pointcut="execution(* com.hotent.platform.service..*.*(..))" />

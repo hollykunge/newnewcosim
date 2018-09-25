@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: hollykunge
@@ -54,7 +56,7 @@ public class ScoreRegulation {
     private static final String STORE_3 = "store_3";
 
     ArrayList<String> sourceDetailList = new ArrayList<String>();
-
+    Map<String,Integer> overflowmap =  new HashMap();
     public ScoreRegulation() {
         //协同设计
         sourceDetailList.add(DESIGN_1);
@@ -72,6 +74,20 @@ public class ScoreRegulation {
         sourceDetailList.add(TOOL_2);
         sourceDetailList.add(TOOL_3);
         sourceDetailList.add(TOOL_4);
+
+
+        overflowmap.put(DESIGN_1, 5);
+        overflowmap.put(DESIGN_2, 8);
+        overflowmap.put(DESIGN_3, 8);
+        overflowmap.put(TALK_1, 3);
+        overflowmap.put(TALK_3, 8);
+        overflowmap.put(SEARCH_1, 6);
+        overflowmap.put(SEARCH_2, 5);
+        overflowmap.put(SEARCH_3, 5);
+        overflowmap.put(TOOL_1, 10);
+        overflowmap.put(TOOL_2, 3);
+        overflowmap.put(TOOL_3, 5);
+        overflowmap.put(TOOL_4, 10);
     }
 
     public boolean isToday(String time) {
@@ -105,7 +121,7 @@ public class ScoreRegulation {
         //判断是否是封顶项
         Boolean isCapping = sourceDetailList.contains(sourceDetail);
         if (isCapping) {
-            if (scoreInflow + todayScore > SCORE_LIMIT) {
+            if (scoreInflow + todayScore > overflowmap.get(sourceDetail)) {
                 return true;
             }
             return false;

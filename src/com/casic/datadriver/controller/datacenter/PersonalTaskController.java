@@ -165,7 +165,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("todotask")
-    @Action(description = "进入任务")
+    @Action(description = "进入任务")//1
     public ModelAndView todotask(HttpServletRequest request, HttpServletResponse response) throws Exception {
         long taskId = RequestUtil.getLong(request, "id");
         TaskInfo taskInfo = taskInfoService.getById(taskId);
@@ -222,7 +222,7 @@ public class PersonalTaskController extends AbstractController {
 
 
     @RequestMapping("submittask")
-    @Action(description = "提交任务")
+    @Action(description = "提交任务")//4
     public void submittask(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         Long ddTaskId = RequestUtil.getLong(request, "id");
@@ -264,7 +264,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("canOrderToOrder")
-    @Action(description = "可订阅与订阅切换")
+    @Action(description = "可订阅与订阅切换")//8
     public void canOrderToOrder(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String dataIds = RequestUtil.getString(request, "dataIds");
         Long taskId = RequestUtil.getLong(request, "taskId");
@@ -286,7 +286,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("createToPublish")
-    @Action(description = "私有与发布数据的切换")
+    @Action(description = "私有与发布数据的切换")//8
     public void createToPublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String dataIds = RequestUtil.getString(request, "dataIds");
         String parent = RequestUtil.getString(request, "parent");
@@ -302,7 +302,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("uploadPrivateFile")
-    @Action(description = "私有数据的文件模型上传")
+    @Action(description = "私有数据的文件模型上传")//3
     public ModelAndView uploadPrivateFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long id = RequestUtil.getLong(request, "id");
         ModelAndView mv = this.getAutoView().addObject("id", id);
@@ -333,7 +333,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("updatePrivateData")
-    @Action(description = "更新私有数据")
+    @Action(description = "更新私有数据")//2
     public void updatePrivateData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String orderJson = RequestUtil.getString(request, "orderJson");
