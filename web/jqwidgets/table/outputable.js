@@ -153,7 +153,7 @@ function outputTableInit(path, taskId, projectId) {
             var updateButton = $(buttonTemplate);
             var unselectRow = $(buttonTemplate);
             var publishSelection = $(buttonTemplate);
-            var publishCancel = $(buttonTemplate);
+            // var publishCancel = $(buttonTemplate);
             var uploadModel = $(buttonTemplate);
             container.append(addButton);
             container.append(editButton);
@@ -162,7 +162,7 @@ function outputTableInit(path, taskId, projectId) {
             container.append(updateButton);
             container.append(unselectRow);
             container.append(publishSelection);
-            container.append(publishCancel);
+            // container.append(publishCancel);
             container.append(uploadModel);
 
             toolBar.append(container);
@@ -237,15 +237,15 @@ function outputTableInit(path, taskId, projectId) {
             publishSelection.find('div:first').addClass(toTheme('glyphicon glyphicon-share'));
             publishSelection.jqxTooltip({position: 'bottom', content: "发布已选择数据"});
 
-            publishCancel.jqxButton({
-                cursor: "pointer",
-                disabled: true,
-                enableDefault: false,
-                height: 25,
-                width: 23
-            });
-            publishCancel.find('div:first').addClass(toTheme('glyphicon glyphicon-remove-sign'));
-            publishCancel.jqxTooltip({position: 'bottom', content: "收回已发布的数据"});
+            // publishCancel.jqxButton({
+            //     cursor: "pointer",
+            //     disabled: true,
+            //     enableDefault: false,
+            //     height: 25,
+            //     width: 23
+            // });
+            // publishCancel.find('div:first').addClass(toTheme('glyphicon glyphicon-remove-sign'));
+            // publishCancel.jqxTooltip({position: 'bottom', content: "收回已发布的数据"});
 
             uploadModel.jqxButton({
                 cursor: "pointer",
@@ -267,6 +267,7 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: false});
                         unselectRow.jqxButton({disabled: false});
                         publishSelection.jqxButton({disabled: false});
+                        // publishCancel.jqxButton({disabled: false});
                         uploadModel.jqxButton({disabled: false});
                         break;
                     case "Unselect":
@@ -277,6 +278,7 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: false});
                         unselectRow.jqxButton({disabled: true});
                         publishSelection.jqxButton({disabled: true});
+                        // publishCancel.jqxButton({disabled: true});
                         uploadModel.jqxButton({disabled: true});
                         break;
                     case "Edit":
@@ -287,6 +289,7 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: true});
                         unselectRow.jqxButton({disabled: true});
                         publishSelection.jqxButton({disabled: true});
+                        // publishCancel.jqxButton({disabled: true});
                         uploadModel.jqxButton({disabled: true});
                         break;
                     case "End Edit":
@@ -297,10 +300,11 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: false});
                         unselectRow.jqxButton({disabled: true});
                         publishSelection.jqxButton({disabled: true});
+                        // publishCancel.jqxButton({disabled: true});
                         uploadModel.jqxButton({disabled: true});
                         break;
                 }
-            }
+            };
             var rowKey = null;
             var rowParentId = 0;
             // var rowDataForParentId = 0;
@@ -408,12 +412,29 @@ function outputTableInit(path, taskId, projectId) {
                 if (!unselectRow.jqxButton('disabled')) {
                     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
                     if (selection.length==1){
+                        if (selection[0] == undefined) {
+                            // $("#jqxNotificationNull").jqxNotification({ width: "auto", position: "top-right",
+                            //     opacity: 0.9, autoOpen: true, autoClose: false, template: "warning"
+                            // });
+                            // alertify.success('jihaiann!!!!!');
+                            return;
+                        }
                         if (selection[0].dataType=='模型'||selection[0].dataType == '文件'){
                             $('#uploadPrivateFile').modal({
                                 keyboard: true,
                                 remote: "uploadPrivateFile.ht?id="+selection[0].dataId
                             });
+                        } else {
+                            $("#jqxNotificationType").jqxNotification({ width: "auto", position: "top-right",
+                                opacity: 0.9, autoOpen: true, autoClose: true, template: "warning"
+                            });
+                            return;
                         }
+                    } else if (selection.length > 1) {
+                        $("#jqxNotificationTroppo").jqxNotification({ width: "auto", position: "top-right",
+                            opacity: 0.9, autoOpen: true, autoClose: true, template: "warning"
+                        });
+                        return;
                     }
                 }
             });
@@ -429,11 +450,34 @@ function outputTableInit(path, taskId, projectId) {
                     }
                     $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
                         if (status == 'success') {
-                            window.location.reload();
+                            // window.location.reload();
+                            $('#treeGridOut').jqxTreeGrid('updateBoundData');
                         }
                     });
                 }
             });
+            // publishCancel.click(function () {
+            //     if (!publishCancel.jqxButton('disabled')) {
+            //         var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
+            //         if (selection.length > 1 || selection.length == 1) {
+            //             if (selection[0] != undefined) {
+            //                 var rowsDataIds = new Array();
+            //                 for (var i = 0; i < selection.length; i++) {
+            //                     if (selection[i].publishState == 1) {
+            //                         rowsDataIds.push(selection[i].dataId);
+            //                     }
+            //                 }
+            //                 if (rowsDataIds.length > 0) {
+            //                     $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
+            //                         if (status == 'success') {
+            //                             $('#treeGridOut').jqxTreeGrid('updateBoundData');
+            //                         }
+            //                     });
+            //                 }
+            //             }
+            //         }
+            //     }
+            // });
             deleteButton.click(function () {
                 if (!deleteButton.jqxButton('disabled')) {
                     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');

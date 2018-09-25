@@ -14,14 +14,14 @@
         var isme = ""
         try {
             isme   = JSInteraction.isme();
-            alert(isme);
+            console.log(isme)
             if (JSInteraction.isme()) {
 
                 $("#navbariwork").hide();
             }
         }
         catch (e) {
-alert(11111);
+            console.log(e)
         }
     });
 </script>
