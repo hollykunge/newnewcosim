@@ -67,8 +67,9 @@
                         class="glyphicon glyphicon-stats"></span>
                     流程监控
                 </a>
-                <a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com" class="btn btn-default" target = "_blank"><span
-                        class="glyphicon glyphicon-stats"　></span>
+                <a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"
+                   class="btn btn-default" target="_blank"><span
+                        class="glyphicon glyphicon-stats" 　></span>
                     数据挖掘
                 </a>
 
