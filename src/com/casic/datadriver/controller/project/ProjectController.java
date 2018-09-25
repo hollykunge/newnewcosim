@@ -92,7 +92,7 @@ public class ProjectController extends BaseController {
      * @throws Exception the exception
      */
     @RequestMapping("save")
-    @Action(description = "添加或更新project")
+    @Action(description = "添加或更新project")//6
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         Project project = getFormObject(request);
@@ -516,7 +516,7 @@ public class ProjectController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("movetask")
-    @Action(description = "任务拖拽到发布")
+    @Action(description = "任务拖拽到发布")//7
     public void createtopublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Long taskId = RequestUtil.getLong(request, "id");
