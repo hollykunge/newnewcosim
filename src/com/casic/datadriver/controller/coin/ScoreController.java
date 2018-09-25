@@ -2,6 +2,8 @@ package com.casic.datadriver.controller.coin;
 
 import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.DdScore;
+import com.casic.datadriver.model.coin.DdScoreInflow;
+import com.casic.datadriver.service.coin.DdScoreInflowService;
 import com.casic.datadriver.service.coin.DdScoreService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;
@@ -27,35 +29,22 @@ import java.util.List;
 @RequestMapping("/datadriver/coin/")
 public class ScoreController extends AbstractController {
 
-    DdScoreService ddScoreService;
+    private DdScoreService ddScoreService;
+
+    private DdScoreInflowService ddScoreInflowService;
 
     @Autowired
-    public ScoreController(DdScoreService ddScoreService) {
+    public ScoreController(DdScoreService ddScoreService,
+                           DdScoreInflowService ddScoreInflowService) {
         this.ddScoreService = ddScoreService;
+        this.ddScoreInflowService = ddScoreInflowService;
     }
 
     /**
-     * 积分列表
-     * @param request
-     * @param response
-     * @param page
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("list")
-    @Action(description="积分列表")
-    public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
-        List<DdScore> list=ddScoreService.getAll(new QueryFilter(request,"scoreItem"));
-        ModelAndView mv=this.getAutoView().addObject("scoreList",list);
-        return mv;
-    }
-
-    /**
-     * 积分列表删除
-     * @param request
-     * @param response
-     * @throws Exception
+     * 积分列表批量删除
+     * @param request r
+     * @param response r
+     * @throws Exception e
      */
     @RequestMapping("del")
     @Action(description="积分列表删除")
@@ -76,19 +65,86 @@ public class ScoreController extends AbstractController {
 
     /**
      * 编辑个人积分
-     * @param request
-     * @param response
-     * @throws Exception
+     * @param request r
+     * @throws Exception e
      */
     @RequestMapping("edit")
     @Action(description="编辑个人积分")
     public ModelAndView edit(HttpServletRequest request) throws Exception
     {
-        Long scoreId=RequestUtil.getLong(request,"id");
-        String returnUrl=RequestUtil.getPrePage(request);
-        DdScore ddScore=ddScoreService.getById(scoreId);
+        Long scoreId = RequestUtil.getLong(request,"id");
+        String returnUrl = RequestUtil.getPrePage(request);
+        DdScore ddScore = ddScoreService.getById(scoreId);
 
         return getAutoView().addObject("bizDef",ddScore)
                 .addObject("returnUrl",returnUrl);
+    }
+
+    /**
+     * 提交编辑个人积分
+     * @param request r
+     * @param response r
+     * @throws Exception e
+     */
+    @RequestMapping("submitUpdate")
+    @Action(description="提交编辑个人积分")
+    public void submitUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        Long scoreId = RequestUtil.getLong(request,"id");
+        Long scoreUid = RequestUtil.getLong(request,"uid");
+        String userName = RequestUtil.getString(request,"userName");
+        Integer scoreTotal = RequestUtil.getInt(request, "scoreTotal");
+        String crtTime = RequestUtil.getString(request,"crtTime");
+        String udpTime = RequestUtil.getString(request,"udpTime");
+        String scoreType = RequestUtil.getString(request,"scoreType");
+        String scoreAction = RequestUtil.getString(request,"scoreAction");
+        DdScore ddScore = new DdScore();
+        ddScore.setId(scoreId);
+        ddScore.setUid(scoreUid);
+        ddScore.setUserName(userName);
+        ddScore.setScoreTotal(scoreTotal);
+        ddScore.setCrtTime(crtTime);
+        ddScore.setUdpTime(udpTime);
+        ddScore.setScoreType(scoreType);
+        ddScore.setScoreAction(scoreAction);
+
+        ddScoreService.updateOne(ddScore);
+    }
+
+    /**
+     * 积分列表
+     * @param request r
+     * @param response r
+     * @return r
+     * @throws Exception e
+     */
+    @RequestMapping("list")
+    @Action(description="积分列表")
+    public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        List<DdScore> list=ddScoreService.getAll(new QueryFilter(request,"scoreItem"));
+        return this.getAutoView().addObject("scoreList",list);
+    }
+
+    /**
+     * 积分明细
+     * @param request r
+     * @return r
+     * @throws Exception e
+     */
+    @RequestMapping("detail")
+    @Action(description="积分明细")
+    public ModelAndView detail(HttpServletRequest request) throws Exception
+    {
+        Long scoreId = RequestUtil.getLong(request,"id");
+        String scoreType = RequestUtil.getString(request,"scoreType");
+        DdScore ddScore = ddScoreService.getById(scoreId);
+        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(ddScore.getUid());
+        for(DdScoreInflow ddScoreInflow : detailList) {
+            if(!ddScoreInflow.getSourceType().equals(scoreType)) {
+                detailList.remove(ddScoreInflow);
+            }
+        }
+        return this.getAutoView().addObject("detailList", detailList);
     }
 }
