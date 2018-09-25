@@ -1,6 +1,7 @@
 package com.casic.datadriver.service.coin;
 
 import com.casic.datadriver.dao.coin.DdScoreInflowDao;
+import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.manager.ScoreRegulation;
 import com.hotent.core.db.IEntityDao;
@@ -22,9 +23,9 @@ import java.util.Map;
 @Service
 public class DdScoreInflowService extends BaseService<DdScoreInflow> {
 
-    DdScoreInflowDao ddScoreInflowDao;
+    private DdScoreInflowDao ddScoreInflowDao;
 
-    ScoreRegulation scoreRegulation;
+    private ScoreRegulation scoreRegulation;
 
     @Autowired
     public DdScoreInflowService(DdScoreInflowDao ddScoreInflowDao, ScoreRegulation scoreRegulation) {
@@ -62,5 +63,28 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
             }
         }
         return todayInflows;
+    }
+
+    //通过uid获取所有
+    public List<DdScoreInflow> getByUid(long uid) {
+        return ddScoreInflowDao.getBySqlKey("uid");
+    }
+    //批量删除
+    public void delAll(Long[] lAryId) {
+        for (Long id : lAryId) {
+            ddScoreInflowDao.delById(id);
+        }
+    }
+    //修改一个
+    public void updateOne(DdScoreInflow entity) {
+        ddScoreInflowDao.update(entity);
+    }
+    //获取一个
+    public DdScoreInflow getById(long id) {
+        return ddScoreInflowDao.getById(id);
+    }
+    //获取所有
+    public List<DdScoreInflow> getAllScoreInflow() {
+        return ddScoreInflowDao.getAll();
     }
 }

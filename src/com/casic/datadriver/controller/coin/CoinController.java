@@ -36,13 +36,13 @@ import static com.sun.corba.se.impl.orbutil.CorbaResourceUtil.getText;
 @RequestMapping("/coin/")
 public class CoinController extends GenericController {
 
-    DdScoreInflowService ddScoreInflowService;
+    private DdScoreInflowService ddScoreInflowService;
 
-    SysUserDao sysUserDao;
+    private SysUserDao sysUserDao;
 
-    ScoreRegulation scoreRegulation;
+    private ScoreRegulation scoreRegulation;
 
-    DdScoreService ddScoreService;
+    private DdScoreService ddScoreService;
 
     @Autowired
     public CoinController(DdScoreInflowService ddScoreInflowService,
@@ -114,7 +114,12 @@ public class CoinController extends GenericController {
         }
     }
 
-
+    /**
+     * 获取三个榜单的排名，全局币前25名，奉献币前5名，求实币前20名
+     * @param response 响应
+     * @return MAP的key为币种，value是带DdRank的List
+     * @throws Exception  扔
+     */
     @RequestMapping("rank")
     @ResponseBody
     public JSONArray getRank(HttpServletResponse response) throws Exception {
@@ -126,7 +131,6 @@ public class CoinController extends GenericController {
             List<DdRank> quanjuList = new ArrayList<>();
             List<DdRank> fengxianList = new ArrayList<>();
             List<DdRank> qiushiList = new ArrayList<>();
-
             //列表填写
             for (DdScore aTotalList : totalList) {
                 DdRank e = new DdRank();
@@ -177,7 +181,6 @@ public class CoinController extends GenericController {
             m.put("quanju", quanjuList);
             m.put("fengxian", fengxianList);
             m.put("qiushi", qiushiList);
-
             jsonR = JSONArray.fromObject(m);
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
