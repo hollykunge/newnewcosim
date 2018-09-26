@@ -54,6 +54,10 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
     public List<DdScore> getAllScore() {
         return ddScoreDao.getAll();
     }
+    //获取个人
+    public List<DdScore> getPersonal(long uid) {
+        return ddScoreDao.getPersonal(uid);
+    }
 
 
 

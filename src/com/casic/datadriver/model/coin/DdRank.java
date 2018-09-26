@@ -2,10 +2,17 @@ package com.casic.datadriver.model.coin;
 
 public class DdRank {
     /**
+     * 用户排名
+     */
+    private Integer rank;
+    /**
      * 用户名称
      */
     private String userName;
-
+    /**
+     * 组织名称
+     */
+    private String orgName;
     /**
      * 积分总量
      */
@@ -37,5 +44,21 @@ public class DdRank {
 
     public void setScoreType(String scoreType) {
         this.scoreType = scoreType;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 }
