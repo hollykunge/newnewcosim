@@ -72,6 +72,7 @@ public class CoinService {
                     ddScoreInflow.setSourceDetail(sourceDetail);
                     ddScoreInflow.setSourceType(sourceType);
                     ddScoreInflow.setUpdTime(updTime);
+                    ddScoreInflow.setUserName(sysUser.getFullname());
                     ddScoreInflowService.add(ddScoreInflow);
                     resultMsg = "赚取积分成功";
                     //添加总积分量
