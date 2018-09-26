@@ -29,4 +29,9 @@
         FROM dd_score_inflow
         WHERE uid=#{uid} AND source_detail=#{sourceDetail}
     </select>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM dd_score_inflow
+    </select>
 </mapper>

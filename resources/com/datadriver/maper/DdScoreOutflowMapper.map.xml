@@ -7,8 +7,16 @@
     -->
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
     <result column="expend_score" property="expendScore" jdbcType="BIGINT" />
     <result column="expend_detail" property="expendDetail" jdbcType="VARCHAR" />
     <result column="udp_time" property="udpTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <sql id="Base_Column_List">
+    id, uid, source_type, expend_score, expend_detail, udp_time
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM dd_score_outflow
+  </select>
 </mapper>
