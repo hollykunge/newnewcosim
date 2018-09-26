@@ -149,4 +149,8 @@ public class PrivateDataDao extends BaseDao<PrivateData> {
     public void updateToPublish(List<PrivateData> privateDataList){
         this.getBySqlKey("updateToPublish", privateDataList);
     }
+
+    public void updateToPrivate(List<PrivateData> privateDataList){
+        this.getBySqlKey("updateToPrivate", privateDataList);
+    }
 }

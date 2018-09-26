@@ -29,7 +29,7 @@
             if (frm.valid()) {
                 form.submit();
                 $("#fileupload").modal('hide');
-                $("#tb_departments").bootstrapTable("refresh");
+                // $("#tb_departments").bootstrapTable("refresh");
             }
         });
     });

@@ -9,6 +9,7 @@ import com.casic.datadriver.service.coin.DdScoreService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.ResultMessage;
+import com.hotent.core.web.query.QueryFilter;
 import com.hotent.core.web.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ import java.util.List;
  * @Modified:
  */
 @Controller
-@RequestMapping("/datadriver/coin")
+@RequestMapping("/datadriver/coin/")
 public class ScoreInflowController extends AbstractController {
 
     private DdScoreInflowService ddScoreInflowService;

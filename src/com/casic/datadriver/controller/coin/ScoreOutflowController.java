@@ -21,7 +21,7 @@ import java.util.List;
  * @Modified:
  */
 @Controller
-@RequestMapping("/datadriver/coin/")
+@RequestMapping("/datadriver/outflow/")
 public class ScoreOutflowController extends AbstractController {
 
     @Resource

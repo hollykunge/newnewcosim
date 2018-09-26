@@ -52,6 +52,10 @@
     </div>
 </div>
 
+<%--错误提示--%>
+<div id="jqxNotificationModel" style="display: none">
+    只能预览模型数据！
+</div>
 </body>
 <script type="text/javascript">
     //@ sourceURL=showorder.ht
