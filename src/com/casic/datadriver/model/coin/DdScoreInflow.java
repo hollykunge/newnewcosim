@@ -39,6 +39,11 @@ public class DdScoreInflow extends BaseModel {
     private String updTime;
 
     /**
+     * 用户名
+     */
+    private String userName;
+
+    /**
      * @return id
      */
     public Long getId() {
@@ -140,6 +145,14 @@ public class DdScoreInflow extends BaseModel {
      */
     public void setUpdTime(String updTime) {
         this.updTime = updTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
