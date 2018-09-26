@@ -29,7 +29,7 @@
             document.getElementById("task_ifarame").style.padding = "-70px";
         }
         catch (e) {
-alert(1243);
+            console.log(e)
         }
     });
 </script>

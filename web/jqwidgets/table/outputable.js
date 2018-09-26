@@ -267,6 +267,7 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: false});
                         unselectRow.jqxButton({disabled: false});
                         publishSelection.jqxButton({disabled: false});
+                        publishCancel.jqxButton({disabled: false});
                         uploadModel.jqxButton({disabled: false});
                         break;
                     case "Unselect":
@@ -277,6 +278,7 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: false});
                         unselectRow.jqxButton({disabled: true});
                         publishSelection.jqxButton({disabled: true});
+                        publishCancel.jqxButton({disabled: true});
                         uploadModel.jqxButton({disabled: true});
                         break;
                     case "Edit":
@@ -287,6 +289,7 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: true});
                         unselectRow.jqxButton({disabled: true});
                         publishSelection.jqxButton({disabled: true});
+                        publishCancel.jqxButton({disabled: true});
                         uploadModel.jqxButton({disabled: true});
                         break;
                     case "End Edit":
@@ -297,10 +300,11 @@ function outputTableInit(path, taskId, projectId) {
                         updateButton.jqxButton({disabled: false});
                         unselectRow.jqxButton({disabled: true});
                         publishSelection.jqxButton({disabled: true});
+                        publishCancel.jqxButton({disabled: true});
                         uploadModel.jqxButton({disabled: true});
                         break;
                 }
-            }
+            };
             var rowKey = null;
             var rowParentId = 0;
             // var rowDataForParentId = 0;
@@ -408,12 +412,28 @@ function outputTableInit(path, taskId, projectId) {
                 if (!unselectRow.jqxButton('disabled')) {
                     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
                     if (selection.length==1){
+                        if (selection[0] == undefined) {
+                            $("#jqxNotificationNull").jqxNotification({ width: "auto", position: "top-right",
+                                opacity: 0.9, autoOpen: true, autoClose: false, template: "warning"
+                            });
+                            return;
+                        }
                         if (selection[0].dataType=='模型'||selection[0].dataType == '文件'){
                             $('#uploadPrivateFile').modal({
                                 keyboard: true,
                                 remote: "uploadPrivateFile.ht?id="+selection[0].dataId
                             });
+                        } else {
+                            $("#jqxNotificationType").jqxNotification({ width: "auto", position: "top-right",
+                                opacity: 0.9, autoOpen: true, autoClose: true, template: "warning"
+                            });
+                            return;
                         }
+                    } else if (selection.length > 1) {
+                        $("#jqxNotificationTroppo").jqxNotification({ width: "auto", position: "top-right",
+                            opacity: 0.9, autoOpen: true, autoClose: true, template: "warning"
+                        });
+                        return;
                     }
                 }
             });
@@ -429,9 +449,31 @@ function outputTableInit(path, taskId, projectId) {
                     }
                     $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
                         if (status == 'success') {
-                            window.location.reload();
+                            $('#treeGridOut').jqxTreeGrid('updateBoundData');
                         }
                     });
+                }
+            });
+            publishCancel.click(function () {
+                if (!publishCancel.jqxButton('disabled')) {
+                    var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
+                    if (selection.length > 1 || selection.length == 1) {
+                        if (selection[0] != undefined) {
+                            var rowsDataIds = new Array();
+                            for (var i = 0; i < selection.length; i++) {
+                                if (selection[i].publishState == 1) {
+                                    rowsDataIds.push(selection[i].dataId);
+                                }
+                            }
+                            if (rowsDataIds.length > 0) {
+                                $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
+                                    if (status == 'success') {
+                                        $('#treeGridOut').jqxTreeGrid('updateBoundData');
+                                    }
+                                });
+                            }
+                        }
+                    }
                 }
             });
             deleteButton.click(function () {

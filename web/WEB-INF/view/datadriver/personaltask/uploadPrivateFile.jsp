@@ -23,7 +23,7 @@
                     form.submit();
                 }
                 $("#uploadPrivateFile").modal('hide');
-                $('#table_private').bootstrapTable('refresh');
+                // $('#table_private').bootstrapTable('refresh');
             });
         });
 

@@ -88,13 +88,13 @@ function inputTableInit(path, taskId) {
                 var unselectRow = $(buttonTemplate);
                 var orderSelection = $(buttonTemplate);
                 var orderCancel = $(buttonTemplate);
-                var feedBack = $(buttonTemplate);
+                // var feedBack = $(buttonTemplate);
                 var viewModel = $(buttonTemplate);
 
                 container.append(unselectRow);
                 container.append(orderSelection);
                 container.append(orderCancel);
-                container.append(feedBack);
+                // container.append(feedBack);
                 container.append(viewModel);
 
                 toolBar.append(container);
@@ -129,15 +129,15 @@ function inputTableInit(path, taskId) {
                 orderCancel.find('div:first').addClass(toTheme('glyphicon glyphicon-remove-sign'));
                 orderCancel.jqxTooltip({position: 'bottom', content: "取消订阅已选择数据"});
 
-                feedBack.jqxButton({
-                    cursor: "pointer",
-                    disabled: true,
-                    enableDefault: false,
-                    height: 25,
-                    width: 23
-                });
-                feedBack.find('div:first').addClass(toTheme('glyphicon glyphicon-exclamation-sign'));
-                feedBack.jqxTooltip({position: 'bottom', content: "反馈选择的已订阅数据问题"});
+                // feedBack.jqxButton({
+                //     cursor: "pointer",
+                //     disabled: true,
+                //     enableDefault: false,
+                //     height: 25,
+                //     width: 23
+                // });
+                // feedBack.find('div:first').addClass(toTheme('glyphicon glyphicon-exclamation-sign'));
+                // feedBack.jqxTooltip({position: 'bottom', content: "反馈选择的已订阅数据问题"});
 
                 viewModel.jqxButton({
                     cursor: "pointer",
@@ -154,11 +154,13 @@ function inputTableInit(path, taskId) {
                         case "Select":
                             unselectRow.jqxButton({disabled: false});
                             orderSelection.jqxButton({disabled: false});
+                            orderCancel.jqxButton({disabled: false});
                             viewModel.jqxButton({disabled: false});
                             break;
                         case "Unselect":
                             unselectRow.jqxButton({disabled: true});
                             orderSelection.jqxButton({disabled: true});
+                            orderCancel.jqxButton({disabled: true});
                             viewModel.jqxButton({disabled: true});
                             break;
                     }
@@ -194,6 +196,10 @@ function inputTableInit(path, taskId) {
                                     keyboard: true,
                                     remote: "viewModel.ht?id="+selection[0].dataId
                                 });
+                            } else {
+                                $("#jqxNotificationModel").jqxNotification({ width: "auto", position: "top-right",
+                                    opacity: 0.9, autoOpen: true, autoClose: false, template: "warning"
+                                });
                             }
                         }
                     }
@@ -210,6 +216,22 @@ function inputTableInit(path, taskId) {
                             }
                         }
                         $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=orderpanel" + "&taskId=" + taskId, function (data, status) {
+                            if (status == 'success') {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                });
+                orderCancel.click(function () {
+                    if (!orderSelection.jqxButton('disabled')) {
+                        var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
+                        var rowsDataIds = new Array();
+                        for (var i = 0; i < selection.length; i++) {
+                            if (selection[i].torderState == 1) {
+                                rowsDataIds.push(selection[i].dataId);
+                            }
+                        }
+                        $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=canorderpanel" + "&taskId=" + taskId, function (data, status) {
                             if (status == 'success') {
                                 window.location.reload();
                             }

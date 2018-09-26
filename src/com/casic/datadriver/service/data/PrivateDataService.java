@@ -409,6 +409,10 @@ public class PrivateDataService extends BaseService<PrivateData> {
         if (parent.equals("publishpanel")) {
             privateDataDao.updateToPublish(privateDataList);
         }
+
+        if (parent.equals("createpanel")) {
+            privateDataDao.updateToPrivate(privateDataList);
+        }
     }
 
     public void canOrderToOrder(String dataIds, String parent, Long taskId) {

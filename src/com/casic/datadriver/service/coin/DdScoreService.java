@@ -6,24 +6,16 @@ import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
-import com.hotent.core.web.query.QueryFilter;
-import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.dao.system.SysUserDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.ServletContextAware;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
 
 /**
  * @Author: hollykunge
@@ -37,10 +29,33 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
     public static final Map<String, DdScore> scoreListCache = new ConcurrentHashMap<String, DdScore>();
 
     @Resource
+    private
     DdScoreDao ddScoreDao;
 
     @Resource
+    private
     SysUserDao sysUserDao;
+
+    //批量删除
+    public void delAll(Long[] lAryId) {
+        for (Long id : lAryId) {
+            ddScoreDao.delById(id);
+        }
+    }
+    //修改一个
+    public void updateOne(DdScore entity) {
+        ddScoreDao.update(entity);
+    }
+    //获取一个
+    public DdScore getById(long id) {
+        return ddScoreDao.getById(id);
+    }
+    //获取所有
+    public List<DdScore> getAllScore() {
+        return ddScoreDao.getAll();
+    }
+
+
 
     private void initCacheList() {
         //缓存所有dd_score数据
@@ -50,17 +65,6 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
             initCache(String.valueOf(ddScore.getUid()) + ddScore.getScoreType(), ddScore);
         }
     }
-
-    public List<DdScore> getAllScore() {
-        return ddScoreDao.getAll();
-    }
-
-    public void delAll(Long[] lAryId) {
-        for (Long id : lAryId) {
-            ddScoreDao.delById(id);
-        }
-    }
-
     @Override
     protected IEntityDao<DdScore, Long> getEntityDao() {
         return this.ddScoreDao;
