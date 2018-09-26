@@ -31,8 +31,6 @@ public class DdScoreDao extends BaseDao<DdScore> {
     /**
      * 插入
      *
-     * @param queryFilter
-     *            the query filter
      * @return the list
      */
     public void insert(){
@@ -40,13 +38,14 @@ public class DdScoreDao extends BaseDao<DdScore> {
     }
     /**
      * Query task basic info list.
-     *
-     * @param queryFilter
-     *            the query filter
      * @return the list
      */
     public void delete(){
 
+    }
+
+    public List<DdScore> getPersonal(long uid) {
+        return this.getBySqlKey("getPersonal", uid);
     }
 
 }
