@@ -91,7 +91,9 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
      * @return DdScoreInflow流水
      */
     public List<DdScoreInflow> getByUid(long uid) {
-        return ddScoreInflowDao.getBySqlKey("uid");
+        Map<String, String> param = new HashMap<>(1);
+        param.put("uid", String.valueOf(uid));
+        return ddScoreInflowDao.getList("getByUid", param);
     }
     /**
      * 更改

@@ -22,6 +22,12 @@
     values (#{id,jdbcType=NUMERIC}, #{uid,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
       #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR})
     </insert>
+    <select id="getByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM dd_score_inflow
+        WHERE
+        uid=#{uid}
+    </select>
 
     <select id="getTodayDetailScore" resultMap="BaseResultMap" parameterType="java.util.Map">
         SELECT
