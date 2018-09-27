@@ -21,7 +21,7 @@ public class DdScoreInflow extends BaseModel {
     /**
      * 获得积分
      */
-    private Integer sourceScore;
+        private Integer sourceScore;
 
     /**
      * 积分来源

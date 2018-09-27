@@ -46,4 +46,10 @@
         SELECT <include refid="Base_Column_List"/>
         FROM dd_score_inflow
     </select>
+
+    <delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM dd_score_inflow
+		WHERE
+		id=#{id}
+	</delete>
 </mapper>
