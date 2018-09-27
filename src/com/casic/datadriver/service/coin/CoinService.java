@@ -3,7 +3,6 @@ package com.casic.datadriver.service.coin;
 import com.casic.datadriver.manager.ScoreRegulation;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.hotent.core.util.UniqueIdUtil;
-import com.hotent.core.web.ResultMessage;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.dao.system.SysUserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,9 @@ import static com.appleframe.utils.date.DateUtils.toDate;
 
 /**
  * @Author: hollykunge
- * @Description:
  * @Date: 创建于 2018/9/25
- * @Modified:
  */
+
 @Service
 public class CoinService {
 
@@ -40,31 +38,41 @@ public class CoinService {
         this.ddScoreService = ddScoreService;
     }
 
-    public String addScore(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime){
-        String resultMsg = null;
-        Boolean isNow = false;
+    /**
+     * @param account 身份证号
+     * @param sourceScore 分数
+     * @param sourceType 一级类型
+     * @param sourceDetail 二级类型
+     * @param updTime 更新时间
+     * @return 是否成功的字符串
+     */
+    public String addScore(String account, String sourceScore, String sourceType, String sourceDetail, String updTime){
+        String resultMsg;
+        //判断是否当天消息
+        Boolean isToday = false;
         Date time = toDate(updTime);
         Date today = new Date();
         if (time != null) {
-            String nowDate = dateFormater2.get().format(today);
-            String timeDate = dateFormater2.get().format(time);
+            String nowDate = DATE_FORMATTER2.get().format(today);
+            String timeDate = DATE_FORMATTER2.get().format(time);
             if (nowDate.equals(timeDate)) {
-                isNow = true;
+                isToday = true;
             }
         }
-        if (uid != null && isNow) {
-            //通过身份证号获取user
-            ISysUser sysUser = sysUserDao.getByAccount(uid);
+        if (account != null && isToday) {
+            //获取用户
+            ISysUser sysUser = sysUserDao.getByAccount(account);
             if (sourceScore != null) {
-                List<DdScoreInflow> todayInflows = ddScoreInflowService.getTodayScore(sysUser.getUserId(), sourceDetail, updTime);
-
+                //这里仅传入detail
+                List<DdScoreInflow> todayInflows = ddScoreInflowService.getTodayScore(sysUser.getUserId(), sourceDetail);
+                //判断当前积分是否超出当日上限
                 Integer todayScore = 0;
                 for (DdScoreInflow ddScoreInflow : todayInflows) {
                     todayScore += ddScoreInflow.getSourceScore();
                 }
                 Boolean isOverFlow = scoreRegulation.isOverFlow(Integer.valueOf(sourceScore), todayScore, sourceDetail);
-                //判断当前积分是否超出当日上限
                 if (!isOverFlow) {
+                    //增加流水
                     DdScoreInflow ddScoreInflow = new DdScoreInflow();
                     ddScoreInflow.setId(UniqueIdUtil.genId());
                     ddScoreInflow.setUid(sysUser.getUserId());
@@ -73,10 +81,11 @@ public class CoinService {
                     ddScoreInflow.setSourceType(sourceType);
                     ddScoreInflow.setUpdTime(updTime);
                     ddScoreInflow.setUserName(sysUser.getFullname());
+                    //写入数据库和缓存
                     ddScoreInflowService.add(ddScoreInflow);
                     resultMsg = "赚取积分成功";
                     //添加总积分量
-                    ddScoreService.increaseScore(ddScoreInflow.getUid(), ddScoreInflow);
+                    ddScoreService.increaseScore(ddScoreInflow);
                 } else {
                     resultMsg = "单日积分总量已满";
                 }
@@ -89,7 +98,7 @@ public class CoinService {
         return resultMsg;
     }
 
-    private final static ThreadLocal<SimpleDateFormat> dateFormater2 = new ThreadLocal<SimpleDateFormat>() {
+    private final static ThreadLocal<SimpleDateFormat> DATE_FORMATTER2 = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd");

@@ -8,24 +8,19 @@ import com.hotent.core.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 /**
  * @Author: hollykunge
- * @Description:
  * @Date: 创建于 2018/9/20
- * @Modified:
  */
+
 @Service
 public class DdScoreOutflowService extends BaseService<DdScoreOutflow> {
 
-    DdScoreOutflowDao ddScoreOutflowDao;
-
-    ScoreRegulation scoreRegulation;
+    private DdScoreOutflowDao ddScoreOutflowDao;
 
     @Autowired
-    public DdScoreOutflowService(DdScoreOutflowDao ddScoreOutflowDao, ScoreRegulation scoreRegulation) {
+    public DdScoreOutflowService(DdScoreOutflowDao ddScoreOutflowDao) {
         this.ddScoreOutflowDao = ddScoreOutflowDao;
-        this.scoreRegulation = scoreRegulation;
     }
 
     @Override
