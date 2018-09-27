@@ -42,7 +42,7 @@
         <c:set var="checkAll">
             <input type="checkbox" id="chkall"/>
         </c:set>
-        <display:table name="scoreInflowList" id="scoreInflowItem" requestURI="earnlist.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
+        <display:table name="scoreInflowList" id="scoreInflowItem" requestURI="list.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
             <display:column title="${checkAll}" media="html" style="width:30px;">
                 <input type="checkbox" class="pk" name="bizDefId" value="${scoreInflowItem.id}">
             </display:column>
