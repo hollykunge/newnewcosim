@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
  * @Author: hollykunge
  * @Description:
  * @Date: 创建于 2018/9/19
- * @Modified:
  */
+
 @Repository
 public class DdScoreOutflowDao extends BaseDao<DdScoreOutflow> {
     @Override
