@@ -42,6 +42,12 @@
         WHERE
         uid=#{uid}
     </select>
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM dd_score
+        WHERE
+        id=#{id}
+    </select>
     <update id="update" parameterType="com.casic.datadriver.model.coin.DdScore">
 		UPDATE dd_score
 		<set>

@@ -30,7 +30,7 @@ import java.util.List;
  * @Modified:
  */
 @Controller
-@RequestMapping("/datadriver/coin/")
+@RequestMapping("/datadriver/inflow/")
 public class ScoreInflowController extends AbstractController {
 
     private DdScoreInflowService ddScoreInflowService;
@@ -147,7 +147,7 @@ public class ScoreInflowController extends AbstractController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("earnlist")
+    @RequestMapping("list")
     @Action(description="积分赚取列表")
     public ModelAndView earnlist(HttpServletRequest request, HttpServletResponse response) throws Exception
     {

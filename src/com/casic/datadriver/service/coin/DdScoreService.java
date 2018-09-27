@@ -47,7 +47,8 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         ddScoreDao.update(entity);
     }
     //获取一个
-    public DdScore getById(long id) {
+
+    public List<DdScore> getById(long id) {
         return ddScoreDao.getById(id);
     }
     //获取所有
