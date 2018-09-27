@@ -123,6 +123,9 @@ public class ScoreController extends AbstractController {
         for(DdScoreInflow ddScoreInflow : detailList) {
             if(!ddScoreInflow.getSourceType().equals(scoreType)) {
                 detailList.remove(ddScoreInflow);
+                if(0 == detailList.size()) {
+                    return this.getAutoView();
+                }
             }
         }
         return this.getAutoView().addObject("detailList", detailList);

@@ -9,6 +9,7 @@ import com.casic.datadriver.service.coin.DdScoreInflowService;
 import com.casic.datadriver.service.coin.DdScoreService;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.ResultMessage;
+import com.hotent.platform.dao.system.SysOrgDao;
 import com.hotent.platform.dao.system.SysUserDao;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,15 +39,19 @@ public class CoinController extends GenericController {
 
     private DdScoreInflowService ddScoreInflowService;
 
+    private SysOrgDao sysOrgDao;
+
     @Autowired
     public CoinController(DdScoreInflowService ddScoreInflowService,
                           SysUserDao sysUserDao,
                           DdScoreService ddScoreService,
-                          CoinService coinService) {
+                          CoinService coinService,
+                          SysOrgDao sysOrgDao) {
         this.sysUserDao = sysUserDao;
         this.ddScoreService = ddScoreService;
         this.coinService = coinService;
         this.ddScoreInflowService = ddScoreInflowService;
+        this.sysOrgDao = sysOrgDao;
     }
 
     /**
@@ -132,7 +138,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("rank")
     @ResponseBody
-    public JSONArray getRank(String sourceType, HttpServletResponse response) throws Exception {
+    public void getRank(String sourceType,HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
             //初始化列表
@@ -143,7 +149,7 @@ public class CoinController extends GenericController {
                 if (sourceType.equals(aTotalList.getScoreType())) {
                     DdRank e = new DdRank();
                     e.setUserName(aTotalList.getUserName());
-                    String orgName = sysUserDao.getById(aTotalList.getUid()).getOrgName();
+                    String orgName = sysOrgDao.getOrgsByUserId(aTotalList.getUid()).get(0).getOrgName();
                     e.setOrgName(orgName);
                     e.setScoreTotal(aTotalList.getScoreTotal());
                     itemList.add(e);
@@ -167,10 +173,12 @@ public class CoinController extends GenericController {
             }
             //组装json
             jsonR = JSONArray.fromObject(itemList);
+            String callback = request.getParameter("callback");
+            response.getWriter().write(callback + "(" + jsonR.toString() + ")");
+//            writeResultMessage(response.getWriter(), callback + "("+jsonR.toString()+")", ResultMessage.Success);
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
-        return jsonR;
     }
 
 
