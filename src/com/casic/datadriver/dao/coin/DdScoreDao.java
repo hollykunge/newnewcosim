@@ -49,4 +49,8 @@ public class DdScoreDao extends BaseDao<DdScore> {
 
     }
 
+    public List<DdScore> getById(long id) {
+        return this.getBySqlKey("getById", id);
+    }
+
 }

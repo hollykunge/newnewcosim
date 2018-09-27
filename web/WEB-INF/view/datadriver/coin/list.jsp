@@ -44,16 +44,16 @@
         </c:set>
         <display:table name="scoreList" id="scoreItem" requestURI="list.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
             <display:column title="${checkAll}" media="html" style="width:30px;">
-                <input type="checkbox" class="pk" name="bizDefId" value="${bizDefItem.bizDefId}">
+                <input type="checkbox" class="pk" name="bizDefId" value="${scoreItem.id}">
             </display:column>
             <display:column property="userName" title="用户名" sortable="true" sortName="userName" maxLength="80"></display:column>
             <display:column property="scoreTotal" title="积分总量" sortable="true" sortName="scoreTotal" maxLength="80"></display:column>
             <display:column property="udpTime" title="更新时间" sortable="true" sortName="udpTime" maxLength="80"></display:column>
             <display:column property="scoreType" title="积分类型" sortable="true" sortName="scoreType"></display:column>
             <display:column title="管理" media="html" style="width:260px">
-                <a href="del.ht?bizDefId=${scoreItem.id}" class="link del">删除</a>
-                <a href="edit.ht?bizDefId=${scoreItem.id}" class="link edit">编辑</a>
-                <a href="get.ht?bizDefId=${scoreItem.id}" class="link detail">明细</a>
+                <a href="del.ht?id=${scoreItem.id}" class="link del">删除</a>
+                <a href="edit.ht?id=${scoreItem.id}" class="link edit">编辑</a>
+                <a href="detail.ht?id=${scoreItem.id}" class="link detail">明细</a>
             </display:column>
         </display:table>
         <hotent:paging tableId="scoreItem"/>
