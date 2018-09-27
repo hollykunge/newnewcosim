@@ -24,27 +24,43 @@ public class CoinAspect {
     @Resource
     private CoinService coinService;
 
-    //design_1,奖励1积分
+    /**
+     * design_1,奖励1积分
+     */
     @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.todotask(..))")
     public void todotaskAspect(){}
-    //design_2,奖励2积分
+    /**
+     * design_2,奖励2积分
+     */
     @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.updatePrivateData(..))")
     public void updatePrivateDataAspect(){}
-    //design_3,奖励2积分
+    /**
+     * design_3,奖励2积分
+     */
     @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.uploadPrivateFile(..))")
     public void uploadPrivateFileAspect(){}
-    //design_4,奖励10积分
+    /**
+     * design_4,奖励10积分
+     */
     @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.submittask(..))")
     public void submittaskAspect(){}
-    //design_5,奖励10积分
+    /**
+     * design_5,奖励10积分
+     */
 
-    //design_6,奖励10积分
+    /**
+     * design_6,奖励10积分
+     */
     @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.save(..))")
     public void saveAspect(){}
-    //design_7,奖励5积分
+    /**
+     * design_7,奖励5积分
+     */
     @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.createtopublish(..))")
     public void createtopublishAspect(){}
-    //design_8,奖励10积分
+    /**
+     * design_8,奖励10积分
+     */
     @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.canOrderToOrder(..))||" +
             "execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.createToPublish(..)) )")
     public void orderAndCreateAspect(){}
