@@ -39,9 +39,33 @@ public class DdScoreInflow extends BaseModel {
     private String updTime;
 
     /**
+     * 总和
+     */
+    private Long total;
+
+    /**
      * 用户名
      */
     private String userName;
+
+
+    /**
+     *
+     * @return total
+     */
+    public Long getTotal() {
+        return total;
+    }
+
+
+
+    /**
+     *
+     * @param total
+     */
+    public void setTotal(Long total) {
+        this.total = total;
+    }
 
     /**
      * @return id
@@ -164,9 +188,8 @@ public class DdScoreInflow extends BaseModel {
                 ", sourceType='" + sourceType + '\'' +
                 ", sourceDetail='" + sourceDetail + '\'' +
                 ", updTime='" + updTime + '\'' +
+                ", total=" + total +
+                ", userName='" + userName + '\'' +
                 '}';
     }
-
-
-
 }

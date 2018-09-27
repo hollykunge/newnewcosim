@@ -11,10 +11,12 @@
         <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
         <result column="source_detail" property="sourceDetail" jdbcType="VARCHAR"/>
         <result column="upd_time" property="updTime" jdbcType="VARCHAR"/>
+        <result column="total" property="total" jdbcType="NUMERIC"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, uid, source_score, source_type, source_detail, upd_time
+        id, uid, source_score, source_type, source_detail, upd_time, total, user_name
     </sql>
 
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
@@ -52,4 +54,39 @@
 		WHERE
 		id=#{id}
 	</delete>
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM dd_score_inflow
+        WHERE
+        id=#{id}
+    </select>
+    <update id="update" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
+        UPDATE dd_score_inflow
+        <set>
+            <if test="uid !=null">
+                uid = #{uid,jdbcType=NUMERIC},
+            </if>
+            <if test="sourceScore !=null">
+                source_score = #{sourceScore,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType !=null">
+                source_type = #{sourceType,jdbcType=NUMERIC},
+            </if>
+            <if test="sourceDetail !=null">
+                source_detail = #{sourceDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="updTime !=null">
+                upd_time = #{updTime,jdbcType=VARCHAR},
+            </if>
+            <if test="total !=null">
+                total = #{total,jdbcType=VARCHAR},
+            </if>
+            <if test="userName !=null">
+                user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE
+        id = #{id, jdbcType=NUMERIC}
+    </update>
+
 </mapper>

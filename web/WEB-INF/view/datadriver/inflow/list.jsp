@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="panel-search">
-            <form id="searchForm" method="post" action="earnlist.ht">
+            <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
                     <%--<span class="label">用户名称:</span><input type="text" name="Q_userName_SL"  class="inputText" />--%>
                     <span class="label">积分类型:</span><input type="text" name="Q_sourceType_SL"  class="inputText" />
@@ -54,7 +54,6 @@
             <display:column title="管理" media="html" style="width:260px">
                 <a href="del.ht?id=${scoreInflowItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${scoreInflowItem.id}" class="link edit">编辑</a>
-                <a href="get.ht?id=${scoreInflowItem.id}" class="link detail">明细</a>
             </display:column>
         </display:table>
         <hotent:paging tableId="scoreInflowItem"/>
