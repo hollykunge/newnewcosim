@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -23,8 +22,8 @@ import java.util.List;
  * @Author: hollykunge
  * @Description: 积分记录
  * @Date: 创建于 2018/9/21
- * @Modified:
  */
+
 @Controller
 @RequestMapping("/datadriver/coin/")
 public class ScoreController extends AbstractController {
@@ -41,55 +40,56 @@ public class ScoreController extends AbstractController {
     }
 
     /**
-     * 积分列表批量删除
-     * @param request r
-     * @param response r
+     * 积分列表
+     * @throws Exception e
+     */
+    @RequestMapping("list")
+    @Action(description="积分列表")
+    public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<DdScore> list=ddScoreService.getAll(new QueryFilter(request,"scoreItem"));
+        return this.getAutoView().addObject("scoreList",list);
+    }
+    /**
+     * 积分批量删除
      * @throws Exception e
      */
     @RequestMapping("del")
     @Action(description="积分列表删除")
-    public void del(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
-        String preUrl= RequestUtil.getPrePage(request);
-        ResultMessage message=null;
+    public void del(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String preUrl = RequestUtil.getPrePage(request);
+        ResultMessage message = null;
         try{
             Long[] lAryId =RequestUtil.getLongAryByStr(request, "id");
             ddScoreService.delAll(lAryId);
-            message=new ResultMessage(ResultMessage.Success,"删除成功!");
-        }catch(Exception ex){
-            message=new ResultMessage(ResultMessage.Fail, "删除失败" + ex.getMessage());
+            message = new ResultMessage(ResultMessage.Success,"删除成功!");
+        }catch(Exception ex) {
+            message = new ResultMessage(ResultMessage.Fail, "删除失败" + ex.getMessage());
         }
         addMessage(message, request);
         response.sendRedirect(preUrl);
     }
-
     /**
-     * 编辑个人积分
-     * @param request r
+     * 积分编辑
      * @throws Exception e
      */
     @RequestMapping("edit")
     @Action(description="编辑个人积分")
-    public ModelAndView edit(HttpServletRequest request) throws Exception
-    {
+    public ModelAndView edit(HttpServletRequest request) throws Exception {
         Long scoreId = RequestUtil.getLong(request,"id");
         String returnUrl = RequestUtil.getPrePage(request);
         DdScore ddScore = ddScoreService.getById(scoreId);
-
-        return getAutoView().addObject("bizDef",ddScore)
-                .addObject("returnUrl",returnUrl);
+        return getAutoView().addObject("bizDef", ddScore)
+                .addObject("returnUrl", returnUrl);
     }
-
     /**
-     * 提交编辑个人积分
+     * 提交编辑
      * @param request r
      * @param response r
      * @throws Exception e
      */
-    @RequestMapping("submitUpdate")
+    @RequestMapping("save")
     @Action(description="提交编辑个人积分")
-    public void submitUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
+    public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long scoreId = RequestUtil.getLong(request,"id");
         Long scoreUid = RequestUtil.getLong(request,"uid");
         String userName = RequestUtil.getString(request,"userName");
@@ -107,35 +107,15 @@ public class ScoreController extends AbstractController {
         ddScore.setUdpTime(udpTime);
         ddScore.setScoreType(scoreType);
         ddScore.setScoreAction(scoreAction);
-
         ddScoreService.updateOne(ddScore);
     }
-
-    /**
-     * 积分列表
-     * @param request r
-     * @param response r
-     * @return r
-     * @throws Exception e
-     */
-    @RequestMapping("list")
-    @Action(description="积分列表")
-    public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
-        List<DdScore> list=ddScoreService.getAll(new QueryFilter(request,"scoreItem"));
-        return this.getAutoView().addObject("scoreList",list);
-    }
-
     /**
      * 积分明细
-     * @param request r
-     * @return r
      * @throws Exception e
      */
     @RequestMapping("detail")
     @Action(description="积分明细")
-    public ModelAndView detail(HttpServletRequest request) throws Exception
-    {
+    public ModelAndView detail(HttpServletRequest request) throws Exception {
         Long scoreId = RequestUtil.getLong(request,"id");
         String scoreType = RequestUtil.getString(request,"scoreType");
         DdScore ddScore = ddScoreService.getById(scoreId);
