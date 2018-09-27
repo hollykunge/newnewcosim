@@ -23,11 +23,17 @@
       #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR})
     </insert>
 
-    <select id="getTodayAllScore" resultMap="BaseResultMap" parameterType="java.util.Map">
+    <select id="getTodayDetailScore" resultMap="BaseResultMap" parameterType="java.util.Map">
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_score_inflow
         WHERE uid=#{uid} AND source_detail=#{sourceDetail}
+    </select>
+    <select id="getTypeTotalScore" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_score_inflow
+        WHERE uid=#{uid} AND source_type=#{sourceType}
     </select>
 
     <select id="getAll" resultMap="BaseResultMap">
