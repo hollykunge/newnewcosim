@@ -35,6 +35,13 @@
         <include refid="Base_Column_List"/>
         FROM dd_score
     </select>
+    <select id="getPersonal" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_score
+        WHERE
+        uid=#{uid}
+    </select>
     <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
         FROM dd_score
