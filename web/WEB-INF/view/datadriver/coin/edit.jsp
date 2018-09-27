@@ -71,6 +71,8 @@
             <input size="35" type="hidden" name="uid" value="${bizDef.uid}" />
             <input size="35" type="hidden" name="scoreAction" value="${bizDef.scoreAction}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
+            <input size="35" type="hidden" name="crtTime" value="${bizDef.crtTime}" />
+            <input size="35" type="hidden" name="udpTime" value="${bizDef.udpTime}" />
         </form>
 
     </div>
