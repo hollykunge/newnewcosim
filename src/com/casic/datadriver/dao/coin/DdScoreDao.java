@@ -53,4 +53,8 @@ public class DdScoreDao extends BaseDao<DdScore> {
         return this.getBySqlKey("getById", id);
     }
 
+
+    public List<DdScore> getPersonal(long uid) {
+        return this.getBySqlKey("getPersonal", uid);
+    }
 }
