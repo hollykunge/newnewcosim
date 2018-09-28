@@ -88,8 +88,14 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             ddScoreOutflow.setUdpTime(df.format(new Date()));
             ddScoreOutflow.setUid(ddScore.getUid());
             Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
+
+            DdGoldenCoin ddGoldenCoin = new DdGoldenCoin();
+            //TODO 此处添加币的获取
+//            ddGoldenCoin.setTotal();
+//            ddGoldenCoinDao.add();
             if (done){
                 ddScoreOutflowDao.add(ddScoreOutflow);
+
             }
         }
     }
