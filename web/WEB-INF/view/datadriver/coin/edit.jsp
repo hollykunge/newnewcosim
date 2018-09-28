@@ -10,11 +10,9 @@
 <html>
 <head>
     <title>积分编辑</title>
-    <%@include file="/commons/include/get.jsp" %>
+    <%@include file="/commons/include/form.jsp" %>
     <script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>
     <script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>
-    <script type="text/javascript" src="${ctx}/js/hotent/platform/form/CommonDialog.js"></script>
-    <script type="text/javascript" src="${ctx}/js/hotent/platform/system/IconDialog.js"></script>
     <script type="text/javascript">
         $(function() {
             var options={};
@@ -24,7 +22,9 @@
             var frm=$('#scoreForm').form();
             $("a.save").click(function() {
                 if(frm.valid()){
-                    frm.submit();
+                    frm.setData();
+                    frm.ajaxForm(options);
+                    form.submit();
                 }
             });
         });
@@ -36,7 +36,7 @@
                     if(rtn){
                         this.close();
                     }else{
-                        window.location.href = "${ctx}/cloud/aftersale/feedback/list.ht";
+                        window.location.href = "${ctx}/datadriver/coin/list.ht";
                     }
                 });
             } else {

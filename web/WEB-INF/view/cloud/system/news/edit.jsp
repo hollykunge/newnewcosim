@@ -19,11 +19,11 @@
 
 	<script type="text/javascript">
 		$(function() {
-			var editor = new baidu.editor.ui.Editor({
-				minFrameHeight : 260,
-				initialContent : ''
-			});
-			editor.render("txtHtml");
+			// var editor = new baidu.editor.ui.Editor({
+			// 	minFrameHeight : 260,
+			// 	initialContent : ''
+			// });
+			// editor.render("txtHtml");
 			
 			var options={};
 			if(showResponse){
@@ -31,10 +31,11 @@
 			}
 			var frm=$('#newsForm').form();
 			$("a.save").click(function() {
+			    console.log('点击')
 			if(frm.valid()){
-					$('#content').val(editor.getContent());
+					// $('#content').val(editor.getContent());
 					frm.setData();
-					frm.ajaxForm(options);
+					// frm.ajaxForm(options);
 					form.submit();
 				}
 			});

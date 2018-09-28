@@ -20,20 +20,20 @@
         </div>
         <div class="panel-toolbar">
             <div class="toolBar">
-                <div class="group"><a class="link search" id="btnSearch">查询</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link add" href="edit.ht">添加</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link del"  action="del.ht">删除</a></div>
+                <%--<div class="group"><a class="link search" id="btnSearch">查询</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link add" href="edit.ht">添加</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link del"  action="del.ht">删除</a></div>--%>
             </div>
         </div>
         <div class="panel-search">
             <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
                     <%--<span class="label">用户名称:</span><input type="text" name="Q_userName_SL"  class="inputText" />--%>
-                    <span class="label">积分类型:</span><input type="text" name="Q_sourceType_SL"  class="inputText" />
+                    <%--<span class="label">积分类型:</span><input type="text" name="Q_sourceType_SL"  class="inputText" />--%>
                 </div>
             </form>
         </div>

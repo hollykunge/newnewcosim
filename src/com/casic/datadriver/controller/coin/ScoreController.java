@@ -90,6 +90,8 @@ public class ScoreController extends AbstractController {
     @RequestMapping("save")
     @Action(description="提交编辑个人积分")
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String resultMsg = null;
+
         Long scoreId = RequestUtil.getLong(request,"id");
         Long scoreUid = RequestUtil.getLong(request,"uid");
         String userName = RequestUtil.getString(request,"userName");
@@ -107,7 +109,15 @@ public class ScoreController extends AbstractController {
         ddScore.setUdpTime(udpTime);
         ddScore.setScoreType(scoreType);
         ddScore.setScoreAction(scoreAction);
-        ddScoreService.updateOne(ddScore);
+
+        try {
+            ddScoreService.updateOne(ddScore);
+            resultMsg = getText("record.updated", "积分");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+        } catch (Exception e) {
+            writeResultMessage(response.getWriter(), resultMsg + "，" + e.getMessage(), ResultMessage.Fail);
+        }
+
     }
     /**
      * 积分明细
