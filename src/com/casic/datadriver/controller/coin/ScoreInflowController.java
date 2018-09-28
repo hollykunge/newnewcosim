@@ -87,6 +87,8 @@ public class ScoreInflowController extends AbstractController {
     @RequestMapping("save")
     @Action(description="提交编辑个人流水")
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String resultMsg = null;
+
         Long scoreInflowId = RequestUtil.getLong(request,"id");
         Long scoreInflowUid = RequestUtil.getLong(request,"uid");
         Integer sourceScore = RequestUtil.getInt(request,"sourceScore");
@@ -100,7 +102,15 @@ public class ScoreInflowController extends AbstractController {
         ddScoreInflow.setSourceType(sourceType);
         ddScoreInflow.setSourceDetail(sourceDetail);
         ddScoreInflow.setUpdTime(updTime);
-        ddScoreInflowService.updateOne(ddScoreInflow);
+
+        try {
+            ddScoreInflowService.updateOne(ddScoreInflow);
+            resultMsg = getText("record.updated", "赚取的积分");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+        } catch (Exception e) {
+            writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
+        }
+
     }
 
     /*

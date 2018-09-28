@@ -20,13 +20,13 @@
         </div>
         <div class="panel-toolbar">
             <div class="toolBar">
-                <div class="group"><a class="link search" id="btnSearch">查询</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link add" href="edit.ht">添加</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link del"  action="del.ht">删除</a></div>
+                <%--<div class="group"><a class="link search" id="btnSearch">查询</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link add" href="edit.ht">添加</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link del"  action="del.ht">删除</a></div>--%>
             </div>
         </div>
         <div class="panel-search">
@@ -54,7 +54,6 @@
             <display:column title="管理" media="html" style="width:260px">
                 <a href="del.ht?bizDefId=${scoreOutflowItem.id}" class="link del">删除</a>
                 <a href="edit.ht?bizDefId=${scoreOutflowItem.id}" class="link edit">编辑</a>
-                <a href="get.ht?bizDefId=${scoreOutflowItem.id}" class="link detail">明细</a>
             </display:column>
         </display:table>
         <hotent:paging tableId="scoreOutflowItem"/>
