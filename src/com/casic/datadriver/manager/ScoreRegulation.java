@@ -31,11 +31,6 @@ public class ScoreRegulation {
     public static final Integer LIMIT_QIU_SHI = 20;
     public static final Integer LIMIT_CHUANG_XIN = 0;
 
-    //获奖人数
-    public static final Integer QUAN_JU_FINALIST = 25;
-    public static final Integer FENG_XIAN_FINALIST = 5;
-    public static final Integer QIU_SHI_FINALIST = 20;
-
     //全局8种
     private static final String DESIGN_1 = "design_1";
     private static final String DESIGN_2 = "design_2";

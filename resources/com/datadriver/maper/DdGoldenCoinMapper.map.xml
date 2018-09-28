@@ -5,15 +5,17 @@
         <id column="id" property="id" jdbcType="NUMERIC"/>
         <result column="user_id" property="userId" jdbcType="NUMERIC"/>
         <result column="total" property="total" jdbcType="NUMERIC"/>
+        <result column="coin_type" property="coinType" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, user_id, total
+        id, user_id, total, coin_type
     </sql>
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdGoldenCoin">
-    insert into dd_coin (id, user_id, total)
+    insert into dd_coin (id, user_id, total, coin_type)
     values (#{id,jdbcType=NUMERIC},
       #{user_id,jdbcType=NUMERIC},
-      #{total,jdbcType=NUMERIC})
+      #{total,jdbcType=NUMERIC},
+      #{coin_type,jdbcType=VARCHAR})
     </insert>
     <delete id="delById" parameterType="java.lang.Long">
 		DELETE FROM dd_coin
@@ -46,6 +48,9 @@
             </if>
             <if test="total !=null">
                 total = #{total,jdbcType=NUMERIC}
+            </if>
+            <if test="coinType !=null">
+                coin_type = #{coinType,jdbcType=VARCHAR}
             </if>
         </set>
         WHERE
