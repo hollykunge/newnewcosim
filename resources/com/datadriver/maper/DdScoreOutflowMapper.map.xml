@@ -5,12 +5,12 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <id column="id" property="id" jdbcType="NUMERIC" />
+    <result column="uid" property="uid" jdbcType="NUMERIC" />
     <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
-    <result column="expend_score" property="expendScore" jdbcType="BIGINT" />
+    <result column="expend_score" property="expendScore" jdbcType="NUMERIC" />
     <result column="expend_detail" property="expendDetail" jdbcType="VARCHAR" />
-    <result column="udp_time" property="udpTime" jdbcType="TIMESTAMP" />
+    <result column="udp_time" property="udpTime" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List">
     id, uid, source_type, expend_score, expend_detail, udp_time
@@ -19,4 +19,13 @@
     SELECT <include refid="Base_Column_List"/>
     FROM dd_score_outflow
   </select>
+  <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreOutflow">
+    insert into dd_score_outflow (id, uid, source_type, expend_score, expend_detail, udp_time)
+    values (#{id,jdbcType=NUMERIC},
+      #{uid,jdbcType=NUMERIC},
+      #{sourceType,jdbcType=VARCHAR},
+      #{expendScore,jdbcType=NUMERIC},
+      #{expendDetail,jdbcType=VARCHAR},
+      #{udpTime,jdbcType=VARCHAR},
+    </insert>
 </mapper>

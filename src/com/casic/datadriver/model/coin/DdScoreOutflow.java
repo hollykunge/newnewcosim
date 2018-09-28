@@ -27,7 +27,7 @@ public class DdScoreOutflow extends BaseModel {
      * 消耗积分
      */
     @Column(name = "expend_score")
-    private Long expendScore;
+    private Integer expendScore;
 
     /**
      * 消耗原因
@@ -39,7 +39,7 @@ public class DdScoreOutflow extends BaseModel {
      * 消耗时间
      */
     @Column(name = "udp_time")
-    private Date udpTime;
+    private String udpTime;
 
     /**
      * @return id
@@ -96,7 +96,7 @@ public class DdScoreOutflow extends BaseModel {
      *
      * @return expend_score - 消耗积分
      */
-    public Long getExpendScore() {
+    public Integer getExpendScore() {
         return expendScore;
     }
 
@@ -105,7 +105,7 @@ public class DdScoreOutflow extends BaseModel {
      *
      * @param expendScore 消耗积分
      */
-    public void setExpendScore(Long expendScore) {
+    public void setExpendScore(Integer expendScore) {
         this.expendScore = expendScore;
     }
 
@@ -132,7 +132,7 @@ public class DdScoreOutflow extends BaseModel {
      *
      * @return udp_time - 消耗时间
      */
-    public Date getUdpTime() {
+    public String getUdpTime() {
         return udpTime;
     }
 
@@ -141,7 +141,7 @@ public class DdScoreOutflow extends BaseModel {
      *
      * @param udpTime 消耗时间
      */
-    public void setUdpTime(Date udpTime) {
+    public void setUdpTime(String udpTime) {
         this.udpTime = udpTime;
     }
 

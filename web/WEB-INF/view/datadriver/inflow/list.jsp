@@ -20,20 +20,20 @@
         </div>
         <div class="panel-toolbar">
             <div class="toolBar">
-                <div class="group"><a class="link search" id="btnSearch">查询</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link add" href="edit.ht">添加</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link del"  action="del.ht">删除</a></div>
+                <%--<div class="group"><a class="link search" id="btnSearch">查询</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link add" href="edit.ht">添加</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link del"  action="del.ht">删除</a></div>--%>
             </div>
         </div>
         <div class="panel-search">
-            <form id="searchForm" method="post" action="earnlist.ht">
+            <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
                     <%--<span class="label">用户名称:</span><input type="text" name="Q_userName_SL"  class="inputText" />--%>
-                    <span class="label">积分类型:</span><input type="text" name="Q_sourceType_SL"  class="inputText" />
+                    <%--<span class="label">积分类型:</span><input type="text" name="Q_sourceType_SL"  class="inputText" />--%>
                 </div>
             </form>
         </div>
@@ -42,9 +42,9 @@
         <c:set var="checkAll">
             <input type="checkbox" id="chkall"/>
         </c:set>
-        <display:table name="scoreInflowList" id="scoreInflowItem" requestURI="earnlist.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
+        <display:table name="scoreInflowList" id="scoreInflowItem" requestURI="list.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
             <display:column title="${checkAll}" media="html" style="width:30px;">
-                <input type="checkbox" class="pk" name="bizDefId" value="${bizDefItem.bizDefId}">
+                <input type="checkbox" class="pk" name="bizDefId" value="${scoreInflowItem.id}">
             </display:column>
             <display:column property="uid" title="用户" sortable="true" sortName="uid" maxLength="80"></display:column>
             <display:column property="sourceScore" title="赚取积分值" sortable="true" sortName="sourceScore" maxLength="80"></display:column>
@@ -52,9 +52,8 @@
             <display:column property="sourceDetail" title="积分详情" sortable="true" sortName="sourceDetail" maxLength="80"></display:column>
             <display:column property="updTime" title="更新时间" sortable="true" sortName="updTime"></display:column>
             <display:column title="管理" media="html" style="width:260px">
-                <a href="del.ht?bizDefId=${scoreInflowItem.id}" class="link del">删除</a>
-                <a href="edit.ht?bizDefId=${scoreInflowItem.id}" class="link edit">编辑</a>
-                <a href="get.ht?bizDefId=${scoreInflowItem.id}" class="link detail">明细</a>
+                <a href="del.ht?id=${scoreInflowItem.id}" class="link del">删除</a>
+                <a href="edit.ht?id=${scoreInflowItem.id}" class="link edit">编辑</a>
             </display:column>
         </display:table>
         <hotent:paging tableId="scoreInflowItem"/>

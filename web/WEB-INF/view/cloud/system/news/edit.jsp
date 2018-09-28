@@ -31,6 +31,7 @@
 			}
 			var frm=$('#newsForm').form();
 			$("a.save").click(function() {
+			    console.log('点击')
 			if(frm.valid()){
 					$('#content').val(editor.getContent());
 					frm.setData();

@@ -1,6 +1,5 @@
 package com.casic.datadriver.manager;
 
-import com.casic.cloud.model.tool.ToolType;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,18 +13,25 @@ import java.util.Map;
  * @Author: hollykunge
  * @Description: 积分规则
  * @Date: 创建于 2018/9/21
- * @Modified:
  */
+
 @Component
 public class ScoreRegulation {
 
     public static final int SCORE_LIMIT = 10;
 
-    private static final String QUAN_JU = "quanju";
-    private static final String FENG_XIAN = "fengxian";
-    private static final String QIU_SHI = "qiushi";
-    private static final String CHUANG_XIN = "chuangxin";
+    //四种币
+    public static final String QUAN_JU = "quanju";
+    public static final String FENG_XIAN = "fengxian";
+    public static final String QIU_SHI = "qiushi";
+    public static final String CHUANG_XIN = "chuangxin";
 
+    public static final Integer LIMIT_QUAN_JU = 25;
+    public static final Integer LIMIT_FENG_XIAN = 5;
+    public static final Integer LIMIT_QIU_SHI = 20;
+    public static final Integer LIMIT_CHUANG_XIN = 0;
+
+    //全局8种
     private static final String DESIGN_1 = "design_1";
     private static final String DESIGN_2 = "design_2";
     private static final String DESIGN_3 = "design_3";
@@ -35,28 +41,29 @@ public class ScoreRegulation {
     private static final String DESIGN_7 = "design_7";
     private static final String DESIGN_8 = "design_8";
 
+    //奉献2种
     private static final String ISSUE_1 = "issue_1";
     private static final String ISSUE_2 = "issue_2";
 
+    //求实10种
     private static final String TALK_1 = "talk_1";
     private static final String TALK_2 = "talk_2";
     private static final String TALK_3 = "talk_3";
-
     private static final String SEARCH_1 = "search_1";
     private static final String SEARCH_2 = "search_2";
     private static final String SEARCH_3 = "search_3";
-
     private static final String TOOL_1 = "tool_1";
     private static final String TOOL_2 = "tool_2";
     private static final String TOOL_3 = "tool_3";
     private static final String TOOL_4 = "tool_4";
 
+    //创新3种
     private static final String STORE_1 = "store_1";
     private static final String STORE_2 = "store_2";
     private static final String STORE_3 = "store_3";
 
-    ArrayList<String> sourceDetailList = new ArrayList<String>();
-    Map<String,Integer> overflowmap =  new HashMap();
+    private ArrayList<String> sourceDetailList = new ArrayList<String>();
+    private Map<String,Integer> overflowmap =  new HashMap();
     public ScoreRegulation() {
         //协同设计
         sourceDetailList.add(DESIGN_1);
@@ -75,7 +82,6 @@ public class ScoreRegulation {
         sourceDetailList.add(TOOL_3);
         sourceDetailList.add(TOOL_4);
 
-
         overflowmap.put(DESIGN_1, 5);
         overflowmap.put(DESIGN_2, 8);
         overflowmap.put(DESIGN_3, 8);
@@ -90,8 +96,12 @@ public class ScoreRegulation {
         overflowmap.put(TOOL_4, 10);
     }
 
+    /**
+     * 判断是否今天
+     * @param time time
+     */
     public boolean isToday(String time) {
-//        String time = "1988-12-10 11:20:45";
+        //String time = "1988-12-10 11:20:45";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
         LocalDateTime localTime = LocalDateTime.parse(time, dtf);
         LocalDateTime startTime = LocalDate.now().atTime(0, 0, 0);
@@ -110,21 +120,16 @@ public class ScoreRegulation {
         }
         return false;
     }
-
     /**
      * @param scoreInflow  单次赚取积分数
      * @param todayScore   今天已经得到的积分数
      * @param sourceDetail 来源动作
-     * @return
      */
     public Boolean isOverFlow(Integer scoreInflow, Integer todayScore, String sourceDetail) {
         //判断是否是封顶项
         Boolean isCapping = sourceDetailList.contains(sourceDetail);
         if (isCapping) {
-            if (scoreInflow + todayScore > overflowmap.get(sourceDetail)) {
-                return true;
-            }
-            return false;
+            return scoreInflow + todayScore > overflowmap.get(sourceDetail);
         } else {
             return false;
         }

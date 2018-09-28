@@ -1,13 +1,10 @@
 package com.casic.datadriver.controller.coin;
 
 import com.casic.datadriver.controller.AbstractController;
-import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.service.coin.DdScoreInflowService;
 
-import com.casic.datadriver.service.coin.DdScoreService;
 import com.hotent.core.annotion.Action;
-import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.query.QueryFilter;
 import com.hotent.core.web.util.RequestUtil;
@@ -17,20 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.RequestWrapper;
 import java.util.List;
 
 /**
  * @Author: hollykunge
  * @Description: 积分赚取流水
  * @Date: 创建于 2018/9/21
- * @Modified:
  */
+
 @Controller
-@RequestMapping("/datadriver/coin")
+@RequestMapping("/datadriver/inflow/")
 public class ScoreInflowController extends AbstractController {
 
     private DdScoreInflowService ddScoreInflowService;
@@ -41,6 +36,15 @@ public class ScoreInflowController extends AbstractController {
     }
 
     /**
+     * @throws Exception e
+     */
+    @RequestMapping("list")
+    @Action(description="积分赚取列表")
+    public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<DdScoreInflow> earnlist=ddScoreInflowService.getAll(new QueryFilter(request,"scoreInflowItem"));
+        return this.getAutoView().addObject("scoreInflowList",earnlist);
+    }
+    /**
      * 流水列表批量删除
      * @param request r
      * @param response r
@@ -48,8 +52,7 @@ public class ScoreInflowController extends AbstractController {
      */
     @RequestMapping("del")
     @Action(description="流水列表删除")
-    public void del(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
+    public void del(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String preUrl = RequestUtil.getPrePage(request);
         ResultMessage message = null;
         try{
@@ -62,34 +65,30 @@ public class ScoreInflowController extends AbstractController {
         addMessage(message, request);
         response.sendRedirect(preUrl);
     }
-
     /**
      * 编辑个人流水
-     * @param request r
      * @throws Exception e
      */
     @RequestMapping("edit")
     @Action(description="编辑个人流水")
-    public ModelAndView edit(HttpServletRequest request) throws Exception
-    {
+    public ModelAndView edit(HttpServletRequest request) throws Exception {
         Long scoreInflowId = RequestUtil.getLong(request,"id");
         String returnUrl = RequestUtil.getPrePage(request);
         DdScoreInflow ddScoreInflow = ddScoreInflowService.getById(scoreInflowId);
-
         return getAutoView().addObject("bizDef",ddScoreInflow)
                 .addObject("returnUrl",returnUrl);
     }
-
     /**
      * 提交编辑个人流水
      * @param request r
      * @param response r
      * @throws Exception e
      */
-    @RequestMapping("submitUpdate")
+    @RequestMapping("save")
     @Action(description="提交编辑个人流水")
-    public void submitUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
+    public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String resultMsg = null;
+
         Long scoreInflowId = RequestUtil.getLong(request,"id");
         Long scoreInflowUid = RequestUtil.getLong(request,"uid");
         Integer sourceScore = RequestUtil.getInt(request,"sourceScore");
@@ -103,14 +102,18 @@ public class ScoreInflowController extends AbstractController {
         ddScoreInflow.setSourceType(sourceType);
         ddScoreInflow.setSourceDetail(sourceDetail);
         ddScoreInflow.setUpdTime(updTime);
-        ddScoreInflowService.updateOne(ddScoreInflow);
+
+        try {
+            ddScoreInflowService.updateOne(ddScoreInflow);
+            resultMsg = getText("record.updated", "赚取的积分");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+        } catch (Exception e) {
+            writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
+        }
+
     }
 
-    /**
-     * @param request  the request
-     * @param response the response
-     * @throws Exception the exception
-     */
+    /*
     @RequestMapping("save")
     @Action(description = "task")
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -139,20 +142,5 @@ public class ScoreInflowController extends AbstractController {
             writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
         }
     }
-
-    /**
-     *
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("earnlist")
-    @Action(description="积分赚取列表")
-    public ModelAndView earnlist(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
-        List<DdScoreInflow> earnlist=ddScoreInflowService.getAll(new QueryFilter(request,"scoreInflowItem"));
-        ModelAndView mv=this.getAutoView().addObject("scoreInflowList",earnlist);
-        return mv;
-    }
+    */
 }

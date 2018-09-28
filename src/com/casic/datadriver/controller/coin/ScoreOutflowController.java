@@ -18,21 +18,23 @@ import java.util.List;
  * @Author: hollykunge
  * @Description: 积分消费记录
  * @Date: 创建于 2018/9/21
- * @Modified:
  */
+
 @Controller
-@RequestMapping("/datadriver/coin/")
+@RequestMapping("/datadriver/outflow/")
 public class ScoreOutflowController extends AbstractController {
 
     @Resource
-    DdScoreOutflowService ddScoreOutflowService;
+    private DdScoreOutflowService ddScoreOutflowService;
 
-    @RequestMapping("consumelist")
+    /**
+     * @throws Exception e
+     */
+    @RequestMapping("list")
     @Action(description = "积分消耗列表")
-    public ModelAndView consumelist(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
-        List<DdScoreOutflow> consumelist=ddScoreOutflowService.getAll(new QueryFilter(request,"scoreOutflowItem"));
-        ModelAndView mv=this.getAutoView().addObject("scoreOutflowList",consumelist);
-        return mv;
+    public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<DdScoreOutflow> consumeList = ddScoreOutflowService.getAll(
+                new QueryFilter(request,"scoreOutflowItem"));
+        return this.getAutoView().addObject("scoreOutflowList",consumeList);
     }
 }

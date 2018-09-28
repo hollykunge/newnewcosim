@@ -2,112 +2,76 @@ package com.casic.datadriver.controller.coin;
 
 import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.model.coin.DdScore;
-import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.manager.ScoreRegulation;
+import com.casic.datadriver.model.coin.DdScoreInflow;
+import com.casic.datadriver.service.coin.CoinService;
 import com.casic.datadriver.service.coin.DdScoreInflowService;
 import com.casic.datadriver.service.coin.DdScoreService;
-import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.ResultMessage;
-import com.hotent.platform.auth.ISysUser;
+import com.hotent.platform.dao.system.SysOrgDao;
 import com.hotent.platform.dao.system.SysUserDao;
 import net.sf.json.JSONArray;
-import org.compass.core.json.JsonArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.support.ListComparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.appleframe.utils.date.DateUtils.toDate;
-import static com.sun.corba.se.impl.orbutil.CorbaResourceUtil.getText;
-
 /**
  * @Author: hollykunge
- * @Description:
  * @Date: 创建于 2018/9/20
- * @Modified:
  */
+
 @Controller
 @RequestMapping("/coin/")
 public class CoinController extends GenericController {
 
-    private DdScoreInflowService ddScoreInflowService;
-
     private SysUserDao sysUserDao;
 
-    private ScoreRegulation scoreRegulation;
-
     private DdScoreService ddScoreService;
+
+    private CoinService coinService;
+
+    private DdScoreInflowService ddScoreInflowService;
+
+    private final static Integer RANK_NUM = 25;
+
+    private SysOrgDao sysOrgDao;
 
     @Autowired
     public CoinController(DdScoreInflowService ddScoreInflowService,
                           SysUserDao sysUserDao,
-                          ScoreRegulation scoreRegulation,
-                          DdScoreService ddScoreService) {
-        this.ddScoreInflowService = ddScoreInflowService;
+                          DdScoreService ddScoreService,
+                          CoinService coinService,
+                          SysOrgDao sysOrgDao) {
         this.sysUserDao = sysUserDao;
-        this.scoreRegulation = scoreRegulation;
         this.ddScoreService = ddScoreService;
+        this.coinService = coinService;
+        this.ddScoreInflowService = ddScoreInflowService;
+        this.sysOrgDao = sysOrgDao;
     }
 
     /**
      * 赚取积分接口
      *
+     * @param account      身份证号
+     * @param sourceScore  分数
+     * @param sourceType   一级类型
+     * @param sourceDetail 二级类型
+     * @param updTime      更新时间
      * @throws Exception the exception
      */
     @RequestMapping("add")
     @ResponseBody
-    public void save(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletResponse response) throws Exception {
+    public void add(String account, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
-            Boolean isNow = false;
-            Date time = toDate(updTime);
-            Date today = new Date();
-            if (time != null) {
-                String nowDate = dateFormater2.get().format(today);
-                String timeDate = dateFormater2.get().format(time);
-                if (nowDate.equals(timeDate)) {
-                    isNow = true;
-                }
-            }
-            if (uid != null && isNow) {
-                //通过身份证号获取user
-                ISysUser sysUser = sysUserDao.getByAccount(uid);
-                if (sourceScore != null) {
-                    List<DdScoreInflow> todayInflows = ddScoreInflowService.getTodayScore(sysUser.getUserId(), sourceDetail, updTime);
-
-                    Integer todayScore = 0;
-                    for (DdScoreInflow ddScoreInflow : todayInflows) {
-                        todayScore += ddScoreInflow.getSourceScore();
-                    }
-                    Boolean isOverFlow = scoreRegulation.isOverFlow(Integer.valueOf(sourceScore), todayScore, sourceDetail);
-                    //判断当前积分是否超出当日上限
-                    if (!isOverFlow) {
-                        DdScoreInflow ddScoreInflow = new DdScoreInflow();
-                        ddScoreInflow.setId(UniqueIdUtil.genId());
-                        ddScoreInflow.setUid(sysUser.getUserId());
-                        ddScoreInflow.setSourceScore(Integer.valueOf(sourceScore));
-                        ddScoreInflow.setSourceDetail(sourceDetail);
-                        ddScoreInflow.setSourceType(sourceType);
-                        ddScoreInflow.setUpdTime(updTime);
-                        ddScoreInflowService.add(ddScoreInflow);
-                        resultMsg = getText("赚取积分成功", ddScoreInflow.toString());
-                        //添加总积分量
-                        ddScoreService.increaseScore(ddScoreInflow.getUid(), ddScoreInflow);
-                    } else {
-                        resultMsg = getText("单日积分总量已满", "");
-                    }
-                } else {
-                    resultMsg = getText("积分为空", uid);
-                }
-            } else {
-                resultMsg = getText("用户id为空或者获取日期不正确", sourceType);
-            }
+            resultMsg = coinService.addScore(account, sourceScore, sourceType, sourceDetail, updTime);
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
@@ -115,77 +79,102 @@ public class CoinController extends GenericController {
     }
 
     /**
-     * 获取三个榜单的排名，全局币前25名，奉献币前5名，求实币前20名
+     * 获取个人所有详情
+     *
      * @param response 响应
-     * @return MAP的key为币种，value是带DdRank的List
-     * @throws Exception  扔
+     * @throws Exception 扔
      */
-    @RequestMapping("rank")
+    @RequestMapping("personalScore")
     @ResponseBody
-    public JSONArray getRank(HttpServletResponse response) throws Exception {
-        //String resultMsg = null;
+    public JSONArray personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
-            //初始化列表
-            List<DdScore> totalList = ddScoreService.getAllScore();
-            List<DdRank> quanjuList = new ArrayList<>();
-            List<DdRank> fengxianList = new ArrayList<>();
-            List<DdRank> qiushiList = new ArrayList<>();
-            //列表填写
-            for (DdScore aTotalList : totalList) {
-                DdRank e = new DdRank();
-                e.setUserName(aTotalList.getUserName());
-                e.setScoreTotal(aTotalList.getScoreTotal());
-                if ("quanju".equals(aTotalList.getScoreType())) {
-                    //e.setScoreType("quanju");
-                    quanjuList.add(e);
-                } else if ("fengxian".equals(aTotalList.getScoreType())) {
-                    //e.setScoreType("fengxian");
-                    fengxianList.add(e);
-                } else if ("qiushi".equals(aTotalList.getScoreType())) {
-                    //e.setScoreType("qiushi");
-                    qiushiList.add(e);
-                }
+            //获取用户uid
+            Long userId = sysUserDao.getByAccount(account).getUserId();
+            //首先获取个人的一级类型总积分
+            List<DdScoreInflow> quanjuInflows =
+                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QUAN_JU);
+            List<DdScoreInflow> fengxianInflows =
+                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.FENG_XIAN);
+            List<DdScoreInflow> qiushiInflows =
+                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
+            //返回的map
+            Map<String, Integer> personalMap = new HashMap<>(6);
+            //全局总数
+            int total = 0;
+            for (DdScoreInflow ddScoreInflow : qiushiInflows) {
+                total += ddScoreInflow.getSourceScore();
             }
-            //列表排序
-            quanjuList.sort(new Comparator<DdRank>() {
-                @Override
-                public int compare(DdRank o1, DdRank o2) {
-                    return o2.getScoreTotal().compareTo(o1.getScoreTotal());
-                }
-            });
-            fengxianList.sort(new Comparator<DdRank>() {
-                @Override
-                public int compare(DdRank o1, DdRank o2) {
-                    return o2.getScoreTotal().compareTo(o1.getScoreTotal());
-                }
-            });
-            qiushiList.sort(new Comparator<DdRank>() {
-                @Override
-                public int compare(DdRank o1, DdRank o2) {
-                    return o2.getScoreTotal().compareTo(o1.getScoreTotal());
-                }
-            });
-            //列表截断
-            if (quanjuList.size() > 25) {
-                quanjuList = quanjuList.subList(0, 25);
+            personalMap.put("quanjuTotal", total);
+            //奉献总数
+            total = 0;
+            for (DdScoreInflow ddScoreInflow : fengxianInflows) {
+                total += ddScoreInflow.getSourceScore();
             }
-            if (fengxianList.size() > 5) {
-                fengxianList = fengxianList.subList(0, 5);
+            personalMap.put("fengxianTotal", total);
+            //求实总数
+            total = 0;
+            for (DdScoreInflow ddScoreInflow : qiushiInflows) {
+                total += ddScoreInflow.getSourceScore();
             }
-            if (qiushiList.size() > 15) {
-                qiushiList = qiushiList.subList(0, 15);
+            personalMap.put("qiushiTotal", total);
+            //首先获取个人的一级类型月积分
+            List<DdScore> monthList = ddScoreService.getPersonal(userId);
+            for (DdScore ddScore : monthList) {
+                if (ScoreRegulation.QUAN_JU.equals(ddScore.getScoreType())) {
+                    personalMap.put("quanjuMonth", ddScore.getScoreTotal());
+                } else if (ScoreRegulation.FENG_XIAN.equals(ddScore.getScoreType())) {
+                    personalMap.put("fengxianMonth", ddScore.getScoreTotal());
+                } else if (ScoreRegulation.QIU_SHI.equals(ddScore.getScoreType())) {
+                    personalMap.put("qiushiMonth", ddScore.getScoreTotal());
+                }
             }
             //组装json
-            Map<String, List<DdRank>> m = new HashMap<>(3);
-            m.put("quanju", quanjuList);
-            m.put("fengxian", fengxianList);
-            m.put("qiushi", qiushiList);
-            jsonR = JSONArray.fromObject(m);
+            jsonR = JSONArray.fromObject(personalMap);
+            //解决跨域
+            String callback = request.getParameter("callback");
+            response.getWriter().write(callback + "(" + jsonR.toString() + ")");
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
         return jsonR;
+    }
+
+    /**
+     * @param response 响应
+     * @return JSONArray
+     * @throws Exception 扔
+     */
+    @RequestMapping("rank")
+    @ResponseBody
+    public void getRank(String sourceType, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        JSONArray jsonR = null;
+        try {
+            List<DdScore> ddScoreList = ddScoreService.getScoresByRankAndType(RANK_NUM, sourceType);
+            List<DdRank> itemList = new ArrayList<>();
+
+            for (DdScore ddScore : ddScoreList) {
+                DdRank e = new DdRank();
+                e.setUserName(ddScore.getUserName());
+                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUid()).get(0).getOrgName();
+                e.setOrgName(orgName);
+                e.setScoreTotal(ddScore.getScoreTotal());
+                itemList.add(e);
+            }
+            //写排名
+            int i = 1;
+            for (DdRank item : itemList) {
+                item.setRank(i++);
+            }
+            //组装json
+            jsonR = JSONArray.fromObject(itemList);
+            //解决跨域
+            String callback = request.getParameter("callback");
+            response.getWriter().write(callback + "(" + jsonR.toString() + ")");
+//            writeResultMessage(response.getWriter(), callback + "("+jsonR.toString()+")", ResultMessage.Success);
+        } catch (Exception e) {
+            writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
+        }
     }
 
 

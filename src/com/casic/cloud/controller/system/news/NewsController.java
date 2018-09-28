@@ -78,10 +78,10 @@ public class NewsController extends BaseController {
                 resultMsg = getText("record.updated", "新闻公告");
             }
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
-        } catch (Exception e) {
-            writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
+            } catch (Exception e) {
+                writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
+            }
         }
-    }
 
     /**
      * 取得 News实体

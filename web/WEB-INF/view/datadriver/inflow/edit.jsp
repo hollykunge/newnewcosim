@@ -13,13 +13,14 @@
     <%@include file="/commons/include/form.jsp" %>
     <script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>
     <script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>
+
     <script type="text/javascript">
         $(function() {
             var options={};
             if(showResponse){
                 options.success=showResponse;
             }
-            var frm=$('#scoreForm').form();
+            var frm=$('#scoreInflowForm').form();
             $("a.save").click(function() {
                 if(frm.valid()){
                     frm.setData();
@@ -36,7 +37,7 @@
                     if(rtn){
                         this.close();
                     }else{
-                        window.location.href = "${ctx}/datadriver/coin/list.ht";
+                        window.location.href = "${ctx}/datadriver/inflow/list.ht";
                     }
                 });
             } else {
@@ -56,23 +57,23 @@
             <div class="toolBar">
                 <div class="group"><a class="link save" id="dataFormSave" href="javascript:void(0)">保存</a></div>
                 <div class="l-bar-separator"></div>
-                <div class="group"><a class="link back" href="list.ht">返回</a></div>
+                <div class="group"><a class="link back" href="${returnUrl}">返回</a></div>
             </div>
         </div>
     </div>
     <div class="panel-body">
-        <form id="scoreForm" method="post" action="save.ht">
+        <form id="scoreInflowForm" method="post" action="save.ht">
             <table class="table-detail" cellpadding="0" cellspacing="0" border="0" type="main">
                 <tr><th style="width:120px;">用户名</th><td colspan="3"><input size="35" id="userName" name="userName" value="${bizDef.userName}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
-                <tr><th style="width:120px;">积分类型</th><td><input size="35" id="scoreType" name="scoreType" value="${bizDef.scoreType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
-                <tr><th style="width:120px;">积分总量</th><td><input size="35" id="scoreTotal" name="scoreTotal" value="${bizDef.scoreTotal}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">积分来源</th><td><input size="35" id="sourceType" name="sourceType" value="${bizDef.sourceType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">获得详情</th><td><input size="35" id="sourceDetail" name="sourceDetail" value="${bizDef.sourceDetail}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">获得积分</th><td><input size="35" id="sourceScore" name="sourceScore" value="${bizDef.sourceScore}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
             <input size="35" type="hidden" name="id" value="${bizDef.id}" />
             <input size="35" type="hidden" name="uid" value="${bizDef.uid}" />
-            <input size="35" type="hidden" name="scoreAction" value="${bizDef.scoreAction}" />
+            <input size="35" type="hidden" name="updTime" value="${bizDef.updTime}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
-            <input size="35" type="hidden" name="crtTime" value="${bizDef.crtTime}" />
-            <input size="35" type="hidden" name="udpTime" value="${bizDef.udpTime}" />
+            <input size="35" type="hidden" name="total" value="${bizDef.total}" />
         </form>
 
     </div>

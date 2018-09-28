@@ -21,7 +21,7 @@ public class DdScoreInflow extends BaseModel {
     /**
      * 获得积分
      */
-    private Integer sourceScore;
+        private Integer sourceScore;
 
     /**
      * 积分来源
@@ -37,6 +37,35 @@ public class DdScoreInflow extends BaseModel {
      * 获得时间
      */
     private String updTime;
+
+    /**
+     * 总和
+     */
+    private Long total;
+
+    /**
+     * 用户名
+     */
+    private String userName;
+
+
+    /**
+     *
+     * @return total
+     */
+    public Long getTotal() {
+        return total;
+    }
+
+
+
+    /**
+     *
+     * @param total
+     */
+    public void setTotal(Long total) {
+        this.total = total;
+    }
 
     /**
      * @return id
@@ -142,6 +171,14 @@ public class DdScoreInflow extends BaseModel {
         this.updTime = updTime;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "DdScoreInflow{" +
@@ -151,9 +188,8 @@ public class DdScoreInflow extends BaseModel {
                 ", sourceType='" + sourceType + '\'' +
                 ", sourceDetail='" + sourceDetail + '\'' +
                 ", updTime='" + updTime + '\'' +
+                ", total=" + total +
+                ", userName='" + userName + '\'' +
                 '}';
     }
-
-
-
 }

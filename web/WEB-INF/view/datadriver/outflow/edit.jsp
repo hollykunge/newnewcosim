@@ -10,9 +10,11 @@
 <html>
 <head>
     <title>积分编辑</title>
-    <%@include file="/commons/include/form.jsp" %>
+    <%@include file="/commons/include/get.jsp" %>
     <script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>
     <script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>
+    <script type="text/javascript" src="${ctx}/js/hotent/platform/form/CommonDialog.js"></script>
+    <script type="text/javascript" src="${ctx}/js/hotent/platform/system/IconDialog.js"></script>
     <script type="text/javascript">
         $(function() {
             var options={};
@@ -22,9 +24,7 @@
             var frm=$('#scoreForm').form();
             $("a.save").click(function() {
                 if(frm.valid()){
-                    frm.setData();
-                    frm.ajaxForm(options);
-                    form.submit();
+                    frm.submit();
                 }
             });
         });
@@ -36,7 +36,7 @@
                     if(rtn){
                         this.close();
                     }else{
-                        window.location.href = "${ctx}/datadriver/coin/list.ht";
+                        window.location.href = "${ctx}/cloud/aftersale/feedback/list.ht";
                     }
                 });
             } else {
@@ -71,8 +71,6 @@
             <input size="35" type="hidden" name="uid" value="${bizDef.uid}" />
             <input size="35" type="hidden" name="scoreAction" value="${bizDef.scoreAction}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
-            <input size="35" type="hidden" name="crtTime" value="${bizDef.crtTime}" />
-            <input size="35" type="hidden" name="udpTime" value="${bizDef.udpTime}" />
         </form>
 
     </div>

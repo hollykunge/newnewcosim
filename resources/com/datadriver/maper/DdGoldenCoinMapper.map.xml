@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.casic.datadriver.model.coin.DdGoldenCoin">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdGoldenCoin">
+        <id column="id" property="id" jdbcType="NUMERIC"/>
+        <result column="user_id" property="userId" jdbcType="NUMERIC"/>
+        <result column="total" property="total" jdbcType="NUMERIC"/>
+        <result column="coin_type" property="coinType" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, total, coin_type
+    </sql>
+    <insert id="add" parameterType="com.casic.datadriver.model.coin.DdGoldenCoin">
+    insert into dd_coin (id, user_id, total, coin_type)
+    values (#{id,jdbcType=NUMERIC},
+      #{user_id,jdbcType=NUMERIC},
+      #{total,jdbcType=NUMERIC},
+      #{coin_type,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM dd_coin
+		WHERE
+		id=#{id}
+	</delete>
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_coin
+    </select>
+    <select id="getPersonal" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_coin
+        WHERE
+        user_id=#{userId}
+    </select>
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM dd_coin
+        WHERE
+        id=#{id}
+    </select>
+    <update id="update" parameterType="com.casic.datadriver.model.coin.DdGoldenCoin">
+        UPDATE dd_coin
+        <set>
+            <if test="userId !=null">
+                user_id = #{userId,jdbcType=NUMERIC},
+            </if>
+            <if test="total !=null">
+                total = #{total,jdbcType=NUMERIC}
+            </if>
+            <if test="coinType !=null">
+                coin_type = #{coinType,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE
+        id = #{id, jdbcType=NUMERIC}
+    </update>
+</mapper>
