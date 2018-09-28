@@ -29,7 +29,7 @@ public class DdGoldenCoinDao extends BaseDao<DdGoldenCoin> {
         return this.getBySqlKey("getPersonal", uid);
     }
 
-    public void updateScore(DdGoldenCoin ddGoldenCoin){
+    public void updateCoin(DdGoldenCoin ddGoldenCoin){
         this.update(ddGoldenCoin);
     }
 }

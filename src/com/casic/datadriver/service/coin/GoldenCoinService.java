@@ -23,19 +23,18 @@ import static com.casic.datadriver.manager.ScoreRegulation.*;
  * @Author: hollykunge
  * @Description:
  * @Date: 创建于 2018/9/27
- * @Modified:
  */
 @Service
 public class GoldenCoinService extends BaseService<DdGoldenCoin> {
 
     @Resource
-    DdGoldenCoinDao ddGoldenCoinDao;
+    private DdGoldenCoinDao ddGoldenCoinDao;
 
     @Resource
-    DdScoreService ddScoreService;
+    private DdScoreService ddScoreService;
 
     @Resource
-    DdScoreOutflowDao ddScoreOutflowDao;
+    private DdScoreOutflowDao ddScoreOutflowDao;
 
     public void delAll(Long[] lAryId) {
         for (Long id : lAryId) {
@@ -72,13 +71,20 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
                 break;
             //创新每月100个积分换一个币
             case CHUANG_XIN:
-//                ddScoreService.getScoresByRankAndType(25, QUAN_JU);
+                ddScoreList = ddScoreService.getType(CHUANG_XIN);
                 break;
             default:
                 return;
         }
         //写消耗积分的流水数据库
         for (DdScore ddScore : ddScoreList) {
+            int chuangxinCoin = 0;
+            int getCoin = 1;
+            if(CHUANG_XIN.equals(scoreType)) {
+                chuangxinCoin = ddScore.getScoreTotal()/100;
+                lastRank = chuangxinCoin * 100;
+                getCoin = chuangxinCoin;
+            }
             DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
             ddScoreOutflow.setExpendDetail("月底结算");
             ddScoreOutflow.setExpendScore(lastRank);
@@ -88,15 +94,30 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             ddScoreOutflow.setUdpTime(df.format(new Date()));
             ddScoreOutflow.setUid(ddScore.getUid());
             Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
-
-            DdGoldenCoin ddGoldenCoin = new DdGoldenCoin();
-            //TODO 此处添加币的获取
-//            ddGoldenCoin.setTotal();
-//            ddGoldenCoinDao.add();
-            if (done){
+            if (done) {
                 ddScoreOutflowDao.add(ddScoreOutflow);
-
             }
+            //获取币
+            List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUid());
+            DdGoldenCoin userTypeCoin = new DdGoldenCoin();;
+            Boolean isHave = false;
+            for(DdGoldenCoin ddGoldenCoin : userCoinList) {
+                if(ddGoldenCoin.getCoinType().equals(ddScore.getScoreType())) {
+                    userTypeCoin = ddGoldenCoin;
+                    isHave = true;
+                    break;
+                }
+            }
+            if(isHave) {
+                Long nowCoin = userTypeCoin.getTotal();
+                userTypeCoin.setTotal(nowCoin + getCoin);
+            } else {
+                userTypeCoin.setId(UniqueIdUtil.genId());
+                userTypeCoin.setUserId(ddScore.getUid());
+                userTypeCoin.setCoinType(ddScore.getScoreType());
+                userTypeCoin.setTotal(Integer.toUnsignedLong(getCoin));
+            }
+            ddGoldenCoinDao.updateCoin(userTypeCoin);
         }
     }
 }

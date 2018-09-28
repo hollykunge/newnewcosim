@@ -35,4 +35,13 @@ public class DdGoldenCoin {
 
     private Long userId;
     private Long total;
+    private String coinType;
+
+    public String getCoinType() {
+        return coinType;
+    }
+
+    public void setCoinType(String coinType) {
+        this.coinType = coinType;
+    }
 }

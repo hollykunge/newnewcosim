@@ -171,6 +171,14 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
     }
 
     /**
+     * 查询类型
+     * @param sourceType s
+     */
+    public List<DdScore> getType(String sourceType) {
+        return ddScoreDao.getType(sourceType);
+    }
+
+    /**
      * 通过排名区间和积分类型获取积分列表
      *
      * @param rank
