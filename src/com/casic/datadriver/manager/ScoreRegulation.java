@@ -26,6 +26,11 @@ public class ScoreRegulation {
     public static final String QIU_SHI = "qiushi";
     public static final String CHUANG_XIN = "chuangxin";
 
+    public static final Integer LIMIT_QUAN_JU = 25;
+    public static final Integer LIMIT_FENG_XIAN = 5;
+    public static final Integer LIMIT_QIU_SHI = 20;
+    public static final Integer LIMIT_CHUANG_XIN = 0;
+
     //获奖人数
     public static final Integer QUAN_JU_FINALIST = 25;
     public static final Integer FENG_XIAN_FINALIST = 5;

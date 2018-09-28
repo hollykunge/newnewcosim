@@ -420,7 +420,7 @@ public class IndexController extends BaseController {
 
         String password = "123456";
         String errMsg = "";
-        ISysUser dbSysUser = sysUserService.getById(Long.valueOf(id));
+        ISysUser dbSysUser = sysUserService.getByAccount(id);
         String enPassword = dbSysUser.getPassword();
 //        ISysOrg sysOrg = sysOrgService.getOrgBySn(sysUser.getOrgSn());
 //        if (sysOrg == null) {
@@ -544,9 +544,9 @@ public class IndexController extends BaseController {
      */
     @RequestMapping("iworktask")
     @Action(description = "根据用户查询用户所有项目")
-    public void iworktask(@RequestParam("callback") String callback, Long id, HttpServletResponse response)
+    public void iworktask(@RequestParam("callback") String callback, String id, HttpServletResponse response)
             throws Exception {
-        ISysUser dbSysUser = sysUserService.getById(id);
+        ISysUser dbSysUser = sysUserService.getByAccount(id);
         String enPassword = dbSysUser.getPassword();
         if (!dbSysUser.getPassword().equals(enPassword)) {
             System.out.println("登录密码有误，请重新输入。");
@@ -579,7 +579,7 @@ public class IndexController extends BaseController {
                 jsonMembers.add(jsonObject);
             }
             JsonFormat Tjson = new JsonFormat();
-            String jsonstring = Tjson.formatJson(jsonMembers.toString());
+            String jsonstring = JsonFormat.formatJson(jsonMembers.toString());
             System.out.println(jsonstring.toString());
             PrintWriter out = null;
             out = response.getWriter();

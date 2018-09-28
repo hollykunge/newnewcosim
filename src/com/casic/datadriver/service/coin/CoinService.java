@@ -85,7 +85,7 @@ public class CoinService {
                     ddScoreInflowService.add(ddScoreInflow);
                     resultMsg = "赚取积分成功";
                     //添加总积分量
-                    ddScoreService.increaseScore(ddScoreInflow);
+                    ddScoreService.updateScore(ddScoreInflow, null);
                 } else {
                     resultMsg = "单日积分总量已满";
                 }
