@@ -26,7 +26,10 @@
                 <%--<div class="l-bar-separator"></div>--%>
                 <%--<div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>--%>
                 <%--<div class="l-bar-separator"></div>--%>
-                <%--<div class="group"><a class="link del"  action="del.ht">删除</a></div>--%>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/golden/consume.ht?scoreType=quanju">兑换全局币</a></div>
+                <div class="group"><a class="link add"  href="${ctx}/datadriver/golden/consume.ht?scoreType=gongxian">兑换贡献币</a></div>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/golden/consume.ht?scoreType=qiushi">兑换求实币</a></div>
+                <div class="group"><a class="link detail"  href="${ctx}/datadriver/golden/consume.ht?scoreType=chuangxin">兑换创新币</a></div>
             </div>
         </div>
         <div class="panel-search">
