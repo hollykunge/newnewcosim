@@ -75,7 +75,7 @@ public class GoldenCoinController extends AbstractController {
     @Action(description="提交编辑个人币")
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        ResultMessage message=null;
+        String resultMsg=null;
         try {
             Long id = RequestUtil.getLong(request,"id");
             Long userId = RequestUtil.getLong(request,"userId");
@@ -87,11 +87,31 @@ public class GoldenCoinController extends AbstractController {
             ddGoldenCoin.setTotal(total);
 
             ddGoldenCoinService.update(ddGoldenCoin);
-
-            message=new ResultMessage(ResultMessage.Success,"删除成功!");
+            resultMsg = getText("record.added", "编辑成功");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception ex){
-            message=new ResultMessage(ResultMessage.Fail, "删除失败" + ex.getMessage());
+            resultMsg = getText("record.added", "编辑失败");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
+        }
+    }
+
+    @RequestMapping("consume")
+    @Action(description="消耗积分兑换币")
+    public void consume(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        try{
+            Long userId = RequestUtil.getLong(request, "userId", 0);
+            String type = RequestUtil.getString(request, "type");
+            Long scoreNum = RequestUtil.getLong(request, "scoreNum");
+
+            ddGoldenCoinService.consume(type);
+
+        } catch (Exception e){
+
         }
 
+        String returnUrl = RequestUtil.getPrePage(request);
+
+        return ;
     }
 }

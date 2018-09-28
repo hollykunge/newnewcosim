@@ -39,6 +39,8 @@ public class CoinController extends GenericController {
 
     private DdScoreInflowService ddScoreInflowService;
 
+    private final static Integer RANK_NUM = 25;
+
     private SysOrgDao sysOrgDao;
 
     @Autowired
@@ -56,11 +58,12 @@ public class CoinController extends GenericController {
 
     /**
      * 赚取积分接口
-     * @param account 身份证号
-     * @param sourceScore 分数
-     * @param sourceType 一级类型
+     *
+     * @param account      身份证号
+     * @param sourceScore  分数
+     * @param sourceType   一级类型
      * @param sourceDetail 二级类型
-     * @param updTime 更新时间
+     * @param updTime      更新时间
      * @throws Exception the exception
      */
     @RequestMapping("add")
@@ -74,8 +77,10 @@ public class CoinController extends GenericController {
             writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
         }
     }
+
     /**
      * 获取个人所有详情
+     *
      * @param response 响应
      * @throws Exception 扔
      */
@@ -134,44 +139,31 @@ public class CoinController extends GenericController {
         }
         return jsonR;
     }
+
     /**
      * @param response 响应
      * @return JSONArray
-     * @throws Exception  扔
+     * @throws Exception 扔
      */
     @RequestMapping("rank")
     @ResponseBody
-    public void getRank(String sourceType,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void getRank(String sourceType, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
-            //初始化列表
-            List<DdScore> totalList = ddScoreService.getAllScore();
+            List<DdScore> ddScoreList = ddScoreService.getScoresByRankAndType(RANK_NUM, sourceType);
             List<DdRank> itemList = new ArrayList<>();
-            //列表填写
-            for (DdScore aTotalList : totalList) {
-                if (sourceType.equals(aTotalList.getScoreType())) {
-                    DdRank e = new DdRank();
-                    e.setUserName(aTotalList.getUserName());
-                    String orgName = sysOrgDao.getOrgsByUserId(aTotalList.getUid()).get(0).getOrgName();
-                    e.setOrgName(orgName);
-                    e.setScoreTotal(aTotalList.getScoreTotal());
-                    itemList.add(e);
-                }
-            }
-            //列表排序
-            itemList.sort(new Comparator<DdRank>() {
-                @Override
-                public int compare(DdRank o1, DdRank o2) {
-                    return o2.getScoreTotal().compareTo(o1.getScoreTotal());
-                }
-            });
-            //列表截断，应该是根据不同类型选择不同数目
-            if (itemList.size() > 25) {
-                itemList = itemList.subList(0, 25);
+
+            for (DdScore ddScore : ddScoreList) {
+                DdRank e = new DdRank();
+                e.setUserName(ddScore.getUserName());
+                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUid()).get(0).getOrgName();
+                e.setOrgName(orgName);
+                e.setScoreTotal(ddScore.getScoreTotal());
+                itemList.add(e);
             }
             //写排名
             int i = 1;
-            for(DdRank item : itemList) {
+            for (DdRank item : itemList) {
                 item.setRank(i++);
             }
             //组装json
