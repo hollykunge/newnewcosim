@@ -9,7 +9,7 @@
 			var url = jQuery.getContextPath()+ "/manage/file/getFile.ht?type=4";//type =4 为视频
 			if(ctx!=="")
 				url+="&ctx=" + ctx;
-			var vReturnValue = window.open(url, window,features);
+			var vReturnValue = window.showModalDialog(url, window,features);
 			if (typeof (vReturnValue) == 'undefined'||vReturnValue==null) {
 				vReturnValue = window.retureValue;
 		    }

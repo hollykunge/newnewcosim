@@ -35,14 +35,11 @@ GlobalType=function(catKey,divId,conf){
 
             for(var i=0;i<result.length;i++){
                 var node=result[i];
-                
                 if(node.parentId==0){
                     node.icon=__ctx +"/styles/default/images/icon/root.png";
                     node.isRoot=1;
                 }
             }
-            
-            
             
             _self.glTypeTree=$.fn.zTree.init($("#" + _self.divId), setting,result);
             
@@ -63,7 +60,6 @@ GlobalType=function(catKey,divId,conf){
                 _self.glTypeTree.expandAll(true);
             }
         });
-        
         
 	};
 	
@@ -117,17 +113,16 @@ GlobalType=function(catKey,divId,conf){
 	
 	 	var winArgs="dialogWidth:500px;dialogHeight:250px";
 	 	url=url.getNewUrl();
-	 	var rtn=window.open(url,"",winArgs);
+	 	var rtn=window.showModalDialog(url,"",winArgs);
 	 	//重新加载树。
 	 	_self.loadGlobalTree();
 	};
 	this.sortNode=function(){
-
 		var typeId=_self.currentNode.typeId;
 		var url=__ctx +'/platform/system/globalType/sortList.ht?parentId='+typeId;
 		var winArgs="dialogWidth:600px;dialogHeight:300px";
 	 	url=url.getNewUrl();
-	 	var rtn=window.open(url,"",winArgs);
+	 	var rtn=window.showModalDialog(url,"",winArgs);
 	 	//重新加载树。
 	 	_self.loadGlobalTree();
 	}

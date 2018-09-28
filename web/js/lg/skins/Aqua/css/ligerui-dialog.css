@@ -13,7 +13,7 @@
 /* ------------------
    *   messagebox  *
 * --------------- */
-.l-messagebox{ position:absolute;top:100px; left:100px; width:1300px; background:#F2F8FF;border-bottom:1px solid #82BCD8;z-index: 9001;  }
+.l-messagebox{ position:absolute;top:100px; left:100px; width:300px; background:#F2F8FF;border-bottom:1px solid #82BCD8;z-index: 9001;  }
 
 .l-messagebox-title,.l-messagebox-close,.l-messagebox-close-over,.l-messagebox-btn,.l-messagebox-btn-l,.l-messagebox-btn-r,.l-messagebox-lt,.l-messagebox-rt
 {background-image:url('../images/win/box.gif'); background-repeat:no-repeat;} 

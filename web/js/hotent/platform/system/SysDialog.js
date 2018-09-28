@@ -20,7 +20,7 @@ function OrgDialog(conf)
 	
 	var url=__ctx + '/platform/system/sysOrg/dialog.ht';
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	
 	if(conf.callback)
 	{
@@ -59,47 +59,7 @@ function UserDialog(conf){
 				selectUserNames:conf. selectUserNames
 		}
 	}	
-	var rtn=window.open(url,selectUsers,winArgs);
-	
-	if(rtn && conf.callback){
-		var userIds=rtn.userIds;
-		var fullnames=rtn.fullnames;
-		var emails=rtn.emails;
-		var mobiles=rtn.mobiles;
-		
-		conf.callback.call(this,userIds,fullnames,emails,mobiles);
-	}
-}
-
-/**
- * 用户选择器,从指定该企业选择人员
- * UserDialog({companyId:0, callback:function(userIds,fullnames,emails,mobiles){},selectUsers:[{id:'',name:''}]})
- */
-function CompanyUserDialog(conf){
-	
-	var dialogWidth=650;
-	var dialogHeight=500;
-	
-	conf=$.extend({},{dialogWidth:dialogWidth ,dialogHeight:dialogHeight ,help:0,status:0,scroll:0,center:1, companyId:0},conf);
-
-	var winArgs="dialogWidth="+conf.dialogWidth+"px;dialogHeight="+conf.dialogHeight
-		+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
-	
-	if(!conf.isSingle)conf.isSingle=false;
-	
-	url=__ctx + "/platform/system/sysUser/companyDialog.ht?isSingle=" + conf.isSingle + "&companyId=" + conf.companyId;
-	url=url.getNewUrl();
-	
-
-	//重新选择的时候，展现上次数据
-	var selectUsers="";
-	if(  conf.selectUserIds && conf. selectUserNames){
-		selectUsers={
-				selectUserIds:conf.selectUserIds ,
-				selectUserNames:conf. selectUserNames
-		}
-	}	
-	var rtn=window.open(url,selectUsers,winArgs);
+	var rtn=window.showModalDialog(url,selectUsers,winArgs);
 	
 	if(rtn && conf.callback){
 		var userIds=rtn.userIds;
@@ -143,7 +103,7 @@ function FlowUserDialog(conf){
 		selectUsers=conf.selectUsers;
 	}
 	
-	var rtn=window.open(url,selectUsers,winArgs);
+	var rtn=window.showModalDialog(url,selectUsers,winArgs);
 	if(rtn && conf.callback){
 		conf.callback.call(this,rtn.objType,rtn.objIds,rtn.objNames);
 	}
@@ -165,7 +125,7 @@ function RoleDialog(conf)
 	
 	var url=__ctx + '/platform/system/sysRole/dialog.ht';
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	
 	if(conf.callback)
 	{
@@ -198,7 +158,7 @@ function PosDialog(conf)
 		+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 	var url=__ctx + '/platform/system/position/dialog.ht';
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	if(conf.callback){
 		if(rtn!=undefined){
 			 conf.callback.call(this,rtn.posId,rtn.posName);
@@ -218,7 +178,7 @@ function UserParamDialog(conf){
 	var args={cmpIds:conf.cmpIds,cmpNames:conf.cmpNames};
 	var url=__ctx + '/platform/system/sysUserParam/dialog.ht?nodeUserId='+conf.nodeUserId;
 	
-	var rtn=window.open(url,args,winArgs);
+	var rtn=window.showModalDialog(url,args,winArgs);
 	if(conf.callback){
 		if(rtn!=undefined){
 			 conf.callback.call(this,rtn.paramValue1,rtn.paramValue2);
@@ -239,7 +199,7 @@ function OrgParamDialog(conf){
 	var args={cmpIds:conf.cmpIds,cmpNames:conf.cmpNames};
 	var url=__ctx + '/platform/system/sysOrgParam/dialog.ht?nodeUserId='+conf.nodeUserId;
 	url=url.getNewUrl();
-	var rtn=window.open(url,args,winArgs);
+	var rtn=window.showModalDialog(url,args,winArgs);
 	if(conf.callback){
 		if(rtn!=undefined){
 			 conf.callback.call(this,rtn.paramValue1,rtn.paramValue2);
@@ -260,7 +220,7 @@ function UplowDialog(conf){
 		+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 	var url=__ctx + '/platform/bpm/bpmNodeUserUplow/dialog.ht';
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	if(conf.callback){
 		if(rtn!=undefined){
 			 conf.callback.call(this,rtn.json,rtn.show);
@@ -281,7 +241,7 @@ function typeSetDialog(conf){
 	var args={cmpIds:conf.cmpIds,cmpNames:conf.cmpNames};
 	var url=__ctx + '/platform/bpm/bpmDefinition/typeSetDialog.ht';
 	url=url.getNewUrl();
-	var rtn=window.open(url,args,winArgs);
+	var rtn=window.showModalDialog(url,args,winArgs);
 	if(conf.callback){
 		if(rtn!=undefined){
 			 conf.callback.call(this,rtn.json,rtn.show);

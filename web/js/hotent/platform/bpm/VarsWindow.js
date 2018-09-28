@@ -10,7 +10,7 @@ function VarsWindow(conf)
 			var winArgs="dialogWidth="+conf.dialogWidth+"px;dialogHeight="+conf.dialogHeight
 				+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 			url=url.getNewUrl();
-			var rtn=window.open(url,"",winArgs);
+			var rtn=window.showModalDialog(url,"",winArgs);
 			if(conf){
 				location.reload();
 			}

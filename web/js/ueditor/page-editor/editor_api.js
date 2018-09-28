@@ -90,7 +90,7 @@
             'ui/editorui.js',
             'ui/editor.js',
             'ui/multiMenu.js',
-           'plugins/customdisplay.js',//自定义数据查询显示组件
+            'plugins/customdisplay.js',//自定义数据查询显示组件
             'plugins/systablemanage.js' //自定义表管理
         ],
         baseURL = __ctx+'/js/ueditor/_src/';

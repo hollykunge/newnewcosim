@@ -1137,7 +1137,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						enclosed,
 						selected;
 
-					// Check first any enclosed element, e.g. <ul>[<li><a href="javascript:void(0)">item</a></li>]</ul>
+					// Check first any enclosed element, e.g. <ul>[<li><a href="#">item</a></li>]</ul>
 					for ( var i = 2; i && !( ( enclosed = range.getEnclosedNode() )
 						&& ( enclosed.type == CKEDITOR.NODE_ELEMENT )
 						&& styleObjectElements[ enclosed.getName() ]

@@ -15,7 +15,7 @@ function FlowRightDialog(id,type,defKey,isParent){
 	}
 	var winArgs="dialogWidth:650px;dialogHeight:390px;help:0;status:0;scroll:0;center:1;resizable:1";
 	url=url.getNewUrl();
- 	var rtn=window.open(url,"",winArgs);
+ 	var rtn=window.showModalDialog(url,"",winArgs);
 };
 /**
  * 业务数据浏览模板权限分配
@@ -26,5 +26,5 @@ function FlowTemplateDialog(id,type){
  	var url=__ctx +"/platform/form/bpmTableTemprights/list.ht?id=" + id+"&type=" +type;
 	var winArgs="dialogWidth:650px;dialogHeight:390px;help:0;status:0;scroll:0;center:1;resizable:1";
 	url=url.getNewUrl();
- 	var rtn=window.open(url,"",winArgs);
+ 	var rtn=window.showModalDialog(url,"",winArgs);
 }

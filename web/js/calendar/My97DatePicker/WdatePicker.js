@@ -57,11 +57,11 @@ specialDates:null,specialDays:null,disabledDates:null,disabledDays:null,opposite
  * 为页面中所有带date及datetime日期样式加上控制处理
  */
 $(function(){
-	$('.date').on('focus',function(){
+	$('.date').live('focus',function(){
 		WdatePicker({dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true});
 		$(this).blur();
 	});
-	$('.datetime').on('focus',function(){
+	$('.datetime').live('focus',function(){
 		WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true});
 		$(this).blur();
 	});

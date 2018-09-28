@@ -36,7 +36,7 @@
 				var winArgs="dialogWidth=1024px;dialogHeight=700px;help=0;status=0;scroll=0;center=1";
 				var isiframe=$("input:[name='isiframe']:checked").val();
 				var params={};
-				var rtn=window.open(url,params,winArgs);
+				var rtn=window.showModalDialog(url,params,winArgs);
 				if(rtn && rtn.status){
 					$('#displayName').val(rtn.name);
 					$('#displayId').val(rtn.id);

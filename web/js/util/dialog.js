@@ -31,7 +31,7 @@ Dialog.showDialog = function(conf) {
 			+ conf.scroll + ";center=" + conf.center,
 		url = conf.url.getNewUrl();
 
-	var rtn = window.open(url, window, winArgs);
+	var rtn = window.showModalDialog(url, window, winArgs);
 	if (conf.callback) {
 		conf.callback.call(scope, rtn);
 	}
