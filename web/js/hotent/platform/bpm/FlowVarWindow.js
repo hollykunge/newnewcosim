@@ -35,7 +35,7 @@ function FlowVarWindow(conf)
 	
 	
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	if(rtn!=undefined){
 		if(conf.callback){
 			conf.callback.call(this,rtn.key,rtn.name);

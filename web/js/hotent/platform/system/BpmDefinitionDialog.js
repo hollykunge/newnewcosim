@@ -25,7 +25,7 @@ function BpmDefinitionDialog(conf)
 		+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 	if(!conf.isSingle)conf.isSingle=false;
 	url=url.getNewUrl();
-	var rtn=window.open(url,conf,winArgs);
+	var rtn=window.showModalDialog(url,conf,winArgs);
 	if(rtn!=undefined){
 		if(conf.callback){
 			var defIds=rtn.defIds;

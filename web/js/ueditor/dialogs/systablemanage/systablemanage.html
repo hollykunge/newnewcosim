@@ -19,7 +19,7 @@
 			$("input:[name='selectcomp']:[type='button']").click(function(){
 			   	var url=__ctx+ "/platform/system/sysTableManageDialog.ht";
 				var winArgs="dialogWidth=1024px;dialogHeight=700px;help=0;status=0;scroll=0;center=1";
-				var rtn=window.open(url,{},winArgs);
+				var rtn=window.showModalDialog(url,{},winArgs);
 				if(rtn && rtn.status){
 					$('#manageName').val(rtn.name);
 					$('#manageId').val(rtn.id);

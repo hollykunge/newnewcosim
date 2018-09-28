@@ -45,36 +45,6 @@
  *		}}).valid()
  */
 (function($) {
-	//初始化的时候填写必填项目
-	$(function(){		
-		$('input[validate]').each(function() {
-			if($(this).val()!='')//编辑
-				return;
-			
-			var validRule = $(this).attr('validate');
-			
-			// 获取json。
-			var json = eval('(' + validRule + ')');
-			var isRequired = json.required;
-			
-			// 非必填的字段且值为空 那么直接返回成功。
-			if ((isRequired == false || isRequired == undefined))
-				return;
-			
-			if(isRequired){
-				$(this).val('此项必填');
-				$(this).addClass('cloud-required');
-				
-				$(this).focus(function(){
-					if($(this).val()=='此项必填'){
-						$(this).val('');
-						$(this).removeClass('cloud-required');
-					}					
-				});
-			}
-		});
-	})
-	
 	$.extend($.fn, {
 		// 表单初始化，可以添加自定义规则，出错处理和成功后的处理。
 		form : function(conf) {
@@ -260,7 +230,7 @@
 		rules : [{
 					name : "required",
 					rule : function(v) {
-						if (v == "" || v.length == 0 || v == "此项必填")
+						if (v == "" || v.length == 0)
 							return false;
 						return true;
 					},

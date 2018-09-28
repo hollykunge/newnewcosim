@@ -84,7 +84,7 @@
             {
                 sumBtnWidth += $(this).width();
             });
-            $(".l-messagebox-buttons-inner", g.messageBox).css({ marginLeft: parseInt((boxWidth - sumBtnWidth) * 0.87) });
+            $(".l-messagebox-buttons-inner", g.messageBox).css({ marginLeft: parseInt((boxWidth - sumBtnWidth) * 0.5) });
             //设置背景、拖动支持 和设置图片
             g._applyWindowMask();
             g._applyDrag();
@@ -143,10 +143,10 @@
         _createIframe:function(){
         	var width= $(window).width();
         	var height= $(window).height();
-        	var left= $(window).scrollLeft();
+        	var left= $(window).scrollLeft ();
         	var top= $(window).scrollTop();
         	var iframeObj=$('<iframe  frameborder="0" class="l_messagebox_frame" style="position:absolute;z-index:1;display:none;"></iframe>');
-        	iframeObj.css({left:left,width:width,height:height});
+        	iframeObj.css({left:left,top:top,width:width,height:height});
         	iframeObj.attr("iframeId","messageBoxId");
         	iframeObj.appendTo('body');
         },
@@ -182,24 +182,23 @@
             {
                 if (p.type == 'success' || p.type == 'donne')
                 {
-                    // $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-donne").show();
-                    $(".l-messagebox-content", g.messageBox).css({paddingBottom: 30 });
+                    $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-donne").show();
+                    $(".l-messagebox-content", g.messageBox).css({ paddingLeft: 64, paddingBottom: 30 });
                 }
                 else if (p.type == 'error')
                 {
-                    // $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-error").show();
-                    $(".l-messagebox-content", g.messageBox).css({paddingBottom: 30 });
+                    $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-error").show();
+                    $(".l-messagebox-content", g.messageBox).css({ paddingLeft: 64, paddingBottom: 30 });
                 }
                 else if (p.type == 'warn')
                 {
-                    // $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-warn").show();
-                    $(".l-messagebox-content", g.messageBox).css({paddingBottom: 30 });
-                    $(".l-messagebox-buttons-inner", g.messageBox).css({ marginLeft: 212 }); 
+                    $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-warn").show();
+                    $(".l-messagebox-content", g.messageBox).css({ paddingLeft: 64, paddingBottom: 30 });
                 }
                 else if (p.type == 'question')
                 {
-                    // $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-question").show();
-                    $(".l-messagebox-content", g.messageBox).css({paddingBottom: 40 });
+                    $(".l-messagebox-image", g.messageBox).addClass("l-messagebox-image-question").show();
+                    $(".l-messagebox-content", g.messageBox).css({ paddingLeft: 64, paddingBottom: 40 });
                 }
             }
         }
@@ -244,7 +243,6 @@
             content: content,
             buttons: [{ text: '是', onclick: onclick }, { text: '否', onclick: onclick}]
         };
-
         return $.ligerMessageBox(p);
     };
     $.ligerMessageBox.success = function (title, content, onBtnClick)

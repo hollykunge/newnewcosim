@@ -39,7 +39,7 @@
 	          		
 	          		<tr height="25">
 		          		<td>
-		          		  <a href="javascript:void(0)" onclick="javascript:top.location.href='<%=basePath%>/logout';">重 新 登 录</a>
+		          		  <a href="#" onclick="javascript:location.href='<%=basePath%>/logout';">重 新 登 录</a> 
 			        	  <a href="javascript:history.back();">后 退</a>
 		          		
 		          		</td>

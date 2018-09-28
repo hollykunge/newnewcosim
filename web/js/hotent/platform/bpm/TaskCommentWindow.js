@@ -16,5 +16,5 @@ function TaskCommentWindow(conf)
 	var winArgs="dialogWidth="+conf.dialogWidth+"px;dialogHeight="+conf.dialogHeight
 		+"px;help=0;status=0;scroll=1;center=1;resizable=1;" ;
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 }

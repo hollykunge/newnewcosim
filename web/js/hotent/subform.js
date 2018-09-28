@@ -150,7 +150,6 @@ $(function(){
 					trObj.find("td,input:hidden").each(function(){
 						if($(this).is('td')){
 							var tdname=$(this).attr('name');
-							 
 							if(name==tdname){
 								$(this).text(showData[name]);
 							}

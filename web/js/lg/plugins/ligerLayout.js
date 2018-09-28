@@ -107,7 +107,7 @@
             //left
             if ($("> div[position=left]", g.layout).length > 0)
             {
-                g.left = $("> div[position=left]", g.layout).wrap('<div class="l-layout-left" id="defconfleft" style="left:0px;"></div>').parent();
+                g.left = $("> div[position=left]", g.layout).wrap('<div class="l-layout-left" style="left:0px;"></div>').parent();
                 g.left.header = $('<div class="l-layout-header"><div class="l-layout-header-toggle"></div><div class="l-layout-header-inner"></div></div>');
                 g.left.prepend(g.left.header);
                 g.left.header.toggle = $(".l-layout-header-toggle", g.left.header);
@@ -130,7 +130,7 @@
             //center
             if ($("> div[position=center]", g.layout).length > 0)
             {
-                g.center = $("> div[position=center]", g.layout).wrap('<div class="l-layout-center" id="defconfcenter" ></div>').parent();
+                g.center = $("> div[position=center]", g.layout).wrap('<div class="l-layout-center" ></div>').parent();
                 g.center.content = $("> div[position=center]", g.center);
                 g.center.content.addClass("l-layout-content");
                 //set title

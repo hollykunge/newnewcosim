@@ -11,5 +11,5 @@ function ForkConditionWindow(conf){
 	var url=__ctx + "/platform/bpm/bpmDefinition/setCondition.ht?deployId="+conf.deployId+"&defId=" + conf.defId +"&nodeId=" + conf.nodeId;
 	var winArgs="dialogWidth=700px;dialogHeight=550px;help=0;status=0;scroll=1;center=1;resizable=1;";
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 }

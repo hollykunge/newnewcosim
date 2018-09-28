@@ -18,7 +18,7 @@ function TemplateDialog(conf)
 	var url=__ctx + "/platform/system/sysTemplate/dialog.ht".getNewUrl();
 	var winArgs="dialogWidth:600px;dialogHeight:300px;help:0;status0;scroll:0;center:1";
 	url=url.getNewUrl();
-	var rtn=window.open(url,conf,winArgs);	
+	var rtn=window.showModalDialog(url,conf,winArgs);	
 	if(rtn!=undefined){
 		if(conf.callback){
 			conf.callback.call(this,rtn);

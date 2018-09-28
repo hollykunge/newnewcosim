@@ -18,24 +18,6 @@
 			});
 		},
 		
-		//获取复选框的值,获取整行的值。
-		getCheckBoxValues:function(objJson,scope){
-			$(':checkbox,:radio',scope).each(function(){
-				var name=$(this).attr('name');
-				objJson[name]='';
-			});
-		
-			$(':checkbox:checked,:radio:checked',scope).each(function(){
-					var name=$(this).attr('name');
-					if(objJson[name]==''){
-						objJson[name]=$(this).val();
-					}
-					else{
-						objJson[name]+="," + $(this).val();
-					}
-			});
-		},
-		
 		setData:function(){
 			var self=this;
 			form=$(this);

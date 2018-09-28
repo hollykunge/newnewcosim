@@ -15,7 +15,7 @@ AttachMent.addFile=function(obj){
 	var inputObj=$(obj);
 	var fieldName=inputObj.attr("field");
 	var parent=inputObj.parent();
-	
+
 	var rights="w";
 	var divName="div.attachement";
 	var inputName="input[name='" +fieldName +"'],textarea[name='" +fieldName +"']";
@@ -31,49 +31,7 @@ AttachMent.addFile=function(obj){
 		var aryName=fileNames.split(",");
 		var aryPath=filePaths.split(",");
 		var aryExtPath=extPaths.split(",");
-		
-		for(var i=0;i<aryFileId.length;i++){
-			var name=aryName[i] +"." +aryExtPath[i];
-			AttachMent.addJson(aryFileId[i],name,aryPath[i]  ,aryJson);
-		}
-		
-		//获取json
-		var json=JSON.stringify(aryJson);		
-		var html=AttachMent.getHtml(aryJson,rights);
-		divObj.empty();
-		
-		divObj.append($(html));
-		window.parent._callback(fileIds);
-		inputJson.val(json);
-	}});
-};
-
-/**
- * WQ：根据协同研发流程，扩展添加附件数据。
- * @param obj 按钮。
- * @param fieldName 字段名称
- */
-AttachMent.addFile1=function(obj){	
-	var inputObj=$(obj);
-	var fieldName=inputObj.attr("field");
-	var parent=inputObj.parent();
 	
-	var rights="w";
-	var divName="div.attachement";
-	var inputName="input[name='" +fieldName +"'],textarea[name='" +fieldName +"']";
-	//获取div对象。
-	var divObj=$(divName,parent);
-	var inputJson=$(inputName,parent);
-	
-	var aryJson=AttachMent.getFileJsonArray(divObj);
-	//文件选择器
-	FlexUploadDialog({isSingle:true,callback:function (fileIds,fileNames,filePaths,extPaths){
-		if(fileIds==undefined || fileIds=="") return ;
-		var aryFileId=fileIds.split(",");
-		var aryName=fileNames.split(",");
-		var aryPath=filePaths.split(",");
-		var aryExtPath=extPaths.split(",");
-		
 		for(var i=0;i<aryFileId.length;i++){
 			var name=aryName[i] +"." +aryExtPath[i];
 			AttachMent.addJson(aryFileId[i],name,aryPath[i]  ,aryJson);
@@ -83,47 +41,7 @@ AttachMent.addFile1=function(obj){
 		var html=AttachMent.getHtml(aryJson,rights);
 		divObj.empty();
 		divObj.append($(html));
-		window._fileCallback(fileIds,fileNames,filePaths);
-		inputJson.val(json);
-	}});
-};
-/**
- * WQ：根据协同研发流程，扩展添加附件数据。
- * @param obj 按钮。
- * @param fieldName 字段名称
- */
-AttachMent.addFile2=function(obj){	
-	var inputObj=$(obj);
-	var fieldName=inputObj.attr("field");
-	var parent=inputObj.parent();
-	
-	var rights="w";
-	var divName="div.attachement";
-	var inputName="input[name='" +fieldName +"'],textarea[name='" +fieldName +"']";
-	//获取div对象。
-	var divObj=$(divName,parent);
-	var inputJson=$(inputName,parent);
-	
-	var aryJson=AttachMent.getFileJsonArray(divObj);
-	//文件选择器
-	FlexUploadDialog({isSingle:true,callback:function (fileIds,fileNames,filePaths,extPaths){
-		if(fileIds==undefined || fileIds=="") return ;
-		var aryFileId=fileIds.split(",");
-		var aryName=fileNames.split(",");
-		var aryPath=filePaths.split(",");
-		var aryExtPath=extPaths.split(",");
-		
-		for(var i=0;i<aryFileId.length;i++){
-			var name=aryName[i] +"." +aryExtPath[i];
-			AttachMent.addJson(aryFileId[i],name,aryPath[i]  ,aryJson);
-		}
-		//获取json
-		var json=JSON.stringify(aryJson);		
-		var html=AttachMent.getHtml(aryJson,rights);
-		divObj.empty();
-		divObj.append($(html));
-		window._fileCallback2(fileIds,fileNames,filePaths);
-		inputJson.val(json);
+		inputJson.val(json);	
 	}});
 };
 

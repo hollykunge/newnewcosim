@@ -7,7 +7,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 <f:link href="web.css" ></f:link>
 <f:link href="Aqua/css/ligerui-all.css"></f:link>
-<f:link href="Aqua/css/bootstrap.css"></f:link>
 <script type="text/javascript" src="${ctx}/js/dynamic.jsp"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/lg/ligerui.min.js"></script>
