@@ -1,5 +1,6 @@
 package com.casic.datadriver.controller.coin;
 
+import com.casic.datadriver.model.coin.DdGoldenCoin;
 import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.manager.ScoreRegulation;
@@ -7,6 +8,7 @@ import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.service.coin.CoinService;
 import com.casic.datadriver.service.coin.DdScoreInflowService;
 import com.casic.datadriver.service.coin.DdScoreService;
+import com.casic.datadriver.service.coin.GoldenCoinService;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.platform.dao.system.SysOrgDao;
@@ -39,6 +41,8 @@ public class CoinController extends GenericController {
 
     private DdScoreInflowService ddScoreInflowService;
 
+    private GoldenCoinService goldenCoinService;
+
     private final static Integer RANK_NUM = 25;
 
     private SysOrgDao sysOrgDao;
@@ -48,12 +52,14 @@ public class CoinController extends GenericController {
                           SysUserDao sysUserDao,
                           DdScoreService ddScoreService,
                           CoinService coinService,
-                          SysOrgDao sysOrgDao) {
+                          SysOrgDao sysOrgDao,
+                          GoldenCoinService goldenCoinService) {
         this.sysUserDao = sysUserDao;
         this.ddScoreService = ddScoreService;
         this.coinService = coinService;
         this.ddScoreInflowService = ddScoreInflowService;
         this.sysOrgDao = sysOrgDao;
+        this.goldenCoinService = goldenCoinService;
     }
 
     /**
@@ -98,37 +104,66 @@ public class CoinController extends GenericController {
                     ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.FENG_XIAN);
             List<DdScoreInflow> qiushiInflows =
                     ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
+            List<DdScoreInflow> chuangxinInflows =
+                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
             //返回的map
-            Map<String, Integer> personalMap = new HashMap<>(6);
+            Map<String, Integer> personalMap = new HashMap<>(16);
             //全局总数
             int total = 0;
-            for (DdScoreInflow ddScoreInflow : qiushiInflows) {
+            for (DdScoreInflow ddScoreInflow : quanjuInflows) {
                 total += ddScoreInflow.getSourceScore();
             }
-            personalMap.put("quanjuTotal", total);
+            personalMap.put("quanjuTotalScore", total);
             //奉献总数
             total = 0;
             for (DdScoreInflow ddScoreInflow : fengxianInflows) {
                 total += ddScoreInflow.getSourceScore();
             }
-            personalMap.put("fengxianTotal", total);
+            personalMap.put("fengxianTotalScore", total);
             //求实总数
             total = 0;
             for (DdScoreInflow ddScoreInflow : qiushiInflows) {
                 total += ddScoreInflow.getSourceScore();
             }
-            personalMap.put("qiushiTotal", total);
+            personalMap.put("qiushiTotalScore", total);
+            //创新总数
+            total = 0;
+            for (DdScoreInflow ddScoreInflow : chuangxinInflows) {
+                total += ddScoreInflow.getSourceScore();
+            }
+            personalMap.put("chuangxinTotalScore", total);
             //首先获取个人的一级类型月积分
             List<DdScore> monthList = ddScoreService.getPersonal(userId);
             for (DdScore ddScore : monthList) {
                 if (ScoreRegulation.QUAN_JU.equals(ddScore.getScoreType())) {
-                    personalMap.put("quanjuMonth", ddScore.getScoreTotal());
+                    personalMap.put("quanjuMonthScore", ddScore.getScoreTotal());
                 } else if (ScoreRegulation.FENG_XIAN.equals(ddScore.getScoreType())) {
-                    personalMap.put("fengxianMonth", ddScore.getScoreTotal());
+                    personalMap.put("fengxianMonthScore", ddScore.getScoreTotal());
                 } else if (ScoreRegulation.QIU_SHI.equals(ddScore.getScoreType())) {
-                    personalMap.put("qiushiMonth", ddScore.getScoreTotal());
+                    personalMap.put("qiushiMonthScore", ddScore.getScoreTotal());
+                } else if (ScoreRegulation.CHUANG_XIN.equals(ddScore.getScoreType())) {
+                    personalMap.put("chuangxinMonthScore", ddScore.getScoreTotal());
                 }
             }
+            //获取年币
+            List<DdGoldenCoin> personalCoinList = goldenCoinService.getPersonal(userId);
+            for(DdGoldenCoin ddGoldenCoin : personalCoinList) {
+                if(ScoreRegulation.QUAN_JU.equals(ddGoldenCoin.getCoinType())) {
+                    personalMap.put("quanjuTotalCoin", ddGoldenCoin.getTotal().intValue());
+                } else if(ScoreRegulation.FENG_XIAN.equals(ddGoldenCoin.getCoinType())) {
+                    personalMap.put("fengxianTotalCoin", ddGoldenCoin.getTotal().intValue());
+                } else if(ScoreRegulation.QIU_SHI.equals(ddGoldenCoin.getCoinType())) {
+                    personalMap.put("qiushiTotalCoin", ddGoldenCoin.getTotal().intValue());
+                } else if(ScoreRegulation.CHUANG_XIN.equals(ddGoldenCoin.getCoinType())) {
+                    personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getTotal().intValue());
+                }
+            }
+            //获取月币
+            //todo 不想写了这傻逼玩意儿
+            personalMap.put("quanjuMonthCoin", 0);
+            personalMap.put("fengxianMonthCoin", 0);
+            personalMap.put("qiushiMonthCoin", 0);
+            personalMap.put("chuangxinMonthCoin", 0);
             //组装json
             jsonR = JSONArray.fromObject(personalMap);
             //解决跨域
@@ -142,7 +177,7 @@ public class CoinController extends GenericController {
 
     /**
      * @param response 响应
-     * @return JSONArray
+     * @return JSONArray j
      * @throws Exception 扔
      */
     @RequestMapping("rank")

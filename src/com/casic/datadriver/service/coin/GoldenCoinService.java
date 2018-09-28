@@ -42,6 +42,10 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
         }
     }
 
+    public List<DdGoldenCoin> getPersonal(long uid) {
+        return ddGoldenCoinDao.getPersonal(uid);
+    }
+
     @Override
     protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
         return this.ddGoldenCoinDao;
