@@ -64,8 +64,8 @@ function changeAllowSpecUsr(obj){
 							<span class="green">运行时指定执行人：</span>
 							<select nodeSetId="${nodeUserMap.setId}" onchange="changeAllowSpecUsr(this)">
 								<option value="1" <c:if test="${nodeUserMap.allowSpecUsr==1}">selected="selected"</c:if>>不能指定</option>
-								<option value="2" <c:if test="${nodeUserMap.allowSpecUsr==2}">selected="selected"</c:if>>指定本单位</option>
-								<option value="3" <c:if test="${nodeUserMap.allowSpecUsr==3}">selected="selected"</c:if>>本单位人员</option>
+								<option value="2" <c:if test="${nodeUserMap.allowSpecUsr==2}">selected="selected"</c:if>>指定企业</option>
+								<option value="3" <c:if test="${nodeUserMap.allowSpecUsr==3}">selected="selected"</c:if>>本企业人员</option>
 							</select>
 <%-- 							<input nodeSetId="${nodeUserMap.setId}" id="checked_${nodeUserMap.nodeId}" name="allowSpecify" type="checkbox"  <c:if test="${nodeUserMap.allowSpecUsr==1}">checked="checked"</c:if> /><label for="checked_${nodeUserMap.nodeId}">允许运行时指定${nodeUserMap.allowSpecUsr}</label> --%>
 						</div>

@@ -254,12 +254,12 @@ CKEDITOR.plugins.link =
 	 * @since 3.2.1
 	 * The following selection will all return the link element.
 	 *	 <pre>
-	 *  <a href="javascript:void(0)">li^nk</a>
-	 *  <a href="javascript:void(0)">[link]</a>
-	 *  text[<a href="javascript:void(0)">link]</a>
-	 *  <a href="javascript:void(0)">li[nk</a>]
-	 *  [<b><a href="javascript:void(0)">li]nk</a></b>]
-	 *  [<a href="javascript:void(0)"><b>li]nk</b></a>
+	 *  <a href="#">li^nk</a>
+	 *  <a href="#">[link]</a>
+	 *  text[<a href="#">link]</a>
+	 *  <a href="#">li[nk</a>]
+	 *  [<b><a href="#">li]nk</a></b>]
+	 *  [<a href="#"><b>li]nk</b></a>
 	 * </pre>
 	 */
 	getSelectedLink : function( editor )

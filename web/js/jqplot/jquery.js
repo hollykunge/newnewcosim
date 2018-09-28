@@ -3520,7 +3520,7 @@ jQuery.fn.extend({
 	},
 
 	delegate: function( selector, types, data, fn ) {
-		return this.on( types, data, fn, selector );
+		return this.live( types, data, fn, selector );
 	},
 
 	undelegate: function( selector, types, fn ) {
@@ -3659,7 +3659,7 @@ function liveHandler( event ) {
 		events = jQuery._data( this, "events" );
 
 	// Make sure we avoid non-left-click bubbling in Firefox (#3861) and disabled elements in IE (#6911)
-	if ( event.liveFired === this || !events || !events.on || event.target.disabled || event.button && event.type === "click" ) {
+	if ( event.liveFired === this || !events || !events.live || event.target.disabled || event.button && event.type === "click" ) {
 		return;
 	}
 
@@ -3669,7 +3669,7 @@ function liveHandler( event ) {
 
 	event.liveFired = this;
 
-	var on = events.on.slice(0);
+	var live = events.live.slice(0);
 
 	for ( j = 0; j < live.length; j++ ) {
 		handleObj = live[j];

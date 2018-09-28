@@ -44,7 +44,7 @@
 	          		
 	          		<tr height="25">
 		          		<td>
-		          		  <a href="javascript:void(0)" onclick="javascript:location.href='<%=basePath%>/login.jsp';">重新登录</a>
+		          		  <a href="#" onclick="javascript:location.href='<%=basePath%>/login.jsp';">重新登录</a> 
 			        	 
 		          		</td>
 	          		</tr>

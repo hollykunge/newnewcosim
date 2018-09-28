@@ -9,19 +9,14 @@
 
 <f:link href="Aqua/css/ligerui-all.css" ></f:link>
 <f:link href="web.css" ></f:link>
-<f:link href="process.css" ></f:link>
-<script src="${ctx}/js/jquery/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/dynamic.jsp"></script>
-<script type="text/javascript" src="${ctx}/js/lg/base.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/additional-methods.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.validate.ext.js"></script>
 <script type="text/javascript" src="${ctx}/js/util/util.js"></script>
 <script type="text/javascript" src="${ctx}/js/util/form.js"></script>
-
 <script type="text/javascript" src="${ctx}/js/lg/ligerui.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/lg/plugins/ligerDialog.js" ></script>
 <script type="text/javascript" src="${ctx}/js/calendar/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="${ctx}/js/cloud/fileOperate.js"></script>
-<script type="text/javascript" src="${ctx}/js/lg/plugins/ligerMessageBox.js"></script>

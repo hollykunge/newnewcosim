@@ -382,7 +382,7 @@ function importNode(){
 		var winArgs="dialogWidth="+conf.dialogWidth+"px;dialogHeight="+conf.dialogHeight
 			+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 		url=url.getNewUrl();
-		var rtn=window.open(url,obj,winArgs);
+		var rtn=window.showModalDialog(url,obj,winArgs);
 		if(!rtn)
 			reAsyncChild(selectNode);
 	}
@@ -394,7 +394,7 @@ function sortNode(){
 	var url=__ctx +'/platform/system/globalType/sortList.ht?parentId='+typeId;
 	var winArgs="dialogWidth:600px;dialogHeight:300px";
  	url=url.getNewUrl();
- 	var rtn=window.open(url,"",winArgs);
+ 	var rtn=window.showModalDialog(url,"",winArgs);
  	//重新加载树。
  	reAsyncChild(selectNode);
 }

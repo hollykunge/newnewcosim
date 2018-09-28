@@ -12,7 +12,7 @@ function BpmQueryDialog(conf)
 		+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 	
 	url=url.getNewUrl();
-	var rtn=window.open(url,conf,winArgs);
+	var rtn=window.showModalDialog(url,conf,winArgs);
 	if(rtn!=undefined){
 		conf.callback(rtn);
 	}

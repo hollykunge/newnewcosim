@@ -29,7 +29,7 @@ function AddResourceDialog(conf)
 		params.name=conf.name;
 	}
 	
-	var rtn=window.open(url,params,winArgs);
+	var rtn=window.showModalDialog(url,params,winArgs);
 	if(rtn!=undefined){
 		if(conf.callback){
 			conf.callback.call(this,rtn);

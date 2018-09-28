@@ -678,7 +678,6 @@ jQuery.extend({
 					txtarea.caretPos = document.selection.createRange().duplicate();
 		},
 		confirm:function(selector,message){
-			
 			$(selector).click(function(){
 				if($(this).hasClass('disabled')) return false;
 				var ele=this;
@@ -765,9 +764,9 @@ String.prototype.isEmpty = function() {
 /**
  * 功能：移除首尾空格
  */
-// String.prototype.trim = function() {
-// 	return this.replace(/(^\s*)|(\s*$)/g, "");
-// };
+String.prototype.trim = function() {
+	return this.replace(/(^\s*)|(\s*$)/g, "");
+};
 /**
  * 功能:移除左边空格
  */

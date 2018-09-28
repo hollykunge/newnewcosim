@@ -14,18 +14,14 @@ SubtablePermission.init=function(){
 		else
 			right=right.toLowerCase();
 		//非写权限
-		if(right=="r"){
+		if(right!="w"){
 			$("a.add,a.link",subTable).remove();			
 			$("input:visible,textarea:visible,select:visible",subTable).each(function(){
 				var me=$(this),
 					val=me.val();
-				//me.before(val);
-				//me.remove();
-				me.attr("disabled",true);
+				me.before(val);
+				me.remove();
 			});
-		}else if(right=="h"){
-			me.attr("hidden","hidden");
-			
 		}
 	});	
 };

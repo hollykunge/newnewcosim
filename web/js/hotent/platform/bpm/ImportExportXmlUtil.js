@@ -19,7 +19,7 @@ if (typeof ImportExportXml == 'undefined') {
  * 	}
  * </pre>
  */
-ImportExportXml.open = function(conf){
+ImportExportXml.showModalDialog = function(conf){
 	if(!conf) conf={};
 	var url= conf.url;
 	//
@@ -29,7 +29,7 @@ ImportExportXml.open = function(conf){
 	var winArgs="dialogWidth="+conf.dialogWidth+"px;dialogHeight="+conf.dialogHeight
 		+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	if(rtn){
 		if(conf.returnUrl)
 			window.location.href = conf.returnUrl;

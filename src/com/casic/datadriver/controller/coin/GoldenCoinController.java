@@ -95,23 +95,29 @@ public class GoldenCoinController extends AbstractController {
         }
     }
 
+    /**
+     * 后台管理使用，按月点击进行兑换
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     @RequestMapping("consume")
     @Action(description="消耗积分兑换币")
     public void consume(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
+        String resultMsg=null;
         try{
-            Long userId = RequestUtil.getLong(request, "userId", 0);
+//            Long userId = RequestUtil.getLong(request, "userId", 0);
             String type = RequestUtil.getString(request, "type");
-            Long scoreNum = RequestUtil.getLong(request, "scoreNum");
-
+//            Long scoreNum = RequestUtil.getLong(request, "scoreNum");
             ddGoldenCoinService.consume(type);
-
+            resultMsg = getText("coin.consumed", "兑换成功");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception e){
-
+            resultMsg = getText("coin.consumed", "兑换失败");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
         }
 
-        String returnUrl = RequestUtil.getPrePage(request);
-
-        return ;
+//        String returnUrl = RequestUtil.getPrePage(request);
     }
 }

@@ -13,9 +13,7 @@
  *	}});
  * @param conf
  */
-var flexUploadConf;
 function FlexUploadDialog(conf) {
-	flexUploadConf = conf;
 	if(!conf) conf={};
 	var isSingle=conf.isSingle?1:0;
 	var url=__ctx + "/platform/system/sysFile/dialog.ht?isSingle="+isSingle;
@@ -26,15 +24,15 @@ function FlexUploadDialog(conf) {
 		+"px;help:" + conf.help +";status:" + conf.status +";scroll:" + conf.scroll +";center:" +conf.center;
 	if (!conf.isSingle)conf.isSingle = false;
 	url=url.getNewUrl();
-	var p = {};
-	p.callback=conf.callback;
-	window.open(url,"",winArgs);
-}
-
-function returnValue(obj){
-	var fileIds=obj.fileIds;
-	var fileNames=obj.fileNames;
-	var filePaths=obj.filePaths;
-	var extPath=obj.extPath;
-	flexUploadConf.callback.call(this,fileIds,fileNames,filePaths,extPath);
+	var rtn=window.showModalDialog(url,"",winArgs);
+	if(rtn!=undefined){
+		if(conf.callback){
+			var fileIds=rtn.fileIds;
+			var fileNames=rtn.fileNames;
+			var filePaths=rtn.filePaths;
+			var extPath=rtn.extPath;
+			
+			conf.callback.call(this,fileIds,fileNames,filePaths,extPath);
+		}
+	}
 }

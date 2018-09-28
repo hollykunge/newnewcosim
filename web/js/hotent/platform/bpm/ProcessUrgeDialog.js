@@ -22,5 +22,5 @@ function ProcessUrgeDialog(conf)
 	var winArgs="dialogWidth="+conf.dialogWidth+"px;dialogHeight="+conf.dialogHeight
 		+"px;help=" + conf.help +";status=" + conf.status +";scroll=" + conf.scroll +";center=" +conf.center;
 	url=url.getNewUrl();
-	window.open(url,"",winArgs);
+	window.showModalDialog(url,"",winArgs);
 }

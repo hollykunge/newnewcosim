@@ -52,7 +52,7 @@
 										if (options.scrolling == "no") {
 											$("#" + $uniqueID)
 													.before(
-															'<a href="javascript:void(0)" class="expander" style="width:100%;">Expand table</a>');
+															'<a href="#" class="expander" style="width:100%;">Expand table</a>');
 											$("#" + $uniqueID).css({
 												'padding-right' : '0px'
 											});

@@ -69,7 +69,7 @@ NtkoSignManage = function() {
 		url=url.getNewUrl();
 		var params={
 		};
-		var rtn = window.open(url,params,winArgs);
+		var rtn = window.showModalDialog(url,params,winArgs);
 		if(!(rtn&&rtn.status)){
 			return false;
 		}

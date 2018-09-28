@@ -42,11 +42,19 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
         }
     }
 
+    public List<DdGoldenCoin> getPersonal(long uid) {
+        return ddGoldenCoinDao.getPersonal(uid);
+    }
+
     @Override
     protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
         return this.ddGoldenCoinDao;
     }
 
+    /**
+     * 根据传入类型进行积分兑换，定时器周期调用还没有添加
+     * @param scoreType
+     */
     public void consume(String scoreType) {
         List<DdScore> ddScoreList = new ArrayList<>();
         Integer lastRank = 0;
@@ -78,10 +86,9 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
         }
         //写消耗积分的流水数据库
         for (DdScore ddScore : ddScoreList) {
-            int chuangxinCoin = 0;
             int getCoin = 1;
             if(CHUANG_XIN.equals(scoreType)) {
-                chuangxinCoin = ddScore.getScoreTotal()/100;
+                Integer chuangxinCoin = ddScore.getScoreTotal()/100;
                 lastRank = chuangxinCoin * 100;
                 getCoin = chuangxinCoin;
             }
@@ -99,7 +106,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             }
             //获取币
             List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUid());
-            DdGoldenCoin userTypeCoin = new DdGoldenCoin();;
+            DdGoldenCoin userTypeCoin = new DdGoldenCoin();
             Boolean isHave = false;
             for(DdGoldenCoin ddGoldenCoin : userCoinList) {
                 if(ddGoldenCoin.getCoinType().equals(ddScore.getScoreType())) {
