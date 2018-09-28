@@ -81,7 +81,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("personalScore")
     @ResponseBody
-    public JSONArray personalScore(String account, HttpServletResponse response) throws Exception {
+    public JSONArray personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
             //获取用户uid
@@ -126,6 +126,9 @@ public class CoinController extends GenericController {
             }
             //组装json
             jsonR = JSONArray.fromObject(personalMap);
+            //解决跨域
+            String callback = request.getParameter("callback");
+            response.getWriter().write(callback + "(" + jsonR.toString() + ")");
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
@@ -173,6 +176,7 @@ public class CoinController extends GenericController {
             }
             //组装json
             jsonR = JSONArray.fromObject(itemList);
+            //解决跨域
             String callback = request.getParameter("callback");
             response.getWriter().write(callback + "(" + jsonR.toString() + ")");
 //            writeResultMessage(response.getWriter(), callback + "("+jsonR.toString()+")", ResultMessage.Success);
