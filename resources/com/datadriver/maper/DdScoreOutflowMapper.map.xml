@@ -26,6 +26,6 @@
       #{sourceType,jdbcType=VARCHAR},
       #{expendScore,jdbcType=NUMERIC},
       #{expendDetail,jdbcType=VARCHAR},
-      #{udpTime,jdbcType=VARCHAR},
+      #{udpTime,jdbcType=VARCHAR})
     </insert>
 </mapper>

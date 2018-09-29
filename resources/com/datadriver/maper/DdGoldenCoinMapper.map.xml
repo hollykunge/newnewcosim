@@ -13,9 +13,9 @@
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdGoldenCoin">
     insert into dd_coin (id, user_id, total, coin_type)
     values (#{id,jdbcType=NUMERIC},
-      #{user_id,jdbcType=NUMERIC},
+      #{userId,jdbcType=NUMERIC},
       #{total,jdbcType=NUMERIC},
-      #{coin_type,jdbcType=VARCHAR})
+      #{coinType,jdbcType=VARCHAR})
     </insert>
     <delete id="delById" parameterType="java.lang.Long">
 		DELETE FROM dd_coin
@@ -47,7 +47,7 @@
                 user_id = #{userId,jdbcType=NUMERIC},
             </if>
             <if test="total !=null">
-                total = #{total,jdbcType=NUMERIC}
+                total = #{total,jdbcType=NUMERIC},
             </if>
             <if test="coinType !=null">
                 coin_type = #{coinType,jdbcType=VARCHAR}
