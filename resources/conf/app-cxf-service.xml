@@ -76,6 +76,14 @@
 	<jaxws:endpoint id="CAService"	implementor="#CAServiceImpl" 
 		implementorClass="com.casic.cloud.CA.webservice.impl.CAServiceImpl"	address="/CAServiceImpl" >
 	</jaxws:endpoint>
-	
-	
+
+	<!-- 返回人员组织-->
+	<bean id="DataInterfacesImpl" class="com.casic.datadriver.service.webservice.DataInterfacesImpl"/>
+	<jaxws:endpoint
+			id="DataInterfaces"
+			implementor="#DataInterfacesImpl"
+			implementorClass="com.casic.datadriver.service.webservice.DataInterfacesImpl"
+			address="/DataInterfacesImpl" >
+	</jaxws:endpoint>
+
 </beans>
