@@ -75,7 +75,7 @@
             <a class="btn btn-default" href="javascript:void(0)" id="create_task"
                onclick="createTask(${Project.ddProjectId})"><span class="glyphicon glyphicon-bookmark"></span> 创建任务</a>
             <a class="btn btn-default" href="javascript:void(0)" id="done"
-               onclick="done(${Project.ddProjectId})"><span class="glyphicon glyphicon-bookmark"></span> 完成项目</a>
+               onclick="done(${Project.ddProjectId})"><span class="glyphicon glyphicon-ok"></span> 完成项目</a>
             <%--<a class="btn btn-info" href="javascript:void(0)" id="create_index"--%>
                <%--onclick="createIndex(${Project.ddProjectId})"><span class="glyphicon glyphicon-list-alt"></span> 创建指标</a>--%>
         </div>
@@ -94,6 +94,13 @@
 <%--任务创建--%>
 <div class="modal fade" id="addtask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="done_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
 
         </div>
@@ -153,6 +160,13 @@
         $('#addtask').modal({
             keyboard: true,
             remote: "${ctx}/datadriver/task/addtask.ht?id=" + projectId
+        });
+    }
+    //完成项目
+    function done(projectId) {
+        $('#done_model').modal({
+            keyboard: true,
+            remote: "done.ht?id=" + projectId
         });
     }
     //创建指标

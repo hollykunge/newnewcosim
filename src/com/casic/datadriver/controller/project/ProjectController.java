@@ -406,6 +406,39 @@ public class ProjectController extends BaseController {
     }
 
     /**
+     * 完成项目
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("done")
+    @Action(description = "完成项目")
+    public void done(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String resultMsg = null;
+        Long id = RequestUtil.getLong(request, "id");
+        Project project = projectService.getById(id);
+        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(id);
+        if (taskInfoList.isEmpty()){
+            resultMsg = getText("没有任务，不能完成项目！", "没有任务，不能完成项目！");
+            writeResultMessage(response.getWriter(), resultMsg,ResultMessage.Fail);
+            return;
+        }
+        for (TaskInfo taskInfo: taskInfoList){
+            if (taskInfo.getDdTaskState() != 3){
+                resultMsg = getText("有未完成的任务，不能完成项目！", "有未完成的任务，不能完成项目！");
+                writeResultMessage(response.getWriter(), resultMsg,ResultMessage.Fail);
+                return;
+            }
+        }
+        project.setDdProjectState((short) 1);
+        projectService.updateAll(project);
+        resultMsg = getText("完成项目", "完成项目");
+        writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+    }
+
+    /**
      * 进入项目控制台
      *
      * @param request

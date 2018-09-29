@@ -1,13 +1,20 @@
 package com.casic.datadriver.model.coin;
 
+import com.hotent.core.model.BaseModel;
+
 /**
  * @Author: hollykunge
  * @Description:
  * @Date: 创建于 2018/9/27
  * @Modified:
  */
-public class DdGoldenCoin {
+public class DdGoldenCoin extends BaseModel {
     private Long id;
+
+    private Long userId;
+    private Long total;
+    private String coinType;
+
 
     public Long getId() {
         return id;
@@ -32,10 +39,6 @@ public class DdGoldenCoin {
     public void setTotal(Long total) {
         this.total = total;
     }
-
-    private Long userId;
-    private Long total;
-    private String coinType;
 
     public String getCoinType() {
         return coinType;

@@ -15,7 +15,7 @@
   </sql>
 
     <insert id="add" parameterType="com.casic.datadriver.model.data.OrderDataRelation">
-    insert into dd_order_data_ralation (DD_ORDER_DATA_ID, DD_ORDER_TYPE, DD_DATA_ID,
+    insert into dd_order_data (DD_ORDER_DATA_ID, DD_ORDER_TYPE, DD_DATA_ID,
     DD_TASK_ID, DD_OPREATION_LEVEL, DD_DATA_NAME, DD_PROJECT_ID)
     values (#{ddOrderDataId,jdbcType=NUMERIC}, #{ddOrderType,jdbcType=NUMERIC}, #{ddDataId,jdbcType=NUMERIC},
     #{ddTaskId,jdbcType=NUMERIC}, #{ddOpreationLevel,jdbcType=NUMERIC}, #{ddDataName,jdbcType=VARCHAR}, #{ddProjectId,jdbcType=NUMERIC})
@@ -23,7 +23,7 @@
 
     <insert id="addToOrder"  parameterType="java.util.List">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-            insert into dd_order_data_ralation (DD_ORDER_DATA_ID, DD_ORDER_TYPE, DD_DATA_ID,
+            insert into dd_order_data (DD_ORDER_DATA_ID, DD_ORDER_TYPE, DD_DATA_ID,
             DD_TASK_ID, DD_OPREATION_LEVEL, DD_DATA_NAME, DD_PROJECT_ID)
             values (#{item.ddOrderDataId,jdbcType=NUMERIC}, #{item.ddOrderType,jdbcType=NUMERIC}, #{item.ddDataId,jdbcType=NUMERIC},
             #{item.ddTaskId,jdbcType=NUMERIC}, #{item.ddOpreationLevel,jdbcType=NUMERIC}, #{item.ddDataName,jdbcType=VARCHAR}, #{item.ddProjectId,jdbcType=NUMERIC})
@@ -31,11 +31,11 @@
    </insert>
 
     <delete id="delDDOrderDataRelation" parameterType="com.casic.datadriver.publicClass.QueryParameters">
-        delete from dd_order_data_ralation
+        delete from dd_order_data
        where DD_TASK_ID = #{id,jdbcType=NUMERIC} AND DD_DATA_ID = #{type,jdbcType=NUMERIC} AND DD_ORDER_TYPE=1
     </delete>
     <delete id="delDDPublishDataRelation" parameterType="com.casic.datadriver.publicClass.QueryParameters">
-        delete from dd_order_data_ralation
+        delete from dd_order_data
         where DD_TASK_ID = #{id,jdbcType=NUMERIC} AND DD_DATA_ID = #{type,jdbcType=NUMERIC} AND DD_ORDER_TYPE=0
     </delete>
 
@@ -43,7 +43,7 @@
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_TASK_ID = #{id,jdbcType=NUMERIC} AND DD_DATA_ID = #{type,jdbcType=NUMERIC}
     </select>
 
@@ -51,21 +51,21 @@
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_TASK_ID = #{id} AND DD_ORDER_TYPE=1 limit #{pageSize},#{pageNumber}
     </select>
 
     <select id="getOrderDataRelationList" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_TASK_ID = #{id} AND DD_ORDER_TYPE=1
     </select>
 
     <select id="getPublishDataRelationList" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC} AND DD_ORDER_TYPE=0
     </select>
 
@@ -73,34 +73,34 @@
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_TASK_ID = #{id} AND DD_ORDER_TYPE=0 limit #{pageSize},#{pageNumber}
     </select>
 
     <select id="getOrderDataRelationbyDataId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_DATA_ID = #{DataId,jdbcType=NUMERIC}
     </select>
 
     <select id="getOrderDataRelationById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC} AND DD_ORDER_TYPE=0
     </select>
     <select id="getBeOrderDataByDataId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC} AND DD_ORDER_TYPE=1
     </select>
     <select id="queryPublishDataRelationByddTaskIDF" parameterType="com.casic.datadriver.publicClass.PageInfo"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_TASK_ID = #{id} AND DD_ORDER_TYPE=0 limit #{pageSize},#{pageNumber}
     </select>
 
@@ -108,58 +108,58 @@
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_TASK_ID = #{id} AND DD_ORDER_TYPE=1 limit #{pageSize},#{pageNumber}
     </select>
 
     <delete id="delPublishByddDataTaskId" parameterType="java.lang.Long">
-    delete from dd_order_data_ralation
+    delete from dd_order_data
     where DD_TASK_ID = #{ddDataTaskId,jdbcType=NUMERIC} AND DD_ORDER_TYPE=0
   </delete>
 
     <delete id="delOrderByddDataTaskId" parameterType="java.lang.Long">
-    delete from dd_order_data_ralation
+    delete from dd_order_data
     where DD_TASK_ID = #{ddDataTaskId,jdbcType=NUMERIC} AND DD_ORDER_TYPE=1
   </delete>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dd_order_data_ralation
+        from dd_order_data
         where DD_ORDER_DATA_ID = #{ddOrderDataId,jdbcType=NUMERIC}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from dd_order_data_ralation
+    delete from dd_order_data
     where DD_ORDER_DATA_ID = #{ddOrderDataId,jdbcType=NUMERIC}
   </delete>
 
     <delete id="delById" parameterType="java.lang.Long">
         delete from
-        dd_order_data_ralation
+        dd_order_data
         where DD_ORDER_DATA_ID = #{ddOrderDataId,jdbcType=NUMERIC}
     </delete>
 
     <delete id="delOrderByddDataId" parameterType="java.lang.Long">
         delete from
-        dd_order_data_ralation
+        dd_order_data
         where DD_ORDER_DATA_ID = #{ddOrderDataId,jdbcType=NUMERIC}
     </delete>
 
     <delete id="delPublishByddDataId" parameterType="java.lang.Long">
         delete from
-        dd_order_data_ralation
+        dd_order_data
         where DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC} AND DD_ORDER_TYPE=0
     </delete>
 
     <insert id="insert" parameterType="com.casic.datadriver.model.data.OrderDataRelation">
-    insert into dd_order_data_ralation (DD_ORDER_DATA_ID, DD_ORDER_TYPE, DD_DATA_ID, 
+    insert into dd_order_data (DD_ORDER_DATA_ID, DD_ORDER_TYPE, DD_DATA_ID,
       DD_TASK_ID, DD_OPREATION_LEVEL, DD_DATA_NAME, DD_PROJECT_ID)
     values (#{ddOrderDataId,jdbcType=NUMERIC}, #{ddOrderType,jdbcType=NUMERIC}, #{ddDataId,jdbcType=NUMERIC},
       #{ddTaskId,jdbcType=NUMERIC}, #{ddOpreationLevel,jdbcType=NUMERIC}, #{ddDataName,jdbcType=VARCHAR}, , #{ddProjectId,jdbcType=NUMERIC})
   </insert>
     <insert id="insertSelective" parameterType="com.casic.datadriver.model.data.OrderDataRelation">
-        insert into dd_order_data_ralation
+        insert into dd_order_data
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ddOrderDataId != null">
                 DD_ORDER_DATA_ID,
@@ -205,7 +205,7 @@
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.data.OrderDataRelation">
-        update dd_order_data_ralation
+        update dd_order_data
         <set>
             <if test="ddOrderType != null">
                 DD_ORDER_TYPE = #{ddOrderType,jdbcType=NUMERIC},
@@ -226,7 +226,7 @@
         where DD_ORDER_DATA_ID = #{ddOrderDataId,jdbcType=NUMERIC}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.data.OrderDataRelation">
-    update dd_order_data_ralation
+    update dd_order_data
     set DD_ORDER_TYPE = #{ddOrderType,jdbcType=NUMERIC},
       DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC},
       DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},

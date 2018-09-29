@@ -32,7 +32,7 @@
 					<td align="left"><font>单位：</font></td>
 					
 					<td>
-					<select name="orgSn" id="orgSn"><option value="620001">二院</option>
+					<select name="orgSn" id="orgSn"><option value="100">二部</option>
 					</select>
 					</td>
 				</tr>
