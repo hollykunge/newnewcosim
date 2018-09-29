@@ -37,6 +37,42 @@ function strToJson(o) {
     var tempJson = '[' + o + ']';
     return tempJson;
 }
+
+/**
+ *  生成随机数
+ * @param len
+ * @param radix
+ * @returns {string}
+ */
+function uuid(len, radix) {
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    var uuid = [], i;
+    radix = radix || chars.length;
+
+    if (len) {
+        // Compact form
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+    } else {
+        // rfc4122, version 4 form
+        var r;
+
+        // rfc4122 requires these characters
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4';
+
+        // Fill in random data. At i==19 set the high bits of clock sequence as
+        // per rfc4122, sec. 4.1.5
+        for (i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                r = 0 | Math.random()*16;
+                uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            }
+        }
+    }
+
+    return uuid.join('');
+}
+
 function outputTableInit(path, taskId, projectId) {
     var cellClass = function (row, dataField, cellText, rowData) {
         var cellValue = rowData[dataField];
@@ -87,7 +123,7 @@ function outputTableInit(path, taskId, projectId) {
             addRow: function (rowID, rowData, position, parentID, commit) {
                 commit(true);
                 newRowID = rowID;
-                // console.log(rowID);
+                console.log(rowID);
             },
             updateRow: function (rowID, rowData, commit) {
                 commit(true);
@@ -380,8 +416,28 @@ function outputTableInit(path, taskId, projectId) {
                     // save changes.
                     // $("#treeGridOut").jqxTreeGrid('endRowEdit', rowKey, false);
                     // $('#eventWindow').jqxWindow('open');
-                    var orderJson = arrayToJson(updateJson)
-                    // console.log(orderJson);
+                    var yid = uuid(14, 10) //唯一数据ID
+                    var array = new Map();//键值和数据ID 映射关系
+
+                    var jsonObj =  strToJson(updateJson);//转换为json对象
+                    console.log(updateJson);
+                    var Rjson =  JSON.parse(jsonObj);//转换为json对象
+                    console.log(jsonObj);
+                    for(var i=0;i<Rjson.length;i++){
+                        if (Rjson[i].dataId<10000000000) {
+                            array.set(Rjson[i].dataId,yid);
+                            Rjson[i].dataId= yid;
+                        }
+                        if (Rjson[i].parentId != 0&Rjson[i].parentId != '0') {
+                            array.forEach(function (value, key, map) {
+                                if(Rjson[i].parentId == key)
+                                {
+                                    Rjson[i].parentId = value;
+                                }
+                            });
+                        }
+                    }
+                    var orderJson = jsonarrayToJson(JSON.stringify(Rjson));
                     //TODO:添加是否确认提交的判断
                     $.ajax({
                         //json数组
@@ -390,6 +446,8 @@ function outputTableInit(path, taskId, projectId) {
                         data: "orderJson=" + orderJson,
                         ContentType: "application/json; charset=utf-8",
                         success: function (data) {
+                        },
+                        error: function (err) {
                         }
                     });
                 }
@@ -603,6 +661,7 @@ function outputTableInit(path, taskId, projectId) {
 
     // 结束编辑触发事件
     $("#treeGridOut").on('cellEndEdit', function (event) {
+        console.log(event)
         var args = event.args;
         // 行键值
         var rowKey = args.key;
