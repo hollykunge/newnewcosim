@@ -63,7 +63,7 @@
                               id="loginform">
                             <div class="form-group">
                                 <label class="sr-only" for="form-username">用户名</label>
-                                <input type="text" name="shortAccount" placeholder="用户名"
+                                <input type="text" name="account" placeholder="用户名"
                                        class="form-username form-control" id="form-username">
                             </div>
                             <div class="form-group">
@@ -72,7 +72,7 @@
                                        class="form-password form-control" id="form-password">
                             </div>
                             <button type="submit" class="btn btn-primary" onclick="submitForm()">进入</button>
-                            <input type="hidden" name="orgSn" id="orgSn" value="620001"/>
+                            <input type="hidden" name="orgSn" id="orgSn" value="100"/>
                         </form>
                     </div>
 

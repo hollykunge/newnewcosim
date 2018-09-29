@@ -74,7 +74,8 @@
                     class="glyphicon glyphicon-stats"></span> 进度监控</a>
             <a class="btn btn-default" href="javascript:void(0)" id="create_task"
                onclick="createTask(${Project.ddProjectId})"><span class="glyphicon glyphicon-bookmark"></span> 创建任务</a>
-
+            <a class="btn btn-default" href="javascript:void(0)" id="done"
+               onclick="done(${Project.ddProjectId})"><span class="glyphicon glyphicon-bookmark"></span> 完成项目</a>
             <%--<a class="btn btn-info" href="javascript:void(0)" id="create_index"--%>
                <%--onclick="createIndex(${Project.ddProjectId})"><span class="glyphicon glyphicon-list-alt"></span> 创建指标</a>--%>
         </div>
