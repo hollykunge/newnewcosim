@@ -3,6 +3,7 @@ package com.casic.datadriver.service.webservice;
 import com.alibaba.fastjson.JSONObject;
 import com.casic.datadriver.service.Util.Xml2Json;
 import com.hotent.core.util.UniqueIdUtil;
+import com.hotent.platform.auth.ISysOrg;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.model.system.SysOrg;
 import com.hotent.platform.model.system.SysUser;
@@ -16,6 +17,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebService
@@ -61,6 +63,7 @@ public class DataInterfacesImpl {
             String  shortAccount1= (String)infoJson.get("xing");
             String  shortAccount2= (String)infoJson.get("ming");
             String  orgCodeAndOrgSn= (String)infoJson.get("deptTyyhOrgCode");
+            String  orgCode = (String)infoJson.get("deptCode");
         try{
             SysUser sysUser = new SysUser();
             sysUser.setFullname(fullName);
@@ -72,16 +75,24 @@ public class DataInterfacesImpl {
             sysUser.setPhone(phone);
             sysUser.setSex(sex);
             sysUser.setFromType(shortByZero);
-            sysUser.setOrgId(Long.parseLong(orgCodeAndOrgSn));
-            sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
+            //sysUser.setOrgId(Long.parseLong(orgCodeAndOrgSn));
+            //sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
             sysUser.setShortAccount(shortAccount1+shortAccount2);
 
             SysUserOrg sysUserOrg = new SysUserOrg();
-            sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
+            //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
             sysUserOrg.setIsPrimary(shortByOne);
             sysUserOrg.setIsCharge(shortByZero);
             sysUserOrg.setIsGradeManage(shortByZero);
+            long findOrgId = 0;
 
+            List<ISysOrg> sysOrgList = sysOrgService.getAll();
+            for(ISysOrg sysOrg :sysOrgList){
+                String orgDesc = sysOrg.getOrgDesc();
+                if(orgDesc != null&&orgDesc.equals(orgCode)){
+                     findOrgId = sysOrg.getOrgId();
+                }
+            }
 
             if(sysUserService.isAccountExist(account)){
                 ISysUser userByAccount = sysUserService.getByAccount(account);
@@ -93,12 +104,15 @@ public class DataInterfacesImpl {
                 sysUserService.update(sysUser);
                 sysUserOrg.setUserOrgId(userOrgId);
                 sysUserOrg.setUserId(userByAccount.getUserId());
+                sysUserOrg.setOrgId(findOrgId);
                 sysUserOrgService.add(sysUserOrg);
             }else{
                 sysUser.setUserId(userId);
+                sysUser.setOrgId(findOrgId);
                 sysUserService.add(sysUser);
                 sysUserOrg.setUserId(userId);
                 sysUserOrg.setUserOrgId(UniqueIdUtil.genId());
+                sysUserOrg.setOrgId(findOrgId);
                 sysUserOrgService.add(sysUserOrg);
             }
             flag = "success";
@@ -113,23 +127,25 @@ public class DataInterfacesImpl {
             System.out.println(orgJson.get("Organization"));
             JSONObject infoJson = (JSONObject) orgJson.get("Organization");
             System.err.println(infoJson.get("orgName"));
-            String orgId = (String) infoJson.get("orgCode");
+            String orgSn = (String) infoJson.get("orgCode");
             String orgName = (String) infoJson.get("orgName");
-            String orgSecName = (String)infoJson.get("orgSecName");
-            Long orgSupId = (long) 1000;
+            String orgSecName = (String)infoJson.get("mdCode");
+            long orgId = UniqueIdUtil.genId();
             try {
                 SysOrg sysOrg = new SysOrg();
+                sysOrg.setOrgId(orgId);
                 sysOrg.setOrgName(orgName);
-                sysOrg.setOrgSupId(orgSupId);
+                sysOrg.setOrgSupId(longByOne);
                 sysOrg.setOrgDesc(orgSecName);
                 sysOrg.setOrgType(longByOne);
                 sysOrg.setFromType(shortByOne);
-                sysOrg.setSn(Long.parseLong(orgId));
+                //sysOrg.setSn(Long.parseLong(orgSn));
                 sysOrg.setIsSystem(longByZero);
-                sysOrg.setOrgId(Long.parseLong(orgId));
+                sysOrg.setDemId(longByOne);
+                sysOrg.setPath("1."+orgId);
                 sysOrgService.add(sysOrg);
                 flag = "success";
-            } catch (Exception ex) {
+            } catch (Exception ex){
                 ex.printStackTrace();
                 flag = "failed";
             }
