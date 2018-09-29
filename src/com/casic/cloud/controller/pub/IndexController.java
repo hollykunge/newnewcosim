@@ -335,7 +335,7 @@ public class IndexController extends BaseController {
 //		}
         String errMsg = "";
         if (sysUser.getOrgSn() == null
-                || StringUtil.isEmpty(sysUser.getShortAccount())
+                || StringUtil.isEmpty(sysUser.getAccount())
                 || StringUtil.isEmpty(sysUser.getPassword())) {
             errMsg = "用户和密码信息均不可以为空";
             mav.addObject("sysUser", sysUser);
@@ -343,9 +343,17 @@ public class IndexController extends BaseController {
             return mav;
         }
         String enPassword = EncryptUtil.encryptSha256(sysUser.getPassword());
-        ISysUser dbSysUser = sysUserService.getSysUserByOrgSnAndAccount(
-                sysUser.getOrgSn(), sysUser.getShortAccount());
-        ISysOrg sysOrg = sysOrgService.getOrgBySn(sysUser.getOrgSn());
+//        ISysUser dbSysUser = sysUserService.getSysUserByOrgSnAndAccount(
+//                sysUser.getOrgSn(), sysUser.getShortAccount());
+
+        ISysUser dbSysUser = sysUserService.getByAccount(sysUser.getAccount());
+        if (dbSysUser == null) {
+            errMsg = "用户不存在。";
+            mav.addObject("sysUser", sysUser);
+            mav.addObject("errMsg", errMsg);
+            return mav;
+        }
+        ISysOrg sysOrg = sysOrgService.getById(dbSysUser.getOrgId());
         if (sysOrg == null) {
             errMsg = "该用户没有所属部门";
             mav.addObject("errMsg", errMsg);
@@ -353,10 +361,6 @@ public class IndexController extends BaseController {
             errMsg = "该用户所属部门不存在。";
             mav.addObject("errMsg", errMsg);
             // 判断是否存在
-        } else if (dbSysUser == null) {
-            errMsg = "用户不存在。";
-            mav.addObject("sysUser", sysUser);
-            mav.addObject("errMsg", errMsg);
         }
         // 判断密码是否匹配
         else if (!dbSysUser.getPassword().equals(enPassword)) {

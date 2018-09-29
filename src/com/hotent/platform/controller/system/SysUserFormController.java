@@ -98,6 +98,7 @@ public class SysUserFormController extends BaseFormController
 			
 			String enPassword = EncryptUtil.encryptSha256(sysUser.getPassword());
 			sysUser.setPassword(enPassword);
+			sysUser.setOrgId(aryOrgId[0]);
 			sysUserService.saveUser(bySelf,sysUser,aryOrgId,aryChargeOrg,orgIdPrimary,aryPosId,posIdPrimary,aryRoleId);
 			resultMsg = getText("record.added", "用户表");
 			writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
