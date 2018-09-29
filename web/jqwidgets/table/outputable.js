@@ -73,6 +73,41 @@ function uuid(len, radix) {
     return uuid.join('');
 }
 
+/**
+ *  将对象元素转换成字符串以作比较
+ * @param obj
+ * @param keys
+ * @returns {string}
+ */
+function obj2key(obj, keys){
+    var n = keys.length,
+        key = [];
+    while(n--){
+        key.push(obj[keys[n]]);
+    }
+    return key.join('|');
+}
+
+/**
+ *  去重操作
+ * @param array
+ * @param keys
+ * @returns {Array}
+ */
+function uniqeByKeys(array,keys){
+    var arr = [];
+    var hash = {};
+    for (var i = 0, j = array.length; i < j; i++) {
+        var k = obj2key(array[i], keys);
+        if (!(k in hash)) {
+            hash[k] = true;
+            arr .push(array[i]);
+        }
+    }
+    return arr ;
+}
+
+
 function outputTableInit(path, taskId, projectId) {
     var cellClass = function (row, dataField, cellText, rowData) {
         var cellValue = rowData[dataField];
@@ -123,7 +158,6 @@ function outputTableInit(path, taskId, projectId) {
             addRow: function (rowID, rowData, position, parentID, commit) {
                 commit(true);
                 newRowID = rowID;
-                console.log(rowID);
             },
             updateRow: function (rowID, rowData, commit) {
                 commit(true);
@@ -178,7 +212,7 @@ function outputTableInit(path, taskId, projectId) {
                 // if (theme == "")
                 return className;
                 // return className + " " + className + "-" + theme;
-            }
+            };
             // appends buttons to the status bar.
             var container = $("<div style='overflow: hidden; position: relative; height: 100%; width: 100%;'></div>");
             var buttonTemplate = "<div style='float: left; padding: 4px; margin: 2px;'><div style='margin: 4px; width: 16px; height: 16px;'></div></div>";
@@ -414,19 +448,16 @@ function outputTableInit(path, taskId, projectId) {
             updateButton.click(function (event) {
                 if (!updateButton.jqxButton('disabled')) {
                     // save changes.
-                    // $("#treeGridOut").jqxTreeGrid('endRowEdit', rowKey, false);
-                    // $('#eventWindow').jqxWindow('open');
                     var yid = uuid(14, 10) //唯一数据ID
                     var array = new Map();//键值和数据ID 映射关系
 
                     var jsonObj =  strToJson(updateJson);//转换为json对象
-                    console.log(updateJson);
-                    var Rjson =  JSON.parse(jsonObj);//转换为json对象
-                    console.log(jsonObj);
+                    var Rjson_O =  JSON.parse(jsonObj);//转换为json对象
+                    var Rjson  = uniqeByKeys(Rjson_O.reverse(), ['dataId']);
                     for(var i=0;i<Rjson.length;i++){
                         if (Rjson[i].dataId<10000000000) {
                             array.set(Rjson[i].dataId,yid);
-                            Rjson[i].dataId= yid;
+                            Rjson[i].dataId= yid++;
                         }
                         if (Rjson[i].parentId != 0&Rjson[i].parentId != '0') {
                             array.forEach(function (value, key, map) {
@@ -446,6 +477,7 @@ function outputTableInit(path, taskId, projectId) {
                         data: "orderJson=" + orderJson,
                         ContentType: "application/json; charset=utf-8",
                         success: function (data) {
+                            window.location.reload();
                         },
                         error: function (err) {
                         }
@@ -501,6 +533,9 @@ function outputTableInit(path, taskId, projectId) {
                     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
                     var rowsDataIds = new Array();
                     for (var i = 0; i < selection.length; i++) {
+                        if (selection[i] == undefined) {
+                            continue;
+                        }
                         if (selection[i].publishState == 0) {
                             rowsDataIds.push(selection[i].dataId);
                         }
@@ -515,10 +550,11 @@ function outputTableInit(path, taskId, projectId) {
             publishCancel.click(function () {
                 if (!publishCancel.jqxButton('disabled')) {
                     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-                    if (selection.length > 1 || selection.length == 1) {
-                        if (selection[0] != undefined) {
                             var rowsDataIds = new Array();
                             for (var i = 0; i < selection.length; i++) {
+                                if (selection[0] == undefined) {
+                                    continue;
+                                }
                                 if (selection[i].publishState == 1) {
                                     rowsDataIds.push(selection[i].dataId);
                                 }
@@ -530,8 +566,6 @@ function outputTableInit(path, taskId, projectId) {
                                     }
                                 });
                             }
-                        }
-                    }
                 }
             });
             deleteButton.click(function () {
@@ -540,11 +574,32 @@ function outputTableInit(path, taskId, projectId) {
                     if (selection.length > 1) {
                         var keys = new Array();
                         for (var i = 0; i < selection.length; i++) {
-                            keys.push($("#treeGridOut").jqxTreeGrid('getKey', selection[i]));
+                            if (selection[i] == undefined) {
+                                continue;
+                            }
+                            var temp_row_key = $("#treeGridOut").jqxTreeGrid('getKey', selection[i]);
+
+                            updateJson.push('{"type":2,' +
+                                '"dataId":' + temp_row_key + ',' +
+                                '"taskId":' + selection[i].taskId + ',' +
+                                '"dataName":"' + selection[i].dataName + '",' +
+                                '"isLeaf":"' + selection[i].isLeaf + '",' +
+                                '"filePath":"' + selection[i].filePath + '",' +
+                                '"dataType":"' + selection[i].dataType + '",' +
+                                '"dataDescription":"' + selection[i].dataDescription + '",' +
+                                '"dataUnit":"' + selection[i].dataUnit + '",' +
+                                '"dataValue":"' + selection[i].dataValue + '",' +
+                                '"parentId":"' + selection[i].parentId + '",' +
+                                '"projectId":"' + projectId + '",' +
+                                '"dataSenMin":"' + selection[i].dataSenMin + '",' +
+                                '"dataSenMax":"' + selection[i].dataSenMax + '"}');
+
+                            keys.push(temp_row_key);
                         }
                         $("#treeGridOut").jqxTreeGrid('deleteRow', keys);
-                    }
-                    else {
+
+
+                    } else {
                         $("#treeGridOut").jqxTreeGrid('deleteRow', rowKey);
                         for (var i = 0; i < updateJson.length; i++) {
                             var tempJson = $.parseJSON(updateJson[i]);
@@ -554,7 +609,6 @@ function outputTableInit(path, taskId, projectId) {
                                 i = i - 1;    //改变循环变量
                             }
                         }
-                        // console.log(updateJson);
                         updateJson.push('{"type":2,' +
                             '"dataId":' + rowKey + ',' +
                             '"taskId":' + selection[0].taskId + ',' +
@@ -661,7 +715,6 @@ function outputTableInit(path, taskId, projectId) {
 
     // 结束编辑触发事件
     $("#treeGridOut").on('cellEndEdit', function (event) {
-        console.log(event)
         var args = event.args;
         // 行键值
         var rowKey = args.key;
@@ -706,7 +759,6 @@ function outputTableInit(path, taskId, projectId) {
             '"projectId":"' + projectId + '",' +
             '"dataSenMin":"' + rowData.dataSenMin + '",' +
             '"dataSenMax":"' + rowData.dataSenMax + '"}');
-        // console.log(updateJson);
         // $("#treeGridOut").on('rowUnselect', function (event) {
         // });
     });

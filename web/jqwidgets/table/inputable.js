@@ -164,7 +164,7 @@ function inputTableInit(path, taskId) {
                             viewModel.jqxButton({disabled: true});
                             break;
                     }
-                }
+                };
                 var rowKey = null;
                 var rowParentId = 0;
                 $("#treeGridIn").on('rowSelect', function (event) {
@@ -211,6 +211,9 @@ function inputTableInit(path, taskId) {
                         var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
                         var rowsDataIds = new Array();
                         for (var i = 0; i < selection.length; i++) {
+                            if (selection[i] == undefined) {
+                                continue;
+                            }
                             if (selection[i].torderState == 0) {
                                 rowsDataIds.push(selection[i].dataId);
                             }
@@ -227,6 +230,9 @@ function inputTableInit(path, taskId) {
                         var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
                         var rowsDataIds = new Array();
                         for (var i = 0; i < selection.length; i++) {
+                            if (selection[i]) {
+                                continue;
+                            }
                             if (selection[i].torderState == 1) {
                                 rowsDataIds.push(selection[i].dataId);
                             }
