@@ -63,19 +63,19 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             case QUAN_JU:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QUAN_JU, QUAN_JU);
                 //取出最末排名积分
-                lastRank = ddScoreList.get(LIMIT_QUAN_JU - 1).getScoreTotal();
+                lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
                 break;
             //奉献取前5名
             case FENG_XIAN:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_FENG_XIAN, FENG_XIAN);
                 //取出最末排名积分
-                lastRank = ddScoreList.get(LIMIT_FENG_XIAN - 1).getScoreTotal();
+                lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
                 break;
             //求实取前20名
             case QIU_SHI:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QIU_SHI, QIU_SHI);
                 //取出最末排名积分
-                lastRank = ddScoreList.get(LIMIT_QIU_SHI - 1).getScoreTotal();
+                lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
                 break;
             //创新每月100个积分换一个币
             case CHUANG_XIN:
@@ -84,6 +84,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             default:
                 return;
         }
+
         //写消耗积分的流水数据库
         for (DdScore ddScore : ddScoreList) {
             int getCoin = 1;
@@ -93,7 +94,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
                 getCoin = chuangxinCoin;
             }
             DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
-            ddScoreOutflow.setExpendDetail("月底结算");
+            ddScoreOutflow.setExpendDetail("yuedijiesuan");
             ddScoreOutflow.setExpendScore(lastRank);
             ddScoreOutflow.setId(UniqueIdUtil.genId());
             ddScoreOutflow.setSourceType(ddScore.getScoreType());
@@ -118,13 +119,15 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             if(isHave) {
                 Long nowCoin = userTypeCoin.getTotal();
                 userTypeCoin.setTotal(nowCoin + getCoin);
+                ddGoldenCoinDao.updateCoin(userTypeCoin);
             } else {
                 userTypeCoin.setId(UniqueIdUtil.genId());
                 userTypeCoin.setUserId(ddScore.getUid());
                 userTypeCoin.setCoinType(ddScore.getScoreType());
                 userTypeCoin.setTotal(Integer.toUnsignedLong(getCoin));
+                ddGoldenCoinDao.add(userTypeCoin);
             }
-            ddGoldenCoinDao.updateCoin(userTypeCoin);
+
         }
     }
 }

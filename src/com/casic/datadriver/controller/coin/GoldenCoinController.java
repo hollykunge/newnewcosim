@@ -108,7 +108,7 @@ public class GoldenCoinController extends AbstractController {
         String resultMsg=null;
         try{
 //            Long userId = RequestUtil.getLong(request, "userId", 0);
-            String type = RequestUtil.getString(request, "type");
+            String type = RequestUtil.getString(request, "scoreType");
 //            Long scoreNum = RequestUtil.getLong(request, "scoreNum");
             ddGoldenCoinService.consume(type);
             resultMsg = getText("coin.consumed", "兑换成功");
