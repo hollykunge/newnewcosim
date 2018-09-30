@@ -63,15 +63,15 @@
             <div class="pull-right">
                 <a class="btn btn-success" href="javascript:void(0)" id="submit_btn"><span
                         class="glyphicon glyphicon-ok"></span> 提交审核</a>
-                <a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span
-                        class="glyphicon glyphicon-stats"></span>
-                    流程监控
-                </a>
-                <a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"
-                   class="btn btn-default" target="_blank"><span
-                        class="glyphicon glyphicon-stats" 　></span>
-                    数据挖掘
-                </a>
+                <%--<a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span--%>
+                        <%--class="glyphicon glyphicon-stats"></span>--%>
+                    <%--流程监控--%>
+                <%--</a>--%>
+                <%--<a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"--%>
+                   <%--class="btn btn-default" target="_blank"><span--%>
+                        <%--class="glyphicon glyphicon-stats" 　></span>--%>
+                    <%--数据挖掘--%>
+                <%--</a>--%>
 
             </div>
         </div>
