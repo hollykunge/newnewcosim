@@ -9,7 +9,7 @@
 		{
 
 		this.dblClickAction = 'showProperties';
-		this.showTasks();
+		//this.showTasks();
 		//this.showTaskinfo();
 
 
