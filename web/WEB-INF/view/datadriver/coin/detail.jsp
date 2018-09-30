@@ -64,7 +64,7 @@
                 <a href="detail.ht?id=${detailList.id}&scoreType=${scoreItem.scoreType}" class="link detail">明细</a>
             </display:column>
         </display:table>
-        <hotent:paging tableId="detailList.id"/>
+        <%--<hotent:paging tableId="detailList.id"/>--%>
     </div>
 </div>
 </body>

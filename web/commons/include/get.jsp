@@ -7,20 +7,16 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
-
+<!--  <link href="${ctx}/js/lg/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />-->
 <f:link href="Aqua/css/ligerui-all.css"></f:link>
 <f:link href="web.css"></f:link>
-<script src="${ctx}/js/jquery/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/lg/base.js"></script>
 <script type="text/javascript" src="${ctx}/js/dynamic.jsp"></script>
-<script type="text/javascript" src="${ctx}/js/dynamic.jsp"></script>
-
+<script type="text/javascript" src="${ctx}/js/jquery/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/util/util.js"></script>
 <script type="text/javascript" src="${ctx}/js/util/form.js"></script>
 <script type="text/javascript" src="${ctx}/js/lg/ligerui.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/hotent/displaytag.js" ></script>
 <script type="text/javascript" src="${ctx}/js/lg/plugins/ligerDialog.js" ></script>
 <script type="text/javascript" src="${ctx}/js/calendar/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="${ctx}/js/lg/plugins/ligerMessageBox.js"></script>
 <%@include file="/js/msg.jsp"%>
 

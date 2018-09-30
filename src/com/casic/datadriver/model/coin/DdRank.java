@@ -1,6 +1,8 @@
 package com.casic.datadriver.model.coin;
 
-public class DdRank {
+import com.hotent.core.model.BaseModel;
+
+public class DdRank extends BaseModel {
     /**
      * 用户排名
      */

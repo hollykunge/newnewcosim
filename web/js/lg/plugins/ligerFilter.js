@@ -190,25 +190,25 @@
             g.set(p);
 
             //事件：增加分组
-            $("#" + g.id + " .addgroup").on('click', function ()
+            $("#" + g.id + " .addgroup").live('click', function ()
             {
                 var jtable = $(this).parent().parent().parent().parent();
                 g.addGroup(jtable);
             });
             //事件：删除分组
-            $("#" + g.id + " .deletegroup").on('click', function ()
+            $("#" + g.id + " .deletegroup").live('click', function ()
             {
                 var jtable = $(this).parent().parent().parent().parent();
                 g.deleteGroup(jtable);
             });
             //事件：增加条件
-            $("#" + g.id + " .addrule").on('click', function ()
+            $("#" + g.id + " .addrule").live('click', function ()
             {
                 var jtable = $(this).parent().parent().parent().parent();
                 g.addRule(jtable);
             });
             //事件：删除条件
-            $("#" + g.id + " .deleterole").on('click', function ()
+            $("#" + g.id + " .deleterole").live('click', function ()
             {
                 var rulerow = $(this).parent().parent();
                 g.deleteRule(rulerow);

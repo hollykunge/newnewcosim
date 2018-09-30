@@ -15,6 +15,6 @@ function ColumnDialog(conf)
 	
 	
 	url=url.getNewUrl();
-	var rtn=window.open(url,conf,winArgs);
+	var rtn=window.showModalDialog(url,conf,winArgs);
 	
 }

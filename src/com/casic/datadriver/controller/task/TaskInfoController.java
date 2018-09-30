@@ -95,7 +95,7 @@ public class TaskInfoController extends AbstractController {
                 taskInfo.setDdTaskState(TaskInfo.createpanel);
                 //TODO:需要添加任务优先级，否则会造成个人任务显示列表出错
                 taskInfoService.addDDTask(taskInfo);
-                proTaskDependance.setDdTaskId(UniqueIdUtil.genId());
+                proTaskDependance.setDdDepenganceId(UniqueIdUtil.genId());
                 proTaskDependance.setDdTaskId(taskInfo.getDdTaskId());
                 proTaskDependanceService.addDDProTaskDependance(proTaskDependance);
 

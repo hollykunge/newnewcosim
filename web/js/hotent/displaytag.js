@@ -1,8 +1,6 @@
-
 $(function(){
-	
 	//行高亮
-	// jQuery.highlightTableRows();
+	jQuery.highlightTableRows();
 	//选中一行
 	jQuery.selectTr();
 	//搜索
@@ -109,7 +107,7 @@ function handlerDelOne()
 		if($(this).hasClass('disabled')) return false;
 		
 		var ele = this;
-		$.ligerMessageBox.confirm('警告信息','确认删除吗？',function(rtn) {
+		$.ligerMessageBox.confirm('提示信息','确认删除吗？',function(rtn) {
 			if(rtn) {
 				if(ele.click) {
 					$(ele).unbind('click');
@@ -128,11 +126,10 @@ function handlerDelOne()
 function handlerInit()
 {
 	$("a.link.init").click(function(){
-		
 		var action=$(this).attr("action");
 		if($(this).hasClass('disabled')) return false;
 		
-		$.ligerMessageBox.confirm('警告信息','初始化表单模板将会导致自定义模板信息丢失，确定初始化吗？',function(rtn){
+		$.ligerMessageBox.confirm('提示信息','初始化表单模板将会导致自定义模板信息丢失，确定初始化吗？',function(rtn){
 			if(rtn){
 				var form=new com.hotent.form.Form();
 				form.creatForm('form', action);
@@ -145,7 +142,6 @@ function handlerInit()
 
 //更新
 function handlerUpd(){
-	
 	$("div.group > a.link.update").click(function() {
 		if($(this).hasClass('disabled')) return false;
 		
@@ -182,7 +178,7 @@ function handlerDelSelect()
 		var $aryId = $("input[type='checkbox'][disabled!='disabled'][class='pk']:checked");
 		
 		if($aryId.length == 0){
-			$.ligerMessageBox.warn("提示信息","请选择记录！");
+			$.ligerMessageBox.warn("请选择记录！");
 			return false;
 		}
 		
@@ -202,49 +198,7 @@ function handlerDelSelect()
 		});
 		var url=action +"?" +keyName +"=" +delId ;
 		
-		$.ligerMessageBox.confirm('警告信息','确认删除吗？',function(rtn) {
-			if(rtn) {
-				var form=new com.hotent.form.Form();
-				form.creatForm("form", action);
-				form.addFormEl(keyName, delId);
-				form.submit();
-			}
-		});
-		return false;
-	
-		
-	});
-	
-	//单击删除超链接的事件处理
-	$("div.group > a.link.dep").click(function()
-	{	
-		if($(this).hasClass('disabled')) return false;
-		
-		var action=$(this).attr("action");
-		var $aryId = $("input[type='checkbox'][disabled!='disabled'][class='pk']:checked");
-		
-		if($aryId.length == 0){
-			$.ligerMessageBox.warn("提示信息","请选择记录！");
-			return false;
-		}
-		
-		//提交到后台服务器进行日志删除批处理的日志编号字符串
-		var delId="";
-		var keyName="";
-		var len=$aryId.length;
-		$aryId.each(function(i){
-			var obj=$(this);
-			if(i<len-1){
-				delId+=obj.val() +",";
-			}
-			else{
-				keyName=obj.attr("name");
-				delId+=obj.val();
-			}
-		});
-		var url=action +"?" +keyName +"=" +delId ;
-		
-		$.ligerMessageBox.confirm('警告信息','确定执行此操作吗？',function(rtn) {
+		$.ligerMessageBox.confirm('提示信息','确认删除吗？',function(rtn) {
 			if(rtn) {
 				var form=new com.hotent.form.Form();
 				form.creatForm("form", action);

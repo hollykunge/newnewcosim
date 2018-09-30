@@ -298,7 +298,7 @@ Permission=function(){
 			, '<span name="',v,'_span">'
 			, '<input  type="hidden"  value="#',uv,'_ID"/>'
 			, '<input  type="text"  readonly value="#',uv,'_FullName"/>'
-			, '<a href="javascript:void(0)" class="link-get" mode="',full,'" ><span class="link-btn ">选择</span></a>'
+			, '<a href="#" class="link-get" mode="',full,'" ><span class="link-btn ">选择</span></a>'
 			, '</span>'
 			, '</td>'];
 		return aryTd.join('');

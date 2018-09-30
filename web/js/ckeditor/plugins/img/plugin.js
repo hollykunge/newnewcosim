@@ -12,7 +12,7 @@
 			if(ctx!=="")
 				url+="&ctx=" + ctx;
 			
-			var vReturnValue = window.open(url, window,features);
+			var vReturnValue = window.showModalDialog(url, window,features);
 			if (typeof (vReturnValue) == 'undefined'||vReturnValue==null) {
 				vReturnValue = window.retureValue;
 		    }

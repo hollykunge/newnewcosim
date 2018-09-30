@@ -4,7 +4,7 @@ function SysOrgSearch(conf){
 	+"px;help:0 ;status:0;scroll: 1;center:1";
 	url=url.getNewUrl();
 	
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	
 	if(rtn && conf.callback){
 		var orgId=rtn.orgId;

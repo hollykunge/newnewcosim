@@ -406,6 +406,39 @@ public class ProjectController extends BaseController {
     }
 
     /**
+     * 完成项目
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("done")
+    @Action(description = "完成项目")
+    public void done(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String resultMsg = null;
+        Long id = RequestUtil.getLong(request, "id");
+        Project project = projectService.getById(id);
+        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(id);
+        if (taskInfoList.isEmpty()){
+            resultMsg = getText("没有任务，不能完成项目！", "没有任务，不能完成项目！");
+            writeResultMessage(response.getWriter(), resultMsg,ResultMessage.Fail);
+            return;
+        }
+        for (TaskInfo taskInfo: taskInfoList){
+            if (taskInfo.getDdTaskState() != 3){
+                resultMsg = getText("有未完成的任务，不能完成项目！", "有未完成的任务，不能完成项目！");
+                writeResultMessage(response.getWriter(), resultMsg,ResultMessage.Fail);
+                return;
+            }
+        }
+        project.setDdProjectState((short) 1);
+        projectService.updateAll(project);
+        resultMsg = getText("完成项目", "完成项目");
+        writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+    }
+
+    /**
      * 进入项目控制台
      *
      * @param request
@@ -534,7 +567,7 @@ public class ProjectController extends BaseController {
                 taskInfo = taskInfoService.getById(taskId);
                 //更新taskinfo
                 taskInfo.setDdTaskChildType("publishpanel");
-                taskInfo.setDdTaskState(taskInfo.publishpanel);
+                taskInfo.setDdTaskState(TaskInfo.publishpanel);
                 taskInfoService.update(taskInfo);
                 String msg = "通知：分配您为"+taskInfo.getDdTaskProjectName()+"项目的"+taskInfo.getDdTaskName()+"任务的负责人" ;
                 taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
@@ -554,7 +587,7 @@ public class ProjectController extends BaseController {
             taskInfo.setDdTaskChildType("createpanel");
             String msg = "通知："+taskInfo.getDdTaskProjectName()+"项目的"+taskInfo.getDdTaskName()+"被收回" ;
             taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
-            taskInfo.setDdTaskState(taskInfo.createpanel);
+            taskInfo.setDdTaskState(TaskInfo.createpanel);
             taskInfoService.update(taskInfo);
 
             taskStartService.delByTaskId(taskInfo.getDdTaskId());
@@ -565,7 +598,7 @@ public class ProjectController extends BaseController {
                 //更新taskinfo?????createpanel属性是否应该放到taskstart里面
                 taskInfo.setDdTaskChildType("checkpanel");
                 taskInfoService.update(taskInfo);
-                taskInfo.setDdTaskState(taskInfo.checkpanel);
+                taskInfo.setDdTaskState(TaskInfo.checkpanel);
 
                 taskStart.setDdTaskStatus(TaskStart.checkpanel);
                 taskStartService.update(taskStart);
@@ -577,7 +610,7 @@ public class ProjectController extends BaseController {
                     taskInfoService.update(taskInfo);
                     String msg = "通知："+taskInfo.getDdTaskProjectName()+"项目的"+taskInfo.getDdTaskName()+"被驳回" ;
                     taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
-                    taskInfo.setDdTaskState(taskInfo.publishpanel);
+                    taskInfo.setDdTaskState(TaskInfo.publishpanel);
 
                     taskStart.setDdTaskStatus(TaskStart.publishpanel);
                     taskStartService.update(taskStart);
@@ -586,15 +619,24 @@ public class ProjectController extends BaseController {
                     if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("completepanel")) {
                         //更新taskinfo?????createpanel属性是否应该放到taskstart里面
                         taskInfo.setDdTaskChildType("completepanel");
+                        taskInfo.setDdTaskState(TaskInfo.completepanel);
                         taskInfoService.update(taskInfo);
                         String msg = "通知："+taskInfo.getDdTaskProjectName()+"项目的"+taskInfo.getDdTaskName()+"审核通过" ;
                         taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
-                        taskInfo.setDdTaskState(taskInfo.completepanel);
+
 
                         taskStart.setDdTaskStatus(TaskStart.completepanel);
                         taskStartService.update(taskStart);
+                    }else {
+                        taskInfo.setDdTaskChildType("checkpanel");
+                        taskInfoService.update(taskInfo);
+                        taskInfo.setDdTaskState(TaskInfo.checkpanel);
+                        String msg = "通知："+taskInfo.getDdTaskProjectName()+"项目的"+taskInfo.getDdTaskName()+"被撤销通过" ;
+                        taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
 
 
+                        taskStart.setDdTaskStatus(TaskStart.checkpanel);
+                        taskStartService.update(taskStart);
                     }
 
                 }

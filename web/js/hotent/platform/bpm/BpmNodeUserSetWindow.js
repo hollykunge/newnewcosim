@@ -15,7 +15,7 @@ function UserSetWindow(conf)
 	var url=__ctx + "/platform/bpm/bpmDefinition/userSet.ht?defId=" + conf.defId +"&nodeTag=" + conf.nodeId;
 	var winArgs="dialogWidth=800px;dialogHeight=600px;help=0;status=0;scroll=1;center=0;resizable=1;";
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	if (conf.callback) {
 		conf.callback.call(this,rtn);
 	}

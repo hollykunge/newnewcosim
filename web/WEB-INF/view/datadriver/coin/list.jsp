@@ -20,20 +20,23 @@
         </div>
         <div class="panel-toolbar">
             <div class="toolBar">
-                <div class="group"><a class="link search" id="btnSearch">查询</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link add" href="edit.ht">添加</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>
-                <div class="l-bar-separator"></div>
-                <div class="group"><a class="link del"  action="del.ht">删除</a></div>
+                <%--<div class="group"><a class="link search" id="btnSearch">查询</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link add" href="edit.ht">添加</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <%--<div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>--%>
+                <%--<div class="l-bar-separator"></div>--%>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/golden/consume.ht?scoreType=quanju">兑换全局币</a></div>
+                <div class="group"><a class="link add"  href="${ctx}/datadriver/golden/consume.ht?scoreType=gongxian">兑换贡献币</a></div>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/golden/consume.ht?scoreType=qiushi">兑换求实币</a></div>
+                <div class="group"><a class="link detail"  href="${ctx}/datadriver/golden/consume.ht?scoreType=chuangxin">兑换创新币</a></div>
             </div>
         </div>
         <div class="panel-search">
             <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
-                    <span class="label">用户名称:</span><input type="text" name="Q_userName_SL"  class="inputText" />
-                    <span class="label">积分类型:</span><input type="text" name="Q_scoreType_SL"  class="inputText" />
+                    <%--<span class="label">用户名称:</span><input type="text" name="Q_userName_SL"  class="inputText" />--%>
+                    <%--<span class="label">积分类型:</span><input type="text" name="Q_scoreType_SL"  class="inputText" />--%>
                 </div>
             </form>
         </div>

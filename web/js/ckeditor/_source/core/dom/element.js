@@ -1469,7 +1469,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				// execution for a while, giving it time to think.
 				if ( CKEDITOR.env.ie && CKEDITOR.env.version < 7 )
 				{
-					window.open(
+					window.showModalDialog(
 						'javascript:document.write("' +
 							'<script>' +
 								'window.setTimeout(' +

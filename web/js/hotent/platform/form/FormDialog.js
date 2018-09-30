@@ -16,7 +16,7 @@ function FormDialog(conf){
 	var url=__ctx + '/platform/form/bpmFormDef/dialog.ht';
 	var winArgs="dialogWidth:750px;dialogHeight:540px;help:0;status:0;scroll:1;center:1;resizable:1;";
 	url=url.getNewUrl();
-	var rtn=window.open(url,"",winArgs);
+	var rtn=window.showModalDialog(url,"",winArgs);
 	if(rtn!=undefined){
 		if(conf.callback){
 			conf.callback.call(this,rtn.formKey,rtn.formName,rtn.tableId);

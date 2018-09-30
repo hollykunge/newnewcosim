@@ -20,12 +20,12 @@ OfficeControl=function(){
 		this.isFileOpen=false;
 		this.templatetype = 1;// 模板类型
 		
-		this.params={Caption:"",MakerCaption:"",
-				MakerKey:"CF4960BFDB79D36ADDC5493B116D39D6A4E335D9",
-				ProductCaption:"",
-				ProductKey:"6FFE41262266E5CEFD207A8321AC0B398A5B772B",
-				TitlebarColor:"14402205"
-			};
+		this.params={Caption:"广州宏天软件有限公司",MakerCaption:"广州宏天软件有限公司",
+			MakerKey:"CF4960BFDB79D36ADDC5493B116D39D6A4E335D9",
+			ProductCaption:"广州宏天软件有限公司",
+			ProductKey:"32B10860DB12537FF0003CC2BFD0FA190CB0407E",
+			TitlebarColor:"14402205"
+		};
 		this.config={doctype:'doc',fileId:"",controlId:"officeObj"};
 		
 	};
@@ -143,7 +143,7 @@ OfficeControl=function(){
 		var url=__ctx +"/platform/system/sysOfficeTemplate/dialog.ht?type="+this.templatetype;
 		var winArgs="dialogWidth=600px;dialogHeight=400px;help=0;status=0;scroll=1;center=1";
 		url=url.getNewUrl();
-		var rtn=window.open(url,"",winArgs);
+		var rtn=window.showModalDialog(url,"",winArgs);
 		return rtn;
 	},
 	/**
@@ -272,9 +272,6 @@ OfficeControl=function(){
 		if(this.config.fileId!="" && this.config.fileId>0){
 			var path= __ctx + "/platform/system/sysFile/getFileById.ht?fileId=" + this.config.fileId;
 			try{
-				
-		//		alert(path);
-			//	var path="http://60.195.252.24:8080/tianzhi/12.doc";
 				this.controlObj.OpenFromURL(path);
 				this.isFileOpen=true;
 			}
@@ -348,7 +345,7 @@ OfficeControl=function(){
 		var url = __ctx + "/platform/system/seal/dialog.ht";
 		var winArgs = "dialogWidth=800px;dialogHeight=600px;help=0;status=0;scroll=1;center=0;resizable=1;";
 		url = url.getNewUrl();
-		var retVal = window.open(url, "", winArgs);
+		var retVal = window.showModalDialog(url, "", winArgs);
 		if(typeof(retVal)==undefined){
 			return false;
 		}

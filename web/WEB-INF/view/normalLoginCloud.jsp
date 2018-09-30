@@ -33,7 +33,7 @@
 			<div>
 				<input name="password" type="password" value=""  style="margin-top: 50px;margin-left: 355px;height: 28px;width: 345px; font-size: 18px;border: 0;padding-left: 10px"/>
 			</div>
-			<input type="hidden" name="orgSn" id="orgSn" value="620001" /> 
+			<input type="hidden" name="orgSn" id="orgSn" value="100" />
 			<div id="subBtn" style="margin-top: 55px;margin-left: 435px;cursor: pointer;height: 33px;width: 200px" onclick="submitForm() ">
 			</div>
 <%-- 		<div  class="userform userform_all" style="height:225px;">

@@ -26983,7 +26983,7 @@ mxGraph.prototype.isLoop=function(state)
 };
 mxGraph.prototype.isCloneEvent=function(evt)
 {
-    return mxEvent.isControlDown(evt);
+    return false;
 };
 mxGraph.prototype.isToggleEvent=function(evt)
 {
@@ -35502,9 +35502,9 @@ mxEditor.prototype.createProperties=function(cell)
 
             var val=attrs[i].nodeValue;
             if(attrs[i].nodeName=='label')
-                texts[i]=form.addTextarea('任务名称',val,2);
-            else if(attrs[i].nodeName!='oracleid')
-                texts[i]=form.addTextarea(attrs[i].nodeName,val,2);
+                texts[i]=form.addTextarea('名称',val,2);
+          //  else if(attrs[i].nodeName!='oracleid')
+           //     texts[i]=form.addTextarea(attrs[i].nodeName,val,2);
         }
 
 

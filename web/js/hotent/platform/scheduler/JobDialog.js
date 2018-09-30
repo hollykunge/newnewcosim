@@ -25,7 +25,7 @@ function addRow()
 	strTr+='<input type="text" id="paraValue" name="paraValue"/>';
 	strTr+='</td>';
 	strTr+='<td>';
-	strTr+='<a href="javascript:void(0)" class="link-del" onclick="delRow(this);"><span class="link-btn">删除</span></a>';
+	strTr+='<a href="#" class="link-del" onclick="delRow(this);"><span class="link-btn">删除</span></a>';
 	strTr+='</td>';
 	strTr+='</tr>';
 	var trObj=$(strTr);

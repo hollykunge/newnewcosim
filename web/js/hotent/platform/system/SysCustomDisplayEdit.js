@@ -261,7 +261,7 @@ function openSettingTemplateDialog(params){
 	var winArgs="dialogWidth=900px;dialogHeight=600px;help=0;status=0;scroll=0;center=1";
 	var url=__ctx+setting;
 	url=url.getNewUrl();
-	var rtn = window.open(url,params,winArgs);
+	var rtn = window.showModalDialog(url,params,winArgs);
 	
 	if(rtn){
 // 	$("#fieldSetting").val(JSON.stringify(rtn.fieldSetting));

@@ -51,7 +51,7 @@ $(function() {
 		}});
 	}
 	//为选择绑定类型的下拉框设置处理
-	$('select[name=bindingType]').on("change",function() {
+	$('select[name=bindingType]').live("change",function() {
 			var table = $(this).closest("table");
 			$('tr[bingdingType]',table).hide();
 			$('tr[bingdingType=' + $(this).val() + ']',table).show('fast');

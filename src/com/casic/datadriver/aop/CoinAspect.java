@@ -47,7 +47,8 @@ public class CoinAspect {
     /**
      * design_5,奖励10积分
      */
-
+    @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.done(..))")
+    public void doneAspect(){}
     /**
      * design_6,奖励10积分
      */
@@ -122,7 +123,14 @@ public class CoinAspect {
         ddScoreInflow.setSourceDetail("design_8");
         setData(ddScoreInflow);
     }
-
+    @AfterReturning(returning = "result", pointcut = "doneAspect()")
+    public void doneReturning(JoinPoint joinPoint, Object result) throws Throwable {
+        logger.info(joinPoint.getSignature().getName());
+        DdScoreInflow ddScoreInflow = new DdScoreInflow();
+        ddScoreInflow.setSourceScore(10);
+        ddScoreInflow.setSourceDetail("design_5");
+        setData(ddScoreInflow);
+    }
     public void setData(DdScoreInflow ddScoreInflow){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String updTime = simpleDateFormat.format(new Date());

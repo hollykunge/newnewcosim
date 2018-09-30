@@ -445,6 +445,7 @@ $(function() {
 		 * 返回json数据。
 		 */
 		getData: function() {
+			
 			var self=this;
 			// 主表数据
 			var main = {
@@ -470,7 +471,7 @@ $(function() {
 			
 			//子表数据
 			var sub = [];
-			$('div[type=subtable][right=w||r||h][show=true||undefined]').each(function() {
+			$('div[type=subtable][right=w][show=true||undefined]').each(function() {
 				var table = {
 					tableName: $(this).attr('tableName'),
 					fields: []
@@ -478,6 +479,7 @@ $(function() {
 				$(this).find('[formtype]:visible').each(function() {
 					var row = {};
 					var objRow=$(this);
+					
 					$("input:text[name^='s:'],input[type='hidden'][name^='s:'],textarea[name^='s:'],select[name^='s:']",objRow).each(function() {
 						var name = $(this).attr('name').replace(/.*:/, '');
 			
