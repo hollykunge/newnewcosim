@@ -206,7 +206,12 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         });
         //列表截断，应该是根据不同类型选择不同数目
         if (tempScoreList.size() > rank) {
-            tempScoreList = tempScoreList.subList(0, rank);
+            Integer add = 0;
+            Integer base = tempScoreList.get(rank - 1).getScoreTotal();
+            while(base.equals(tempScoreList.get(rank + add).getScoreTotal())) {
+                add++;
+            }
+            tempScoreList = tempScoreList.subList(0, rank + add);
         }
         return tempScoreList;
     }
