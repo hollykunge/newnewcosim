@@ -96,7 +96,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             }
             DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
             ddScoreOutflow.setExpendDetail("yuedijiesuan");
-            ddScoreOutflow.setExpendScore(lastRank - 1);
+            ddScoreOutflow.setExpendScore(lastRank);
             ddScoreOutflow.setId(UniqueIdUtil.genId());
             ddScoreOutflow.setSourceType(ddScore.getScoreType());
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
