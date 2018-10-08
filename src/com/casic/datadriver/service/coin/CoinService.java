@@ -49,9 +49,16 @@ public class CoinService {
     public String addScore(String account, String sourceScore, String sourceType, String sourceDetail, String updTime){
         String resultMsg;
         //判断是否当天消息
-        Boolean isToday = false;
-        Date time = toDate(updTime);
+        Date time = new Date();
         Date today = new Date();
+        Boolean isToday = false;
+//        if (updTime !=null && updTime != ""){
+//            time = toDate(updTime);
+//        }else {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        }
+
+
         if (time != null) {
             String nowDate = DATE_FORMATTER2.get().format(today);
             String timeDate = DATE_FORMATTER2.get().format(time);
