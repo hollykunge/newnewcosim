@@ -4,7 +4,9 @@ import com.casic.datadriver.dao.coin.DdScoreInflowDao;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.manager.ScoreRegulation;
 import com.hotent.core.db.IEntityDao;
+import com.hotent.core.page.PageBean;
 import com.hotent.core.service.BaseService;
+import com.hotent.core.web.query.QueryFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -87,13 +89,12 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
     /**
      * 通过用户id查找
-     * @param uid uid
      * @return DdScoreInflow流水
      */
-    public List<DdScoreInflow> getByUid(long uid) {
-        Map<String, String> param = new HashMap<>(1);
-        param.put("uid", String.valueOf(uid));
-        return ddScoreInflowDao.getList("getByUid", param);
+    public List<DdScoreInflow> getByUid(QueryFilter queryFilter) {
+        //Map<String, String> param = new HashMap<>(1);
+        //param.put("uid", String.valueOf(uid));
+        return ddScoreInflowDao.getBySqlKey("getByUid", queryFilter);
     }
     /**
      * 更改
