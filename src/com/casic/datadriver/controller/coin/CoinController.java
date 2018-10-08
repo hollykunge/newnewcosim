@@ -92,7 +92,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("personalScore")
     @ResponseBody
-    public JSONArray personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
             //获取用户uid
@@ -172,7 +172,6 @@ public class CoinController extends GenericController {
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
-        return jsonR;
     }
 
     /**
