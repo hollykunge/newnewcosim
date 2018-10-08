@@ -130,11 +130,13 @@ public class ScoreController extends AbstractController {
         Long scoreId = RequestUtil.getLong(request,"id");
         String scoreType = RequestUtil.getString(request,"scoreType");
         DdScore ddScore = ddScoreService.getById(scoreId);
-        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(ddScore.getUid());
+        QueryFilter queryFilter = new QueryFilter(request, "detailItem");
+        queryFilter.addFilter("uid", ddScore.getUid());
+        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(queryFilter);
         Iterator<DdScoreInflow> it = detailList.iterator();
         while(it.hasNext()) {
             DdScoreInflow x = it.next();
-            if((x.getSourceType()).equals(scoreType)) {
+            if(!(x.getSourceType()).equals(scoreType)) {
                 it.remove();
             }
         }
