@@ -179,7 +179,7 @@
         switch_attr_data = document.getElementById('switch_attr_data'),
         switch_attr_publish = document.getElementById('switch_attr_publish'),
         switch_attr_order = document.getElementById('switch_attr_order'),
-        statis_btn = document.getElementById('statis_btn'),
+        // statis_btn = document.getElementById('statis_btn'),
         create_task = document.getElementById('create_task'),
 
         switch_attr_child = document.getElementById('switch_attr_child'),
@@ -213,11 +213,11 @@
         });
     }
     //
-    statis_btn.onclick = function () {
-        $('#statis').modal({
-            keyboard: true,
-            remote: "statis.ht?id=${TaskInfo.ddTaskId}"
-        });
-    }
+    <%--statis_btn.onclick = function () {--%>
+        <%--$('#statis').modal({--%>
+            <%--keyboard: true,--%>
+            <%--remote: "statis.ht?id=${TaskInfo.ddTaskId}"--%>
+        <%--});--%>
+    <%--}--%>
 </script>
 </html>
