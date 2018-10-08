@@ -68,6 +68,7 @@ public class GoldenCoinController extends AbstractController {
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         List<DdGoldenCoin> list=ddGoldenCoinService.getAll(new QueryFilter(request,"goldenItem"));
+
         return this.getAutoView().addObject("goldenList",list);
     }
 
