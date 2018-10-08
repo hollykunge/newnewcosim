@@ -45,7 +45,8 @@
             <display:column title="${checkAll}" media="html" style="width:30px;">
                 <input type="checkbox" class="pk" name="bizDefId" value="${goldenItem.id}">
             </display:column>
-            <display:column property="userId" title="用户" sortable="true" sortName="userId" maxLength="80"></display:column>
+            <display:column property="userName" title="用户" sortable="true" sortName="userName" maxLength="80"></display:column>
+            <display:column property="coinType" title="类型" sortable="true" sortName="coinType" maxLength="80"></display:column>
             <display:column property="total" title="二币总量" sortable="true" sortName="total" maxLength="80"></display:column>
             <display:column title="管理" media="html" style="width:260px">
                 <a href="del.ht?id=${goldenItem.id}" class="link del">删除</a>
