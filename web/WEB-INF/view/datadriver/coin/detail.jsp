@@ -49,22 +49,22 @@
         <c:set var="checkAll">
             <input type="checkbox" id="chkall"/>
         </c:set>
-        <display:table name="detailList" id="detailList" requestURI="detail.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
+        <display:table name="detailList" id="detailItem" requestURI="detail.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
             <display:column title="${checkAll}" media="html" style="width:30px;">
-                <input type="checkbox" class="pk" name="detailListId" value="${detailList.id}">
+                <input type="checkbox" class="pk" name="detailListId" value="${detailItem.id}">
             </display:column>
             <display:column property="uid" title="用户" sortable="true" sortName="uid" maxLength="80"></display:column>
             <display:column property="updTime" title="更新时间" sortable="true" sortName="updTime" maxLength="80"></display:column>
             <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType"></display:column>
             <display:column property="sourceScore" title="获得积分" sortable="true" sortName="sourceScore"></display:column>
             <display:column property="sourceDetail" title="积分详情" sortable="true" sortName="sourceDetail" maxLength="80"></display:column>
-            <display:column title="管理" media="html" style="width:260px">
-                <a href="del.ht?id=${detailList.id}" class="link del">删除</a>
-                <a href="edit.ht?id=${detailList.id}" class="link edit">编辑</a>
-                <a href="detail.ht?id=${detailList.id}&scoreType=${scoreItem.scoreType}" class="link detail">明细</a>
-            </display:column>
+            <%--<display:column title="管理" media="html" style="width:260px">--%>
+                <%--<a href="del.ht?id=${detailList.id}" class="link del">删除</a>--%>
+                <%--<a href="edit.ht?id=${detailList.id}" class="link edit">编辑</a>--%>
+                <%--<a href="detail.ht?id=${detailList.id}&scoreType=${scoreItem.scoreType}" class="link detail">明细</a>--%>
+            <%--</display:column>--%>
         </display:table>
-        <%--<hotent:paging tableId="detailList.id"/>--%>
+        <hotent:paging tableId="detailItem"/>
     </div>
 </div>
 </body>

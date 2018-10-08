@@ -192,21 +192,35 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         //该列表负责筛选类型、排序和截断
         List<DdScore> tempScoreList = new ArrayList<>();
 
-        //
+        //筛选类型
         for (DdScore ddScore : ddScoreList) {
             if (scoreType.equals(ddScore.getScoreType())) {
                 tempScoreList.add(ddScore);
             }
         }
+        //排序
         Collections.sort(tempScoreList, new Comparator<DdScore>() {
             @Override
             public int compare(DdScore ddScore1, DdScore ddScore2) {
                 return ddScore2.getScoreTotal().compareTo(ddScore1.getScoreTotal());
             }
         });
+        //截断末尾零分项
+        Iterator<DdScore> it = tempScoreList.iterator();
+        if(it.hasNext()) {
+            DdScore x = it.next();
+            if(x.getScoreTotal() == 0) {
+                it.remove();
+            }
+        }
         //列表截断，应该是根据不同类型选择不同数目
         if (tempScoreList.size() > rank) {
-            tempScoreList = tempScoreList.subList(0, rank);
+            Integer add = 0;
+            Integer base = tempScoreList.get(rank - 1).getScoreTotal();
+            while(base.equals(tempScoreList.get(rank + add).getScoreTotal())) {
+                add++;
+            }
+            tempScoreList = tempScoreList.subList(0, rank + add);
         }
         return tempScoreList;
     }

@@ -74,10 +74,10 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("add")
     @ResponseBody
-    public void add(String account, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletResponse response) throws Exception {
+    public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
-            resultMsg = coinService.addScore(account, sourceScore, sourceType, sourceDetail, updTime);
+            resultMsg = coinService.addScore(uid, sourceScore, sourceType, sourceDetail, updTime);
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
@@ -92,7 +92,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("personalScore")
     @ResponseBody
-    public JSONArray personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
             //获取用户uid
@@ -172,7 +172,6 @@ public class CoinController extends GenericController {
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
-        return jsonR;
     }
 
     /**
