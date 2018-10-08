@@ -17,7 +17,11 @@
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
-    FROM dd_score_outflow
+    FROM dd_score_outflow ddsout
+    WHERE
+    1=1
+    <if test="@Ognl@isNotEmpty(uid)"> AND ddsout.uid LIKE #{uid} </if>
+    <if test="@Ognl@isNotEmpty(sourceType)"> AND ddsout.source_type LIKE #{sourceType}</if>
   </select>
   <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreOutflow">
     insert into dd_score_outflow (id, uid, source_type, expend_score, expend_detail, udp_time)

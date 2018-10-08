@@ -33,7 +33,11 @@
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM dd_score
+        FROM dd_score dds
+        where
+        1=1
+        <if test="@Ognl@isNotEmpty(userName)"> AND dds.user_name LIKE #{userName} </if>
+        <if test="@Ognl@isNotEmpty(scoreType)"> AND dds.score_type LIKE #{scoreType}</if>
     </select>
     <select id="getType" resultMap="BaseResultMap">
         SELECT

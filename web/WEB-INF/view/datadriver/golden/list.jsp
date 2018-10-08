@@ -20,19 +20,21 @@
         </div>
         <div class="panel-toolbar">
             <div class="toolBar">
-                <%--<div class="group"><a class="link search" id="btnSearch">查询</a></div>--%>
-                <%--<div class="l-bar-separator"></div>--%>
-                <%--<div class="group"><a class="link add" href="edit.ht">添加</a></div>--%>
-                <%--<div class="l-bar-separator"></div>--%>
-                <%--<div class="group"><a class="link update" id="btnUpd" action="edit.ht">修改</a></div>--%>
-                <%--<div class="l-bar-separator"></div>--%>
+                <div class="group"><a class="link search" id="btnSearch">查询</a></div>
             </div>
         </div>
         <div class="panel-search">
             <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
-                    <%--<span class="label">用户名称:</span><input type="text" name="Q_userName_SL"  class="inputText" />--%>
-                    <%--<span class="label">积分类型:</span><input type="text" name="Q_scoreType_SL"  class="inputText" />--%>
+                    <span class="label">用户(id):</span><input type="text" name="Q_userId_SL"  class="inputText" />
+                    <span class="label">积分类型:</span>
+                    <select name="Q_coinType_S" class="select" value="${param['Q_coinType_S']}">
+                        <option value="">全部</option>
+                        <option value="quanju" <c:if test="${param['Q_coinType_S'] == 'quanju'}">selected</c:if>>全局</option>
+                        <option value="qiushi" <c:if test="${param['Q_coinType_S'] == 'qiushi'}">selected</c:if>>求实</option>
+                        <option value="fengxian" <c:if test="${param['Q_coinType_S'] == 'fengxian'}">selected</c:if>>奉献</option>
+                        <option value="chuangxin" <c:if test="${param['Q_coinType_S'] == 'chuangxin'}">selected</c:if>>创新</option>
+                    </select>
                 </div>
             </form>
         </div>
@@ -45,10 +47,10 @@
             <display:column title="${checkAll}" media="html" style="width:30px;">
                 <input type="checkbox" class="pk" name="bizDefId" value="${goldenItem.id}">
             </display:column>
-            <display:column property="userName" title="用户" sortable="true" sortName="userName" maxLength="80"></display:column>
-            <display:column property="coinType" title="类型" sortable="true" sortName="coinType" maxLength="80"></display:column>
-            <display:column property="total" title="二币总量" sortable="true" sortName="total" maxLength="80"></display:column>
-            <display:column title="管理" media="html" style="width:260px">
+            <display:column property="userId" title="用户" sortable="true" sortName="userId" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="total" title="二币总量" sortable="true" sortName="total" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="coinType" title="类型" sortable="true" sortName="coinType" maxLength="80" style="text-align: center;"></display:column>
+            <display:column title="管理" media="html" style="width:260px; text-align: center;">
                 <a href="del.ht?id=${goldenItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${goldenItem.id}" class="link edit">编辑</a>
             </display:column>
