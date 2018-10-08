@@ -46,7 +46,11 @@
 
     <select id="getAll" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
-        FROM dd_score_inflow
+        FROM dd_score_inflow ddsin
+        WHERE
+        1=1
+        <if test="@Ognl@isNotEmpty(userName)"> AND ddsin.user_name LIKE #{userName} </if>
+        <if test="@Ognl@isNotEmpty(sourceType)"> AND ddsin.source_type LIKE #{sourceType}</if>
     </select>
 
     <delete id="delById" parameterType="java.lang.Long">

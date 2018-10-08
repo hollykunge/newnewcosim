@@ -21,10 +21,12 @@
             if(showResponse){
                 options.success=showResponse;
             }
-            var frm=$('#scoreForm').form();
+            var frm=$('#scoreInflowForm').form();
             $("a.save").click(function() {
                 if(frm.valid()){
-                    frm.submit();
+                    frm.setData();
+                    frm.ajaxForm(options);
+                    form.submit();
                 }
             });
         });
@@ -36,7 +38,7 @@
                     if(rtn){
                         this.close();
                     }else{
-                        window.location.href = "${ctx}/cloud/aftersale/feedback/list.ht";
+                        window.location.href = "${ctx}/datadriver/outflow/list.ht";
                     }
                 });
             } else {
@@ -63,14 +65,14 @@
     <div class="panel-body">
         <form id="scoreForm" method="post" action="save.ht">
             <table class="table-detail" cellpadding="0" cellspacing="0" border="0" type="main">
-                <tr><th style="width:120px;">用户名</th><td colspan="3"><input size="35" id="userName" name="userName" value="${bizDef.userName}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
-                <tr><th style="width:120px;">积分类型</th><td><input size="35" id="scoreType" name="scoreType" value="${bizDef.scoreType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
-                <tr><th style="width:120px;">积分总量</th><td><input size="35" id="scoreTotal" name="scoreTotal" value="${bizDef.scoreTotal}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">用户</th><td colspan="3"><input size="35" id="uid" name="uid" value="${bizDef.uid}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
+                <tr><th style="width:120px;">积分类型</th><td><input size="35" id="sourceType" name="sourceType" value="${bizDef.sourceType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">消耗分值</th><td><input size="35" id="expendScore" name="expendScore" value="${bizDef.expendScore}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <th style="width:120px;">消耗详情</th><td><input size="35" id="expendDetail" name="expendDetail" value="${bizDef.expendDetail}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
             <input size="35" type="hidden" name="id" value="${bizDef.id}" />
             <input size="35" type="hidden" name="uid" value="${bizDef.uid}" />
-            <input size="35" type="hidden" name="scoreAction" value="${bizDef.scoreAction}" />
-            <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
+            <input size="35" type="hidden" name="udpTime" value="${bizDef.udpTime}" />
         </form>
 
     </div>

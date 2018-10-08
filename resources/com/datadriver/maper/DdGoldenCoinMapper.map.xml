@@ -25,7 +25,11 @@
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM dd_coin
+        FROM dd_coin ddc
+        WHERE
+        1=1
+        <if test="@Ognl@isNotEmpty(userId)"> AND ddc.user_id LIKE #{userId} </if>
+        <if test="@Ognl@isNotEmpty(coinType)"> AND ddc.coin_type LIKE #{coinType}</if>
     </select>
     <select id="getPersonal" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
