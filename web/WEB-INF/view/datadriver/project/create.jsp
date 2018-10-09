@@ -37,40 +37,40 @@
                                name="ddProjectName">
                     </td>
                 </tr>
-                <tr>
-                    <%--所属型号--%>
-                    <th>所属型号<small style="color: #e2463e">(必填)</small>:</th>
-                    <td>
-                        <ap:selectDB name="ddProjectBelongModel" id="ddProjectBelongModel"
-                                     where="parentId=10000027440014" optionValue="itemValue"
-                                     optionText="itemName" table="SYS_DIC"
-                                     selectedValue="${projectBelongModelItem.id}" styleClass="form-control">
-                        </ap:selectDB>
-                    </td>
+                <%--<tr>--%>
+                    <%--&lt;%&ndash;所属型号&ndash;%&gt;--%>
+                    <%--<th>所属型号<small style="color: #e2463e">(必填)</small>:</th>--%>
+                    <%--<td>--%>
+                        <%--<ap:selectDB name="ddProjectBelongModel" id="ddProjectBelongModel"--%>
+                                     <%--where="parentId=10000027440014" optionValue="itemValue"--%>
+                                     <%--optionText="itemName" table="SYS_DIC"--%>
+                                     <%--selectedValue="${projectBelongModelItem.id}" styleClass="form-control">--%>
+                        <%--</ap:selectDB>--%>
+                    <%--</td>--%>
 
-                </tr>
-                <tr>
-                    <%--密级--%>
-                    <th>密级<small style="color: #e2463e">(必填)</small>:</th>
-                    <td>
-                        <ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"
-                                     where="parentId=10000027440019" optionValue="itemValue"
-                                     optionText="itemName" table="SYS_DIC"
-                                     selectedValue="${projectSecretLevelItem.id}" styleClass="form-control">
-                        </ap:selectDB>
-                    </td>
-                </tr>
-                <tr>
-                    <%--项目类型--%>
-                    <th>项目类型<small style="color: #e2463e">(必填)</small>:</th>
-                    <td>
-                        <ap:selectDB name="ddProjectType" id="ddProjectType"
-                                     where="parentId=10000027440025" optionValue="itemValue"
-                                     optionText="itemName" table="SYS_DIC"
-                                     selectedValue="${projectTypeListItem.id}" styleClass="form-control">
-                        </ap:selectDB>
-                    </td>
-                </tr>
+                <%--</tr>--%>
+                <%--<tr>--%>
+                    <%--&lt;%&ndash;密级&ndash;%&gt;--%>
+                    <%--<th>密级<small style="color: #e2463e">(必填)</small>:</th>--%>
+                    <%--<td>--%>
+                        <%--<ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"--%>
+                                     <%--where="parentId=10000027440019" optionValue="itemValue"--%>
+                                     <%--optionText="itemName" table="SYS_DIC"--%>
+                                     <%--selectedValue="${projectSecretLevelItem.id}" styleClass="form-control">--%>
+                        <%--</ap:selectDB>--%>
+                    <%--</td>--%>
+                <%--</tr>--%>
+                <%--<tr>--%>
+                    <%--&lt;%&ndash;项目类型&ndash;%&gt;--%>
+                    <%--<th>项目类型<small style="color: #e2463e">(必填)</small>:</th>--%>
+                    <%--<td>--%>
+                        <%--<ap:selectDB name="ddProjectType" id="ddProjectType"--%>
+                                     <%--where="parentId=10000027440025" optionValue="itemValue"--%>
+                                     <%--optionText="itemName" table="SYS_DIC"--%>
+                                     <%--selectedValue="${projectTypeListItem.id}" styleClass="form-control">--%>
+                        <%--</ap:selectDB>--%>
+                    <%--</td>--%>
+                <%--</tr>--%>
                 <tr>
                     <%--项目阶段--%>
                     <th>项目阶段<small style="color: #e2463e">(必填)</small>:</th>

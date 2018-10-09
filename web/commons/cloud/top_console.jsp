@@ -32,21 +32,21 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">协同设计平台</span>
+                <span class="sr-only">WorkHub</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${ctx}/cloud/console/outline.ht?target=/datadriver/personaltask/mydashboard.ht"><strong style="color: orange; font-size: 40px">Cosim</strong></a>
+            <a class="navbar-brand" href="${ctx}/cloud/console/outline.ht?target=/datadriver/personaltask/mydashboard.ht"><strong style="color: orange; font-size: 40px">WorkHub</strong></a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon3">当前项目</span>
-                    <input type="text" class="form-control" id="project_search" aria-describedby="basic-addon3" placeholder="搜索">
-                </div>
-            </form>
+            <%--<form class="navbar-form navbar-left">--%>
+                <%--<div class="input-group">--%>
+                    <%--<span class="input-group-addon" id="basic-addon3">当前项目</span>--%>
+                    <%--<input type="text" class="form-control" id="project_search" aria-describedby="basic-addon3" placeholder="搜索">--%>
+                <%--</div>--%>
+            <%--</form>--%>
 
             <ul class="nav navbar-nav">
                 <%--<li><a href="${ctx}/cloud/console/home.ht">主页</a></li>--%>
