@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="col-xs-5 text">
-                    <h1><strong>二部协同设计平台</strong></h1>
+                    <h1><strong>WorkHub</strong></h1>
                     <div class="form-top">
                         <div class="form-top-left">
                             <h3>平台登录</h3>

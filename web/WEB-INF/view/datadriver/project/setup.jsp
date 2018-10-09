@@ -24,7 +24,7 @@
         <div class="col-xs-2">
             <ul class="nav nav-pills nav-stacked" role="tablist">
                 <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">项目信息</a></li>
-                <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">项目偏好</a></li>
+                <%--<li role="presentation"><a href="#profile" role="tab" data-toggle="tab">项目偏好</a></li>--%>
                 <li role="presentation"><a href="#more" role="tab" data-toggle="tab">更多...</a></li>
             </ul>
         </div>
@@ -43,36 +43,36 @@
                                                name="ddProjectName" value="${Project.ddProjectName}"/>
                                     </td>
                                 </tr>
+                                <%--<tr>--%>
+                                    <%--<th>所属型号</th>--%>
+                                    <%--<td>--%>
+                                        <%--<ap:selectDB name="ddProjectBelongModel" id="ddProjectBelongModel"--%>
+                                                     <%--where="parentId=10000027440014" optionValue="itemValue"--%>
+                                                     <%--optionText="itemName" table="SYS_DIC"--%>
+                                                     <%--selectedValue="${Project.ddProjectBelongModel}"--%>
+                                                     <%--styleClass="form-control">--%>
+                                        <%--</ap:selectDB>--%>
+                                    <%--</td>--%>
+                                    <%--<th>项目类型</th>--%>
+                                    <%--<td>--%>
+                                        <%--<ap:selectDB name="ddProjectType" id="ddProjectType"--%>
+                                                     <%--where="parentId=10000027440025" optionValue="itemValue"--%>
+                                                     <%--optionText="itemName" table="SYS_DIC"--%>
+                                                     <%--selectedValue="${Project.ddProjectType}"--%>
+                                                     <%--styleClass="form-control">--%>
+                                        <%--</ap:selectDB>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
                                 <tr>
-                                    <th>所属型号</th>
-                                    <td>
-                                        <ap:selectDB name="ddProjectBelongModel" id="ddProjectBelongModel"
-                                                     where="parentId=10000027440014" optionValue="itemValue"
-                                                     optionText="itemName" table="SYS_DIC"
-                                                     selectedValue="${Project.ddProjectBelongModel}"
-                                                     styleClass="form-control">
-                                        </ap:selectDB>
-                                    </td>
-                                    <th>项目类型</th>
-                                    <td>
-                                        <ap:selectDB name="ddProjectType" id="ddProjectType"
-                                                     where="parentId=10000027440025" optionValue="itemValue"
-                                                     optionText="itemName" table="SYS_DIC"
-                                                     selectedValue="${Project.ddProjectType}"
-                                                     styleClass="form-control">
-                                        </ap:selectDB>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>密级</th>
-                                    <td>
-                                        <ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"
-                                                     where="parentId=10000027440019" optionValue="itemValue"
-                                                     optionText="itemName" table="SYS_DIC"
-                                                     selectedValue="${Project.ddProjectSecretLevel}"
-                                                     styleClass="form-control">
-                                        </ap:selectDB>
-                                    </td>
+                                    <%--<th>密级</th>--%>
+                                    <%--<td>--%>
+                                        <%--<ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"--%>
+                                                     <%--where="parentId=10000027440019" optionValue="itemValue"--%>
+                                                     <%--optionText="itemName" table="SYS_DIC"--%>
+                                                     <%--selectedValue="${Project.ddProjectSecretLevel}"--%>
+                                                     <%--styleClass="form-control">--%>
+                                        <%--</ap:selectDB>--%>
+                                    <%--</td>--%>
                                     <th>项目阶段</th>
                                     <td>
                                         <ap:selectDB name="ddProjectPhaseName" id="ddProjectPhaseName"
@@ -117,33 +117,33 @@
                         </form>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="profile">
-                    <p>
-                    <h3>动态提醒</h3>
-                    <small>（仅对个人）</small>
-                    </p>
-                    <div class="col-sm-12">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"
-                                       checked>
-                                推送动态提醒（显示标记并以桌面通知的方式进行推送）
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                不推送动态提醒（只显示标记）
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <%--<div role="tabpanel" class="tab-pane" id="profile">--%>
+                    <%--<p>--%>
+                    <%--<h3>动态提醒</h3>--%>
+                    <%--<small>（仅对个人）</small>--%>
+                    <%--</p>--%>
+                    <%--<div class="col-sm-12">--%>
+                        <%--<div class="radio">--%>
+                            <%--<label>--%>
+                                <%--<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"--%>
+                                       <%--checked>--%>
+                                <%--推送动态提醒（显示标记并以桌面通知的方式进行推送）--%>
+                            <%--</label>--%>
+                        <%--</div>--%>
+                        <%--<div class="radio">--%>
+                            <%--<label>--%>
+                                <%--<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">--%>
+                                <%--不推送动态提醒（只显示标记）--%>
+                            <%--</label>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div role="tabpanel" class="tab-pane" id="more">
                     <p>
                     <h3>可执行操作</h3></p>
                     <div class="col-sm-12">
                         <br>
-                        <button type="button" class="btn btn-default btn-block">固化项目</button>
+                        <%--<button type="button" class="btn btn-default btn-block">固化项目</button>--%>
                         <a href="${ctx}/datadriver/project/del.ht?id=${Project.ddProjectId}" type="button"
                            class="btn btn-danger btn-block">删除</a>
                     </div>
