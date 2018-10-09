@@ -50,7 +50,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
         //缓存所有数据
         List<DdScoreInflow> ddScoreInflows = ddScoreInflowDao.getAll();
         for (DdScoreInflow ddScoreInflow : ddScoreInflows) {
-            initCache(String.valueOf(ddScoreInflow.getUid()) + ddScoreInflow.getSourceDetail(), ddScoreInflow);
+            initCache(String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceDetail(), ddScoreInflow);
         }
     }
     private void initCache(String cacheKey, DdScoreInflow ddScoreInflow) {
@@ -67,7 +67,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
         //写数据库
         ddScoreInflowDao.addCoin(ddScoreInflow);
         //写缓存
-        String cacheKey = String.valueOf(ddScoreInflow.getUid()) + ddScoreInflow.getSourceDetail();
+        String cacheKey = String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceDetail();
         initCache(cacheKey, ddScoreInflow);
     }
     /**
@@ -112,14 +112,14 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
     /**
      * 获取当前用户今日特定类型流水，按二级类型
-     * @param uid 用户id
+     * @param userId 用户id
      * @param sourceDetail 二级类型
      * @return 今日该类型所有流水
      */
-    List<DdScoreInflow> getTodayScore(Long uid, String sourceDetail) {
+    List<DdScoreInflow> getTodayScore(Long userId, String sourceDetail) {
         //联合查询
         Map<String, String> param = new HashMap<>(2);
-        param.put("uid", String.valueOf(uid));
+        param.put("userId", String.valueOf(userId));
         param.put("sourceDetail", sourceDetail);
         List<DdScoreInflow> ddScoreInflows =
                 ddScoreInflowDao.getList("getTodayDetailScore", param);
@@ -134,14 +134,14 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
     /**
      * 获取个人的一级类型流水
-     * @param uid uid
+     * @param userId userId
      * @param sourceType 一级类型
      * @return DdScoreInflow列表
      */
-    public List<DdScoreInflow> getTypeTotalScore(Long uid, String sourceType) {
+    public List<DdScoreInflow> getTypeTotalScore(Long userId, String sourceType) {
         //联合查询
         Map<String, String> param = new HashMap<>(2);
-        param.put("uid", String.valueOf(uid));
+        param.put("userId", String.valueOf(userId));
         param.put("sourceType", sourceType);
         return ddScoreInflowDao.getList("getTypeTotalScore", param);
     }

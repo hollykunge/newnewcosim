@@ -41,10 +41,10 @@ public class DdScoreDao extends BaseDao<DdScore> {
         return this.getBySqlKey("getById", id);
     }
     /**
-     * @param uid uid
+     * @param userId userId
      */
-    public List<DdScore> getPersonal(long uid) {
-        return this.getBySqlKey("getPersonal", uid);
+    public List<DdScore> getPersonal(long userId) {
+        return this.getBySqlKey("getPersonal", userId);
     }
 
     public List<DdScore> getType(String sourceType) {

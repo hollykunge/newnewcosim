@@ -121,7 +121,17 @@ public class SysUser extends BaseModel implements ISysUser{
 	
 	// orgSn
 	protected Long  orgSn;
-	
+
+	protected String psnSecretLevel;
+
+	public String getPsnSecretLevel() {
+		return psnSecretLevel;
+	}
+
+	public void setPsnSecretLevel(String psnSecretLevel) {
+		this.psnSecretLevel = psnSecretLevel;
+	}
+
 	public Short getFromType() {
 		return fromType;
 	}

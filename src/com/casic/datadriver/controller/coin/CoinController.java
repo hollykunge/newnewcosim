@@ -190,7 +190,7 @@ public class CoinController extends GenericController {
             for (DdScore ddScore : ddScoreList) {
                 DdRank e = new DdRank();
                 e.setUserName(ddScore.getUserName());
-                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUid()).get(0).getOrgName();
+                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
                 e.setOrgName(orgName);
                 e.setScoreTotal(ddScore.getScoreTotal());
                 itemList.add(e);
