@@ -105,7 +105,7 @@ public class CoinController extends GenericController {
             List<DdScoreInflow> qiushiInflows =
                     ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
             List<DdScoreInflow> chuangxinInflows =
-                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
+                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.CHUANG_XIN);
             //返回的map
             Map<String, Integer> personalMap = new HashMap<>(16);
             //全局总数
@@ -145,6 +145,18 @@ public class CoinController extends GenericController {
                     personalMap.put("chuangxinMonthScore", ddScore.getScoreTotal());
                 }
             }
+            if(!personalMap.containsKey("quanjuMonthScore")) {
+                personalMap.put("quanjuMonthScore", 0);
+            }
+            if(!personalMap.containsKey("fengxianMonthScore")) {
+                personalMap.put("fengxianMonthScore", 0);
+            }
+            if(!personalMap.containsKey("qiushiMonthScore")) {
+                personalMap.put("qiushiMonthScore", 0);
+            }
+            if(!personalMap.containsKey("chuangxinMonthScore")) {
+                personalMap.put("chuangxinMonthScore", 0);
+            }
             //获取年币
             List<DdGoldenCoin> personalCoinList = goldenCoinService.getPersonal(userId);
             for(DdGoldenCoin ddGoldenCoin : personalCoinList) {
@@ -158,8 +170,20 @@ public class CoinController extends GenericController {
                     personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getTotal().intValue());
                 }
             }
+            if(!personalMap.containsKey("quanjuTotalCoin")) {
+                personalMap.put("quanjuTotalCoin", 0);
+            }
+            if(!personalMap.containsKey("fengxianTotalCoin")) {
+                personalMap.put("fengxianTotalCoin", 0);
+            }
+            if(!personalMap.containsKey("qiushiTotalCoin")) {
+                personalMap.put("qiushiTotalCoin", 0);
+            }
+            if(!personalMap.containsKey("chuangxinTotalCoin")) {
+                personalMap.put("chuangxinTotalCoin", 0);
+            }
             //获取月币
-            //todo 不想写了这傻逼玩意儿
+            //todo 不想写了这sddx
             personalMap.put("quanjuMonthCoin", 0);
             personalMap.put("fengxianMonthCoin", 0);
             personalMap.put("qiushiMonthCoin", 0);
@@ -177,7 +201,6 @@ public class CoinController extends GenericController {
 
     /**
      * @param response 响应
-     * @return JSONArray j
      * @throws Exception 扔
      */
     @RequestMapping("rank")
@@ -206,14 +229,13 @@ public class CoinController extends GenericController {
             //解决跨域
             String callback = request.getParameter("callback");
             response.getWriter().write(callback + "(" + jsonR.toString() + ")");
-//            writeResultMessage(response.getWriter(), callback + "("+jsonR.toString()+")", ResultMessage.Success);
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
     }
 
 
-    private final static ThreadLocal<SimpleDateFormat> dateFormater2 = new ThreadLocal<SimpleDateFormat>() {
+    private final static ThreadLocal<SimpleDateFormat> DATE_FORMATER2 = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd");
