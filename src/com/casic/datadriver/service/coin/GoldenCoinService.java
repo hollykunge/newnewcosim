@@ -51,6 +51,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
         return this.ddGoldenCoinDao;
     }
 
+
     /**
      * 根据传入类型进行积分兑换，定时器周期调用还没有添加
      * @param scoreType
@@ -95,7 +96,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             }
             DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
             ddScoreOutflow.setExpendDetail("yuedijiesuan");
-            ddScoreOutflow.setExpendScore(lastRank - 1);
+            ddScoreOutflow.setExpendScore(lastRank);
             ddScoreOutflow.setId(UniqueIdUtil.genId());
             ddScoreOutflow.setSourceType(ddScore.getScoreType());
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -123,6 +124,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             } else {
                 userTypeCoin.setId(UniqueIdUtil.genId());
                 userTypeCoin.setUserId(ddScore.getUid());
+                userTypeCoin.setUserName(ddScore.getUserName());
                 userTypeCoin.setCoinType(ddScore.getScoreType());
                 userTypeCoin.setTotal(Integer.toUnsignedLong(getCoin));
                 ddGoldenCoinDao.add(userTypeCoin);
