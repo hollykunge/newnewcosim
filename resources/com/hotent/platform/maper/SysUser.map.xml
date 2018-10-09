@@ -19,10 +19,11 @@
 		<result property="orgId" column="orgId" jdbcType="NUMERIC"/>
 		<result property="orgSn" column="orgSn" jdbcType="NUMERIC"/>
 		<result property="shortAccount" column="shortAccount" jdbcType="VARCHAR"/>
+		<result property="psnSecretLevel" column="psnSecretLevel" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<sql id="columns">
-		userId,fullname,account,password,isExpired,isLock,createtime,status,email,mobile,phone,sex,picture,fromType,orgId,orgSn,shortAccount
+		userId,fullname,account,password,isExpired,isLock,createtime,status,email,mobile,phone,sex,picture,fromType,orgId,orgSn,shortAccount,psnSecretLevel
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -42,6 +43,7 @@
 			<if test="@Ognl@isNotEmpty(orgSn)"> AND orgSn = #{orgSn,jdbcType=NUMERIC}  </if>
 			<if test="@Ognl@isNotEmpty(orgId)"> AND orgId = #{orgId,jdbcType=NUMERIC}  </if>
 			<if test="@Ognl@isNotEmpty(shortAccount)"> AND shortAccount = #{shortAccount}  </if>
+			<if test="@Ognl@isNotEmpty(psnSecretLevel)"> AND psnSecretLevel = #{psnSecretLevel}  </if>
 		</where>
 	</sql>
     
@@ -50,7 +52,7 @@
 		INSERT INTO sys_user
 		(<include refid="columns"/>)
 		VALUES
-		(#{userId,jdbcType=NUMERIC}, #{fullname,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{isExpired,jdbcType=NUMERIC}, #{isLock,jdbcType=NUMERIC}, #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=NUMERIC}, #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{fromType,jdbcType=NUMERIC},#{orgId,jdbcType=NUMERIC},#{orgSn,jdbcType=NUMERIC}, #{shortAccount,jdbcType=VARCHAR})
+		(#{userId,jdbcType=NUMERIC}, #{fullname,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{isExpired,jdbcType=NUMERIC}, #{isLock,jdbcType=NUMERIC}, #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=NUMERIC}, #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{fromType,jdbcType=NUMERIC},#{orgId,jdbcType=NUMERIC},#{orgSn,jdbcType=NUMERIC}, #{shortAccount,jdbcType=VARCHAR},#{psnSecretLevel,jdbcType=VARCHAR})
 	</insert>
 
 	
@@ -77,7 +79,8 @@
 		fromType=#{fromType,jdbcType=NUMERIC},
 		orgId=#{orgId,jdbcType=NUMERIC},
 		orgSn=#{orgSn,jdbcType=NUMERIC},
-		shortAccount=#{shortAccount,jdbcType=VARCHAR}
+		shortAccount=#{shortAccount,jdbcType=VARCHAR},
+		psnSecretLevel=#{psnSecretLevel,jdbcType=VARCHAR}
 		WHERE
 		userId=#{userId}
 	</update>

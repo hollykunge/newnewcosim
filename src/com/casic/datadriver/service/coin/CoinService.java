@@ -82,7 +82,7 @@ public class CoinService {
                     //增加流水
                     DdScoreInflow ddScoreInflow = new DdScoreInflow();
                     ddScoreInflow.setId(UniqueIdUtil.genId());
-                    ddScoreInflow.setUid(sysUser.getUserId());
+                    ddScoreInflow.setUserId(sysUser.getUserId());
                     ddScoreInflow.setSourceScore(Integer.valueOf(sourceScore));
                     ddScoreInflow.setSourceDetail(sourceDetail);
                     ddScoreInflow.setSourceType(sourceType);

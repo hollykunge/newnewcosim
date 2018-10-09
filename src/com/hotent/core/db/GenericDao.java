@@ -250,7 +250,7 @@ public abstract class GenericDao<E, PK extends Serializable> extends
                 baseModel.setCreateBy(curUserId);
             }else if (entity instanceof DdScoreInflow){
                     DdScoreInflow ddScoreInflow = (DdScoreInflow)entity;
-                    baseModel.setCreateBy(ddScoreInflow.getUid());
+                    baseModel.setCreateBy(ddScoreInflow.getUserId());
             }
 
 

@@ -6,7 +6,7 @@
           WARNING - @mbg.generated
         -->
         <id column="id" property="id" jdbcType="NUMERIC"/>
-        <result column="uid" property="uid" jdbcType="NUMERIC"/>
+        <result column="user_id" property="userId" jdbcType="NUMERIC"/>
         <result column="source_score" property="sourceScore" jdbcType="NUMERIC"/>
         <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
         <result column="source_detail" property="sourceDetail" jdbcType="VARCHAR"/>
@@ -16,32 +16,32 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, uid, source_score, source_type, source_detail, upd_time, total, user_name
+        id, user_id, source_score, source_type, source_detail, upd_time, total, user_name
     </sql>
 
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
-    insert into dd_score_inflow (id, uid, source_score, source_type, source_detail, upd_time)
-    values (#{id,jdbcType=NUMERIC}, #{uid,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
+    insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time)
+    values (#{id,jdbcType=NUMERIC}, #{user_id,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
       #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR})
     </insert>
     <select id="getByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
         FROM dd_score_inflow
         WHERE
-        uid=#{uid}
+        user_id=#{userId}
     </select>
 
     <select id="getTodayDetailScore" resultMap="BaseResultMap" parameterType="java.util.Map">
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_score_inflow
-        WHERE uid=#{uid} AND source_detail=#{sourceDetail}
+        WHERE user_id=#{userId} AND source_detail=#{sourceDetail}
     </select>
     <select id="getTypeTotalScore" resultMap="BaseResultMap" parameterType="java.util.Map">
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_score_inflow
-        WHERE uid=#{uid} AND source_type=#{sourceType}
+        WHERE user_id=#{userId} AND source_type=#{sourceType}
     </select>
 
     <select id="getAll" resultMap="BaseResultMap">
@@ -67,8 +67,8 @@
     <update id="update" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
         UPDATE dd_score_inflow
         <set>
-            <if test="uid !=null">
-                uid = #{uid,jdbcType=NUMERIC},
+            <if test="userId !=null">
+                user_id = #{userId,jdbcType=NUMERIC},
             </if>
             <if test="sourceScore !=null">
                 source_score = #{sourceScore,jdbcType=VARCHAR},

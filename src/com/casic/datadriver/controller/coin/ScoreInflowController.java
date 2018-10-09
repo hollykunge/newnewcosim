@@ -97,7 +97,7 @@ public class ScoreInflowController extends AbstractController {
         String updTime = RequestUtil.getString(request,"updTime");
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
         ddScoreInflow.setId(scoreInflowId);
-        ddScoreInflow.setUid(scoreInflowUid);
+        ddScoreInflow.setUserId(scoreInflowUid);
         ddScoreInflow.setSourceScore(sourceScore);
         ddScoreInflow.setSourceType(sourceType);
         ddScoreInflow.setSourceDetail(sourceDetail);
