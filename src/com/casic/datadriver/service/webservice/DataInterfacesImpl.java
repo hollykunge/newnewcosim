@@ -14,7 +14,6 @@ import com.hotent.platform.service.system.SysOrgService;
 import com.hotent.platform.service.system.SysUserOrgService;
 import com.hotent.platform.service.system.SysUserService;
 import com.hotent.platform.service.system.UserRoleService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import sun.security.provider.MD5;
 
@@ -27,7 +26,7 @@ import java.util.Map;
 
 @WebService
 public class DataInterfacesImpl {
-    private Logger log = Logger.getLogger(DataInterfacesImpl.class);
+
     @Autowired
     private SysUserService sysUserService;
     @Autowired
@@ -48,11 +47,9 @@ public class DataInterfacesImpl {
 
         JSONObject json = Xml2Json.xml2Json(xmlFile);
         String saveType = (String) json.get("mdtype");
-        log.info(xmlFile);
         System.out.println(saveType);
         short shortByOne = 1;
         short shortByZero = 0;
-        short shortByThree = 3;
         long longByZero = 0;
         long longByOne = 1;
         String flag = "";
@@ -65,30 +62,27 @@ public class DataInterfacesImpl {
             long  userId= UniqueIdUtil.genId();
             String  account= (String)infoJson.get("identityNo");
             String  fullName= (String)infoJson.get("userName");
-            String  isLock= (String)infoJson.get("endFlag");
+            String  isLock= (String)infoJson.get("fcFlag");
             String  sex= (String)infoJson.get("gender");
             String  phone= (String)infoJson.get("telephone");
             String  shortAccount1= (String)infoJson.get("xing");
             String  shortAccount2= (String)infoJson.get("ming");
             String  orgCodeAndOrgSn= (String)infoJson.get("deptTyyhOrgCode");
             String  orgCode = (String)infoJson.get("deptCode");
-
-            String  secretLevel = (String)infoJson.get("psnSecretLevel");
-        try{
-            SysUser sysUser = new SysUser();
-            sysUser.setFullname(fullName);
-            sysUser.setAccount(account);
-            sysUser.setPassword(EncryptUtil.encryptSha256("123456"));
-            sysUser.setIsExpired(shortByZero);
-            sysUser.setIsLock(Short.parseShort(isLock));
-            sysUser.setStatus(shortByOne);
-            sysUser.setPhone(phone);
-            sysUser.setSex(sex);
-            sysUser.setFromType(shortByZero);
-            //sysUser.setOrgId(Long.parseLong(orgCodeAndOrgSn));
-            //sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
-            sysUser.setShortAccount(shortAccount1+shortAccount2);
-            sysUser.setPsnSecretLevel(secretLevel);
+            try{
+                SysUser sysUser = new SysUser();
+                sysUser.setFullname(fullName);
+                sysUser.setAccount(account);
+                sysUser.setPassword(EncryptUtil.encryptSha256("123456"));
+                sysUser.setIsExpired(shortByZero);
+                sysUser.setIsLock(Short.parseShort(isLock));
+                sysUser.setStatus(shortByOne);
+                sysUser.setPhone(phone);
+                sysUser.setSex(sex);
+                sysUser.setFromType(shortByZero);
+                //sysUser.setOrgId(Long.parseLong(orgCodeAndOrgSn));
+                //sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
+                sysUser.setShortAccount(shortAccount1+shortAccount2);
 
                 SysUserOrg sysUserOrg = new SysUserOrg();
                 //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
@@ -148,51 +142,7 @@ public class DataInterfacesImpl {
                 ex.printStackTrace();
                 flag = "failed";
             }
-            UserRole userRole = new UserRole();
-            long userRoldId = UniqueIdUtil.genId();
-            if(sysUserService.isAccountExist(account)){
-                ISysUser userByAccount = sysUserService.getByAccount(account);
-                Long findUserId = userByAccount.getUserId();
-                SysUserOrg userOrgModel = sysUserOrgService.getUserOrgModel(findUserId, userByAccount.getOrgId());
-                List<UserRole> userRoleList = userRoleService.getByUserId(findUserId);
-                Long findUserRoleId = 0L ;
-                for(UserRole findUserRole:userRoleList){
-                     findUserRoleId = findUserRole.getUserRoleId();
-                }
-                sysUser.setUserId(findUserId);
-                sysUser.setCreatetime(new Date());
-                sysUser.setOrgId(findOrgId);
-                Long userOrgId = userOrgModel.getUserOrgId();
-                userRoleService.delById(findUserRoleId);
-                sysUserOrgService.delById(userOrgId);
-                sysUserService.update(sysUser);
-                sysUserOrg.setUserOrgId(userOrgId);
-                sysUserOrg.setUserId(findUserId);
-                sysUserOrg.setOrgId(findOrgId);
-                userRole.setUserRoleId(findUserRoleId);
-                userRole.setUserId(findUserId);
-                userRole.setRoleId(Long.parseLong("2018"));//硬编码
-                sysUserOrgService.add(sysUserOrg);
-                userRoleService.add(userRole);
-            }else{
-                sysUser.setUserId(userId);
-                sysUser.setOrgId(findOrgId);
-                sysUserService.add(sysUser);
-                sysUserOrg.setUserId(userId);
-                sysUserOrg.setUserOrgId(UniqueIdUtil.genId());
-                sysUserOrg.setOrgId(findOrgId);
-                userRole.setUserRoleId(userRoldId);
-                userRole.setUserId(userId);
-                userRole.setRoleId(Long.parseLong("2018"));//硬编码
-                sysUserOrgService.add(sysUserOrg);
-                userRoleService.add(userRole);
-            }
-            flag = "success";
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            log.error(ex.getMessage());
-            flag = "failed";
-        }
+
         } else if (saveType.equals("Organization")) {
             System.err.println("群组表");
             JSONObject orgJson =(JSONObject) json.get("data");
@@ -201,8 +151,7 @@ public class DataInterfacesImpl {
             System.err.println(infoJson.get("orgName"));
             String orgSn = (String) infoJson.get("orgCode");
             String orgName = (String) infoJson.get("orgName");
-            String orgSecName = (String) infoJson.get("mdCode");
-            String orgStatus = (String) infoJson.get("fcFlag");
+            String orgSecName = (String)infoJson.get("mdCode");
             long orgId = UniqueIdUtil.genId();
             long orgSupId = (long)100;
             try {
@@ -212,16 +161,15 @@ public class DataInterfacesImpl {
                 sysOrg.setOrgSupId(orgSupId);
                 sysOrg.setOrgDesc(orgSecName);
                 sysOrg.setOrgType(longByOne);
-                sysOrg.setFromType(shortByThree);
-                sysOrg.setOrgStatus(Long.parseLong(orgStatus));
+                sysOrg.setFromType(shortByOne);
+                //sysOrg.setSn(Long.parseLong(orgSn));
                 sysOrg.setIsSystem(longByZero);
                 sysOrg.setDemId(longByOne);
-                sysOrg.setPath("1."+orgId+".");
+                sysOrg.setPath("1."+orgId);
                 sysOrgService.add(sysOrg);
                 flag = "success";
             } catch (Exception ex){
                 ex.printStackTrace();
-                log.error(ex.getMessage());
                 flag = "failed";
             }
         }

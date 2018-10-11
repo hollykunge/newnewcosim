@@ -13,14 +13,6 @@ import java.util.Date;
 public class DdScoreInflow extends BaseModel {
     private Long id;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     /**
      * 用户id
      */
