@@ -12,6 +12,14 @@ public class DdScoreOutflow extends BaseModel {
     @Id
     private Long id;
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     /**
      * 用户id
      */
@@ -72,7 +80,6 @@ public class DdScoreOutflow extends BaseModel {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
 
     /**
      * 获取积分来源

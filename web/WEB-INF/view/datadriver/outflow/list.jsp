@@ -47,12 +47,14 @@
             <display:column title="${checkAll}" media="html" style="width:30px;">
                 <input type="checkbox" class="pk" name="bizDefId" value="${bizDefItem.bizDefId}">
             </display:column>
-            <display:column property="uid" title="用户" sortable="true" sortName="uid" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expendScore" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expendDetail" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="udpTime" title="时间" sortable="true" sortName="udpTime" style="text-align: center;"></display:column>
-            <display:column title="管理" media="html" style="width:260px; text-align: center">
+
+            <display:column property="userId" title="用户" sortable="true" sortName="userId" maxLength="80"></display:column>
+            <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expendScore" maxLength="80"></display:column>
+            <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80"></display:column>
+            <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expendDetail" maxLength="80"></display:column>
+            <display:column property="udpTime" title="时间" sortable="true" sortName="udpTime"></display:column>
+            <display:column title="管理" media="html" style="width:260px">
+
                 <a href="del.ht?bizDefId=${scoreOutflowItem.id}" class="link del">删除</a>
                 <a href="edit.ht?bizDefId=${scoreOutflowItem.id}" class="link edit">编辑</a>
             </display:column>

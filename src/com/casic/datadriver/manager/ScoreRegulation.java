@@ -102,7 +102,7 @@ public class ScoreRegulation {
      */
     public boolean isToday(String time) {
         //String time = "1988-12-10 11:20:45";
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime localTime = LocalDateTime.parse(time, dtf);
         LocalDateTime startTime = LocalDate.now().atTime(0, 0, 0);
         LocalDateTime endTime = LocalDate.now().atTime(23, 59, 59);

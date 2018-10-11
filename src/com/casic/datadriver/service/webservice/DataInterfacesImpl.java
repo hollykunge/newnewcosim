@@ -16,6 +16,7 @@ import com.hotent.platform.service.system.SysUserService;
 import com.hotent.platform.service.system.UserRoleService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import sun.security.provider.MD5;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -71,6 +72,7 @@ public class DataInterfacesImpl {
             String  shortAccount2= (String)infoJson.get("ming");
             String  orgCodeAndOrgSn= (String)infoJson.get("deptTyyhOrgCode");
             String  orgCode = (String)infoJson.get("deptCode");
+
             String  secretLevel = (String)infoJson.get("psnSecretLevel");
         try{
             SysUser sysUser = new SysUser();
@@ -88,19 +90,63 @@ public class DataInterfacesImpl {
             sysUser.setShortAccount(shortAccount1+shortAccount2);
             sysUser.setPsnSecretLevel(secretLevel);
 
-            SysUserOrg sysUserOrg = new SysUserOrg();
-            //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
-            sysUserOrg.setIsPrimary(shortByOne);
-            sysUserOrg.setIsCharge(shortByZero);
-            sysUserOrg.setIsGradeManage(shortByZero);
-            long findOrgId = 0;
+                SysUserOrg sysUserOrg = new SysUserOrg();
+                //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
+                sysUserOrg.setIsPrimary(shortByOne);
+                sysUserOrg.setIsCharge(shortByZero);
+                sysUserOrg.setIsGradeManage(shortByZero);
+                long findOrgId = 0;
 
-            List<ISysOrg> sysOrgList = sysOrgService.getAll();
-            for(ISysOrg sysOrg :sysOrgList){
-                String orgDesc = sysOrg.getOrgDesc();
-                if(orgDesc != null&&orgDesc.equals(orgCode)){
-                     findOrgId = sysOrg.getOrgId();
+                List<ISysOrg> sysOrgList = sysOrgService.getAll();
+                for(ISysOrg sysOrg :sysOrgList){
+                    String orgDesc = sysOrg.getOrgDesc();
+                    if(orgDesc != null&&orgDesc.equals(orgCode)){
+                        findOrgId = sysOrg.getOrgId();
+                    }
                 }
+                UserRole userRole = new UserRole();
+                long userRoldId = UniqueIdUtil.genId();
+                if(sysUserService.isAccountExist(account)){
+                    ISysUser userByAccount = sysUserService.getByAccount(account);
+                    Long findUserId = userByAccount.getUserId();
+                    SysUserOrg userOrgModel = sysUserOrgService.getUserOrgModel(findUserId, userByAccount.getOrgId());
+                    List<UserRole> userRoleList = userRoleService.getByUserId(findUserId);
+                    Long findUserRoleId = 0L ;
+                    for(UserRole findUserRole:userRoleList){
+                        findUserRoleId = findUserRole.getUserRoleId();
+                    }
+                    sysUser.setUserId(findUserId);
+                    sysUser.setCreatetime(new Date());
+                    sysUser.setOrgId(findOrgId);
+                    Long userOrgId = userOrgModel.getUserOrgId();
+                    userRoleService.delById(findUserRoleId);
+                    sysUserOrgService.delById(userOrgId);
+                    sysUserService.update(sysUser);
+                    sysUserOrg.setUserOrgId(userOrgId);
+                    sysUserOrg.setUserId(findUserId);
+                    sysUserOrg.setOrgId(findOrgId);
+                    userRole.setUserRoleId(findUserRoleId);
+                    userRole.setUserId(findUserId);
+                    userRole.setRoleId(Long.parseLong("2018"));//硬编码
+                    sysUserOrgService.add(sysUserOrg);
+                    userRoleService.add(userRole);
+                }else{
+                    sysUser.setUserId(userId);
+                    sysUser.setOrgId(findOrgId);
+                    sysUserService.add(sysUser);
+                    sysUserOrg.setUserId(userId);
+                    sysUserOrg.setUserOrgId(UniqueIdUtil.genId());
+                    sysUserOrg.setOrgId(findOrgId);
+                    userRole.setUserRoleId(userRoldId);
+                    userRole.setUserId(userId);
+                    userRole.setRoleId(Long.parseLong("2018"));//硬编码
+                    sysUserOrgService.add(sysUserOrg);
+                    userRoleService.add(userRole);
+                }
+                flag = "success";
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                flag = "failed";
             }
             UserRole userRole = new UserRole();
             long userRoldId = UniqueIdUtil.genId();
@@ -147,7 +193,6 @@ public class DataInterfacesImpl {
             log.error(ex.getMessage());
             flag = "failed";
         }
-
         } else if (saveType.equals("Organization")) {
             System.err.println("群组表");
             JSONObject orgJson =(JSONObject) json.get("data");

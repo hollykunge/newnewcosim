@@ -130,8 +130,9 @@ public class ScoreController extends AbstractController {
         Long scoreId = RequestUtil.getLong(request,"id");
         String scoreType = RequestUtil.getString(request,"scoreType");
         DdScore ddScore = ddScoreService.getById(scoreId);
+
         QueryFilter queryFilter = new QueryFilter(request, "detailItem");
-        queryFilter.addFilter("uid", ddScore.getUserId());
+        queryFilter.addFilter("userId", ddScore.getUserId());
         List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(queryFilter);
         Iterator<DdScoreInflow> it = detailList.iterator();
         while(it.hasNext()) {
