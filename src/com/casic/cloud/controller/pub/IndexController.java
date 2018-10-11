@@ -483,16 +483,20 @@ public class IndexController extends BaseController {
             switch (type)
             {
                 case 1:
-                    response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/personaltask/list.ht&resId=10000026700011");
+                    response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/personaltask/list.ht&resId=10000022100001");
                     break;
                 case 2:
                     response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/modelcenter/list.ht&resId=10000026700011");
                     break;
                 case 3:
+                    response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/datacenter/list.ht&resId=10000022100003");
+                    break;
+                case 4:
+                    response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/project/list.ht&resId=10000022100002");
+                    break;
+                default:
                     break;
             }
-
-//            response.sendRedirect("http://192.168.8.106:8083/indexController/login?account=hanxu1&password=123");
             return null;
         }
         return null;

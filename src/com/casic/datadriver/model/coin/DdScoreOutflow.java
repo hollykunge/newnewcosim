@@ -12,10 +12,18 @@ public class DdScoreOutflow extends BaseModel {
     @Id
     private Long id;
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     /**
      * 用户id
      */
-    private Long uid;
+    private Long userId;
 
     /**
      * 积分来源
@@ -53,24 +61,6 @@ public class DdScoreOutflow extends BaseModel {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * 获取用户id
-     *
-     * @return uid - 用户id
-     */
-    public Long getUid() {
-        return uid;
-    }
-
-    /**
-     * 设置用户id
-     *
-     * @param uid 用户id
-     */
-    public void setUid(Long uid) {
-        this.uid = uid;
     }
 
 
@@ -149,7 +139,7 @@ public class DdScoreOutflow extends BaseModel {
     public String toString() {
         return "DdScoreOutflow{" +
                 "id=" + id +
-                ", uid=" + uid +
+                ", uid=" + userId +
                 ", sourceType='" + sourceType + '\'' +
                 ", expendScore=" + expendScore +
                 ", expendDetail='" + expendDetail + '\'' +

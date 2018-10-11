@@ -2,16 +2,20 @@ package com.casic.datadriver.service.webservice;
 
 import com.alibaba.fastjson.JSONObject;
 import com.casic.datadriver.service.Util.Xml2Json;
+import com.hotent.core.encrypt.EncryptUtil;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.platform.auth.ISysOrg;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.model.system.SysOrg;
 import com.hotent.platform.model.system.SysUser;
 import com.hotent.platform.model.system.SysUserOrg;
+import com.hotent.platform.model.system.UserRole;
 import com.hotent.platform.service.system.SysOrgService;
 import com.hotent.platform.service.system.SysUserOrgService;
 import com.hotent.platform.service.system.SysUserService;
+import com.hotent.platform.service.system.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import sun.security.provider.MD5;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -29,7 +33,8 @@ public class DataInterfacesImpl {
     private SysOrgService sysOrgService;
     @Autowired
     private SysUserOrgService sysUserOrgService;
-
+    @Autowired
+    private UserRoleService userRoleService;
     /**
      * 根据XML文件自动创建用户和科室
      * @return
@@ -64,62 +69,79 @@ public class DataInterfacesImpl {
             String  shortAccount2= (String)infoJson.get("ming");
             String  orgCodeAndOrgSn= (String)infoJson.get("deptTyyhOrgCode");
             String  orgCode = (String)infoJson.get("deptCode");
-        try{
-            SysUser sysUser = new SysUser();
-            sysUser.setFullname(fullName);
-            sysUser.setAccount(account);
-            sysUser.setPassword("123456");
-            sysUser.setIsExpired(shortByZero);
-            sysUser.setIsLock(Short.parseShort(isLock));
-            sysUser.setStatus(shortByOne);
-            sysUser.setPhone(phone);
-            sysUser.setSex(sex);
-            sysUser.setFromType(shortByZero);
-            //sysUser.setOrgId(Long.parseLong(orgCodeAndOrgSn));
-            //sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
-            sysUser.setShortAccount(shortAccount1+shortAccount2);
+            try{
+                SysUser sysUser = new SysUser();
+                sysUser.setFullname(fullName);
+                sysUser.setAccount(account);
+                sysUser.setPassword(EncryptUtil.encryptSha256("123456"));
+                sysUser.setIsExpired(shortByZero);
+                sysUser.setIsLock(Short.parseShort(isLock));
+                sysUser.setStatus(shortByOne);
+                sysUser.setPhone(phone);
+                sysUser.setSex(sex);
+                sysUser.setFromType(shortByZero);
+                //sysUser.setOrgId(Long.parseLong(orgCodeAndOrgSn));
+                //sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
+                sysUser.setShortAccount(shortAccount1+shortAccount2);
 
-            SysUserOrg sysUserOrg = new SysUserOrg();
-            //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
-            sysUserOrg.setIsPrimary(shortByOne);
-            sysUserOrg.setIsCharge(shortByZero);
-            sysUserOrg.setIsGradeManage(shortByZero);
-            long findOrgId = 0;
+                SysUserOrg sysUserOrg = new SysUserOrg();
+                //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
+                sysUserOrg.setIsPrimary(shortByOne);
+                sysUserOrg.setIsCharge(shortByZero);
+                sysUserOrg.setIsGradeManage(shortByZero);
+                long findOrgId = 0;
 
-            List<ISysOrg> sysOrgList = sysOrgService.getAll();
-            for(ISysOrg sysOrg :sysOrgList){
-                String orgDesc = sysOrg.getOrgDesc();
-                if(orgDesc != null&&orgDesc.equals(orgCode)){
-                     findOrgId = sysOrg.getOrgId();
+                List<ISysOrg> sysOrgList = sysOrgService.getAll();
+                for(ISysOrg sysOrg :sysOrgList){
+                    String orgDesc = sysOrg.getOrgDesc();
+                    if(orgDesc != null&&orgDesc.equals(orgCode)){
+                        findOrgId = sysOrg.getOrgId();
+                    }
                 }
+                UserRole userRole = new UserRole();
+                long userRoldId = UniqueIdUtil.genId();
+                if(sysUserService.isAccountExist(account)){
+                    ISysUser userByAccount = sysUserService.getByAccount(account);
+                    Long findUserId = userByAccount.getUserId();
+                    SysUserOrg userOrgModel = sysUserOrgService.getUserOrgModel(findUserId, userByAccount.getOrgId());
+                    List<UserRole> userRoleList = userRoleService.getByUserId(findUserId);
+                    Long findUserRoleId = 0L ;
+                    for(UserRole findUserRole:userRoleList){
+                        findUserRoleId = findUserRole.getUserRoleId();
+                    }
+                    sysUser.setUserId(findUserId);
+                    sysUser.setCreatetime(new Date());
+                    sysUser.setOrgId(findOrgId);
+                    Long userOrgId = userOrgModel.getUserOrgId();
+                    userRoleService.delById(findUserRoleId);
+                    sysUserOrgService.delById(userOrgId);
+                    sysUserService.update(sysUser);
+                    sysUserOrg.setUserOrgId(userOrgId);
+                    sysUserOrg.setUserId(findUserId);
+                    sysUserOrg.setOrgId(findOrgId);
+                    userRole.setUserRoleId(findUserRoleId);
+                    userRole.setUserId(findUserId);
+                    userRole.setRoleId(Long.parseLong("2018"));//硬编码
+                    sysUserOrgService.add(sysUserOrg);
+                    userRoleService.add(userRole);
+                }else{
+                    sysUser.setUserId(userId);
+                    sysUser.setOrgId(findOrgId);
+                    sysUserService.add(sysUser);
+                    sysUserOrg.setUserId(userId);
+                    sysUserOrg.setUserOrgId(UniqueIdUtil.genId());
+                    sysUserOrg.setOrgId(findOrgId);
+                    userRole.setUserRoleId(userRoldId);
+                    userRole.setUserId(userId);
+                    userRole.setRoleId(Long.parseLong("2018"));//硬编码
+                    sysUserOrgService.add(sysUserOrg);
+                    userRoleService.add(userRole);
+                }
+                flag = "success";
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                flag = "failed";
             }
-
-            if(sysUserService.isAccountExist(account)){
-                ISysUser userByAccount = sysUserService.getByAccount(account);
-                SysUserOrg userOrgModel = sysUserOrgService.getUserOrgModel(userByAccount.getUserId(), userByAccount.getOrgId());
-                sysUser.setUserId(userByAccount.getUserId());
-                sysUser.setCreatetime(new Date());
-                Long userOrgId = userOrgModel.getUserOrgId();
-                sysUserOrgService.delById(userOrgId);
-                sysUserService.update(sysUser);
-                sysUserOrg.setUserOrgId(userOrgId);
-                sysUserOrg.setUserId(userByAccount.getUserId());
-                sysUserOrg.setOrgId(findOrgId);
-                sysUserOrgService.add(sysUserOrg);
-            }else{
-                sysUser.setUserId(userId);
-                sysUser.setOrgId(findOrgId);
-                sysUserService.add(sysUser);
-                sysUserOrg.setUserId(userId);
-                sysUserOrg.setUserOrgId(UniqueIdUtil.genId());
-                sysUserOrg.setOrgId(findOrgId);
-                sysUserOrgService.add(sysUserOrg);
-            }
-            flag = "success";
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            flag = "failed";
-        }
 
         } else if (saveType.equals("Organization")) {
             System.err.println("群组表");
@@ -131,11 +153,12 @@ public class DataInterfacesImpl {
             String orgName = (String) infoJson.get("orgName");
             String orgSecName = (String)infoJson.get("mdCode");
             long orgId = UniqueIdUtil.genId();
+            long orgSupId = (long)100;
             try {
                 SysOrg sysOrg = new SysOrg();
                 sysOrg.setOrgId(orgId);
                 sysOrg.setOrgName(orgName);
-                sysOrg.setOrgSupId(longByOne);
+                sysOrg.setOrgSupId(orgSupId);
                 sysOrg.setOrgDesc(orgSecName);
                 sysOrg.setOrgType(longByOne);
                 sysOrg.setFromType(shortByOne);

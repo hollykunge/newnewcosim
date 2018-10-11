@@ -65,7 +65,7 @@ public class CoinController extends GenericController {
     /**
      * 赚取积分接口
      *
-     * @param account      身份证号
+     * @param uid      身份证号
      * @param sourceScore  分数
      * @param sourceType   一级类型
      * @param sourceDetail 二级类型
@@ -74,11 +74,14 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("add")
     @ResponseBody
-    public void add(String account, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletResponse response) throws Exception {
+    public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
-            resultMsg = coinService.addScore(account, sourceScore, sourceType, sourceDetail, updTime);
-            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+            resultMsg = coinService.addScore(uid, sourceScore, sourceType, sourceDetail, updTime);
+//            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+            //解决跨域
+            String callback = request.getParameter("callback");
+            response.getWriter().write(callback + "(" + resultMsg + ")");
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
         }
@@ -92,7 +95,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("personalScore")
     @ResponseBody
-    public JSONArray personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
             //获取用户uid
@@ -105,7 +108,7 @@ public class CoinController extends GenericController {
             List<DdScoreInflow> qiushiInflows =
                     ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
             List<DdScoreInflow> chuangxinInflows =
-                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
+                    ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.CHUANG_XIN);
             //返回的map
             Map<String, Integer> personalMap = new HashMap<>(16);
             //全局总数
@@ -145,6 +148,18 @@ public class CoinController extends GenericController {
                     personalMap.put("chuangxinMonthScore", ddScore.getScoreTotal());
                 }
             }
+            if(!personalMap.containsKey("quanjuMonthScore")) {
+                personalMap.put("quanjuMonthScore", 0);
+            }
+            if(!personalMap.containsKey("fengxianMonthScore")) {
+                personalMap.put("fengxianMonthScore", 0);
+            }
+            if(!personalMap.containsKey("qiushiMonthScore")) {
+                personalMap.put("qiushiMonthScore", 0);
+            }
+            if(!personalMap.containsKey("chuangxinMonthScore")) {
+                personalMap.put("chuangxinMonthScore", 0);
+            }
             //获取年币
             List<DdGoldenCoin> personalCoinList = goldenCoinService.getPersonal(userId);
             for(DdGoldenCoin ddGoldenCoin : personalCoinList) {
@@ -157,6 +172,18 @@ public class CoinController extends GenericController {
                 } else if(ScoreRegulation.CHUANG_XIN.equals(ddGoldenCoin.getCoinType())) {
                     personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getTotal().intValue());
                 }
+            }
+            if(!personalMap.containsKey("quanjuTotalCoin")) {
+                personalMap.put("quanjuTotalCoin", 0);
+            }
+            if(!personalMap.containsKey("fengxianTotalCoin")) {
+                personalMap.put("fengxianTotalCoin", 0);
+            }
+            if(!personalMap.containsKey("qiushiTotalCoin")) {
+                personalMap.put("qiushiTotalCoin", 0);
+            }
+            if(!personalMap.containsKey("chuangxinTotalCoin")) {
+                personalMap.put("chuangxinTotalCoin", 0);
             }
             //获取月币
             //todo 不想写了这傻逼玩意儿
@@ -172,7 +199,6 @@ public class CoinController extends GenericController {
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
-        return jsonR;
     }
 
     /**
@@ -191,7 +217,7 @@ public class CoinController extends GenericController {
             for (DdScore ddScore : ddScoreList) {
                 DdRank e = new DdRank();
                 e.setUserName(ddScore.getUserName());
-                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUid()).get(0).getOrgName();
+                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
                 e.setOrgName(orgName);
                 e.setScoreTotal(ddScore.getScoreTotal());
                 itemList.add(e);

@@ -46,7 +46,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         //缓存所有dd_score数据
         List<DdScore> ddScoreList = ddScoreDao.getAll();
         for (DdScore ddScore : ddScoreList) {
-            initCache(String.valueOf(ddScore.getUid()) + ddScore.getScoreType(), ddScore);
+            initCache(String.valueOf(ddScore.getUserId()) + ddScore.getScoreType(), ddScore);
         }
     }
 
@@ -59,7 +59,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
     public Boolean updateScore(DdScoreInflow ddScoreInflow, DdScoreOutflow ddScoreOutflow) {
         if (ddScoreInflow != null) {
             //首先获取积分统计缓存，每一个用户的一种SourceType对应一个积分统计对象
-            String cacheKey = String.valueOf(ddScoreInflow.getUid()) + ddScoreInflow.getSourceType();
+            String cacheKey = String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceType();
             DdScore ddScoreTemp = getCache(cacheKey);
             //如果有就取出，没有就写数据库并写缓存
             if (ddScoreTemp != null) {
@@ -72,7 +72,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
                 //生成积分统计对象
                 DdScore ddScore = new DdScore();
                 ddScore.setId(UniqueIdUtil.genId());
-                ddScore.setUid(ddScoreInflow.getUid());
+                ddScore.setUserId(ddScoreInflow.getUserId());
                 ddScore.setUserName(ddScoreInflow.getUserName());
                 ddScore.setScoreTotal(ddScoreInflow.getSourceScore());
                 ddScore.setScoreType(ddScoreInflow.getSourceType());
@@ -85,7 +85,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         }
         if (ddScoreOutflow != null) {
             //首先获取积分统计缓存，每一个用户的一种SourceType对应一个积分统计对象
-            String cacheKey = String.valueOf(ddScoreOutflow.getUid()) + ddScoreOutflow.getSourceType();
+            String cacheKey = String.valueOf(ddScoreOutflow.getUserId()) + ddScoreOutflow.getSourceType();
             DdScore ddScoreTemp = getCache(cacheKey);
             if (ddScoreTemp!=null){
                 //计算出

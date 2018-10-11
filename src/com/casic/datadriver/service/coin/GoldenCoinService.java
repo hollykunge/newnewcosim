@@ -100,13 +100,13 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
             ddScoreOutflow.setSourceType(ddScore.getScoreType());
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             ddScoreOutflow.setUdpTime(df.format(new Date()));
-            ddScoreOutflow.setUid(ddScore.getUid());
+            ddScoreOutflow.setUserId(ddScore.getUserId());
             Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
             if (done) {
                 ddScoreOutflowDao.add(ddScoreOutflow);
             }
             //获取币
-            List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUid());
+            List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUserId());
             DdGoldenCoin userTypeCoin = new DdGoldenCoin();
             Boolean isHave = false;
             for(DdGoldenCoin ddGoldenCoin : userCoinList) {
@@ -122,7 +122,7 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
                 ddGoldenCoinDao.updateCoin(userTypeCoin);
             } else {
                 userTypeCoin.setId(UniqueIdUtil.genId());
-                userTypeCoin.setUserId(ddScore.getUid());
+                userTypeCoin.setUserId(ddScore.getUserId());
                 userTypeCoin.setCoinType(ddScore.getScoreType());
                 userTypeCoin.setTotal(Integer.toUnsignedLong(getCoin));
                 ddGoldenCoinDao.add(userTypeCoin);

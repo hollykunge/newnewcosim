@@ -46,12 +46,11 @@
             <display:column title="${checkAll}" media="html" style="width:30px;">
                 <input type="checkbox" class="pk" name="bizDefId" value="${scoreInflowItem.id}">
             </display:column>
-            <display:column property="uid" title="用户" sortable="true" sortName="uid" maxLength="80"></display:column>
-            <display:column property="sourceScore" title="赚取积分值" sortable="true" sortName="sourceScore" maxLength="80"></display:column>
-            <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80"></display:column>
+            <display:column property="userId" title="用户id" sortable="true" sortName="userId" maxLength="80"></display:column>
+            <display:column property="userName" title="用户" sortable="true" sortName="userName" maxLength="80"></display:column><display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80"></display:column>
             <display:column property="sourceDetail" title="积分详情" sortable="true" sortName="sourceDetail" maxLength="80"></display:column>
             <display:column property="updTime" title="更新时间" sortable="true" sortName="updTime"></display:column>
-            <display:column title="管理" media="html" style="width:260px">
+            <display:column title="管理" media="html" style="width:160px">
                 <a href="del.ht?id=${scoreInflowItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${scoreInflowItem.id}" class="link edit">编辑</a>
             </display:column>

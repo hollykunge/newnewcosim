@@ -46,7 +46,7 @@
             <display:column title="${checkAll}" media="html" style="width:30px;">
                 <input type="checkbox" class="pk" name="bizDefId" value="${bizDefItem.bizDefId}">
             </display:column>
-            <display:column property="uid" title="用户" sortable="true" sortName="uid" maxLength="80"></display:column>
+            <display:column property="userId" title="用户" sortable="true" sortName="userId" maxLength="80"></display:column>
             <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expendScore" maxLength="80"></display:column>
             <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80"></display:column>
             <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expendDetail" maxLength="80"></display:column>

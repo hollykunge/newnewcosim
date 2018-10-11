@@ -47,7 +47,7 @@ public class CoinAspect {
     /**
      * design_5,奖励10积分
      */
-    @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.done(..))")
+    @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.done(..))")
     public void doneAspect(){}
     /**
      * design_6,奖励10积分
@@ -57,7 +57,8 @@ public class CoinAspect {
     /**
      * design_7,奖励5积分
      */
-    @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.createtopublish(..))")
+    @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.createtopublish(..))||"+
+            "execution(public * com.casic.datadriver.controller.project.ProjectController.onepunchsend(..))")
     public void createtopublishAspect(){}
     /**
      * design_8,奖励10积分

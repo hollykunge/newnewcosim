@@ -102,7 +102,7 @@ public class ScoreController extends AbstractController {
         String scoreAction = RequestUtil.getString(request,"scoreAction");
         DdScore ddScore = new DdScore();
         ddScore.setId(scoreId);
-        ddScore.setUid(scoreUid);
+        ddScore.setUserId(scoreUid);
         ddScore.setUserName(userName);
         ddScore.setScoreTotal(scoreTotal);
         ddScore.setCrtTime(crtTime);
@@ -129,7 +129,7 @@ public class ScoreController extends AbstractController {
         Long scoreId = RequestUtil.getLong(request,"id");
         String scoreType = RequestUtil.getString(request,"scoreType");
         DdScore ddScore = ddScoreService.getById(scoreId);
-        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(ddScore.getUid());
+        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(ddScore.getUserId());
         for(DdScoreInflow ddScoreInflow : detailList) {
             if(!ddScoreInflow.getSourceType().equals(scoreType)) {
                 detailList.remove(ddScoreInflow);

@@ -48,18 +48,11 @@ public class CoinService {
      */
     public String addScore(String account, String sourceScore, String sourceType, String sourceDetail, String updTime){
         String resultMsg;
+        String timeDate;
         //判断是否当天消息
-        Boolean isToday = false;
-        Date time = toDate(updTime);
-        Date today = new Date();
-        if (time != null) {
-            String nowDate = DATE_FORMATTER2.get().format(today);
-            String timeDate = DATE_FORMATTER2.get().format(time);
-            if (nowDate.equals(timeDate)) {
-                isToday = true;
-            }
-        }
-        if (account != null && isToday) {
+        Date time = new Date();
+        timeDate = DATE_FORMATTER2.get().format(time);
+        if (account != null) {
             //获取用户
             ISysUser sysUser = sysUserDao.getByAccount(account);
             if (sourceScore != null) {
@@ -75,11 +68,11 @@ public class CoinService {
                     //增加流水
                     DdScoreInflow ddScoreInflow = new DdScoreInflow();
                     ddScoreInflow.setId(UniqueIdUtil.genId());
-                    ddScoreInflow.setUid(sysUser.getUserId());
+                    ddScoreInflow.setUserId(sysUser.getUserId());
                     ddScoreInflow.setSourceScore(Integer.valueOf(sourceScore));
                     ddScoreInflow.setSourceDetail(sourceDetail);
                     ddScoreInflow.setSourceType(sourceType);
-                    ddScoreInflow.setUpdTime(updTime);
+                    ddScoreInflow.setUpdTime(timeDate);
                     ddScoreInflow.setUserName(sysUser.getFullname());
                     //写入数据库和缓存
                     ddScoreInflowService.add(ddScoreInflow);
@@ -101,7 +94,7 @@ public class CoinService {
     private final static ThreadLocal<SimpleDateFormat> DATE_FORMATTER2 = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd");
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         }
     };
 }
