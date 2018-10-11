@@ -30,6 +30,10 @@
     <link rel="stylesheet" href="${ctx}/jqwidgets/styles/jqx.base.css" type="text/css"/>
     <link rel="stylesheet" href="${ctx}/jqwidgets/styles/jqx.bootstrap.css" type="text/css"/>
 
+    <!-- include the style of alertify-->
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
+
     <script src="${ctx}/newtable/jquery.js"></script>
     <script type="text/javascript" src="${ctx}/jqwidgets/jqx-all.js"></script>
 
@@ -45,6 +49,9 @@
     <script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>
     <script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>
     <script type="text/javascript" src="${ctx}/js/hotent/subform.js"></script>
+
+    <!-- include the script alertify-->
+    <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
 </head>
 <body style="height: 100%">
 <div class="container" style="height: 100%">
@@ -164,10 +171,22 @@
     }
     //完成项目
     function done(projectId) {
-        $('#done_model').modal({
-            keyboard: true,
-            remote: "done.ht?id=" + projectId
-        });
+        $.ajax({
+            type: "POST",
+            url: "done.ht?id=" + projectId,
+            success: function (res) {
+                var resJson = eval('('+res+')');
+                if (resJson.result == 0) {
+                    alertify.alert("提示信息", resJson.message).set('label', '确定');
+                } else if (resJson.result == 1) {
+                    alertify.alert("提示信息", resJson.message).set('label', '确定');
+                }
+            },
+            error: function (err) {
+                errJson = eval('('+err+')');
+                alertify.alert("提示信息", errJson.message).set('label', '确定');
+            }
+        })
     }
     //创建指标
     <%--function createIndex(projectId) {--%>
@@ -201,13 +220,13 @@
         $.get("${ctx}/datadriver/index/indexlist.ht?id=${Project.ddProjectId}", function (data) {
             $('#indextab').html(data);
         });
-    }
+    };
     switch_attr_task.onclick = function () {
         $("#indexDataFormSave").hide();
         $("#create_task").show();
         $.get("showtask.ht?id=${Project.ddProjectId}", function (data) {
             $('#task').html(data);
         });
-    }
+    };
 </script>
 </html>

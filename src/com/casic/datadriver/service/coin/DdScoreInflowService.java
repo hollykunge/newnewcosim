@@ -4,7 +4,9 @@ import com.casic.datadriver.dao.coin.DdScoreInflowDao;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.manager.ScoreRegulation;
 import com.hotent.core.db.IEntityDao;
+import com.hotent.core.page.PageBean;
 import com.hotent.core.service.BaseService;
+import com.hotent.core.web.query.QueryFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -87,13 +89,13 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
     /**
      * 通过用户id查找
-     * @param uid uid
      * @return DdScoreInflow流水
      */
-    public List<DdScoreInflow> getByUid(long uid) {
-        Map<String, String> param = new HashMap<>(1);
-        param.put("userId", String.valueOf(uid));
-        return ddScoreInflowDao.getList("getByUid", param);
+
+    public List<DdScoreInflow> getByUid(QueryFilter queryFilter) {
+        //Map<String, String> param = new HashMap<>(1);
+        //param.put("uid", String.valueOf(uid));
+        return ddScoreInflowDao.getBySqlKey("getByUid", queryFilter);
     }
     /**
      * 更改
@@ -111,14 +113,14 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
     /**
      * 获取当前用户今日特定类型流水，按二级类型
-     * @param uid 用户id
+     * @param userId 用户id
      * @param sourceDetail 二级类型
      * @return 今日该类型所有流水
      */
-    List<DdScoreInflow> getTodayScore(Long uid, String sourceDetail) {
+    List<DdScoreInflow> getTodayScore(Long userId, String sourceDetail) {
         //联合查询
         Map<String, String> param = new HashMap<>(2);
-        param.put("userId", String.valueOf(uid));
+        param.put("userId", String.valueOf(userId));
         param.put("sourceDetail", sourceDetail);
         List<DdScoreInflow> ddScoreInflows =
                 ddScoreInflowDao.getList("getTodayDetailScore", param);
@@ -133,14 +135,14 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
     /**
      * 获取个人的一级类型流水
-     * @param uid uid
+     * @param userId userId
      * @param sourceType 一级类型
      * @return DdScoreInflow列表
      */
-    public List<DdScoreInflow> getTypeTotalScore(Long uid, String sourceType) {
+    public List<DdScoreInflow> getTypeTotalScore(Long userId, String sourceType) {
         //联合查询
         Map<String, String> param = new HashMap<>(2);
-        param.put("userId", String.valueOf(uid));
+        param.put("userId", String.valueOf(userId));
         param.put("sourceType", sourceType);
         return ddScoreInflowDao.getList("getTypeTotalScore", param);
     }

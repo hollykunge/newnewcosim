@@ -15,6 +15,16 @@ public class DdGoldenCoin extends BaseModel {
     private Long total;
     private String coinType;
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    private String userName;
+
 
     public Long getId() {
         return id;

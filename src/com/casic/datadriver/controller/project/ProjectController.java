@@ -623,8 +623,6 @@ public class ProjectController extends BaseController {
                         taskInfoService.update(taskInfo);
                         String msg = "通知："+taskInfo.getDdTaskProjectName()+"项目的"+taskInfo.getDdTaskName()+"审核通过" ;
                         //taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
-
-
                         taskStart.setDdTaskStatus(TaskStart.completepanel);
                         taskStartService.update(taskStart);
                     }else {
@@ -633,8 +631,6 @@ public class ProjectController extends BaseController {
                         taskInfo.setDdTaskState(TaskInfo.checkpanel);
                         String msg = "通知："+taskInfo.getDdTaskProjectName()+"项目的"+taskInfo.getDdTaskName()+"被撤销通过" ;
                         //taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
-
-
                         taskStart.setDdTaskStatus(TaskStart.checkpanel);
                         taskStartService.update(taskStart);
                     }

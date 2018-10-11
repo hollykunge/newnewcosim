@@ -65,6 +65,8 @@
             <table class="table-detail" cellpadding="0" cellspacing="0" border="0" type="main">
                 <tr><th style="width:120px;">用户</th><td colspan="3"><input size="35" id="userId" name="userId" value="${golden.userId}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
                 <tr><th style="width:120px;">二币总量</th><td><input size="35" id="total" name="total" value="${golden.total}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+
+                <tr><th style="width:120px;">类型</th><td><input size="35" id="coinType" name="total" value="${golden.coinType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
             <input size="35" type="hidden" name="id" value="${golden.id}" />
             <input size="35" type="hidden" name="uid" value="${golden.userId}" />

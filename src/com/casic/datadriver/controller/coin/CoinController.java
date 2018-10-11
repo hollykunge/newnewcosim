@@ -49,8 +49,7 @@ public class CoinController extends GenericController {
 
     @Autowired
     public CoinController(DdScoreInflowService ddScoreInflowService,
-                          SysUserDao sysUserDao,
-                          DdScoreService ddScoreService,
+                          SysUserDao sysUserDao,                          DdScoreService ddScoreService,
                           CoinService coinService,
                           SysOrgDao sysOrgDao,
                           GoldenCoinService goldenCoinService) {
@@ -186,7 +185,7 @@ public class CoinController extends GenericController {
                 personalMap.put("chuangxinTotalCoin", 0);
             }
             //获取月币
-            //todo 不想写了这傻逼玩意儿
+            //todo 不想写了这sddx
             personalMap.put("quanjuMonthCoin", 0);
             personalMap.put("fengxianMonthCoin", 0);
             personalMap.put("qiushiMonthCoin", 0);
@@ -203,7 +202,6 @@ public class CoinController extends GenericController {
 
     /**
      * @param response 响应
-     * @return JSONArray j
      * @throws Exception 扔
      */
     @RequestMapping("rank")
@@ -232,14 +230,13 @@ public class CoinController extends GenericController {
             //解决跨域
             String callback = request.getParameter("callback");
             response.getWriter().write(callback + "(" + jsonR.toString() + ")");
-//            writeResultMessage(response.getWriter(), callback + "("+jsonR.toString()+")", ResultMessage.Success);
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
     }
 
 
-    private final static ThreadLocal<SimpleDateFormat> dateFormater2 = new ThreadLocal<SimpleDateFormat>() {
+    private final static ThreadLocal<SimpleDateFormat> DATE_FORMATER2 = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd");

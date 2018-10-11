@@ -63,15 +63,15 @@
             <div class="pull-right">
                 <a class="btn btn-success" href="javascript:void(0)" id="submit_btn"><span
                         class="glyphicon glyphicon-ok"></span> 提交审核</a>
-                <a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span
-                        class="glyphicon glyphicon-stats"></span>
-                    流程监控
-                </a>
-                <a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"
-                   class="btn btn-default" target="_blank"><span
-                        class="glyphicon glyphicon-stats" 　></span>
-                    数据挖掘
-                </a>
+                <%--<a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span--%>
+                        <%--class="glyphicon glyphicon-stats"></span>--%>
+                    <%--流程监控--%>
+                <%--</a>--%>
+                <%--<a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"--%>
+                   <%--class="btn btn-default" target="_blank"><span--%>
+                        <%--class="glyphicon glyphicon-stats" 　></span>--%>
+                    <%--数据挖掘--%>
+                <%--</a>--%>
 
             </div>
         </div>
@@ -179,7 +179,7 @@
         switch_attr_data = document.getElementById('switch_attr_data'),
         switch_attr_publish = document.getElementById('switch_attr_publish'),
         switch_attr_order = document.getElementById('switch_attr_order'),
-        statis_btn = document.getElementById('statis_btn'),
+        // statis_btn = document.getElementById('statis_btn'),
         create_task = document.getElementById('create_task'),
 
         switch_attr_child = document.getElementById('switch_attr_child'),
@@ -213,11 +213,11 @@
         });
     }
     //
-    statis_btn.onclick = function () {
-        $('#statis').modal({
-            keyboard: true,
-            remote: "statis.ht?id=${TaskInfo.ddTaskId}"
-        });
-    }
+    <%--statis_btn.onclick = function () {--%>
+        <%--$('#statis').modal({--%>
+            <%--keyboard: true,--%>
+            <%--remote: "statis.ht?id=${TaskInfo.ddTaskId}"--%>
+        <%--});--%>
+    <%--}--%>
 </script>
 </html>

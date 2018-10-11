@@ -3,7 +3,7 @@
 <mapper namespace="com.casic.datadriver.model.coin.DdScore">
     <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdScore">
         <id column="id" property="id" jdbcType="NUMERIC"/>
-        <result column="uid" property="uid" jdbcType="NUMERIC"/>
+        <result column="user_id" property="userId" jdbcType="NUMERIC"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="score_total" property="scoreTotal" jdbcType="NUMERIC"/>
         <result column="crt_time" property="crtTime" jdbcType="VARCHAR"/>
@@ -12,12 +12,12 @@
         <result column="score_action" property="scoreAction" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, uid, user_name, score_total, crt_time, udp_time, score_type, score_action
+        id, user_id, user_name, score_total, crt_time, udp_time, score_type, score_action
     </sql>
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScore">
-    insert into dd_score (id, uid, user_name, score_total, crt_time, udp_time, score_type, score_action)
+    insert into dd_score (id, user_id, user_name, score_total, crt_time, udp_time, score_type, score_action)
     values (#{id,jdbcType=NUMERIC},
-      #{uid,jdbcType=NUMERIC},
+      #{userId,jdbcType=NUMERIC},
       #{userName,jdbcType=VARCHAR},
       #{scoreTotal,jdbcType=NUMERIC},
       #{crtTime,jdbcType=VARCHAR},
@@ -33,7 +33,11 @@
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM dd_score
+        FROM dd_score dds
+        where
+        1=1
+        <if test="@Ognl@isNotEmpty(userName)"> AND dds.user_name LIKE #{userName} </if>
+        <if test="@Ognl@isNotEmpty(scoreType)"> AND dds.score_type LIKE #{scoreType}</if>
     </select>
     <select id="getType" resultMap="BaseResultMap">
         SELECT
@@ -47,7 +51,7 @@
         <include refid="Base_Column_List"/>
         FROM dd_score
         WHERE
-        uid=#{uid}
+        user_id=#{userId}
     </select>
     <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
@@ -58,8 +62,8 @@
     <update id="update" parameterType="com.casic.datadriver.model.coin.DdScore">
 		UPDATE dd_score
 		<set>
-            <if test="uid !=null">
-                uid = #{uid,jdbcType=NUMERIC},
+            <if test="userId !=null">
+                user_id = #{userId,jdbcType=NUMERIC},
             </if>
             <if test="userName !=null">
                 user_name = #{userName,jdbcType=VARCHAR},

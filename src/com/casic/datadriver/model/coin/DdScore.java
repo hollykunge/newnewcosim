@@ -68,6 +68,23 @@ public class DdScore extends BaseModel {
         this.id = id;
     }
 
+    /**
+     * 获取用户id
+     *
+     * @return userId - 用户id
+     */
+    public Long getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置用户id
+     *
+     * @param userId 用户id
+     */
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getUserName() {
         return userName;

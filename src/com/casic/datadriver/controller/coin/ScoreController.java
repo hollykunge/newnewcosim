@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -129,13 +130,15 @@ public class ScoreController extends AbstractController {
         Long scoreId = RequestUtil.getLong(request,"id");
         String scoreType = RequestUtil.getString(request,"scoreType");
         DdScore ddScore = ddScoreService.getById(scoreId);
-        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(ddScore.getUserId());
-        for(DdScoreInflow ddScoreInflow : detailList) {
-            if(!ddScoreInflow.getSourceType().equals(scoreType)) {
-                detailList.remove(ddScoreInflow);
-                if(0 == detailList.size()) {
-                    return this.getAutoView();
-                }
+
+        QueryFilter queryFilter = new QueryFilter(request, "detailItem");
+        queryFilter.addFilter("userId", ddScore.getUserId());
+        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(queryFilter);
+        Iterator<DdScoreInflow> it = detailList.iterator();
+        while(it.hasNext()) {
+            DdScoreInflow x = it.next();
+            if(!(x.getSourceType()).equals(scoreType)) {
+                it.remove();
             }
         }
         return this.getAutoView().addObject("detailList", detailList);

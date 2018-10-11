@@ -90,6 +90,24 @@ public class DdScoreInflow extends BaseModel {
     }
 
     /**
+     * 获取用户id
+     *
+     * @return userId - 用户id
+     */
+    public Long getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置用户id
+     *
+     * @param userId 用户id
+     */
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    /**
      * 获取获得积分
      *
      * @return source_score - 获得积分
@@ -173,7 +191,7 @@ public class DdScoreInflow extends BaseModel {
     public String toString() {
         return "DdScoreInflow{" +
                 "id=" + id +
-                ", uid=" + userId +
+                ", userId=" + userId +
                 ", sourceScore=" + sourceScore +
                 ", sourceType='" + sourceType + '\'' +
                 ", sourceDetail='" + sourceDetail + '\'' +

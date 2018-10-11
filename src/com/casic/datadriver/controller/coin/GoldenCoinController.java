@@ -19,15 +19,13 @@ import java.util.List;
 
 /**
  * @Author: hollykunge
- * @Description:
  * @Date: 创建于 2018/9/27
- * @Modified:
  */
 @Controller
 @RequestMapping("/datadriver/golden/")
 public class GoldenCoinController extends AbstractController {
 
-    GoldenCoinService ddGoldenCoinService;
+    private GoldenCoinService ddGoldenCoinService;
 
     @Autowired
     public GoldenCoinController(GoldenCoinService ddGoldenCoinService) {
@@ -68,6 +66,7 @@ public class GoldenCoinController extends AbstractController {
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         List<DdGoldenCoin> list=ddGoldenCoinService.getAll(new QueryFilter(request,"goldenItem"));
+
         return this.getAutoView().addObject("goldenList",list);
     }
 
@@ -117,7 +116,6 @@ public class GoldenCoinController extends AbstractController {
             resultMsg = getText("coin.consumed", "兑换失败");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
         }
-
 //        String returnUrl = RequestUtil.getPrePage(request);
     }
 }
