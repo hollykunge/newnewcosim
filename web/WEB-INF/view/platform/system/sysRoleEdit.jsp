@@ -9,7 +9,7 @@
 	<title>编辑 系统角色表</title>
 	<%@include file="/commons/include/form.jsp" %>
 	<link href="${ctx}/styles/ligerUI/ligerui-all.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="${ctx}/js/calendar/My97DatePicker/WdatePicker.js"></script>
+	<%--<script type="text/javascript" src="${ctx}/js/calendar/My97DatePicker/WdatePicker.js"></script>--%>
 	<script type="text/javascript" src="${ctx}/servlet/ValidJs?form=sysRole"></script>
 	<script type="text/javascript">
 		$(function() {

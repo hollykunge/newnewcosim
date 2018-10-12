@@ -35,8 +35,10 @@ public class DataInterfacesImpl {
     private SysUserOrgService sysUserOrgService;
     @Autowired
     private UserRoleService userRoleService;
+
     /**
      * 根据XML文件自动创建用户和科室
+     *
      * @return
      * @throws Exception
      */
@@ -59,17 +61,17 @@ public class DataInterfacesImpl {
             JSONObject userJson = (JSONObject) json.get("data");
             System.out.println(userJson.get("User"));
             JSONObject infoJson = (JSONObject) userJson.get("User");
-            long  userId= UniqueIdUtil.genId();
-            String  account= (String)infoJson.get("identityNo");
-            String  fullName= (String)infoJson.get("userName");
-            String  isLock= (String)infoJson.get("fcFlag");
-            String  sex= (String)infoJson.get("gender");
-            String  phone= (String)infoJson.get("telephone");
-            String  shortAccount1= (String)infoJson.get("xing");
-            String  shortAccount2= (String)infoJson.get("ming");
-            String  orgCodeAndOrgSn= (String)infoJson.get("deptTyyhOrgCode");
-            String  orgCode = (String)infoJson.get("deptCode");
-            try{
+            long userId = UniqueIdUtil.genId();
+            String account = (String) infoJson.get("identityNo");
+            String fullName = (String) infoJson.get("userName");
+            String isLock = (String) infoJson.get("fcFlag");
+            String sex = (String) infoJson.get("gender");
+            String phone = (String) infoJson.get("telephone");
+            String shortAccount1 = (String) infoJson.get("xing");
+            String shortAccount2 = (String) infoJson.get("ming");
+            String orgCodeAndOrgSn = (String) infoJson.get("deptTyyhOrgCode");
+            String orgCode = (String) infoJson.get("deptCode");
+            try {
                 SysUser sysUser = new SysUser();
                 sysUser.setFullname(fullName);
                 sysUser.setAccount(account);
@@ -82,7 +84,7 @@ public class DataInterfacesImpl {
                 sysUser.setFromType(shortByZero);
                 //sysUser.setOrgId(Long.parseLong(orgCodeAndOrgSn));
                 //sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
-                sysUser.setShortAccount(shortAccount1+shortAccount2);
+                sysUser.setShortAccount(shortAccount1 + shortAccount2);
 
                 SysUserOrg sysUserOrg = new SysUserOrg();
                 //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));
@@ -92,21 +94,21 @@ public class DataInterfacesImpl {
                 long findOrgId = 0;
 
                 List<ISysOrg> sysOrgList = sysOrgService.getAll();
-                for(ISysOrg sysOrg :sysOrgList){
+                for (ISysOrg sysOrg : sysOrgList) {
                     String orgDesc = sysOrg.getOrgDesc();
-                    if(orgDesc != null&&orgDesc.equals(orgCode)){
+                    if (orgDesc != null && orgDesc.equals(orgCode)) {
                         findOrgId = sysOrg.getOrgId();
                     }
                 }
                 UserRole userRole = new UserRole();
                 long userRoldId = UniqueIdUtil.genId();
-                if(sysUserService.isAccountExist(account)){
+                if (sysUserService.isAccountExist(account)) {
                     ISysUser userByAccount = sysUserService.getByAccount(account);
                     Long findUserId = userByAccount.getUserId();
                     SysUserOrg userOrgModel = sysUserOrgService.getUserOrgModel(findUserId, userByAccount.getOrgId());
                     List<UserRole> userRoleList = userRoleService.getByUserId(findUserId);
-                    Long findUserRoleId = 0L ;
-                    for(UserRole findUserRole:userRoleList){
+                    Long findUserRoleId = 0L;
+                    for (UserRole findUserRole : userRoleList) {
                         findUserRoleId = findUserRole.getUserRoleId();
                     }
                     sysUser.setUserId(findUserId);
@@ -124,7 +126,7 @@ public class DataInterfacesImpl {
                     userRole.setRoleId(Long.parseLong("2018"));//硬编码
                     sysUserOrgService.add(sysUserOrg);
                     userRoleService.add(userRole);
-                }else{
+                } else {
                     sysUser.setUserId(userId);
                     sysUser.setOrgId(findOrgId);
                     sysUserService.add(sysUser);
@@ -145,15 +147,15 @@ public class DataInterfacesImpl {
 
         } else if (saveType.equals("Organization")) {
             System.err.println("群组表");
-            JSONObject orgJson =(JSONObject) json.get("data");
+            JSONObject orgJson = (JSONObject) json.get("data");
             System.out.println(orgJson.get("Organization"));
             JSONObject infoJson = (JSONObject) orgJson.get("Organization");
             System.err.println(infoJson.get("orgName"));
             String orgSn = (String) infoJson.get("orgCode");
             String orgName = (String) infoJson.get("orgName");
-            String orgSecName = (String)infoJson.get("mdCode");
+            String orgSecName = (String) infoJson.get("mdCode");
             long orgId = UniqueIdUtil.genId();
-            long orgSupId = (long)100;
+            long orgSupId = (long) 100;
             try {
                 SysOrg sysOrg = new SysOrg();
                 sysOrg.setOrgId(orgId);
@@ -165,10 +167,10 @@ public class DataInterfacesImpl {
                 //sysOrg.setSn(Long.parseLong(orgSn));
                 sysOrg.setIsSystem(longByZero);
                 sysOrg.setDemId(longByOne);
-                sysOrg.setPath("1."+orgId);
+                sysOrg.setPath("1." + orgId);
                 sysOrgService.add(sysOrg);
                 flag = "success";
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 flag = "failed";
             }

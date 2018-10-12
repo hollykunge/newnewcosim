@@ -177,12 +177,12 @@ public class ProjectController extends BaseController {
                 }
             }
             if (listLengthComplete == proTaskDependanceList.size() && listLengthComplete != 0) {
-                allProjectList.get(i).setDdProjectPhaseId(allProjectList.get(i).complete);
+                allProjectList.get(i).setDdProjectPhaseId(Project.complete);
             } else {
                 if (listLengthStart > 0) {
-                    allProjectList.get(i).setDdProjectPhaseId(allProjectList.get(i).start);
+                    allProjectList.get(i).setDdProjectPhaseId(Project.start);
                 } else {
-                    allProjectList.get(i).setDdProjectPhaseId(allProjectList.get(i).unstart);
+                    allProjectList.get(i).setDdProjectPhaseId(Project.unstart);
                 }
             }
         }
@@ -220,7 +220,7 @@ public class ProjectController extends BaseController {
             }
             jsonMembers.add(jsonObject);
         }
-        String jsonstring = Tjson.formatJson(jsonMembers.toString());
+        String jsonstring = JsonFormat.formatJson(jsonMembers.toString());
         System.out.println(json.toString());
         PrintWriter out = null;
         out = response.getWriter();
