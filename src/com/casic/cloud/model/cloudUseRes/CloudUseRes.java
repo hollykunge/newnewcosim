@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 /**
  * 对象功能:cloud_use_res Model对象
  * 开发公司:tianzhi
- * 开发人员:xingchi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-16 17:40:22
  */
 public class CloudUseRes extends BaseModel

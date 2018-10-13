@@ -20,7 +20,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 /**
  * 对象功能:SYS_custom_display Model对象
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:Raise
  * 创建时间:2012-11-19 17:54:51
  */

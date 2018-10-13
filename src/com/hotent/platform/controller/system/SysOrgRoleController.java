@@ -29,7 +29,7 @@ import com.hotent.platform.service.system.SecurityUtil;
 import com.hotent.platform.service.system.SysOrgRoleService;
 /**
  * 对象功能:组织角色授权信息 控制器类
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:hotent
  * 创建时间:2012-10-30 10:49:36
  */

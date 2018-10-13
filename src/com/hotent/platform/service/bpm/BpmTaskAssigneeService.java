@@ -15,7 +15,7 @@ import com.hotent.platform.model.bpm.ProcessRun;
 
 /**
  * 对象功能:交办任务记录表 Service类
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:hotent
  * 创建时间:2012-10-08 08:46:26
  */

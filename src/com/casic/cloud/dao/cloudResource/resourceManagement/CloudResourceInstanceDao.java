@@ -11,7 +11,7 @@ import com.casic.cloud.model.cloudResource.resourceManagement.CloudResourceInsta
  *<pre>
  * 对象功能:cloud_resource_instance Dao类
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-06-13 18:05:09
  *</pre>
  */

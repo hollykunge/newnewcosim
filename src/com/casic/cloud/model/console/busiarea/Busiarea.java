@@ -10,7 +10,7 @@ import com.hotent.core.model.BaseModel;
 /**
  * 对象功能:CLOUD_BUSINESS_AREA Model对象
  * 开发公司:中国航天科工集团
- * 开发人员:xingchi
+ * 开发人员:hollykunge
  * 创建时间:2013-04-19 13:31:05
  */
 public class Busiarea extends BaseModel

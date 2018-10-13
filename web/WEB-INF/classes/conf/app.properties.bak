@@ -14,7 +14,7 @@ genId.adjust=1
 serverUrl=http://60.195.252.24:8080
 
 #注册的域名
-serverDNS=http://www.cosimcloud.com
+serverDNS=http://www.workhub.com
 
 #连接数据库的 相应配置信息
 jdbc.dbType=oracle
@@ -104,12 +104,12 @@ smsAccount=
 #账号密码
 smsPassword=
 
-#--发送系统错误信息至宏天公司邮箱
+#--发送系统错误信息至云雀邮箱
 #公司邮箱地址
-recieveAdress=xdwangqi@163.com
+recieveAdress=hollykunge@163.com
 
-#宏天bpmx3错误报告中心 邮箱的相关配置
-sendMail=xdwangqi@163.com
+#云雀错误报告中心 邮箱的相关配置
+sendMail=hollykunge@163.com
 host=smtp.163.com
 port=25
 

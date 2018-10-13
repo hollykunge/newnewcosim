@@ -7,7 +7,7 @@ import com.hotent.core.model.BaseModel;
 
 /**
  * 对象功能:组织角色授权信息 Model对象
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:hotent
  * 创建时间:2012-10-30 09:55:48
  */

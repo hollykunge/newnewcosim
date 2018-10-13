@@ -65,7 +65,7 @@ import com.hotent.platform.model.system.SysTableManage;
 import freemarker.template.TemplateException;
 
 /**
- * 对象功能:SYS_CUSTOM_DISPLAY Service类 开发公司:宏天 开发人员:Raise 创建时间:2012-10-23 17:59:41
+ * 对象功能:SYS_CUSTOM_DISPLAY Service类 开发者:云雀小组 开发人员:Raise 创建时间:2012-10-23 17:59:41
  */
 @Service
 public class SysCustomDisplayService extends BaseService<SysCustomDisplay> {

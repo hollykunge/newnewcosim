@@ -27,7 +27,7 @@ import com.hotent.core.web.ResultMessage;
  *<pre>
  * 对象功能:cloud_enterprise_visited 控制器类
  * 开发公司:tianzhi
- * 开发人员:xingchi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-03 10:34:39
  *</pre>
  */

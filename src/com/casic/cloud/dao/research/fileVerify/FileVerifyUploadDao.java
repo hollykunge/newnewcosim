@@ -10,7 +10,7 @@ import com.casic.cloud.model.research.fileVerify.FileVerifyUpload;
  *<pre>
  * 对象功能:CLOUD_RESEARCH_VERIFY_UPLOADINFO Dao类
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-14 20:38:41
  *</pre>
  */

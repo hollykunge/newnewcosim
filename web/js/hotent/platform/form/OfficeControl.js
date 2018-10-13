@@ -20,9 +20,9 @@ OfficeControl=function(){
 		this.isFileOpen=false;
 		this.templatetype = 1;// 模板类型
 		
-		this.params={Caption:"广州宏天软件有限公司",MakerCaption:"广州宏天软件有限公司",
+		this.params={Caption:"云雀公司",MakerCaption:"云雀公司",
 			MakerKey:"CF4960BFDB79D36ADDC5493B116D39D6A4E335D9",
-			ProductCaption:"广州宏天软件有限公司",
+			ProductCaption:"云雀公司",
 			ProductKey:"32B10860DB12537FF0003CC2BFD0FA190CB0407E",
 			TitlebarColor:"14402205"
 		};
