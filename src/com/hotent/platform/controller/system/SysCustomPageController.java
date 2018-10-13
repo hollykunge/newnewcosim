@@ -45,7 +45,7 @@ import freemarker.template.TemplateException;
 
 /**
  * 对象功能:自定义页面 控制器类
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:Raise
  * 创建时间:2012-10-29 12:00:23
  */

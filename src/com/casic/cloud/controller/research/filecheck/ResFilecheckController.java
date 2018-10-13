@@ -44,7 +44,7 @@ import com.hotent.platform.webservice.api.ProcessService;
  *<pre>
  * 对象功能:文档审查 控制器类
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-21 16:04:50
  *</pre>
  */

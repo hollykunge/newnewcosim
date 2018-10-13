@@ -10,7 +10,7 @@ import com.casic.cloud.model.research.filecheck.ResFilecheckOpinion;
  *<pre>
  * 对象功能:cloud_research_filecheck_opinions Dao类
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-21 16:04:50
  *</pre>
  */

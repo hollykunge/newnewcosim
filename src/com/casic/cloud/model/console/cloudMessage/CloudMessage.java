@@ -9,7 +9,7 @@ import com.hotent.core.model.BaseModel;
 /**
  * 对象功能:CLOUD_MESSAGE Model对象
  * 开发公司:中国航天科工集团
- * 开发人员:xingchi
+ * 开发人员:hollykunge
  * 创建时间:2013-04-19 13:32:09
  */
 public class CloudMessage extends BaseModel

@@ -151,12 +151,12 @@ public class HtDecisionManager implements AccessDecisionManager {
 		String msg = "";
 		switch (i) {
 		case -1:
-			msg = "没有产品key,请联系<a href='http://www.jee-soft.cn' target='_blank'>宏天软件</a>购买正式版产品!";
+			msg = "没有产品key,请联系<a href='http://www.jee-soft.cn' target='_blank'>云雀</a>购买正式版产品!";
 			break;
 		case -2:
-			msg = "有效期已过,请联系<a href='http://www.jee-soft.cn' target='_blank'>宏天软件</a>购买正式版产品!";
+			msg = "有效期已过,请联系<a href='http://www.jee-soft.cn' target='_blank'>云雀</a>购买正式版产品!";
 		case -3:
-			msg = "有效期已过,请联系<a href='http://www.jee-soft.cn' target='_blank'>宏天软件</a>购买正式版产品!";
+			msg = "有效期已过,请联系<a href='http://www.jee-soft.cn' target='_blank'>云雀</a>购买正式版产品!";
 		default:
 			break;
 		}

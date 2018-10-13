@@ -23,7 +23,7 @@ import com.hotent.core.web.util.RequestUtil;
 import com.hotent.core.web.ResultMessage;
 /**
  * 对象功能:LdapUser 控制器类
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:Raise
  * 创建时间:2012-09-21 11:37:20
  */

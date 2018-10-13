@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 /**
  * 对象功能:cloud_research_filecheck_fileinfo Model对象
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-21 16:04:50
  */
 public class ResFilecheckDetail extends BaseModel

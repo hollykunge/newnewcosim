@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 /**
  * 对象功能:cloud_resource_instance Model对象
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-06-13 18:11:59
  */
 public class CloudResourceInstance extends BaseModel

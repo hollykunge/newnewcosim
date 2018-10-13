@@ -13,7 +13,7 @@ import com.hotent.platform.dao.system.SysCustomPageDao;
 
 /**
  * 对象功能:自定义页面 Service类
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:Raise
  * 创建时间:2012-11-05 09:07:38
  */

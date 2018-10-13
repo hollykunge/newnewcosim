@@ -12,7 +12,7 @@ import com.casic.cloud.model.console.busiarea.Busiarea;
  *<pre>
  * 对象功能:cloud_enterprise_visited Dao类
  * 开发公司:tianzhi
- * 开发人员:xingchi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-03 10:34:39
  *</pre>
  */
