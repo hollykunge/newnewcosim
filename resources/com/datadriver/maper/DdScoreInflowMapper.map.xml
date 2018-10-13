@@ -21,7 +21,7 @@
 
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
     insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time)
-    values (#{id,jdbcType=NUMERIC}, #{user_id,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
+    values (#{id,jdbcType=NUMERIC}, #{userId,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
       #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR})
     </insert>
     <select id="getByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
