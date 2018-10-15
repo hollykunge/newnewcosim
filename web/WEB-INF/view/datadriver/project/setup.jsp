@@ -76,7 +76,7 @@
                                     <th>项目阶段</th>
                                     <td>
                                         <ap:selectDB name="ddProjectPhaseName" id="ddProjectPhaseName"
-                                                     where="parentId=10000027440009" optionValue="itemValue"
+                                                     where="parentId=10000022110011" optionValue="itemValue"
                                                      optionText="itemName" table="SYS_DIC"
                                                      selectedValue="${Project.ddProjectPhaseName}"
                                                      styleClass="form-control">
