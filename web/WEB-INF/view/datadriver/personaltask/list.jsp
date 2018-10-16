@@ -20,13 +20,10 @@
 </head>
 <script>
     $(document).ready(function() {
-
         var isme = ""
         try {
             isme = JSInteraction.isme();
-            document.getElementById("task_ifarame").style.width = "1100px";
-            document.getElementById("task_ifarame").style.margin = "0px";
-            document.getElementById("task_ifarame").style.padding = "-70px";
+            $("taskList").css({"width": "100%", "height": "100%" });
         }
         catch (e) {
             console.log(e)
@@ -34,7 +31,7 @@
     });
 </script>
 <body>
-<div id="task_ifarame" class="container" >
+<div id="taskList" class="container" >
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">个人任务</h3>

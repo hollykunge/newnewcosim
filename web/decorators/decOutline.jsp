@@ -13,25 +13,37 @@
     <script src="${ctx}/newtable/bootstrap.js"></script>
     <script>
         $(function () {
+            var isClient;
+            var frameHeight = getHeight();
+            try {
+                isClient = JSInteraction.isme();
+                document.getElementById("mainframe").style.width = "100%";
+                document.getElementById("mainframe").style.height = "100%";
+                document.getElementById("mainframe").style.margin = "0px";
+            }
+            catch (e) {
+                $("#mainframe").height(getHeight());
+                $("#mainframe").css("padding-top", "65px");
+                console.log(e)
+            }
             $(".nav li a").each(function (index) {
                 $this = $(this);
                 if ($this[0].href == String(window.location)) {
                     $this.addClass("active");
                 }
             });
-            $("#mainframe").height(getHeight());
         });
 
         function getHeight() {
             return $(window).height() - $('.navbar').outerHeight();
         }
     </script>
-    <style>
-        body {
-            min-height: 800px;
-            padding-top: 65px;
-        }
-    </style>
+    <%--<style>--%>
+        <%--body {--%>
+            <%--min-height: 800px;--%>
+            <%--padding-top: 65px;--%>
+        <%--}--%>
+    <%--</style>--%>
 </head>
 <body style="height: 100%">
 <%@include file="/commons/cloud/top_console.jsp" %>
