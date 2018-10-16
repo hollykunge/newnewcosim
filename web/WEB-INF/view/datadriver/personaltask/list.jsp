@@ -19,11 +19,11 @@
     <%@include file="/newtable/tablecontext.jsp" %>
 </head>
 <script>
-    $(document).ready(function() {
-        var isme = ""
+    $(document).ready(function () {
+        var isClient;
         try {
-            isme = JSInteraction.isme();
-            $("taskList").css({"width": "100%", "height": "100%" });
+            isClient = JSInteraction.isme();
+            $("taskList").css({"width": "100%", "height": "100%"});
         }
         catch (e) {
             console.log(e)
@@ -31,17 +31,17 @@
     });
 </script>
 <body>
-<div id="taskList" class="container" >
+<div id="taskList" class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">个人任务</h3>
         </div>
         <div class="panel-body">
             <%--<div id="toolbar" class="btn-group">--%>
-                <%--<button type="button" class="btn btn-default">新发布</button>--%>
-                <%--<button type="button" class="btn btn-default">未完成</button>--%>
-                <%--<button type="button" class="btn btn-default">待审核</button>--%>
-                <%--<button type="button" class="btn btn-default">已完成</button>--%>
+            <%--<button type="button" class="btn btn-default">新发布</button>--%>
+            <%--<button type="button" class="btn btn-default">未完成</button>--%>
+            <%--<button type="button" class="btn btn-default">待审核</button>--%>
+            <%--<button type="button" class="btn btn-default">已完成</button>--%>
             <%--</div>--%>
             <table id="table_personal_task"></table>
         </div>
@@ -51,6 +51,7 @@
 <script>
     var $table_personal_task = $('#table_personal_task');
     var curRow = {};
+
     function initTable() {
         $table_personal_task.bootstrapTable({
             showHeader: true,
@@ -155,10 +156,12 @@
             }
         });
     }
+
     //刷新列表
     function refresh(e) {
         if (e == 0) $table_personal_task.bootstrapTable('refresh')
     }
+
     //操作
     function operateTask(value, row, index) {
         if (row.ddTaskState == 1) {
@@ -175,10 +178,12 @@
                 '<a id="rebackTask" href="javascript:void(0)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-repeat"></span> 收回</a>'
             ].join('');
     }
+
     //设置table高度
     function getHeight() {
         return $(window).height() - $('.panel-heading').outerHeight(true) - 80;
     }
+
     window.operateEvents = {
         'click #todoTask': function (e, value, row, index) {
             window.location.href = "todotask.ht?id=" + row.ddTaskId;

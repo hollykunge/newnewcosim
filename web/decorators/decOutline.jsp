@@ -14,7 +14,6 @@
     <script>
         $(function () {
             var isClient;
-            var frameHeight = getHeight();
             try {
                 isClient = JSInteraction.isme();
                 document.getElementById("mainframe").style.width = "100%";
@@ -38,12 +37,6 @@
             return $(window).height() - $('.navbar').outerHeight();
         }
     </script>
-    <%--<style>--%>
-        <%--body {--%>
-            <%--min-height: 800px;--%>
-            <%--padding-top: 65px;--%>
-        <%--}--%>
-    <%--</style>--%>
 </head>
 <body style="height: 100%">
 <%@include file="/commons/cloud/top_console.jsp" %>
