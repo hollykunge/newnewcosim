@@ -49,17 +49,17 @@
                     <%--</td>--%>
 
                 <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--&lt;%&ndash;密级&ndash;%&gt;--%>
-                    <%--<th>密级<small style="color: #e2463e">(必填)</small>:</th>--%>
-                    <%--<td>--%>
-                        <%--<ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"--%>
-                                     <%--where="parentId=10000027440019" optionValue="itemValue"--%>
-                                     <%--optionText="itemName" table="SYS_DIC"--%>
-                                     <%--selectedValue="${projectSecretLevelItem.id}" styleClass="form-control">--%>
-                        <%--</ap:selectDB>--%>
-                    <%--</td>--%>
-                <%--</tr>--%>
+                <tr>
+                    <%--密级--%>
+                    <th>密级<small style="color: #e2463e">(必填)</small>:</th>
+                    <td>
+                        <ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"
+                                     where="parentId=10000022120001" optionValue="itemValue"
+                                     optionText="itemName" table="SYS_DIC"
+                                     selectedValue="${projectSecretLevelItem.id}" styleClass="form-control">
+                        </ap:selectDB>
+                    </td>
+                </tr>
                 <%--<tr>--%>
                     <%--&lt;%&ndash;项目类型&ndash;%&gt;--%>
                     <%--<th>项目类型<small style="color: #e2463e">(必填)</small>:</th>--%>
@@ -76,7 +76,7 @@
                     <th>项目阶段<small style="color: #e2463e">(必填)</small>:</th>
                     <td>
                         <ap:selectDB name="ddProjectPhaseName" id="ddProjectPhaseName"
-                                     where="parentId=10000027440009" optionValue="itemValue"
+                                     where="parentId=10000022110011" optionValue="itemValue"
                                      optionText="itemName" table="SYS_DIC"
                                      selectedValue="${projectPhaseItem.id}" styleClass="form-control">
                         </ap:selectDB>

@@ -8,7 +8,7 @@ import com.casic.cloud.model.research.fileSign.FileSign;
  *<pre>
  * 对象功能:CLOUD_RESEARCH_FILESIGN Dao类
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-18 14:33:03
  *</pre>
  */

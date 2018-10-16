@@ -21,7 +21,7 @@ import com.hotent.platform.service.system.SysOrgInfoService;
  *<pre>
  * 对象功能:CLOUD_MESSAGE Service类
  * 开发公司:中国航天科工集团
- * 开发人员:xingchi
+ * 开发人员:hollykunge
  * 创建时间:2013-04-19 13:32:09
  *</pre>
  */

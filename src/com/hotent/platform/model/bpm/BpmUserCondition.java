@@ -14,7 +14,7 @@ import com.hotent.core.model.BaseModel;
 
 /**
  * 对象功能:BPM_USER_CONDITION  Model对象
- * 开发公司:宏天
+ * 开发者:云雀小组
  * 开发人员:ray
  * 创建时间:2012-12-31 15:18:11
  */

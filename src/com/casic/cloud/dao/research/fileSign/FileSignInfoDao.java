@@ -10,7 +10,7 @@ import com.casic.cloud.model.research.fileSign.FileSignInfo;
  *<pre>
  * 对象功能:CLOUD_RESEARCH_FILESIGN_FILEINFO Dao类
  * 开发公司:中国航天科工集团
- * 开发人员:wangqi
+ * 开发人员:hollykunge
  * 创建时间:2013-05-18 14:03:31
  *</pre>
  */
