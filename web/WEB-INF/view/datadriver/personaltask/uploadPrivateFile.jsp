@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
     <title>上传私有模型文件</title>
@@ -52,7 +54,7 @@
            border="0"
            type="main">
         <tr id="newUpload2">
-            <th width="20%">上传工具:</th>
+            <th width="20%">上传文件:</th>
             <td><input type="file" name="file" value="上传"></td>
         </tr>
     </table>

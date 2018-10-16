@@ -181,7 +181,8 @@ public class SysFileController extends BaseController {
 	public void fileUpload(MultipartHttpServletRequest request,HttpServletResponse response) throws Exception {
 		PrintWriter writer = response.getWriter();
 		try{
-			long userId =  ContextUtil.getCurrentUserId(); // 获取当前用户的id
+			// 获取当前用户的id
+			long userId =  ContextUtil.getCurrentUserId();
 			long typeId =  RequestUtil.getLong(request,"typeId");
 			ISysUser appUser = null;
 			if(userId>0){			

@@ -37,6 +37,9 @@
             return $(window).height() - $('.navbar').outerHeight();
         }
     </script>
+    <style>
+        html, body	{ height:100%; }
+    </style>
 </head>
 <body style="height: 100%">
 <%@include file="/commons/cloud/top_console.jsp" %>
