@@ -11,11 +11,19 @@ import com.casic.datadriver.service.data.DataSnapShotIdService;
 import com.casic.datadriver.service.data.PrivateDataService;
 import com.casic.datadriver.service.task.TaskInfoService;
 import com.hotent.core.annotion.Action;
+import com.hotent.core.util.AppUtil;
 import com.hotent.core.util.ContextUtil;
+import com.hotent.core.util.FileUtil;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.util.RequestUtil;
 import com.hotent.platform.auth.ISysUser;
+import com.hotent.platform.model.system.GlobalType;
+import com.hotent.platform.model.system.SysFile;
+import com.hotent.platform.service.system.GlobalTypeService;
+import com.hotent.platform.service.system.SysFileService;
+import com.hotent.platform.service.system.SysTypeKeyService;
+import com.hotent.platform.service.system.SysUserService;
 import net.sf.ezmorph.object.DateMorpher;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
@@ -65,6 +73,17 @@ public class PrivateDataController extends AbstractController {
     @Resource
     private ModelCenterService modelCenterService;
 
+    @Resource
+    private GlobalTypeService globalTypeService;
+
+    @Resource
+    private SysTypeKeyService sysTypeKeyService;
+
+    @Resource
+    private SysFileService sysFileService;
+
+    @Resource
+    private SysUserService sysUserService;
     /**
      * ?????????.
      *
@@ -87,7 +106,7 @@ public class PrivateDataController extends AbstractController {
         String dateString = formatter.format(currentTime);
 
         try {
-            if (privateData.getDdDataId() == null || privateData.getDdDataId() == 0||privateData.getDdDataId().equals("0")) {
+            if (privateData.getDdDataId() == null || privateData.getDdDataId() == 0 || privateData.getDdDataId().equals("0")) {
                 privateData.setDdDataId(UniqueIdUtil.genId());
                 privateData.setDdDataTaskName(taskInfo.getDdTaskName());
                 privateData.setDdDataPublishState((byte) 0);
@@ -207,76 +226,106 @@ public class PrivateDataController extends AbstractController {
      */
     @RequestMapping("uploadPrivate")
     @Action(description = "上传文件")
-    public void uploadPrivate(HttpServletRequest request, HttpServletResponse response)
+    public void uploadPrivate(MultipartHttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        Long dataId = RequestUtil.getLong(request, "id");
-
-        PrivateData privateData = privateDataService.getDataById(dataId);
-
-        //创建一个通用的多部分解析器
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        //判断 request 是否有文件上传,即多部分请求
-        if (multipartResolver.isMultipart(request)) {
-            //转换成多部分request
-            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-            //取得request中的所有文件名
-            Iterator<String> iter = multiRequest.getFileNames();
-            while (iter.hasNext()) {
-                //记录上传过程起始时的时间，用来计算上传时间
-                //   int pre = (int) System.currentTimeMillis();
-                //取得上传文件
-                MultipartFile file1 = multiRequest.getFile(iter.next());
-
-                if (file1 != null) {
-                    //取得当前上传文件的文件名称
-                    String myFileName = file1.getOriginalFilename();
-                    //如果名称不为“”,说明该文件存在，否则说明该文件不存在
-                    if (myFileName.trim() != "") {
-                        System.out.println(myFileName);
-                        //重命名上传后的文件名
-                        String fileName = file1.getOriginalFilename();
-                        //定义上传路径//
-                        ////
-                        //取得根目录路径
-//                        String rootPath=getClass().getResource("/").getFile().toString();
-
-                        ////
-                        String realPath = getServletContext().getRealPath("/");
-                        String path = realPath + "/uploadPrivateData/" + dataId + "/" + myFileName;
-//                        String path ="d:"+ "/major/" + major + "/" + ddToolVersion +"_"+myFileName;
-                        privateData.setDdDataPath("/uploadPrivateData/" + dataId + "/" + myFileName);
-                        privateData.setDdDataLastestValue(myFileName);
-//                        privateData.setdd(myFileName);
-                        File file = new File(path);
-                        //创建目录
-
-                        if (!file.exists() && !file.isDirectory()) {
-                            System.out.println("//不存在");
-                            file.mkdirs();
-                        } else {
-                            System.out.println("//目录存在");
-                        }
-                        File localFile = new File(path);
-                        file1.transferTo(localFile);
-
-                    }
-                    privateDataService.update(privateData);
-//                    m.setDdToolId(UniqueIdUtil.genId());
-////                    m.setDdToolName(myFileName);
-//
-//                    tservice.add(m);
-
-//                    response.sendRedirect("toollist1.ht?major="+major);//根据实际情况跳转w
-                } else {
-
-                }
-                //记录上传该文件后的时间
-                //    int finaltime = (int) System.currentTimeMillis();
-                //     System.out.println(finaltime - pre);
+        PrintWriter writer = response.getWriter();
+        try {
+            long userId = ContextUtil.getCurrentUserId();
+            Long dataId = RequestUtil.getLong(request, "id");
+            long typeId = RequestUtil.getLong(request, "typeId");
+            ISysUser appUser = null;
+            if(userId>0){
+                appUser = sysUserService.getById(userId);
             }
+            // 获取附件类型
+            GlobalType globalType = null;
+            if (typeId > 0) {
+                globalType = globalTypeService.getById(typeId);
+            }
+
+            Map<String, MultipartFile> files = request.getFileMap();
+            Iterator<MultipartFile> it = files.values().iterator();
+
+            while (it.hasNext()) {
+                Long fileId = UniqueIdUtil.genId();
+                MultipartFile f = it.next();
+                String oriFileName = f.getOriginalFilename();
+                String extName = FileUtil.getFileExt(oriFileName);
+                String fileName = fileId + "." + extName;
+
+                //开始写入物理文件
+                String filePath = createFilePath(AppUtil.getRealPath("/attachFiles/temp"), fileName);
+                FileUtil.writeByte(filePath, f.getBytes());
+                // end 写入物理文件
+                // 向数据库中添加数据
+                SysFile sysFile = new SysFile();
+                sysFile.setFileId(fileId);
+                //附件名称
+                sysFile.setFileName(oriFileName.substring(0, oriFileName.lastIndexOf('.')));
+
+                Calendar cal = Calendar.getInstance();
+                Integer year = cal.get(Calendar.YEAR);
+                Integer month = cal.get(Calendar.MONTH) + 1;
+                //附件路径
+                sysFile.setFilePath("attachFiles/temp/" + year + "/" + month + "/" + fileName);
+                //附件类型
+                if (globalType != null) {
+                    sysFile.setTypeId(globalType.getTypeId());
+                    sysFile.setFileType(globalType.getTypeName());
+                } else {
+                    sysFile.setTypeId(sysTypeKeyService.getByKey(GlobalType.CAT_FILE).getTypeId());
+                    sysFile.setFileType("-");
+                }
+                // 上传时间
+                sysFile.setCreatetime(new java.util.Date());
+                // 扩展名
+                sysFile.setExt(extName);
+                //字节总数
+                sysFile.setTotalBytes(f.getSize());
+                // 说明
+                sysFile.setNote(FileUtil.getSize(f.getSize()));
+                // 当前用户的信息
+                if (appUser != null) {
+                    sysFile.setCreatorId(appUser.getUserId());
+                    sysFile.setCreator(appUser.getUsername());
+                } else {
+                    sysFile.setCreator(SysFile.FILE_UPLOAD_UNKNOWN);
+                }
+                //总的字节数
+                sysFile.setDelFlag(SysFile.FILE_NOT_DEL);
+                sysFileService.add(sysFile);
+
+                if (dataId>0){
+                    PrivateData privateData = privateDataService.getDataById(dataId);
+                    privateData.setDdDataPath(sysFile.getFilePath());
+                    privateData.setDdDataLastestValue(sysFile.getFileName());
+                    privateDataService.update(privateData);
+                }
+                writer.println("{\"success\":\"true\",\"fileId\":\"" + fileId + "\"}");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            writer.println("{\"success\":\"false\"}");
         }
-//        ModelAndView mv = this.getAutoView().addObject("dataStructId", dataId);
-//        return mv;
+    }
+
+    /**
+     * 创建文件目录
+     *
+     * @param tempPath
+     * @param fileName 文件名称
+     * @return 文件的完整目录
+     */
+    private String createFilePath(String tempPath, String fileName) {
+        File one = new File(tempPath);
+        Calendar cal = Calendar.getInstance();
+        Integer year = cal.get(Calendar.YEAR); // 当前年份
+        Integer month = cal.get(Calendar.MONTH) + 1; // 当前月份
+        one = new File(tempPath + "/" + year + "/" + month);
+        if (!one.exists()) {
+            one.mkdirs();
+        }
+        return one.getPath() + File.separator + fileName;
     }
 
     /**
@@ -295,12 +344,11 @@ public class PrivateDataController extends AbstractController {
         //获取网站部署路径(通过ServletContext对象)，用于确定下载文件位置，从而实现下载
         Long dataId = RequestUtil.getLong(request, "id");
         PrivateData privateData = privateDataService.getDataById(dataId);
-//
 
         String path = getServletContext().getRealPath("/");
         try {
             // path是指欲下载的文件的路径。
-            File file = new File(path+privateData.getDdDataPath());
+            File file = new File(path + privateData.getDdDataPath());
             // 取得文件名。
             String filename = file.getName();
             filename = URLEncoder.encode(filename, "UTF-8");
@@ -390,20 +438,27 @@ public class PrivateDataController extends AbstractController {
                 tempFile.mkdirs();
             }
             DiskFileUpload fu = new DiskFileUpload();
-            fu.setSizeMax(10 * 1024 * 1024); // 设置允许用户上传文件大小,单位:位
-            fu.setSizeThreshold(4096); // 设置最多只允许在内存中存储的数据,单位:位
-            fu.setRepositoryPath(temp); // 设置一旦文件大小超过getSizeThreshold()的值时数据存放在硬盘的目录
+            // 设置允许用户上传文件大小,单位:位
+            fu.setSizeMax(10 * 1024 * 1024);
+            // 设置最多只允许在内存中存储的数据,单位:位
+            fu.setSizeThreshold(4096);
+            // 设置一旦文件大小超过getSizeThreshold()的值时数据存放在硬盘的目录
+            fu.setRepositoryPath(temp);
             // 开始读取上传信息
             TaskInfo taskinfo = taskInfoService.getUserIdbyTaskId(taskId);
-            if (file == null)
+            if (file == null){
                 return;
+            }
+
             logger.info(file.getOriginalFilename());
 
             String name = file.getOriginalFilename();// 获取上传文件名,包括路径
             //name = name.substring(name.lastIndexOf("\\") + 1);// 从全路径中提取文件名
             long size = file.getSize();
-            if ((name == null || name.equals("")) && size == 0)
+            if ((name == null || name.equals("")) && size == 0){
                 return;
+            }
+
             InputStream in = file.getInputStream();
             int count = privateDataService
                     .importBrandPeriodSort(in, taskId, projectId, taskinfo.getDdTaskName());
@@ -419,7 +474,6 @@ public class PrivateDataController extends AbstractController {
         addMessage(message, request);
         response.sendRedirect(preUrl);
     }
-
 
 
     /**

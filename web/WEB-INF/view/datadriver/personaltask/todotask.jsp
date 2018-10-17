@@ -47,10 +47,24 @@
     <script type="text/javascript" src="${ctx}/styles/wizard/bootstro.min.js"></script>
     <script type="text/javascript" src="${ctx}/cookie/jquery.cookie.js"></script>
     <script type="text/javascript" src="${ctx}/styles/wizard/bootwizard.js"></script>
-
+    <style>
+        html, body	{ height:100%; }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var isClient;
+            try {
+                isClient = JSInteraction.isme();
+                $("#dataList").css({"width": "100%", "height": "100%", "margin-top": "12px"});
+            }
+            catch (e) {
+                console.log(e)
+            }
+        });
+    </script>
 </head>
 <body>
-<div class="container">
+<div class="container" id="dataList">
     <div class="row">
         <div class="col-xs-9">
             <ol class="breadcrumb">
@@ -64,13 +78,13 @@
                 <a class="btn btn-success" href="javascript:void(0)" id="submit_btn"><span
                         class="glyphicon glyphicon-ok"></span> 提交审核</a>
                 <%--<a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span--%>
-                        <%--class="glyphicon glyphicon-stats"></span>--%>
-                    <%--流程监控--%>
+                <%--class="glyphicon glyphicon-stats"></span>--%>
+                <%--流程监控--%>
                 <%--</a>--%>
                 <%--<a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"--%>
-                   <%--class="btn btn-default" target="_blank"><span--%>
-                        <%--class="glyphicon glyphicon-stats" 　></span>--%>
-                    <%--数据挖掘--%>
+                <%--class="btn btn-default" target="_blank"><span--%>
+                <%--class="glyphicon glyphicon-stats" 　></span>--%>
+                <%--数据挖掘--%>
                 <%--</a>--%>
 
             </div>
@@ -214,10 +228,10 @@
     }
     //
     <%--statis_btn.onclick = function () {--%>
-        <%--$('#statis').modal({--%>
-            <%--keyboard: true,--%>
-            <%--remote: "statis.ht?id=${TaskInfo.ddTaskId}"--%>
-        <%--});--%>
+    <%--$('#statis').modal({--%>
+    <%--keyboard: true,--%>
+    <%--remote: "statis.ht?id=${TaskInfo.ddTaskId}"--%>
+    <%--});--%>
     <%--}--%>
 </script>
 </html>
