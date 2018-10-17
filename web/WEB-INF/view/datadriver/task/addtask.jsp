@@ -16,7 +16,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html lang="zh-CN">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
     <title>添加任务</title>
     <link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="${ctx}/newtable/bootstrap-editable.css" rel="stylesheet">
@@ -26,6 +26,7 @@
     <script src="${ctx}/newtable/bootstrap-editable.js"></script>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
     <script src="${ctx}/timeselect/moment.js"></script>
+    <script src="${ctx}/newtable/union-select.js"></script>
 </head>
 <body>
 <div class="modal-header">
@@ -86,14 +87,23 @@
                 <tr>
                     <th width="20%">任务负责人:</th>
                     <td>
-                        <div class="layui-input-inline">
-                            <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control" data-live-search="true" id="personSelect">
-                                <c:forEach var="personItem" items="${sysUserList}">
-                                    <option value="${personItem.userId}"
-                                            <c:if test="${TaskInfo.ddTaskPerson == '${personItem.fullname}'}">selected="selected"</c:if>>${personItem.fullname}-${personItem.orgName}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
+                        <select class="selectpicker show-tick form-control"
+                                data-live-search="true" id="select-first" title="请选择组织"
+                                data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht">
+                            <c:forEach var="orgItem" items="${sysOrgList}">
+                                <option value="${orgItem.orgId}"
+                                        <c:if test="${TaskInfo.userOrg == '${orgItem.orgName}'}">selected="selected"</c:if>>${orgItem.orgName}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control"
+                                data-live-search="true" id="select-second" title="请选择人员">
+                            <%--<c:forEach var="personItem" items="${sysUserList}">--%>
+                            <%--<option value="${personItem.userId}"--%>
+                            <%--<c:if test="${TaskInfo.ddTaskPerson == '${personItem.fullname}'}">selected="selected"</c:if>>${personItem.fullname}</option>--%>
+                            <%--</c:forEach>--%>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -103,8 +113,9 @@
                                               rows="5"/></textarea>
                     </td>
                 </tr>
-                <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId"
-                       value="${projectItem.ddProjectId}" class="layui-input"/>
+                <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${projectItem.ddProjectId}"/>
+                <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value=""/>
+                <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId" value="${projectItem.ddProjectCreatorId}"/>
             </table>
         </form>
         <div class="row">
@@ -112,7 +123,9 @@
                 <button class="btn btn-success btn-block" id="dataFormSave">创建新任务</button>
             </div>
             <div class="col-xs-6">
-                <button class="btn btn-default btn-block" id="createfrommodel" disabled="disabled" title="暂不可用">从模版创建任务</button>
+                <button class="btn btn-default btn-block" id="createfrommodel" disabled="disabled" title="暂不可用">
+                    从模版创建任务
+                </button>
             </div>
         </div>
 
@@ -121,15 +134,17 @@
 </body>
 <script type="text/javascript">
     //@ sourceURL=add.js
-    //任务负责人变更
-    $('#personSelect').on('changed.bs.select', function (e) {
-        var managerId = $('.selectpicker, #personSelect').val();
-        $("#ddTaskPerson").val(managerId);
-    });
     $(function () {
+        //任务负责人变更
+        // $('#select-second').on('changed.bs.select', function (e) {
+        //     var userId = $('#select-second').val();
+        //     $("#ddTaskPerson").val(userId);
+        // });
+
+
         $(".selectpicker").selectpicker();
-        $('#testSelect option:selected').text();//选中的文本
-        $('#testSelect option:selected').val();//选中的值
+        // $('#testSelect option:selected').text();//选中的文本
+        // $('#testSelect option:selected').val();//选中的值
         var options = {};
         if (showResponse) {
             options.success = showResponse;
@@ -144,7 +159,10 @@
             }
         });
     });
-
+    $('#select-second').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+        var userId = $('#select-second').selectpicker('val');
+        $("#ddTaskPerson").val(userId);
+    });
     function showResponse(responseText) {
         var obj = new com.hotent.form.ResultMessage(responseText);
         if (obj.isSuccess()) {
