@@ -112,48 +112,6 @@ public class TaskInfoController extends AbstractController {
         }
     }
 
-    public  void senmsg(Long senderId,Long receiverId,String msg,Long type) throws IOException {
-        JSONObject json = new JSONObject();
-        JSONArray jsonMembers = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("senderId", senderId);
-        jsonObject.put("receiver", receiverId);
-        jsonObject.put("message", msg);
-        jsonObject.put("type", type);
-        OutputStreamWriter out = null;
-        String strURL = "http://192.168.8.106:8083/interfaces/gainSystemMsg";
-        URL url = new URL(strURL);
-        HttpURLConnection conn = (HttpURLConnection)
-                url.openConnection();
-        // 发送POST请求必须设置为true
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-        //设置连接超时时间和读取超时时间
-        conn.setConnectTimeout(10000);
-        conn.setReadTimeout(10000);
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty("Accept-Charset", "utf-8");
-        conn.setRequestProperty("contentType", "utf-8");
-        out = new OutputStreamWriter(conn.getOutputStream());
-        out.write("msg" + "=" + URLEncoder.encode(jsonObject.toString(),"utf-8"));
-        // POST的请求参数写在正文中
-
-        out.flush();
-        out.close();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                conn.getInputStream(),"UTF-8"));
-        String line;
-        StringBuffer buffer = new StringBuffer();
-        while ((line = reader.readLine()) != null) {
-            buffer.append(line);
-        }
-        reader.close();
-        conn.disconnect();
-
-        System.out.println(buffer.toString());
-
-    }
-
     private TaskInfo getFormObject(HttpServletRequest request) throws Exception {
         JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher((new String[]{"yyyy-MM-dd"})));
 

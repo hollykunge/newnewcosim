@@ -68,7 +68,7 @@
                 <tr><th style="width:120px;">积分总量</th><td><input size="35" id="scoreTotal" name="scoreTotal" value="${bizDef.scoreTotal}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
             <input size="35" type="hidden" name="id" value="${bizDef.id}" />
-            <input size="35" type="hidden" name="uid" value="${bizDef.uid}" />
+            <input size="35" type="hidden" name="userId" value="${bizDef.userId}" />
             <input size="35" type="hidden" name="scoreAction" value="${bizDef.scoreAction}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
             <input size="35" type="hidden" name="crtTime" value="${bizDef.crtTime}" />

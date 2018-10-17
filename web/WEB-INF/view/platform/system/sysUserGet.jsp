@@ -57,16 +57,32 @@
 								<p><img src="${ctx}/${pictureLoad}" alt="个人相片" /></p>
 							</div>
 						</td>
-						<th width="18%" style="height: 48px !important">帐 号:</th>
+						<th width="18%" style="height: 40px !important">帐 号:</th>
 						<td>${sysUser.account}</td>
 					</tr>
 					<tr>
-						<th style="height: 48px !important">用户姓名:</th>
+						<th style="height: 40px !important">用户姓名:</th>
 						<td>${sysUser.fullname}</td>
 					</tr>
-
 					<tr>
-						<th style="height: 48px !important">用户性别:</th>
+						<th style="height: 40px !important">密级:</th>
+						<td><c:choose>
+							<c:when test="${sysUser.psnSecretLevel==90}">
+								核心
+							</c:when>
+							<c:when test="${sysUser.psnSecretLevel==70}">
+								一般
+							</c:when>
+							<c:when test="${sysUser.psnSecretLevel==80}">
+								重要
+							</c:when>
+							<c:otherwise>
+								非密
+							</c:otherwise>
+						</c:choose></td>
+					</tr>
+					<tr>
+						<th style="height: 40px !important">用户性别:</th>
 						<td><c:choose>
 								<c:when test="${sysUser.sex==1}">
 									         男
@@ -77,19 +93,19 @@
 							</c:choose></td>
 					</tr>
 					<tr>
-						<th style="height: 48px !important">是否锁定:</th>
+						<th style="height: 40px !important">是否在职:</th>
 						<td><c:choose>
 								<c:when test="${sysUser.isLock==1}">
-									         已锁定
+									         否
 								   	</c:when>
 								<c:otherwise>
-								                      未锁定       
+									        是
 								   	</c:otherwise>
 							</c:choose></td>
 					</tr>
 
 					<tr>
-						<th style="height: 48px !important">是否过期:</th>
+						<th style="height: 40px !important">是否过期:</th>
 						<td><c:choose>
 								<c:when test="${sysUser.isExpired==1}">
 									         已过期
@@ -101,7 +117,7 @@
 					</tr>
 
 					<tr>
-						<th style="height: 48px !important">当前状态:</th>
+						<th style="height: 40px !important">当前状态:</th>
 						<td><c:choose>
 								<c:when test="${sysUser.status==1}">
 										激活
@@ -116,22 +132,22 @@
 					</tr>
 
 					<tr>
-						<th style="height: 48px !important">创建时间:</th>
+						<th style="height: 40px !important">创建时间:</th>
 						<td>${f:shortDate(sysUser.createtime)}</td>
 					</tr>
 
 					<tr>
-						<th style="height: 48px !important">邮箱地址:</th>
+						<th style="height: 40px !important">邮箱地址:</th>
 						<td>${sysUser.email}</td>
 					</tr>
 
 					<tr>
-						<th style="height: 48px !important">手 机:</th>
+						<th style="height: 40px !important">手 机:</th>
 						<td>${sysUser.mobile}</td>
 					</tr>
 
 					<tr>
-						<th style="height: 48px !important">电 话:</th>
+						<th style="height: 40px !important">电 话:</th>
 						<td>${sysUser.phone}</td>
 					</tr>
 

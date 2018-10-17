@@ -20,7 +20,7 @@
     FROM dd_score_outflow ddsout
     WHERE
     1=1
-    <if test="@Ognl@isNotEmpty(uid)"> AND ddsout.uid LIKE #{uid} </if>
+    <if test="@Ognl@isNotEmpty(userId)"> AND ddsout.user_id LIKE #{userId} </if>
     <if test="@Ognl@isNotEmpty(sourceType)"> AND ddsout.source_type LIKE #{sourceType}</if>
   </select>
   <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreOutflow">
