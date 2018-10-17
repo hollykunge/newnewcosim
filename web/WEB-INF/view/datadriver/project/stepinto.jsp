@@ -83,8 +83,6 @@
                onclick="createTask(${Project.ddProjectId})"><span class="glyphicon glyphicon-bookmark"></span> 创建任务</a>
             <a class="btn btn-default" href="javascript:void(0)" id="done"
                onclick="done(${Project.ddProjectId})"><span class="glyphicon glyphicon-ok"></span> 完成项目</a>
-            <%--<a class="btn btn-info" href="javascript:void(0)" id="create_index"--%>
-               <%--onclick="createIndex(${Project.ddProjectId})"><span class="glyphicon glyphicon-list-alt"></span> 创建指标</a>--%>
         </div>
     </ul>
 
@@ -113,14 +111,6 @@
         </div>
     </div>
 </div>
-<%--index--%>
-<%--<div class="modal fade" id="addindex1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
-    <%--<div class="modal-dialog" role="document">--%>
-        <%--<div class="modal-content">--%>
-
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
 <%--统计--%>
 <div class="modal fade" id="statis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -172,8 +162,8 @@
     //完成项目
     function done(projectId) {
         $.ajax({
-            type: "POST",
-            url: "done.ht?id=" + projectId,
+            type: "get",
+            url: "${ctx}/datadriver/project/done.ht?id=" + projectId,
             success: function (res) {
                 var resJson = eval('('+res+')');
                 if (resJson.result == 0) {
@@ -188,13 +178,6 @@
             }
         })
     }
-    //创建指标
-    <%--function createIndex(projectId) {--%>
-        <%--$('#addindex1').modal({--%>
-            <%--keyboard: true,--%>
-            <%--remote: "${ctx}/datadriver/index/indexedit.ht?id=" + projectId--%>
-        <%--});--%>
-    <%--}--%>
     //监控信息
     function showStatis(projectId) {
         $('#statis').modal({

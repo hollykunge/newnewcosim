@@ -21,6 +21,7 @@ import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.query.QueryFilter;
 import com.hotent.core.web.util.RequestUtil;
+import com.hotent.platform.auth.ISysOrg;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.service.system.SysOrgService;
 import com.hotent.platform.service.system.SysUserService;
@@ -195,14 +196,10 @@ public class TaskInfoController extends AbstractController {
         ResultMessage resultMessage = null;
         ModelAndView mv = new ModelAndView();
         try {
-            List<ISysUser> sysUserList = sysUserService.getAll();
-            for (int a =0;a<sysUserList.size();a++)
-            {
-                sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
-            }
+            List<ISysOrg> sysOrgList = sysOrgService.getAll();
             Long id = RequestUtil.getLong(request, "id");
             Project project = projectService.getById(id);
-            mv = this.getAutoView().addObject("projectItem", project).addObject("sysUserList", sysUserList);
+            mv = this.getAutoView().addObject("projectItem", project).addObject("sysOrgList", sysOrgList);
             resultMessage = new ResultMessage(ResultMessage.Success, "创建成功");
         } catch (Exception ex) {
             resultMessage = new ResultMessage(ResultMessage.Fail, "创建失败" + ex.getMessage());
