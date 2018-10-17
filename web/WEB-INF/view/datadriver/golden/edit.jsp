@@ -69,7 +69,7 @@
                 <tr><th style="width:120px;">类型</th><td><input size="35" id="coinType" name="total" value="${golden.coinType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
             <input size="35" type="hidden" name="id" value="${golden.id}" />
-            <input size="35" type="hidden" name="uid" value="${golden.userId}" />
+            <input size="35" type="hidden" name="userId" value="${golden.userId}" />
         </form>
 
     </div>

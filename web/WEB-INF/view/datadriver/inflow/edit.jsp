@@ -70,7 +70,7 @@
                 <tr><th style="width:120px;">获得积分</th><td><input size="35" id="sourceScore" name="sourceScore" value="${bizDef.sourceScore}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
             <input size="35" type="hidden" name="id" value="${bizDef.id}" />
-            <input size="35" type="hidden" name="uid" value="${bizDef.uid}" />
+            <input size="35" type="hidden" name="userId" value="${bizDef.userId}" />
             <input size="35" type="hidden" name="updTime" value="${bizDef.updTime}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
             <input size="35" type="hidden" name="total" value="${bizDef.total}" />
