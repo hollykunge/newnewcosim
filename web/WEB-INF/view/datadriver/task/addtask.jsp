@@ -84,6 +84,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <th width="20%">任务所属项目:</th>
+                    <td><input type="text" id="ddProjectSecretLevel" name="ddProjectSecretLevel"
+                            <c:choose>
+                                <c:when test="${projectItem.ddProjectSecretLevel == 'fm'}">value="非密"</c:when>
+                                <c:when test="${projectItem.ddProjectSecretLevel == 'mm'}">value="秘密"</c:when>
+                                <c:when test="${projectItem.ddProjectSecretLevel == 'jm'}">value="机密"</c:when>
+                                <c:otherwise>value="内部"</c:otherwise>
+                            </c:choose>
+                                class="form-control" readonly/></td>
                     <th width="20%">任务负责人:</th>
                     <td>
                         <div class="layui-input-inline">

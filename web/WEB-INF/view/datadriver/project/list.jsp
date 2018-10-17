@@ -112,7 +112,15 @@
                     sortable: false,
                     align: 'left',
                     visible: true
-                }, {
+                },  {
+                    field: 'projectSecret' +
+                    'Level',
+                    title: '密级',
+                    width: 160,
+                    sortable: true,
+                    align: 'left',
+                    visible: true
+                },  {
                     field: 'phase',
                     title: '项目阶段',
                     width: 160,

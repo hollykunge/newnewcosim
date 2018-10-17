@@ -207,6 +207,8 @@ public class ProjectController extends BaseController {
             jsonObject.put("projectName", project.getDdProjectName());
             jsonObject.put("projectPhase", project.getDdProjectPhaseId());
 
+
+
             switch (project.getDdProjectPhaseId()){
                 case 2:
                     jsonObject.put("phase", "未启动");
@@ -216,6 +218,21 @@ public class ProjectController extends BaseController {
                     break;
                 default:
                     jsonObject.put("phase", "已完成");
+                    break;
+            }
+            switch (project.getDdProjectSecretLevel()){
+
+                case "jm":
+                    jsonObject.put("projectSecretLevel", "机密");
+                    break;
+                case "mm":
+                    jsonObject.put("projectSecretLevel", "秘密");
+                    break;
+                case "fm":
+                    jsonObject.put("projectSecretLevel", "非密");
+                    break;
+                default:
+                    jsonObject.put("projectSecretLevel", "内部");
                     break;
             }
             jsonMembers.add(jsonObject);

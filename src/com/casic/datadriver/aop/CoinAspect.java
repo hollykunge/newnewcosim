@@ -5,6 +5,7 @@ import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.service.coin.CoinService;
 import com.casic.datadriver.service.coin.DdScoreInflowService;
 import com.hotent.core.util.ContextUtil;
+import com.hotent.core.web.util.RequestUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
@@ -13,8 +14,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 @Aspect
 public class CoinAspect {
@@ -23,6 +25,9 @@ public class CoinAspect {
     private DdScoreInflowService ddScoreInflowService;
     @Resource
     private CoinService coinService;
+
+    private List<Map<String,String>> flagList= new ArrayList<>();
+    private boolean flag = false;
 
     /**
      * design_1,奖励1积分
@@ -120,9 +125,45 @@ public class CoinAspect {
     public void orderAndCreateReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(10);
-        ddScoreInflow.setSourceDetail("design_8");
-        setData(ddScoreInflow);
+        Map<String,String> map = new HashMap<>();
+
+        //当前用户在同一个任务中点击订阅，只有第一次计算积分，多次点击只计算一次
+        //TODO: 需用更好的方法
+        if (joinPoint.getSignature().getName().equals("canOrderToOrder")){
+            HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
+
+
+            Long taskId = RequestUtil.getLong(request, "taskId");
+            String account = ContextUtil.getCurrentUser().getAccount();
+            if (flagList.size() == 0){
+                map.put(account,taskId.toString());
+                flagList.add(map);
+                ddScoreInflow.setSourceScore(10);
+                ddScoreInflow.setSourceDetail("design_8");
+                setData(ddScoreInflow);
+            }else {
+                for (Map<String,String> flagMap:flagList) {
+                    for (Map.Entry<String, String> entry : flagMap.entrySet()) {
+                        if (entry.getKey().equals(account) && entry.getValue().equals(taskId.toString())) {
+                            flag = true;
+                        }
+                    }
+                }
+                if (!flag){
+                    map.put(account,taskId.toString());
+                    flagList.add(map);
+                    ddScoreInflow.setSourceScore(10);
+                    ddScoreInflow.setSourceDetail("design_8");
+                    setData(ddScoreInflow);
+                }
+            }
+        }else {
+
+            ddScoreInflow.setSourceScore(10);
+            ddScoreInflow.setSourceDetail("design_8");
+            setData(ddScoreInflow);
+        }
+        flag = false;
     }
     @AfterReturning(returning = "result", pointcut = "doneAspect()")
     public void doneReturning(JoinPoint joinPoint, Object result) throws Throwable {
