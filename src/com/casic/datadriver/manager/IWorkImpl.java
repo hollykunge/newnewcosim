@@ -20,18 +20,10 @@ import java.net.URLEncoder;
  * @Date: 创建于 2018/10/17
  */
 @Component
-public class iworkinterface {
-    /**
-     * @param receiverId 接收人id
-     * @param senderId   发送人id
-     * @param msg        消息内容
-     * @param type       消息类型
-     * @author 忠
-     * @date 2018/10/17 14:06
-     * @Description 消息发送接口
-     */
-//    @Override
-    public void senMsg(Long senderId, Long receiverId, String msg, Long type) throws IOException {
+public class IWorkImpl implements IWork {
+
+    @Override
+    public void sendMsg(Long senderId, Long receiverId, String msg, Long type) throws IOException {
         JSONObject json = new JSONObject();
         JSONArray jsonMembers = new JSONArray();
         JSONObject jsonObject = new JSONObject();
@@ -70,24 +62,14 @@ public class iworkinterface {
         System.out.println(buffer.toString());
     }
 
-    /**
-     * @param project 项目属性
-     * @author 忠
-     * @date 2018/10/17 14:13
-     * @Description 增加讨论组属性
-     */
-//    @Override
-    public String addGroup(Project project) {
+
+    @Override
+    public String addGroup(Object project) {
         return "创建研讨组成功";
     }
 
-    /**
-     * @param project 项目属性
-     * @param userId 人员ID
-     * @author 忠
-     * @date 2018/10/17 14:13
-     * @Description 增加讨论组人员
-     */
+
+    @Override
     public String addGroupUser(Project project,String userId) {
         return "增加人员成功";
     }
