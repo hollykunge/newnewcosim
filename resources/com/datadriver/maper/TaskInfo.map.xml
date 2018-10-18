@@ -103,7 +103,8 @@
     </select>
 
     <select id="getAll" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM dd_task
     </select>
 
@@ -313,7 +314,7 @@
                 #{ddTaskPerson,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskProjectName != null">
-            #{ddTaskProjectName,jdbcType=VARCHAR},
+                #{ddTaskProjectName,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskState != null">
                 #{ddTaskState,jdbcType=SMALLINT},
@@ -337,7 +338,8 @@
 
     </select>
 
-    <select id="getByProIdAndUserIdF" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+    <select id="getByProIdAndUserIdF" parameterType="com.casic.datadriver.publicClass.PageInfo"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from dd_task
@@ -421,8 +423,8 @@
                 DD_PERSON = #{ddTaskPerson,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskState != null">
-            DD_STATE = #{ddTaskState,jdbcType=SMALLINT},
-        </if>
+                DD_STATE = #{ddTaskState,jdbcType=SMALLINT},
+            </if>
             <if test="ddSecretLevel != null">
                 DD_SECRET_LEVEL = #{ddSecretLevel,jdbcType=VARCHAR},
             </if>

@@ -39,7 +39,6 @@
 
     <%@include file="/newtable/tablecontext.jsp" %>
     <script type="text/javascript" src="${ctx}/styles/slide/js/modernizr.custom.js"></script>
-    <%--<script type="text/javascript" src="${ctx}/styles/layui/jquery.dragsort-0.5.2.min.js"></script>--%>
     <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"></script>
     <script type="text/javascript" src="${ctx}/js/jquery/jquery.validate.min.js"></script>
     <script type="text/javascript" src="${ctx}/js/jquery/additional-methods.min.js"></script>
@@ -79,7 +78,7 @@
         <div class="pull-right">
             <a id="statis_btn" class="btn btn-default" onclick="showStatis(${Project.ddProjectId})"><span
                     class="glyphicon glyphicon-stats"></span> 进度监控</a>
-            <a class="btn btn-default" href="javascript:void(0)" id="create_task"
+            <a class="btn btn-default btn-success" href="javascript:void(0)" id="create_task"
                onclick="createTask(${Project.ddProjectId})"><span class="glyphicon glyphicon-bookmark"></span> 创建任务</a>
             <a class="btn btn-default" href="javascript:void(0)" id="done"
                onclick="done(${Project.ddProjectId})"><span class="glyphicon glyphicon-ok"></span> 完成项目</a>
@@ -92,8 +91,6 @@
         </div>
         <div role="tabpanel" class="tab-pane board-scrum-view" id="indextab" style="height: 100%">
         </div>
-        <%--<div role="tabpanel" class="tab-pane" id="calendar">--%>
-        <%--</div>--%>
     </div>
 </div>
 <%--任务创建--%>

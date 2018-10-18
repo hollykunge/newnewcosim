@@ -216,7 +216,7 @@ public class ProjectController extends BaseController {
                     jsonObject.put("phase", "已完成");
                     break;
             }
-            switch (project.getDdProjectSecretLevel()){
+            switch (project.getDdProjectSecretLevel()) {
 
                 case "jm":
                     jsonObject.put("projectSecretLevel", "机密");
@@ -469,7 +469,6 @@ public class ProjectController extends BaseController {
     @RequestMapping("movetask")
     @Action(description = "任务拖拽到发布")//7
     public void createtopublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         Long taskId = RequestUtil.getLong(request, "id");
         String parent = RequestUtil.getString(request, "parent");
         TaskStart taskStart = new TaskStart();
@@ -481,36 +480,24 @@ public class ProjectController extends BaseController {
                 taskStart.setDdTaskStartId(UniqueIdUtil.genId());
                 taskStart.setDdTaskId(taskId);
                 taskStart.setDdTaskStatus(TaskStart.publishpanel);
-
-                taskInfo = taskInfoService.getById(taskId);
+                taskStart.setDdTaskResponcePerson(taskInfo.getDdTaskResponsiblePerson());
+                taskStartService.taskStart(taskStart);
                 //更新taskinfo
                 taskInfo.setDdTaskChildType("publishpanel");
                 taskInfo.setDdTaskState(TaskInfo.publishpanel);
                 taskInfoService.update(taskInfo);
-                String msg = "通知：分配您为" + taskInfo.getDdTaskProjectName() + "项目的" + taskInfo.getDdTaskName() + "任务的负责人";
-                //taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
-                //添加taskstart
-                Long userId = taskInfo.getDdTaskResponsiblePerson();
-                taskStart.setDdTaskResponcePerson(userId);
-
-                Project project = projectService.getById(taskInfo.getDdTaskProjectId());
-                taskStartService.taskStart(taskStart, project);
-
-
+                return;
             }
         }
         //收回任务
         if (taskInfo.getDdTaskChildType().equals("publishpanel") && parent.equals("createpanel")) {
             //更新taskinfo?????createpanel属性是否应该放到taskstart里面
             taskInfo.setDdTaskChildType("createpanel");
-            String msg = "通知：" + taskInfo.getDdTaskProjectName() + "项目的" + taskInfo.getDdTaskName() + "被收回";
-            //taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
             taskInfo.setDdTaskState(TaskInfo.createpanel);
             taskInfoService.update(taskInfo);
-
             taskStartService.delByTaskId(taskInfo.getDdTaskId());
+            return;
         } else {
-
             //提交任务
             if (taskInfo.getDdTaskChildType().equals("publishpanel") && parent.equals("checkpanel")) {
                 //更新taskinfo?????createpanel属性是否应该放到taskstart里面
@@ -520,18 +507,17 @@ public class ProjectController extends BaseController {
 
                 taskStart.setDdTaskStatus(TaskStart.checkpanel);
                 taskStartService.update(taskStart);
+                return;
             } else {
                 //驳回任务
                 if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("publishpanel")) {
                     //更新taskinfo?????createpanel属性是否应该放到taskstart里面
                     taskInfo.setDdTaskChildType("publishpanel");
                     taskInfoService.update(taskInfo);
-                    String msg = "通知：" + taskInfo.getDdTaskProjectName() + "项目的" + taskInfo.getDdTaskName() + "被驳回";
-                    //taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
                     taskInfo.setDdTaskState(TaskInfo.publishpanel);
-
                     taskStart.setDdTaskStatus(TaskStart.publishpanel);
                     taskStartService.update(taskStart);
+                    return;
                 } else {
                     //审核通过
                     if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("completepanel")) {
@@ -539,18 +525,16 @@ public class ProjectController extends BaseController {
                         taskInfo.setDdTaskChildType("completepanel");
                         taskInfo.setDdTaskState(TaskInfo.completepanel);
                         taskInfoService.update(taskInfo);
-                        String msg = "通知：" + taskInfo.getDdTaskProjectName() + "项目的" + taskInfo.getDdTaskName() + "审核通过";
-                        //taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
                         taskStart.setDdTaskStatus(TaskStart.completepanel);
                         taskStartService.update(taskStart);
+                        return;
                     } else {
                         taskInfo.setDdTaskChildType("checkpanel");
                         taskInfoService.update(taskInfo);
                         taskInfo.setDdTaskState(TaskInfo.checkpanel);
-                        String msg = "通知：" + taskInfo.getDdTaskProjectName() + "项目的" + taskInfo.getDdTaskName() + "被撤销通过";
-                        //taskInfoController.senmsg(Long.valueOf(1),taskInfo.getDdTaskResponsiblePerson(),msg,taskInfo.getDdTaskProjectId());
                         taskStart.setDdTaskStatus(TaskStart.checkpanel);
                         taskStartService.update(taskStart);
+                        return;
                     }
 
                 }
@@ -558,7 +542,6 @@ public class ProjectController extends BaseController {
             }
 
         }
-
     }
 
     /**
@@ -602,8 +585,7 @@ public class ProjectController extends BaseController {
                     long userId = taskInfo.getDdTaskResponsiblePerson();
                     taskStart.setDdTaskResponcePerson(userId);
 
-                    Project project = projectService.getById(taskInfo.getDdTaskProjectId());
-                    taskStartService.taskStart(taskStart, project);
+                    taskStartService.taskStart(taskStart);
                     writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
                 }
             }

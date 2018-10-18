@@ -18,7 +18,9 @@
     <script src="${ctx}/newtable/jquery.js"></script>
     <%@include file="/newtable/tablecontext.jsp" %>
     <style>
-        html, body	{ height:100%; }
+        html, body {
+            height: 100%;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -34,7 +36,7 @@
     </script>
 </head>
 <body>
-<div id="taskList" class="container" >
+<div id="taskList" class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">个人任务</h3>
@@ -54,6 +56,7 @@
 <script>
     var $table_personal_task = $('#table_personal_task');
     var curRow = {};
+
     function initTable() {
         $table_personal_task.bootstrapTable({
             showHeader: true,
@@ -108,15 +111,15 @@
                     align: 'left',
                     visible: false
                 }, {
-                    field: 'ddTaskProjectName',
-                    title: '项目名称',
-                    sortable: false,
-                    align: 'left',
-                    visible: true
-                }, {
                     field: 'ddTaskName',
                     title: '任务名称',
                     sortable: true,
+                    align: 'left',
+                    visible: true
+                }, {
+                    field: 'ddTaskProjectName',
+                    title: '项目名称',
+                    sortable: false,
                     align: 'left',
                     visible: true
                 }
@@ -158,10 +161,12 @@
             }
         });
     }
+
     //刷新列表
     function refresh(e) {
         if (e == 0) $table_personal_task.bootstrapTable('refresh')
     }
+
     //操作
     function operateTask(value, row, index) {
         if (row.ddTaskState == 1) {
@@ -178,10 +183,12 @@
                 '<a id="rebackTask" href="javascript:void(0)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-repeat"></span> 收回</a>'
             ].join('');
     }
+
     //设置table高度
     function getHeight() {
         return $(window).height() - $('.panel-heading').outerHeight(true) - 80;
     }
+
     window.operateEvents = {
         'click #todoTask': function (e, value, row, index) {
             window.location.href = "todotask.ht?id=" + row.ddTaskId;

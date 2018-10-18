@@ -85,27 +85,20 @@
 <body>
 <div class="container">
     <div class="panel panel-default" style="height: 100%">
-        <div class="panel-heading"><strong>我参与的项目</strong> <span
-                class="label label-default">${fn:length(projectList)} </span>
-            <div class="boxed-group-action">
-                <a href="${ctx}/datadriver/project/create.ht" class="btn btn-success btn-sm"><span
-                        class="glyphicon glyphicon-book"></span> 新建项目</a>
-            </div>
+        <div class="panel-heading"><strong>我的任务</strong>
         </div>
         <div class="panel-body" style="height: 100%">
             <ul class="exploregrid">
-                <c:forEach var="projectItem" items="${projectList}">
+                <c:forEach var="taskItem" items="${taskInfos}">
                     <li class="project-card col-xs-3">
-                        <a class="project-card-inner">
+                        <a class="project-card-inner" href="todotask.ht?id=${taskItem.ddTaskId}">
                             <h4 class="big-text"><span
-                                    class="glyphicon glyphicon-book"></span> ${projectItem.ddProjectName}</h4>
+                                    class="glyphicon glyphicon-book"></span> ${taskItem.ddTaskName}</h4>
                             <p style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                <em>${projectItem.ddProjectDescription}</em></p>
-                            <div><span class="small-text"><span class="glyphicon glyphicon-bookmark"
-                                                                style="color: #cf7a68"></span>紧急任务 ${fn:length(projectItem.taskInfoList)}个</span>
-                            </div>
+                                <em>${taskItem.ddTaskProjectName}</em></p>
+                            <p style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                <em>${taskItem.ddTaskPlanEndTime}</em></p>
                         </a>
-
                     </li>
                 </c:forEach>
             </ul>

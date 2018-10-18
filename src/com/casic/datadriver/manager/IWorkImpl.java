@@ -38,6 +38,8 @@ public class IWorkImpl implements IWork {
                 url.openConnection();
         // 发送POST请求必须设置为true
         conn.setDoOutput(true);
+
+
         conn.setDoInput(true);
         //设置连接超时时间和读取超时时间
         conn.setConnectTimeout(10000);
