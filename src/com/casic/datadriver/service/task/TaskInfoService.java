@@ -178,17 +178,11 @@ public class TaskInfoService extends BaseService<TaskInfo> {
 //                String dateString = fmt.format(parsedDate);
                 taskInfo.setDdTaskPlanEndTime(taskInfoJson);
                 Integer i=taskInfo.getDdTaskPlanStartTime().compareTo(taskInfoJson);
-                if(i>0){
-                    return null;
-                }else {
-                    return taskInfo;
-                }
-
+                return taskInfo;
             case 3:
 //                String temp3 = obj.getString("3");
                 taskInfo.setDdTaskDescription(taskInfoJson);
                 return taskInfo;
-
             case 4:
 //                String temp2 = obj.getString("2");
 //                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -196,13 +190,8 @@ public class TaskInfoService extends BaseService<TaskInfo> {
 //                String dateString = fmt.format(parsedDate);
                 taskInfo.setDdTaskPlanStartTime(taskInfoJson);
                 Integer j=taskInfo.getDdTaskPlanEndTime().compareTo(taskInfoJson);
-                if(j<0){
-                    return null;
-                }else {
-                    return taskInfo;
-                }
         }
-        return null;
+        return taskInfo;
     }
 
     public List<TaskInfo> getListByPriority(Long projectId) {
