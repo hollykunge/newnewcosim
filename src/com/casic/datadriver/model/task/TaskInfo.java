@@ -40,9 +40,9 @@ public class TaskInfo extends BaseModel {
 
     private String ddTaskEstimateTime;
 
-    private Date ddTaskPlanStartTime;
+    private String ddTaskPlanStartTime;
 
-    private Date ddTaskPlanEndTime;
+    private String ddTaskPlanEndTime;
 
     private Long ddTaskCompleteRate;
 
@@ -177,19 +177,19 @@ public class TaskInfo extends BaseModel {
         this.ddTaskEstimateTime = ddTaskEstimateTime;
     }
 
-    public Date getDdTaskPlanStartTime() {
+    public String getDdTaskPlanStartTime() {
         return ddTaskPlanStartTime;
     }
 
-    public void setDdTaskPlanStartTime(Date ddTaskPlanStartTime) {
+    public void setDdTaskPlanStartTime(String ddTaskPlanStartTime) {
         this.ddTaskPlanStartTime = ddTaskPlanStartTime;
     }
 
-    public Date getDdTaskPlanEndTime() {
+    public String getDdTaskPlanEndTime() {
         return ddTaskPlanEndTime;
     }
 
-    public void setDdTaskPlanEndTime(Date ddTaskPlanEndTime) {
+    public void setDdTaskPlanEndTime(String ddTaskPlanEndTime) {
         this.ddTaskPlanEndTime = ddTaskPlanEndTime;
     }
 

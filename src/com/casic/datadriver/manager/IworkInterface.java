@@ -1,9 +1,12 @@
 package com.casic.datadriver.manager;
 
 import com.casic.datadriver.model.project.Project;
+import com.hotent.core.annotion.Action;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +22,9 @@ import java.net.URLEncoder;
  * @Description: 与客户端接口
  * @Date: 创建于 2018/10/17
  */
-@Component
-public class iworkinterface {
+@Controller
+@RequestMapping("/IworkInterface")
+public class IworkInterface {
     /**
      * @param receiverId 接收人id
      * @param senderId   发送人id
@@ -28,9 +32,10 @@ public class iworkinterface {
      * @param type       消息类型
      * @author 忠
      * @date 2018/10/17 14:06
-     * @Description 消息发送接口
+     * @Description 消息发送接口 test
      */
-//    @Override
+    @RequestMapping("senMsg")
+    @Action(description = "消息发送接口")
     public void senMsg(Long senderId, Long receiverId, String msg, Long type) throws IOException {
         JSONObject json = new JSONObject();
         JSONArray jsonMembers = new JSONArray();

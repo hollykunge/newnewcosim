@@ -127,7 +127,7 @@
     </div>
     <div class="panel-body" style="overflow: auto">
         <div class="row" id="row0">
-            <div class="col-xs-4" id="card1">
+            <div class="col-xs-3" id="card1">
                 <div class="panel panel-default">
                     <div class="panel-body card">
                         <h5 class="task-info-title">
@@ -142,7 +142,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-4" id="card2">
+            <div class="col-xs-3" id="card4">
+                <div class="panel panel-default">
+                    <div class="panel-body card">
+                        <h5 class="task-info-title">
+                            开始时间
+                        </h5>
+                        <a class="task-detail-executor" href="javascript:void(0)" id="planstar" data-type="combodate" data-pk="1"
+                           data-value="${startime}">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3" id="card2">
                 <div class="panel panel-default">
                     <div class="panel-body card">
                         <h5 class="task-info-title">
@@ -154,7 +166,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-4" id="card3">
+            <div class="col-xs-3" id="card3">
                 <div class="panel panel-default">
                     <div class="panel-body card">
                         <h5 class="task-info-title">
@@ -391,15 +403,17 @@
 
     });
     function onChangeTaskInfo(params, taskItem) {
+
         curRow[taskItem] = params.value;
         $.ajax({
             type: 'post',
-            url: "${ctx}/datadriver/task/onchangetaskinfo.ht?taskId=${TaskInfo.ddTaskId}",
-            data: {strJson: JSON.stringify(curRow)}
-//                    success: function (data, textStatus, jqXHR) {
-//                        alert('保存成功！');
-//                    },
-//                    error: function () { alert("error");}
+            url: "${ctx}/datadriver/task/onchangetaskinfo.ht?taskId=${TaskInfo.ddTaskId}&strJson="+params.value+"&eventId="+taskItem,
+            // data: {strJson: JSON.stringify(curRow)}
+                   success: function (data) {
+                console.log(JSON.stringify(data));
+                       alert('保存成功！');
+                   },
+                   error: function () { alert("error");}
         });
     }
     $(function () {
@@ -458,6 +472,25 @@
             },
             url: function (params) {
                 taskItem = 2;
+                onChangeTaskInfo(params, taskItem);
+            }
+        });
+        $('#planstar').editable({
+            showbuttons: true,
+            mode: 'popup',
+            onblur: 'submit',
+            placement: 'bottom',
+            format: 'YYYY-MM-DD',
+            viewformat: 'YYYY年 MM月 DD日',
+            template: 'YYYY年 MM月 DD日',
+            showbuttons: false,
+            combodate: {
+                minYear: 2000,
+                maxYear: 2030,
+                minuteStep: 1
+            },
+            url: function (params) {
+                taskItem = 4;
                 onChangeTaskInfo(params, taskItem);
             }
         });
