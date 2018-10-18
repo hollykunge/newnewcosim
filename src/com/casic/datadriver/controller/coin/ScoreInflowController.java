@@ -90,7 +90,7 @@ public class ScoreInflowController extends AbstractController {
         String resultMsg = null;
 
         Long scoreInflowId = RequestUtil.getLong(request,"id");
-        Long scoreInflowUid = RequestUtil.getLong(request,"uid");
+        Long scoreInflowUid = RequestUtil.getLong(request,"userId");
         Integer sourceScore = RequestUtil.getInt(request,"sourceScore");
         String sourceType = RequestUtil.getString(request, "sourceType");
         String sourceDetail = RequestUtil.getString(request,"sourceDetail");

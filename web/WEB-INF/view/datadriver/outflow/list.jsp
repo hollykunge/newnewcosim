@@ -26,7 +26,7 @@
         <div class="panel-search">
             <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
-                    <span class="label">用户(uid):</span><input type="text" name="Q_uid_SL"  class="inputText" />
+                    <span class="label">用户(userId):</span><input type="text" name="Q_userId_SL"  class="inputText" />
                     <span class="label">积分类型:</span>
                     <select name="Q_sourceType_S" class="select" value="${param['Q_sourceType_S']}">
                         <option value="">全部</option>

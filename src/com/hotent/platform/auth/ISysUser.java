@@ -185,4 +185,16 @@ public interface ISysUser extends UserDetails{
 	 * @param orgName
 	 */
 	public void setOrgName(String orgName);
+
+	/**
+	 * 获取密级
+	 * @return
+	 */
+	public String getPsnSecretLevel();
+
+	/**
+	 * 设置密级
+	 * @param psnSecretLevel
+	 */
+	public void setPsnSecretLevel(String psnSecretLevel);
 }

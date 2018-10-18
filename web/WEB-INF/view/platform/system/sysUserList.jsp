@@ -54,7 +54,7 @@
 			<div class="panel-search">
 					<form id="searchForm" method="post" action="list.ht">
 							<div class="row">
-								<span class="label">姓名:</span><input type="text" name="Q_fullname_SL"  class="inputText" style="width:9%" value="${param['Q_fullname_SL']}"/>					
+								<span class="label">姓名:</span><input type="text" name="Q_fullname_SL"  class="inputText" style="width:9%" value="${param['Q_fullname_SL']}"/>
 								<span class="label">创建时间从:</span><input type="text" id="Q_begincreatetime_DL" name="Q_begincreatetime_DL"  class="inputText Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'Q_endcreatetime_DG\');}'})" style="width:9%" value="${param['Q_begincreatetime_DL']}"/>
 								<span class="label">至</span><input type="text" id="Q_endcreatetime_DG" name="Q_endcreatetime_DG"  class="inputText Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'Q_begincreatetime_DL\');}'})" style="width:9%" value="${param['Q_endcreatetime_DG']}"/>
 								<span class="label">是否过期:</span>	
@@ -97,7 +97,26 @@
 					<display:column title="${checkAll}" media="html" style="width:30px;text-align:center;">
 						  	<input type="checkbox" class="pk" name="userId" value="${sysUserItem.userId}">
 					</display:column>
-					<display:column property="fullname" title="姓名" sortable="true" sortName="fullname" style="text-align:left"></display:column>
+					<display:column property="fullname" title="姓名" sortable="true" sortName="fullname" style="text-align:center"></display:column>
+					<display:column title="密级" sortable="true" sortName="psnSecretLevel" style="text-align:left">
+						<c:choose>
+							<c:when test="${sysUserItem.psnSecretLevel==90}">
+								<span>核心</span>
+							</c:when>
+							<c:when test="${sysUserItem.psnSecretLevel==80}">
+								<span>重要</span>
+							</c:when>
+							<c:when test="${sysUserItem.psnSecretLevel==70}">
+								<span>一般</span>
+							</c:when>
+							<c:when test="${sysUserItem.psnSecretLevel==60}">
+								<span>非密</span>
+							</c:when>
+							<c:otherwise>
+								<span>内部</span>
+							</c:otherwise>
+						</c:choose>
+					</display:column>
 					<display:column property="account" title="帐号" sortable="true" sortName="account" style="text-align:left"></display:column>
 					<display:column  title="创建时间" sortable="true" sortName="createtime">
 						<fmt:formatDate value="${sysUserItem.createtime}" pattern="yyyy-MM-dd"/>
@@ -112,13 +131,13 @@
 						   	</c:otherwise>
 						</c:choose>
 					</display:column>
-	                <display:column title="是否可用" sortable="true" sortName="isLock">
+	                <display:column title="是否在职" sortable="true" sortName="isLock" style="text-align:center">
 						<c:choose>
 							<c:when test="${sysUserItem.isLock==1}">
-								<span class="red">已锁定</span>
+								<span class="red">否</span>
 						   	</c:when>
 					       	<c:otherwise>
-					       		<span class="green">未锁定</span>
+					       		<span class="green">是</span>
 						   	</c:otherwise>
 						</c:choose>
 					</display:column>

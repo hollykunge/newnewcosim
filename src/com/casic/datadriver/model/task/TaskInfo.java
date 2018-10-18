@@ -68,6 +68,16 @@ public class TaskInfo extends BaseModel {
 
     private Short ddTaskState;
 
+    private String  ddSecretLevel;
+
+    public String getDdSecretLevel() {
+        return ddSecretLevel;
+    }
+
+    public void setDdSecretLevel(String ddSecretLevel) {
+        this.ddSecretLevel = ddSecretLevel;
+    }
+
     public Short getDdTaskState() {
         return ddTaskState;
     }
@@ -319,6 +329,7 @@ public class TaskInfo extends BaseModel {
                 .append(this.ddTaskResponsiblePerson, ti.ddTaskResponsiblePerson)
                 .append(this.ddTaskState, ti.ddTaskState)
                 .append(this.ddTaskType, ti.ddTaskType)
+                .append(this.ddSecretLevel,ti.ddSecretLevel)
                 .isEquals();
     }
 
@@ -353,6 +364,7 @@ public class TaskInfo extends BaseModel {
                 .append(this.ddTaskResponsiblePerson)
                 .append(this.ddTaskState)
                 .append(this.ddTaskType)
+                .append(this.ddSecretLevel)
                 .toHashCode();
     }
 
@@ -387,6 +399,7 @@ public class TaskInfo extends BaseModel {
                 .append(this.ddTaskResponsiblePerson)
                 .append(this.ddTaskState)
                 .append(this.ddTaskType)
+                .append(this.ddSecretLevel)
                 .toString();
     }
 }

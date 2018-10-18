@@ -607,15 +607,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>是否锁定:</th>
+                        <th>是否在职:</th>
                         <td>
                             <select name="isLock" class="select" style="width:245px !important"
-                                    <c:if test="${bySelf==1}">disabled="disabled"</c:if>>
+                                    disabled="disabled">
                                 <option value="<%=SysUser.UN_LOCKED %>"
-                                        <c:if test="${sysUser.isLock==0}">selected</c:if> >未锁定
+                                        <c:if test="${sysUser.isLock==0}">selected</c:if> >是
                                 </option>
                                 <option value="<%=SysUser.LOCKED %>"
-                                        <c:if test="${sysUser.isLock==1}">selected</c:if> >已锁定
+                                        <c:if test="${sysUser.isLock==1}">selected</c:if> >否
                                 </option>
                             </select>
                         </td>
@@ -654,6 +654,41 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>密级:</th>
+                        <td>
+                           <%-- <select name="psnSecretLevel" class="select" style="width:245px !important"
+                                    disabled="disabled">
+                                <option value="90"
+                                        <c:if test="${sysUser.psnSecretLevel==90}">selected</c:if> >核心
+                                </option>
+                                <option value="80"
+                                        <c:if test="${sysUser.psnSecretLevel==80}">selected</c:if> >重要
+                                </option>
+                                <option value="70"
+                                        <c:if test="${sysUser.psnSecretLevel==70}">selected</c:if>>一般
+                                </option>
+                                <option value="60"
+                                        <c:if test="${sysUser.psnSecretLevel==60}">selected</c:if>>非密
+                                </option>
+                            </select>--%>
+
+                               <c:choose>
+                                   <c:when test="${sysUser.psnSecretLevel==90}">
+                                        <input disabled="disabled"  value="核心" style="width:240px !important">
+                                   </c:when>
+                                   <c:when test="${sysUser.psnSecretLevel==80}">
+                                       <input disabled="disabled"  value="重要" style="width:240px !important">
+                                   </c:when>
+                                   <c:when test="${sysUser.psnSecretLevel==70}">
+                                       <input disabled="disabled"  value="一般" style="width:240px !important">
+                                   </c:when>
+                                   <c:otherwise>
+                                       <input disabled="disabled"  value="非密" style="width:240px !important">
+                                   </c:otherwise>
+                               </c:choose>
+                        </td>
+                    </tr>
+                    <tr>
                     <%--<th>邮箱地址:</th>--%>
                     <%--<td><input type="text" id="email" name="email" value="${sysUser.email}"--%>
                     <%--style="width:240px !important" class="inputText"/></td>--%>
@@ -674,6 +709,9 @@
                 </table>
                 <input type="hidden" name="userId" value="${sysUser.userId}"/>
                 <input type="hidden" id="picture" name="picture" value="${sysUser.picture}"/>
+                <input type="hidden" id="isLock" name="isLock" value="${sysUser.isLock}"/>
+
+                <input type="hidden" id="psnSecretLevel" name="psnSecretLevel" value="${sysUser.psnSecretLevel}"/>
 
             </div>
             <c:if test="${bySelf!=1}">

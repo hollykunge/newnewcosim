@@ -266,7 +266,16 @@ public class SysOrgController extends BaseController {
 		mv.addObject("scope", "grade");
 		return getEditMv(request,mv);
 	}
-	
+
+	@RequestMapping("users")
+	@ResponseBody
+	@Action(description = "根据组织ID获取用户列表")
+	public List<ISysUser> users(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Long orgId = RequestUtil.getLong(request, "parentId");
+		List<ISysUser> userList = iAuthenticate.getUsersInOrg(orgId);
+		return userList;
+	}
+
 	/**
 	 * 获取编辑界面的modelandview
 	 * @param request
@@ -539,9 +548,9 @@ public class SysOrgController extends BaseController {
 		if(orgId==0){		
 			//获取公司Id
 			long companyId = RequestUtil.getLong(request, "companyId",0);
-			if(companyId==0)
+			if(companyId==0){
 				companyId = ContextUtil.getCurrentOrgInfoFromSession().getSysOrgInfoId();
-			
+			}
 			if (demId != 0) {
 				demens = new ArrayList<Demension>();
 				demens.add(demensionService.getById(demId));

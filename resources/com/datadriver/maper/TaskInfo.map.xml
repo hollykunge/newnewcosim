@@ -27,6 +27,7 @@
         <result column="DD_PERSON" jdbcType="VARCHAR" property="ddTaskPerson"/>
         <result column="DD_PROJECT_NAME" jdbcType="VARCHAR" property="ddTaskProjectName"/>
         <result column="DD_STATE" jdbcType="SMALLINT" property="ddTaskState"/>
+        <result column="DD_SECRET_LEVEL" jdbcType="VARCHAR" property="ddSecretLevel"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -35,7 +36,7 @@
     DD_ESTIMATE_TIME, DD_PLAN_START_TIME, DD_PLAN_END_TIME, DD_COMPLETE_RATE,
     DD_COMPLETE_STATE, DD_RESOURCE_ID, DD_ACTUAL_TIME, DD_PLAN_TIME,
     DD_ACTUAL_START_TIME, DD_ACTUAL_END_TIME, DD_PLAN_DURATION,DD_PROJECT_ID, DD_PERSON,
-    DD_PROJECT_NAME,DD_STATE
+    DD_PROJECT_NAME,DD_STATE,DD_SECRET_LEVEL
   </sql>
 
     <select id="selectByPrimaryKey" parameterType="com.casic.datadriver.model.task.TaskInfo" resultMap="BaseResultMap">
@@ -116,7 +117,7 @@
       DD_COMPLETE_RATE, DD_COMPLETE_STATE,
       DD_RESOURCE_ID, DD_ACTUAL_TIME, DD_PLAN_TIME,
       DD_ACTUAL_START_TIME, DD_ACTUAL_END_TIME,
-      DD_PLAN_DURATION,DD_PROJECT_ID,DD_PERSON, DD_PROJECT_NAME,DD_STATE)
+      DD_PLAN_DURATION,DD_PROJECT_ID,DD_PERSON, DD_PROJECT_NAME,DD_STATE,DD_SECRET_LEVEL)
     values (#{ddTaskId,jdbcType=NUMERIC}, #{ddTaskName,jdbcType=VARCHAR}, #{ddTaskDescription,jdbcType=VARCHAR},
       #{ddTaskCreatorId,jdbcType=NUMERIC}, #{ddTaskResponsiblePerson,jdbcType=NUMERIC},
       #{ddTaskFixedPattern,jdbcType=NUMERIC}, #{ddTaskType,jdbcType=VARCHAR}, #{ddTaskChildType,jdbcType=VARCHAR},
@@ -126,7 +127,7 @@
       #{ddTaskResourceId,jdbcType=NUMERIC}, #{ddTaskActualTime,jdbcType=VARCHAR}, #{ddTaskPlanTime,jdbcType=VARCHAR},
       #{ddTaskActualStartTime,jdbcType=DATE}, #{ddTaskActualEndTime,jdbcType=DATE},
       #{ddTaskPlanDuration,jdbcType=NUMERIC},#{ddTaskProjectId,jdbcType=NUMERIC},#{ddTaskPerson,jdbcType=VARCHAR}
-      ,#{ddTaskProjectName,jdbcType=VARCHAR},#{ddTaskState,jdbcType=SMALLINT})
+      ,#{ddTaskProjectName,jdbcType=VARCHAR},#{ddTaskState,jdbcType=SMALLINT},#{ddSecretLevel,jdbcType=VARCHAR})
   </insert>
 
     <update id="update" parameterType="com.casic.datadriver.model.task.TaskInfo">
@@ -154,7 +155,8 @@
     DD_PROJECT_ID = #{ddTaskProjectId,jdbcType=NUMERIC},
     DD_PERSON = #{ddTaskPerson,jdbcType=VARCHAR},
     DD_PROJECT_NAME = #{ddTaskProjectName,jdbcType=VARCHAR},
-    DD_STATE = #{ddTaskState,jdbcType=SMALLINT}
+    DD_STATE = #{ddTaskState,jdbcType=SMALLINT},
+    DD_SECRET_LEVEL = #{ddSecretLevel,jdbcType=VARCHAR}
     where DD_ID = #{ddTaskId}
   </update>
 
@@ -236,6 +238,9 @@
             <if test="ddTaskState != null">
                 DD_STATE,
             </if>
+            <if test="ddSecretLevel != null">
+                DD_SECRET_LEVEL,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ddTaskId != null">
@@ -312,6 +317,9 @@
             </if>
             <if test="ddTaskState != null">
                 #{ddTaskState,jdbcType=SMALLINT},
+            </if>
+            <if test="ddSecretLevel != null">
+                #{ddSecretLevel,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -415,6 +423,9 @@
             <if test="ddTaskState != null">
             DD_STATE = #{ddTaskState,jdbcType=SMALLINT},
         </if>
+            <if test="ddSecretLevel != null">
+                DD_SECRET_LEVEL = #{ddSecretLevel,jdbcType=VARCHAR},
+            </if>
         </set>
         where DD_ID = #{ddTaskId,jdbcType=NUMERIC}
     </update>
@@ -443,7 +454,8 @@
       DD_PROJECT_ID = #{ddTaskProjectID,jdbcType=NUMERIC},
       DD_PERSON = #{ddTaskPerson,jdbcType=VARCHAR},
       DD_PROJECT_NAME = #{ddTaskProjectName,jdbcType=VARCHAR},
-      DD_STATE = #{ddTaskState,jdbcType=SMALLINT}
+      DD_STATE = #{ddTaskState,jdbcType=SMALLINT},
+      DD_SECRET_LEVEL = #{ddSecretLevel,jdbcType=VARCHAR}
     where DD_ID = #{ddTaskId,jdbcType=NUMERIC}
   </update>
 </mapper>

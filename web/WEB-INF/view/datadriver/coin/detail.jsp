@@ -53,7 +53,7 @@
             <display:column title="${checkAll}" media="html" style="width:30px;">
                 <input type="checkbox" class="pk" name="detailListId" value="${detailItem.id}">
             </display:column>
-            <display:column property="uid" title="用户" sortable="true" sortName="uid" maxLength="80"></display:column>
+            <display:column property="userId" title="用户" sortable="true" sortName="userId" maxLength="80"></display:column>
             <display:column property="updTime" title="更新时间" sortable="true" sortName="updTime" maxLength="80"></display:column>
             <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType"></display:column>
             <display:column property="sourceScore" title="获得积分" sortable="true" sortName="sourceScore"></display:column>
