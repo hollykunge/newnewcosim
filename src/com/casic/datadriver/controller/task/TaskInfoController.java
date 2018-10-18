@@ -21,6 +21,7 @@ import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.query.QueryFilter;
 import com.hotent.core.web.util.RequestUtil;
+import com.hotent.platform.auth.ISysOrg;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.service.system.SysOrgService;
 import com.hotent.platform.service.system.SysUserService;
@@ -45,6 +46,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -195,14 +197,10 @@ public class TaskInfoController extends AbstractController {
         ResultMessage resultMessage = null;
         ModelAndView mv = new ModelAndView();
         try {
-            List<ISysUser> sysUserList = sysUserService.getAll();
-            for (int a =0;a<sysUserList.size();a++)
-            {
-                sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
-            }
+            List<ISysOrg> sysOrgList = sysOrgService.getAll();
             Long id = RequestUtil.getLong(request, "id");
             Project project = projectService.getById(id);
-            mv = this.getAutoView().addObject("projectItem", project).addObject("sysUserList", sysUserList);
+            mv = this.getAutoView().addObject("projectItem", project).addObject("sysOrgList", sysOrgList);
             resultMessage = new ResultMessage(ResultMessage.Success, "创建成功");
         } catch (Exception ex) {
             resultMessage = new ResultMessage(ResultMessage.Fail, "创建失败" + ex.getMessage());
@@ -247,6 +245,7 @@ public class TaskInfoController extends AbstractController {
     public ModelAndView edit(HttpServletRequest request) throws Exception {
 
         String time = "2017年12月10日";
+        String startime = "2017年12月10日";
         ISysUser executorName;
         Long id = RequestUtil.getLong(request, "id");
         String returnUrl = RequestUtil.getPrePage(request);
@@ -270,14 +269,25 @@ public class TaskInfoController extends AbstractController {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         if (taskInfo.getDdTaskPlanEndTime() != null) {
-            time = df.format(taskInfo.getDdTaskPlanEndTime());
+//            time = df.format(taskInfo.getDdTaskPlanEndTime());
+            time = taskInfo.getDdTaskPlanEndTime();
         } else {
             Date date = new Date();
             time = df.format(date);
         }
+        if (taskInfo.getDdTaskPlanStartTime() != null) {
+//            time = df.format(taskInfo.getDdTaskPlanEndTime());
+            startime = taskInfo.getDdTaskPlanStartTime();
+        } else {
+            Date date = new Date();
+            startime = df.format(date);
+        }
+
+
 
         return getAutoView().addObject("TaskInfo", taskInfo)
                 .addObject("endtime", time)
+                .addObject("startime", startime)
                 .addObject("privateDataList", privateDataList)
                 .addObject("orderDataList", orderDataList)
                 .addObject("publishDataList", publishDataList)

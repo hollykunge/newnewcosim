@@ -153,7 +153,7 @@
             '</a>', ' ',
             '<a id="setupProject" href="javascript:void(0)" class="btn btn-default btn-xs" title="点击设置项目"><span class="glyphicon glyphicon-cog"></span> 设置',
             '</a>', ' ',
-            '<a id="processFlow" href="javascript:void(0)" class="btn btn-default btn-xs" title="点击进入进行任务创建"><span class="glyphicon glyphicon-road"></span> 任务创建',
+            '<a id="processFlow" href="javascript:void(0)" class="btn btn-default btn-xs" title="点击进入进行任务创建"><span class="glyphicon glyphicon-road"></span> 流程创建',
             '</a>'
         ].join('');
     }

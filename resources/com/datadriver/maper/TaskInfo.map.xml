@@ -13,8 +13,8 @@
         <result column="DD_PRIORITY" jdbcType="NUMERIC" property="ddTaskPriority"/>
         <result column="DD_MILESTONE" jdbcType="NUMERIC" property="ddTaskMilestone"/>
         <result column="DD_ESTIMATE_TIME" jdbcType="DATE" property="ddTaskEstimateTime"/>
-        <result column="DD_PLAN_START_TIME" jdbcType="DATE" property="ddTaskPlanStartTime"/>
-        <result column="DD_PLAN_END_TIME" jdbcType="DATE" property="ddTaskPlanEndTime"/>
+        <result column="DD_PLAN_START_TIME" jdbcType="VARCHAR" property="ddTaskPlanStartTime"/>
+        <result column="DD_PLAN_END_TIME" jdbcType="VARCHAR" property="ddTaskPlanEndTime"/>
         <result column="DD_COMPLETE_RATE" jdbcType="NUMERIC" property="ddTaskCompleteRate"/>
         <result column="DD_COMPLETE_STATE" jdbcType="NUMERIC" property="ddTaskCompleteState"/>
         <result column="DD_RESOURCE_ID" jdbcType="NUMERIC" property="ddTaskResourceId"/>
@@ -103,7 +103,8 @@
     </select>
 
     <select id="getAll" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM dd_task
     </select>
 
@@ -122,7 +123,7 @@
       #{ddTaskCreatorId,jdbcType=NUMERIC}, #{ddTaskResponsiblePerson,jdbcType=NUMERIC},
       #{ddTaskFixedPattern,jdbcType=NUMERIC}, #{ddTaskType,jdbcType=VARCHAR}, #{ddTaskChildType,jdbcType=VARCHAR},
       #{ddTaskPriority,jdbcType=NUMERIC}, #{ddTaskMilestone,jdbcType=NUMERIC}, #{ddTaskEstimateTime,jdbcType=VARCHAR},
-      #{ddTaskPlanStartTime,jdbcType=DATE}, #{ddTaskPlanEndTime,jdbcType=DATE},
+      #{ddTaskPlanStartTime,jdbcType=VARCHAR}, #{ddTaskPlanEndTime,jdbcType=VARCHAR},
       #{ddTaskCompleteRate,jdbcType=NUMERIC}, #{ddTaskCompleteState,jdbcType=NUMERIC},
       #{ddTaskResourceId,jdbcType=NUMERIC}, #{ddTaskActualTime,jdbcType=VARCHAR}, #{ddTaskPlanTime,jdbcType=VARCHAR},
       #{ddTaskActualStartTime,jdbcType=DATE}, #{ddTaskActualEndTime,jdbcType=DATE},
@@ -142,8 +143,8 @@
     DD_PRIORITY = #{ddTaskPriority,jdbcType=NUMERIC},
     DD_MILESTONE = #{ddTaskMilestone,jdbcType=NUMERIC},
     DD_ESTIMATE_TIME = #{ddTaskEstimateTime,jdbcType=VARCHAR},
-    DD_PLAN_START_TIME = #{ddTaskPlanStartTime,jdbcType=DATE},
-    DD_PLAN_END_TIME = #{ddTaskPlanEndTime,jdbcType=DATE},
+    DD_PLAN_START_TIME = #{ddTaskPlanStartTime,jdbcType=VARCHAR},
+    DD_PLAN_END_TIME = #{ddTaskPlanEndTime,jdbcType=VARCHAR},
     DD_COMPLETE_RATE = #{ddTaskCompleteRate,jdbcType=NUMERIC},
     DD_COMPLETE_STATE = #{ddTaskCompleteState,jdbcType=NUMERIC},
     DD_RESOURCE_ID = #{ddTaskResourceId,jdbcType=NUMERIC},
@@ -313,7 +314,7 @@
                 #{ddTaskPerson,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskProjectName != null">
-            #{ddTaskProjectName,jdbcType=VARCHAR},
+                #{ddTaskProjectName,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskState != null">
                 #{ddTaskState,jdbcType=SMALLINT},
@@ -337,7 +338,8 @@
 
     </select>
 
-    <select id="getByProIdAndUserIdF" parameterType="com.casic.datadriver.publicClass.PageInfo" resultMap="BaseResultMap">
+    <select id="getByProIdAndUserIdF" parameterType="com.casic.datadriver.publicClass.PageInfo"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from dd_task
@@ -385,10 +387,10 @@
                 DD_ESTIMATE_TIME = #{ddTaskEstimateTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskPlanStartTime != null">
-                DD_PLAN_START_TIME = #{ddTaskPlanStartTime,jdbcType=DATE},
+                DD_PLAN_START_TIME = #{ddTaskPlanStartTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskPlanEndTime != null">
-                DD_PLAN_END_TIME = #{ddTaskPlanEndTime,jdbcType=DATE},
+                DD_PLAN_END_TIME = #{ddTaskPlanEndTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskCompleteRate != null">
                 DD_COMPLETE_RATE = #{ddTaskCompleteRate,jdbcType=NUMERIC},
@@ -421,8 +423,8 @@
                 DD_PERSON = #{ddTaskPerson,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskState != null">
-            DD_STATE = #{ddTaskState,jdbcType=SMALLINT},
-        </if>
+                DD_STATE = #{ddTaskState,jdbcType=SMALLINT},
+            </if>
             <if test="ddSecretLevel != null">
                 DD_SECRET_LEVEL = #{ddSecretLevel,jdbcType=VARCHAR},
             </if>
@@ -441,8 +443,8 @@
       DD_PRIORITY = #{ddTaskPriority,jdbcType=NUMERIC},
       DD_MILESTONE = #{ddTaskMilestone,jdbcType=NUMERIC},
       DD_ESTIMATE_TIME = #{ddTaskEstimateTime,jdbcType=VARCHAR},
-      DD_PLAN_START_TIME = #{ddTaskPlanStartTime,jdbcType=DATE},
-      DD_PLAN_END_TIME = #{ddTaskPlanEndTime,jdbcType=DATE},
+      DD_PLAN_START_TIME = #{ddTaskPlanStartTime,jdbcType=VARCHAR},
+      DD_PLAN_END_TIME = #{ddTaskPlanEndTime,jdbcType=VARCHAR},
       DD_COMPLETE_RATE = #{ddTaskCompleteRate,jdbcType=NUMERIC},
       DD_COMPLETE_STATE = #{ddTaskCompleteState,jdbcType=NUMERIC},
       DD_RESOURCE_ID = #{ddTaskResourceId,jdbcType=NUMERIC},

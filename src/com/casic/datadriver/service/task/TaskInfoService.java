@@ -169,19 +169,40 @@ public class TaskInfoService extends BaseService<TaskInfo> {
             case 1:
 //                long temp1 = obj.getLong("1");
                 taskInfo.setDdTaskPriority(Short.valueOf(taskInfoJson));
-                break;
+                return taskInfo;
+
             case 2:
 //                String temp2 = obj.getString("2");
-                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                Date parsedDate = fmt.parse(taskInfoJson);
-                taskInfo.setDdTaskPlanEndTime(parsedDate);
-                break;
+//                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+//                Date parsedDate = fmt.parse(taskInfoJson);
+//                String dateString = fmt.format(parsedDate);
+                taskInfo.setDdTaskPlanEndTime(taskInfoJson);
+                Integer i=taskInfo.getDdTaskPlanStartTime().compareTo(taskInfoJson);
+                if(i>0){
+                    return null;
+                }else {
+                    return taskInfo;
+                }
+
             case 3:
 //                String temp3 = obj.getString("3");
                 taskInfo.setDdTaskDescription(taskInfoJson);
-                break;
+                return taskInfo;
+
+            case 4:
+//                String temp2 = obj.getString("2");
+//                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+//                Date parsedDate = fmt.parse(taskInfoJson);
+//                String dateString = fmt.format(parsedDate);
+                taskInfo.setDdTaskPlanStartTime(taskInfoJson);
+                Integer j=taskInfo.getDdTaskPlanEndTime().compareTo(taskInfoJson);
+                if(j<0){
+                    return null;
+                }else {
+                    return taskInfo;
+                }
         }
-        return taskInfo;
+        return null;
     }
 
     public List<TaskInfo> getListByPriority(Long projectId) {

@@ -82,7 +82,8 @@ public class ProcessFlowController extends AbstractController {
             throws Exception {
         ProcessFlow processFlow = new ProcessFlow();
         //跳转到流程设计页面
-        ModelAndView mv = new ModelAndView(new RedirectView("/datadriver/designflow/projectflow.ht"));
+        String url = request.getRequestURI();
+        ModelAndView mv = new ModelAndView(new RedirectView("newnewcosim-master_war/datadriver/designflow/projectflow.ht"));
         Long projectId = RequestUtil.getLong(request, "id");
         mv.addObject("projectId", projectId);
         return mv;

@@ -14,6 +14,7 @@ import com.hotent.core.web.ResultMessage;
 import com.hotent.platform.dao.system.SysOrgDao;
 import com.hotent.platform.dao.system.SysUserDao;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,7 @@ public class CoinController extends GenericController {
 
     @Autowired
     public CoinController(DdScoreInflowService ddScoreInflowService,
-                          SysUserDao sysUserDao,                          DdScoreService ddScoreService,
+                          SysUserDao sysUserDao, DdScoreService ddScoreService,
                           CoinService coinService,
                           SysOrgDao sysOrgDao,
                           GoldenCoinService goldenCoinService) {
@@ -64,7 +65,7 @@ public class CoinController extends GenericController {
     /**
      * 赚取积分接口
      *
-     * @param uid      身份证号
+     * @param uid          身份证号
      * @param sourceScore  分数
      * @param sourceType   一级类型
      * @param sourceDetail 二级类型
@@ -77,10 +78,13 @@ public class CoinController extends GenericController {
         String resultMsg = null;
         try {
             resultMsg = coinService.addScore(uid, sourceScore, sourceType, sourceDetail, updTime);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("result", resultMsg);
 //            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
             //解决跨域
             String callback = request.getParameter("callback");
-            response.getWriter().write(callback + "(" + resultMsg + ")");
+            response.getWriter().write(callback + "(" + jsonObject + ")");
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
         }
@@ -147,41 +151,41 @@ public class CoinController extends GenericController {
                     personalMap.put("chuangxinMonthScore", ddScore.getScoreTotal());
                 }
             }
-            if(!personalMap.containsKey("quanjuMonthScore")) {
+            if (!personalMap.containsKey("quanjuMonthScore")) {
                 personalMap.put("quanjuMonthScore", 0);
             }
-            if(!personalMap.containsKey("fengxianMonthScore")) {
+            if (!personalMap.containsKey("fengxianMonthScore")) {
                 personalMap.put("fengxianMonthScore", 0);
             }
-            if(!personalMap.containsKey("qiushiMonthScore")) {
+            if (!personalMap.containsKey("qiushiMonthScore")) {
                 personalMap.put("qiushiMonthScore", 0);
             }
-            if(!personalMap.containsKey("chuangxinMonthScore")) {
+            if (!personalMap.containsKey("chuangxinMonthScore")) {
                 personalMap.put("chuangxinMonthScore", 0);
             }
             //获取年币
             List<DdGoldenCoin> personalCoinList = goldenCoinService.getPersonal(userId);
-            for(DdGoldenCoin ddGoldenCoin : personalCoinList) {
-                if(ScoreRegulation.QUAN_JU.equals(ddGoldenCoin.getCoinType())) {
+            for (DdGoldenCoin ddGoldenCoin : personalCoinList) {
+                if (ScoreRegulation.QUAN_JU.equals(ddGoldenCoin.getCoinType())) {
                     personalMap.put("quanjuTotalCoin", ddGoldenCoin.getTotal().intValue());
-                } else if(ScoreRegulation.FENG_XIAN.equals(ddGoldenCoin.getCoinType())) {
+                } else if (ScoreRegulation.FENG_XIAN.equals(ddGoldenCoin.getCoinType())) {
                     personalMap.put("fengxianTotalCoin", ddGoldenCoin.getTotal().intValue());
-                } else if(ScoreRegulation.QIU_SHI.equals(ddGoldenCoin.getCoinType())) {
+                } else if (ScoreRegulation.QIU_SHI.equals(ddGoldenCoin.getCoinType())) {
                     personalMap.put("qiushiTotalCoin", ddGoldenCoin.getTotal().intValue());
-                } else if(ScoreRegulation.CHUANG_XIN.equals(ddGoldenCoin.getCoinType())) {
+                } else if (ScoreRegulation.CHUANG_XIN.equals(ddGoldenCoin.getCoinType())) {
                     personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getTotal().intValue());
                 }
             }
-            if(!personalMap.containsKey("quanjuTotalCoin")) {
+            if (!personalMap.containsKey("quanjuTotalCoin")) {
                 personalMap.put("quanjuTotalCoin", 0);
             }
-            if(!personalMap.containsKey("fengxianTotalCoin")) {
+            if (!personalMap.containsKey("fengxianTotalCoin")) {
                 personalMap.put("fengxianTotalCoin", 0);
             }
-            if(!personalMap.containsKey("qiushiTotalCoin")) {
+            if (!personalMap.containsKey("qiushiTotalCoin")) {
                 personalMap.put("qiushiTotalCoin", 0);
             }
-            if(!personalMap.containsKey("chuangxinTotalCoin")) {
+            if (!personalMap.containsKey("chuangxinTotalCoin")) {
                 personalMap.put("chuangxinTotalCoin", 0);
             }
             //获取月币
