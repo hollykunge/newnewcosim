@@ -46,6 +46,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -244,6 +245,7 @@ public class TaskInfoController extends AbstractController {
     public ModelAndView edit(HttpServletRequest request) throws Exception {
 
         String time = "2017年12月10日";
+        String startime = "2017年12月10日";
         ISysUser executorName;
         Long id = RequestUtil.getLong(request, "id");
         String returnUrl = RequestUtil.getPrePage(request);
@@ -267,14 +269,25 @@ public class TaskInfoController extends AbstractController {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         if (taskInfo.getDdTaskPlanEndTime() != null) {
-            time = df.format(taskInfo.getDdTaskPlanEndTime());
+//            time = df.format(taskInfo.getDdTaskPlanEndTime());
+            time = taskInfo.getDdTaskPlanEndTime();
         } else {
             Date date = new Date();
             time = df.format(date);
         }
+        if (taskInfo.getDdTaskPlanStartTime() != null) {
+//            time = df.format(taskInfo.getDdTaskPlanEndTime());
+            startime = taskInfo.getDdTaskPlanStartTime();
+        } else {
+            Date date = new Date();
+            startime = df.format(date);
+        }
+
+
 
         return getAutoView().addObject("TaskInfo", taskInfo)
                 .addObject("endtime", time)
+                .addObject("startime", startime)
                 .addObject("privateDataList", privateDataList)
                 .addObject("orderDataList", orderDataList)
                 .addObject("publishDataList", publishDataList)
