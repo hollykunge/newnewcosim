@@ -4,13 +4,10 @@ import com.hotent.core.model.BaseModel;
 
 public class TaskStart  extends BaseModel
 {
-
-    public static final Short checkpanel		=1;
-    public static final Short completepanel	    =2;
-    public static final Short createpanel		=-1;
-    public static final Short publishpanel	    =0;
-
-
+    public static final Short checkpanel		=2;
+    public static final Short completepanel	    =3;
+    public static final Short createpanel		=0;
+    public static final Short publishpanel	    =1;
 
     private Long ddTaskStartId;
 

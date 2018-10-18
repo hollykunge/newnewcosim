@@ -67,7 +67,7 @@
                             <option value="1">一般</option>
                         </select>
                     </td>
-                    <th width="20%">是否里程碑任务:</th>
+                    <th width="20%">是否里程碑:</th>
                     <td>
 
                         <div class="radio radio-info radio-inline">
@@ -85,7 +85,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">任务所属项目:</th>
+                    <th width="20%">密级:</th>
                     <td><input type="text" id="ddProjectSecretLevel" name="ddProjectSecretLevel"
                             <c:choose>
                                 <c:when test="${projectItem.ddProjectSecretLevel == 'fm'}">value="非密"</c:when>
@@ -93,8 +93,10 @@
                                 <c:when test="${projectItem.ddProjectSecretLevel == 'jm'}">value="机密"</c:when>
                                 <c:otherwise>value="内部"</c:otherwise>
                             </c:choose>
-                                class="form-control" readonly/></td>
-                    <th width="20%">任务负责人:</th>
+                               class="form-control" readonly/></td>
+                </tr>
+                <tr>
+                    <th width="20%">负责人:</th>
                     <td>
                         <select class="selectpicker show-tick form-control"
                                 data-live-search="true" id="select-first" title="请选择组织"
@@ -124,7 +126,8 @@
                 </tr>
                 <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${projectItem.ddProjectId}"/>
                 <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value=""/>
-                <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId" value="${projectItem.ddProjectCreatorId}"/>
+                <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId"
+                       value="${projectItem.ddProjectCreatorId}"/>
             </table>
         </form>
         <div class="row">
@@ -172,6 +175,7 @@
         var userId = $('#select-second').selectpicker('val');
         $("#ddTaskPerson").val(userId);
     });
+
     function showResponse(responseText) {
         var obj = new com.hotent.form.ResultMessage(responseText);
         if (obj.isSuccess()) {

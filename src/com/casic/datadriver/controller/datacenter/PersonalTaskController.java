@@ -80,7 +80,7 @@ public class PersonalTaskController extends AbstractController {
 
         for (int i = 0; i < UserTaskInfo_list.size(); i++) {
             TaskInfo taskInfo = UserTaskInfo_list.get(i);
-            if (taskInfo.getDdTaskState()==1 || taskInfo.getDdTaskState()==2) {
+            if (taskInfo.getDdTaskState() == 1 || taskInfo.getDdTaskState() == 2) {
                 taskInfo_list.add(taskInfo);
             }
         }
@@ -508,31 +508,19 @@ public class PersonalTaskController extends AbstractController {
     @RequestMapping("mydashboard")
     public ModelAndView mydashboard(HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
-        String userName = ContextUtil.getCurrentUser().getFullname();
-        String roleName = ContextUtil.getCurrentUser().getShortAccount();
         Long userId = ContextUtil.getCurrentUser().getUserId();
         List<TaskInfo> taskInfoList = taskInfoService.getListByResponceIdAndState1(userId);
-        Long tempProjectId = 0l;
-        List<Project> projectList = new ArrayList<>();
+
+        List<TaskInfo> taskInfos = new ArrayList<>();
         for (TaskInfo taskInfo : taskInfoList) {
             if (taskInfo.getDdTaskChildType().equals("createpanel")) {
                 continue;
             } else {
-                tempProjectId = taskInfo.getDdTaskProjectId();
-                if (isHas(tempProjectId)) {
-                    Project project = projectService.getById(tempProjectId);
-                    List<TaskInfo> taskInfos = taskInfoService.getListByPriority(tempProjectId);
-                    project.setTaskInfoList(taskInfos);
-                    projectList.add(project);
-                }
+                taskInfos.add(taskInfo);
             }
         }
-        //去重
-        List<Project> projectList1 = removeDuplicate(projectList);
         ModelAndView mav = getAutoView()
-                .addObject("userName", userName)
-                .addObject("projectList", projectList1)
-                .addObject("roleName", roleName);
+                .addObject("taskInfos", taskInfos);
         return mav;
     }
 
@@ -540,7 +528,9 @@ public class PersonalTaskController extends AbstractController {
     private Boolean isHas(Long projectId) {
         List<Project> proLists = projectService.getAll();
         for (Project project : proLists) {
-            if (project.getDdProjectId().equals(projectId)) return true;
+            if (project.getDdProjectId().equals(projectId)) {
+                return true;
+            }
         }
         return false;
     }
