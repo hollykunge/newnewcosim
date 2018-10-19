@@ -24,9 +24,9 @@
 <%--</div>--%>
 <%--</div>--%>
 <div class="btn-group" role="group" aria-label="..." style="margin-bottom: 5px;margin-top: 5px">
-    <button type="button" class="btn btn-sm btn-success" id="selectedOrder"><span
-            class="glyphicon glyphicon-check"></span> 订阅数据
-    </button>
+    <%--<button type="button" class="btn btn-sm btn-success" id="selectedOrder"><span--%>
+            <%--class="glyphicon glyphicon-check"></span> 订阅数据--%>
+    <%--</button>--%>
     <div class="btn-group" role="group">
         <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false"><span class="glyphicon glyphicon-export"></span>
@@ -112,8 +112,8 @@
         $(this).removeData("bs.modal");
     });
 
+    //下载文件和模型
     function downloadF(dataId) {
-//        window.location.href = "getPrivatefile.ht?id=" + dataId;
         window.location.href = "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + dataId;
     }
 </script>

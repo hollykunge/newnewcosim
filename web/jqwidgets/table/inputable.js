@@ -90,12 +90,14 @@ function inputTableInit(path, taskId) {
                 var orderCancel = $(buttonTemplate);
                 // var feedBack = $(buttonTemplate);
                 var viewModel = $(buttonTemplate);
+                var downLoad = $(buttonTemplate);
 
                 container.append(unselectRow);
                 container.append(orderSelection);
                 container.append(orderCancel);
                 // container.append(feedBack);
                 container.append(viewModel);
+                container.append(downLoad);
 
                 toolBar.append(container);
 
@@ -129,16 +131,6 @@ function inputTableInit(path, taskId) {
                 orderCancel.find('div:first').addClass(toTheme('glyphicon glyphicon-remove-sign'));
                 orderCancel.jqxTooltip({position: 'bottom', content: "取消订阅已选择数据"});
 
-                // feedBack.jqxButton({
-                //     cursor: "pointer",
-                //     disabled: true,
-                //     enableDefault: false,
-                //     height: 25,
-                //     width: 23
-                // });
-                // feedBack.find('div:first').addClass(toTheme('glyphicon glyphicon-exclamation-sign'));
-                // feedBack.jqxTooltip({position: 'bottom', content: "反馈选择的已订阅数据问题"});
-
                 viewModel.jqxButton({
                     cursor: "pointer",
                     disabled: true,
@@ -149,6 +141,16 @@ function inputTableInit(path, taskId) {
                 viewModel.find('div:first').addClass(toTheme('glyphicon glyphicon-eye-open'));
                 viewModel.jqxTooltip({position: 'bottom', content: "查看模型"});
 
+                downLoad.jqxButton({
+                    cursor: "pointer",
+                    disabled: true,
+                    enableDefault: false,
+                    height: 25,
+                    width: 23
+                });
+                downLoad.find('div:first').addClass(toTheme('glyphicon glyphicon-download-alt'));
+                downLoad.jqxTooltip({position: 'bottom', content: "下载文件模型"});
+
                 var updateButtons = function (action) {
                     switch (action) {
                         case "Select":
@@ -156,12 +158,14 @@ function inputTableInit(path, taskId) {
                             orderSelection.jqxButton({disabled: false});
                             orderCancel.jqxButton({disabled: false});
                             viewModel.jqxButton({disabled: false});
+                            downLoad.jqxButton({disabled: false});
                             break;
                         case "Unselect":
                             unselectRow.jqxButton({disabled: true});
                             orderSelection.jqxButton({disabled: true});
                             orderCancel.jqxButton({disabled: true});
                             viewModel.jqxButton({disabled: true});
+                            downLoad.jqxButton({disabled: true});
                             break;
                     }
                 };
@@ -179,10 +183,25 @@ function inputTableInit(path, taskId) {
                     updateButtons('Unselect');
                 });
 
+                //取消选择
                 unselectRow.click(function () {
                     if (!unselectRow.jqxButton('disabled')) {
                         $("#treeGridIn").jqxTreeGrid('unselectRow', rowKey);
                         rowKey = null;
+                    }
+                });
+
+                //下载
+                downLoad.click(function () {
+                    if (!downLoad.jqxButton('disabled')) {
+                        var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
+                        for (var i = 0; i < selection.length; i++) {
+                            if (selection[0].dataType=='模型' || selection[0].dataType=='文件'){
+                                downloadF(selection[i].dataId);
+                            } else {
+                                //TODO 添加消息提示
+                            }
+                        }
                     }
                 });
 
