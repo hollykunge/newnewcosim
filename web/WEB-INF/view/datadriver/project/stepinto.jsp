@@ -86,7 +86,7 @@
     </ul>
 
     <br>
-    <div class="tab-content board-view">
+    <div class="tab-content board-view" style="height: 100%">
         <div role="tabpanel" class="tab-pane active board-scrum-view" id="task" style="height: 100%">
         </div>
         <div role="tabpanel" class="tab-pane board-scrum-view" id="indextab" style="height: 100%">
