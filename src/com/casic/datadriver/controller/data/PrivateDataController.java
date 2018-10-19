@@ -52,7 +52,7 @@ import static com.hotent.core.util.AppUtil.getServletContext;
 /**
  * 输出数据列表
  *
- * @author 杜宇坤 2016/11/14 0014.
+ * @author hollykunge 2016/11/14 0014.
  */
 @Controller
 @RequestMapping("/datadriver/privatedata/")
