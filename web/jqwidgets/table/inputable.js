@@ -220,7 +220,8 @@ function inputTableInit(path, taskId) {
                         }
                         $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=orderpanel" + "&taskId=" + taskId, function (data, status) {
                             if (status == 'success') {
-                                window.location.reload();
+                                // window.location.reload();
+                                $('#treeGridIn').jqxTreeGrid('updateBoundData');
                             }
                         });
                     }
@@ -230,7 +231,7 @@ function inputTableInit(path, taskId) {
                         var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
                         var rowsDataIds = new Array();
                         for (var i = 0; i < selection.length; i++) {
-                            if (selection[i]) {
+                            if (selection[i] == undefined) {
                                 continue;
                             }
                             if (selection[i].torderState == 1) {
@@ -239,7 +240,7 @@ function inputTableInit(path, taskId) {
                         }
                         $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=canorderpanel" + "&taskId=" + taskId, function (data, status) {
                             if (status == 'success') {
-                                window.location.reload();
+                                $('#treeGridIn').jqxTreeGrid('updateBoundData');
                             }
                         });
                     }

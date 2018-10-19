@@ -42,11 +42,11 @@ public class TaskInfoDao extends BaseDao<TaskInfo> {
      *            the query filter
      * @return the list
      */
-    public List<TaskInfo> getListByResponceId(long ResponceId) {
+    public List<TaskInfo> getListByResponceId(Long ResponceId) {
         return this.getBySqlKey("getListByResponceId", ResponceId);
     }
 
-    public List<TaskInfo> getListByResponceIdAndState1(long ResponceId) {
+    public List<TaskInfo> getListByResponceIdAndState1(Long ResponceId) {
         return this.getBySqlKey("getListByResponceIdAndState1", ResponceId);
     }
 

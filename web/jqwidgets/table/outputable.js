@@ -477,7 +477,8 @@ function outputTableInit(path, taskId, projectId) {
                         data: "orderJson=" + orderJson,
                         ContentType: "application/json; charset=utf-8",
                         success: function (data) {
-                            window.location.reload();
+                            // window.location.reload();
+                            $('#treeGridOut').jqxGrid('refresh');
                         },
                         error: function (err) {
                         }

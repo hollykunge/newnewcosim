@@ -201,15 +201,8 @@
         $("#addPrivateData").click(function () {
             $.get("${ctx}/datadriver/privatedata/addPrivateData.ht?projectId=${projectId}&taskId=${taskId}", function (data, status) {
                 if (status == 'success') {
-                    $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                    alertify.set('notifier', 'position', 'top-right');
-                    var notification = alertify.notify('添加成功！', 'success', delayTimer, function () {
-                    });
                 }
                 else {
-                    alertify.set('notifier', 'position', 'top-right');
-                    var notification = alertify.notify('添加失败！', 'error', delayTimer, function () {
-                    });
                 }
             });
         });
@@ -417,37 +410,6 @@
             });
         });
         outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId});
-        // create context menu
-        // var contextMenu = $("#Menu").jqxMenu({width: 144, height: 108, autoOpenPopup: false, mode: 'popup'});
-        // $("#treeGridOut").on('contextmenu', function () {
-        //     return false;
-        // });
-        // $("#treeGridOut").on('rowClick', function (event) {
-        //     var args = event.args;
-        //     if (args.originalEvent.button == 2) {
-        //         var scrollTop = $(window).scrollTop();
-        //         var scrollLeft = $(window).scrollLeft();
-        //         contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
-        //         return false;
-        //     }
-        // });
-        // $("#Menu").on('itemclick', function (event) {
-        //     var args = event.args;
-        //     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-        //     var rowid = selection[0].uid
-        //     switch ($.trim($(args).text())) {
-        //         case '删除数据':
-        //         case '添加子数据':
-        //         case '发布数据':
-        //         case '取消数据':
-        //     }
-        //
-        //     if ($.trim($(args).text()) == "Edit Selected Row") {
-        //         $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
-        //     } else {
-        //         $("#treeGridOut").jqxTreeGrid('deleteRow', rowid);
-        //     }
-        // });
         // 结束编辑触发事件
         $("#treeGridOut").on('cellEndEdit', function (event) {
             var args = event.args;
