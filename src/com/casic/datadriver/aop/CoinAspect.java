@@ -69,7 +69,7 @@ public class CoinAspect {
      * design_8,奖励10积分
      */
     @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.canOrderToOrder(..))||" +
-            "execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.createToPublish(..)) )")
+            "execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.createToPublish(..))")
     public void orderAndCreateAspect(){}
 
     //TODO controller方法移植到SERVICE

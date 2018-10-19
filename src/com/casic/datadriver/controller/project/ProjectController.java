@@ -264,6 +264,7 @@ public class ProjectController extends BaseController {
      * @throws Exception the exception
      */
     @RequestMapping("del")
+    @Action(description = "删除project")
     public void del(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String preUrl = RequestUtil.getPrePage(request);
         Long projectId = RequestUtil.getLong(request, "id");
