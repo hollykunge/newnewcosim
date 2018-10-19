@@ -24,13 +24,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/datadriver/golden/")
 public class GoldenCoinController extends AbstractController {
-
+    @Autowired
     private GoldenCoinService ddGoldenCoinService;
 
-    @Autowired
+    /*@Autowired
     public GoldenCoinController(GoldenCoinService ddGoldenCoinService) {
         this.ddGoldenCoinService = ddGoldenCoinService;
-    }
+    }*/
 
     @RequestMapping("del")
     @Action(description="币删除")

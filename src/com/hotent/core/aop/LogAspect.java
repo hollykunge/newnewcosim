@@ -15,6 +15,8 @@ import com.hotent.core.web.util.RequestUtil;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.model.system.SysAudit;
 import com.hotent.platform.service.system.SysAuditService;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 
 /**
  * 
@@ -24,14 +26,14 @@ import com.hotent.platform.service.system.SysAuditService;
  * @author csx
  * 
  */
-// @Aspect
+ @Aspect
 public class LogAspect
 {
 	private Log logger = LogFactory.getLog(LogAspect.class);
 	@Resource
 	private SysAuditService sysAuditService;
 
-	// @Around("execution(* com.hotent.platform.controller..*.*(..))")
+	@Around("execution(* com.hotent.platform.controller..*.*(..))||execution(* com.casic.datadriver.controller..*.*(..))")
 	public Object doAudit(ProceedingJoinPoint point) throws Throwable
 	{
 		logger.debug("enetr log aspect doAudit method============================");

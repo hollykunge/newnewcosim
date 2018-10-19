@@ -7,12 +7,15 @@ import com.casic.datadriver.model.data.PrivateData;
 import com.casic.datadriver.model.task.TaskInfo;
 import com.casic.datadriver.model.task.TaskStart;
 import com.casic.datadriver.publicClass.PageInfo;
+import com.casic.datadriver.publicClass.QueryParameters;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.BeanUtils;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.service.system.SysUserService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -63,6 +66,56 @@ public class TaskInfoService extends BaseService<TaskInfo> {
         return true;
     }
 
+
+    public String getKanbanDataByProjectId(Long projectId) throws Exception {
+        List<TaskInfo> allTaskData = taskInfoDao.queryTaskInfoByProjectId(projectId);
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonMembers = new JSONArray();
+
+        for (int i = 0; i < allTaskData.size(); i++) {
+            TaskInfo taskData = allTaskData.get(i);
+            jsonObject.put("taskId", taskData.getDdTaskId());
+            jsonObject.put("taskName", taskData.getDdTaskName());
+            jsonObject.put("endTime", "截止时间："+taskData.getDdTaskPlanEndTime());
+            switch (taskData.getDdTaskPriority()) {
+                case 1:
+                    jsonObject.put("color", "gray");
+                    break;
+                case 2:
+                    jsonObject.put("color", "#ec971f");
+                    break;
+                case 3:
+                    jsonObject.put("color", "#c9302c");
+                    break;
+                default:
+                    break;
+            }
+            switch (taskData.getDdTaskChildType()) {
+                case "createpanel":
+                    jsonObject.put("state", "createpanel");
+                    break;
+                case "publishpanel":
+                    jsonObject.put("state", "publishpanel");
+                    break;
+                case "checkpanel":
+                    jsonObject.put("state", "checkpanel");
+                    break;
+                case "completepanel":
+                    jsonObject.put("state", "completepanel");
+                    break;
+                default:
+                    break;
+            }
+            jsonMembers.add(jsonObject);
+        }
+        return jsonMembers.toString();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.hotent.core.service.GenericService#getEntityDao()
+     */
     @Override
     protected IEntityDao<TaskInfo, Long> getEntityDao() {
         return this.taskInfoDao;
