@@ -400,22 +400,25 @@ function outputTableInit(path, taskId, projectId) {
             addButton.click(function (event) {
                 if (!addButton.jqxButton('disabled')) {
                     //TODO:判断不完全
-                    if (rowKey != null & rowKey != "0") {
-                        // $("#treeGridOut").jqxTreeGrid('expandRow', rowKey);
-                        // add new empty row.
-                        $("#treeGridOut").jqxTreeGrid('addRow', null, {
-                            type: 3,
-                            dataName: "未定义子数据名称",
-                            taskId: taskId,
-                            dataSenMax: 10000,
-                            dataSenMin: 0,
-                            isLeaf: 1,
-                            dataType: "数值",
-                            publishState: "未发布",
-                            parentId: rowParentId,
-                            projectId: projectId
-                        }, 'first', rowKey);
-                    } else {
+                    // if (rowKey != null & rowKey != "0") {
+                    //     // $("#treeGridOut").jqxTreeGrid('expandRow', rowKey);
+                    //     // add new empty row.
+                    //     $("#treeGridOut").jqxTreeGrid('addRow', null, {
+                    //         type: 3,
+                    //         dataName: "未定义子数据名称",
+                    //         taskId: taskId,
+                    //         dataSenMax: 10000,
+                    //         dataSenMin: 0,
+                    //         isLeaf: 1,
+                    //         dataType: "数值",
+                    //         publishState: "未发布",
+                    //         parentId: rowParentId,
+                    //         projectId: projectId
+                    //     }, 'first', rowKey);
+                    // } else {
+                        if (rowKey == null) {
+
+                        }
                         $("#treeGridOut").jqxTreeGrid('addRow', null, {
                             type: 3,
                             dataName: "未定义数据名称",
@@ -425,10 +428,10 @@ function outputTableInit(path, taskId, projectId) {
                             isLeaf: 0,
                             dataType: "数值",
                             publishState: "未发布",
-                            parentId: rowParentId,
+                            parentId: 0,
                             projectId: projectId
                         }, 'first');
-                    }
+                    // }
 
                     // select the first row and clear the selection.
                     $("#treeGridOut").jqxTreeGrid('clearSelection');
@@ -448,26 +451,11 @@ function outputTableInit(path, taskId, projectId) {
             updateButton.click(function (event) {
                 if (!updateButton.jqxButton('disabled')) {
                     // save changes.
-                    var yid = uuid(14, 10) //唯一数据ID
-                    var array = new Map();//键值和数据ID 映射关系
 
                     var jsonObj =  strToJson(updateJson);//转换为json对象
                     var Rjson_O =  JSON.parse(jsonObj);//转换为json对象
                     var Rjson  = uniqeByKeys(Rjson_O.reverse(), ['dataId']);
-                    for(var i=0;i<Rjson.length;i++){
-                        if (Rjson[i].dataId<10000000000) {
-                            array.set(Rjson[i].dataId,yid);
-                            Rjson[i].dataId= yid++;
-                        }
-                        if (Rjson[i].parentId != 0&Rjson[i].parentId != '0') {
-                            array.forEach(function (value, key, map) {
-                                if(Rjson[i].parentId == key)
-                                {
-                                    Rjson[i].parentId = value;
-                                }
-                            });
-                        }
-                    }
+
                     var orderJson = jsonarrayToJson(JSON.stringify(Rjson));
                     //TODO:添加是否确认提交的判断
                     $.ajax({
@@ -551,22 +539,22 @@ function outputTableInit(path, taskId, projectId) {
             publishCancel.click(function () {
                 if (!publishCancel.jqxButton('disabled')) {
                     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-                            var rowsDataIds = new Array();
-                            for (var i = 0; i < selection.length; i++) {
-                                if (selection[0] == undefined) {
-                                    continue;
-                                }
-                                if (selection[i].publishState == 1) {
-                                    rowsDataIds.push(selection[i].dataId);
-                                }
+                    var rowsDataIds = new Array();
+                    for (var i = 0; i < selection.length; i++) {
+                        if (selection[0] == undefined) {
+                            continue;
+                        }
+                        if (selection[i].publishState == 1) {
+                            rowsDataIds.push(selection[i].dataId);
+                        }
+                    }
+                    if (rowsDataIds.length > 0) {
+                        $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
+                            if (status == 'success') {
+                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
                             }
-                            if (rowsDataIds.length > 0) {
-                                $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
-                                    if (status == 'success') {
-                                        $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                                    }
-                                });
-                            }
+                        });
+                    }
                 }
             });
             deleteButton.click(function () {
@@ -721,31 +709,9 @@ function outputTableInit(path, taskId, projectId) {
         var rowKey = args.key;
         // 行数据
         var rowData = args.row;
-        // 列数据域
-        var columnDataField = args.dataField;
-        // 列显示域
-        var columnDisplayField = args.displayField;
-        // 当前值
-        var value = args.value;
-        // if (columnDataField == "ShippedDate")
-        //     value = dataAdapter.formatDate(value, 'dd/MM/yyyy');
 
-       // getid();
-       // alert(id);
-       //  for (var i = 0; i < updateJson.length; i++) {
-       //      var tempJson = $.parseJSON(updateJson[i]);
-       //      if (rowKey == tempJson.dataId) {
-       //          var num = updateJson.splice(i, 1);   //从i位置开始删除
-       //          i = i - 1;    //改变循环变量
-       //      }
-       //  }
-        // alert(rowKey);
         if (rowData.type == 0) rowData.type = 1
-        // var target = $(event.target);
-        // target.find('.publishButtons').hide();
-        // if (rowData.dataId == 0 || rowData.dataId == "0") {
-        //     rowData.dataId = rd(1, 999999)
-        // }
+
         updateJson.push('{"type":' + rowData.type + ',' +
             '"dataId":' + rowKey + ',' +
             '"taskId":' + rowData.taskId + ',' +
@@ -760,7 +726,5 @@ function outputTableInit(path, taskId, projectId) {
             '"projectId":"' + projectId + '",' +
             '"dataSenMin":"' + rowData.dataSenMin + '",' +
             '"dataSenMax":"' + rowData.dataSenMax + '"}');
-        // $("#treeGridOut").on('rowUnselect', function (event) {
-        // });
     });
 }

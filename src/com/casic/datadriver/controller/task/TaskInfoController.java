@@ -530,7 +530,7 @@ public class TaskInfoController extends AbstractController {
      */
     @RequestMapping("onchangetaskinfo")
     @Action(description = "更改任务详情")
-    public void onchangetaskinfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void onChangeTaskInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             Long taskId = RequestUtil.getLong(request, "taskId");
             Integer eventId = RequestUtil.getInt(request, "eventId");
