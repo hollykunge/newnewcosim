@@ -25,7 +25,7 @@
                     form.submit();
                 }
                 $("#uploadPrivateFile").modal('hide');
-                // $('#table_private').bootstrapTable('refresh');
+
             });
         });
 
@@ -37,7 +37,6 @@
 
             }
         }
-
     </script>
 </head>
 <body>

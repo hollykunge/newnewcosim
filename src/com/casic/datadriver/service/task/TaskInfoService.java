@@ -63,11 +63,6 @@ public class TaskInfoService extends BaseService<TaskInfo> {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.hotent.core.service.GenericService#getEntityDao()
-     */
     @Override
     protected IEntityDao<TaskInfo, Long> getEntityDao() {
         return this.taskInfoDao;
@@ -109,6 +104,7 @@ public class TaskInfoService extends BaseService<TaskInfo> {
     public List<TaskInfo> getListByResponceIdAndState1(long ResponceId) {
         return this.taskInfoDao.getListByResponceIdAndState1(ResponceId);
     }
+
     /**
      * 根据任务信息添加私有数据
      */
@@ -149,15 +145,10 @@ public class TaskInfoService extends BaseService<TaskInfo> {
     }
 
     public TaskInfo onChangeTaskInfo(Long taskId, String taskInfoJson, Integer eventId) throws ParseException {
-
-//        String obj = JSONObject.fromObject(taskInfoJson);
-//        Iterator<String> sIterator = obj.keys();
-//        String key = sIterator.next();
         TaskStart taskStart = taskStartService.getByTaskId(taskId);
         TaskInfo taskInfo = getById(taskId);
         switch (eventId) {
             case 0:
-//                long temp0 = obj.getLong("0");
                 if (taskStart != null) {
                     taskStart.setDdTaskResponcePerson(Long.valueOf(taskInfoJson));
                     taskStartService.update(taskStart);
@@ -167,29 +158,21 @@ public class TaskInfoService extends BaseService<TaskInfo> {
                 taskInfo.setDdTaskPerson(sysUser.getFullname());
                 break;
             case 1:
-//                long temp1 = obj.getLong("1");
                 taskInfo.setDdTaskPriority(Short.valueOf(taskInfoJson));
-                return taskInfo;
+//                return taskInfo;
 
             case 2:
-//                String temp2 = obj.getString("2");
-//                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-//                Date parsedDate = fmt.parse(taskInfoJson);
-//                String dateString = fmt.format(parsedDate);
                 taskInfo.setDdTaskPlanEndTime(taskInfoJson);
-                Integer i=taskInfo.getDdTaskPlanStartTime().compareTo(taskInfoJson);
-                return taskInfo;
+//                Integer i=taskInfo.getDdTaskPlanStartTime().compareTo(taskInfoJson);
+//                return taskInfo;
             case 3:
-//                String temp3 = obj.getString("3");
                 taskInfo.setDdTaskDescription(taskInfoJson);
-                return taskInfo;
+//                return taskInfo;
             case 4:
-//                String temp2 = obj.getString("2");
-//                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-//                Date parsedDate = fmt.parse(taskInfoJson);
-//                String dateString = fmt.format(parsedDate);
                 taskInfo.setDdTaskPlanStartTime(taskInfoJson);
-                Integer j=taskInfo.getDdTaskPlanEndTime().compareTo(taskInfoJson);
+//                Integer j=taskInfo.getDdTaskPlanEndTime().compareTo(taskInfoJson);
+            default:
+                break;
         }
         return taskInfo;
     }
@@ -207,11 +190,13 @@ public class TaskInfoService extends BaseService<TaskInfo> {
         taskInfo.setDdTaskChildType("checkpanel");
         taskInfo.setDdTaskState((short) 2);
         int record = this.taskInfoDao.update(taskInfo);
-        if (record != 0)
+        if (record != 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
+
     /**
      * 任务收回
      */
@@ -220,10 +205,10 @@ public class TaskInfoService extends BaseService<TaskInfo> {
         taskInfo.setDdTaskChildType("publishpanel");
         taskInfo.setDdTaskState((short) 1);
         int record = this.taskInfoDao.update(taskInfo);
-        if (record != 0)
+        if (record != 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-
 }

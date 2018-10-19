@@ -74,71 +74,8 @@
         background-color: #ffced9;
     }
 </style>
-<%--<a class="btn btn-sm btn-default" href="javascript:void(0)"--%>
-<%--onclick="importPrivateData(${taskId}, ${projectId})"><span--%>
-<%--class="glyphicon glyphicon-import"></span> 批量导入</a>--%>
 <div class="tableCtrl">
-    <%--<div class="btn-group" role="group" aria-label="..." style="margin-right: 12px">--%>
-        <%--<button type="button" class="btn btn-sm btn-default" id="addPrivateData"><span--%>
-                <%--class="glyphicon glyphicon-plus"></span> 添加数据--%>
-        <%--</button>--%>
-        <%--<button type="button" class="btn btn-sm btn-default" id="cancelEditPrivate"><span--%>
-                <%--class="glyphicon glyphicon-remove"></span> 取消编辑--%>
-        <%--</button>--%>
-        <%--<button type="button" class="btn btn-sm btn-default" id="deletePrivateData"><span--%>
-                <%--class="glyphicon glyphicon-trash"></span> 删除--%>
-        <%--</button>--%>
-        <%--<button type="button" class="btn btn-sm btn-default" id="cancelSelected"><span--%>
-                <%--class="glyphicon glyphicon-remove-circle"></span> 取消选择--%>
-        <%--</button>--%>
-    <%--</div>--%>
-    <%--<div class="btn-group" role="group" aria-label="..." style="margin-right: 12px">--%>
-
-        <%--<button type="button" class="btn btn-sm btn-default" id="publishPrivateData"><span--%>
-                <%--class="glyphicon glyphicon-share"></span> 发布数据--%>
-        <%--</button>--%>
-        <%--<button type="button" class="btn btn-sm btn-default" id="recylePrivateData"><span--%>
-                <%--class="glyphicon glyphicon-remove-sign"></span> 收回数据--%>
-        <%--</button>--%>
-    <%--</div>--%>
-    <%--<div class="btn-group" role="group" aria-label="..." style="margin-right: 12px">--%>
-        <%--<button type="button" class="btn btn-sm btn-default" id="uploadFile"><span--%>
-                <%--class="glyphicon glyphicon-upload"></span> 上传模型--%>
-        <%--</button>--%>
-        <%--<button type="button" class="btn btn-sm btn-default" id="downloadFile"><span--%>
-                <%--class="glyphicon glyphicon-download"></span> 下载模型--%>
-        <%--</button>--%>
-    <%--</div>--%>
-    <%--<div class="btn-group" role="group" aria-label="..." style="margin-right: 12px">--%>
-        <%--<button type="button" class="btn btn-sm btn-default" onclick="importPrivateData(${taskId}, ${projectId})"><span--%>
-                <%--class="glyphicon glyphicon-import"></span> 导入数据--%>
-        <%--</button>--%>
-
-        <%--<div class="btn-group" role="group">--%>
-            <%--<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"--%>
-                    <%--aria-haspopup="true"--%>
-                    <%--aria-expanded="false"><span class="glyphicon glyphicon-export"></span>--%>
-                <%--导出数据--%>
-                <%--<span class="caret"></span>--%>
-            <%--</button>--%>
-            <%--<ul class="dropdown-menu">--%>
-                <%--<li><a href="javascript:void(0)" id="exportExcelOut">Excel格式</a></li>--%>
-                <%--<li><a href="javascript:void(0)" id="exportCVSOut">CVS格式</a></li>--%>
-            <%--</ul>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-    <%--<button type="button" class="btn btn-sm btn-success pull-right" id="saveChangePrivate"><span--%>
-            <%--class="glyphicon glyphicon-floppy-saved"></span> 保存--%>
-    <%--</button>--%>
 </div>
-<%--<div id="Menu">--%>
-    <%--<ul>--%>
-        <%--<li><a id="" href="">添加子数据</a></li>--%>
-        <%--<li>删除数据</li>--%>
-        <%--<li>发布数据</li>--%>
-        <%--<li>取消发布</li>--%>
-    <%--</ul>--%>
-<%--</div>--%>
 <div id="treeGridOut" style="width: 100%"></div>
 <%--导入数据--%>
 <div class="modal fade" id="importData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -198,14 +135,14 @@
             $("#treeGridOut").jqxTreeGrid('exportData', 'csv');
         });
         //数据添加功能
-        $("#addPrivateData").click(function () {
-            $.get("${ctx}/datadriver/privatedata/addPrivateData.ht?projectId=${projectId}&taskId=${taskId}", function (data, status) {
-                if (status == 'success') {
-                }
-                else {
-                }
-            });
-        });
+        <%--$("#addPrivateData").click(function () {--%>
+            <%--$.get("${ctx}/datadriver/privatedata/addPrivateData.ht?projectId=${projectId}&taskId=${taskId}", function (data, status) {--%>
+                <%--if (status == 'success') {--%>
+                <%--}--%>
+                <%--else {--%>
+                <%--}--%>
+            <%--});--%>
+        <%--});--%>
         //取消编辑
         $("#cancelEditPrivate").click(function () {
             var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
@@ -303,11 +240,6 @@
                 if (selection[0] != undefined) {
                     for (var i = 0; i < selection.length; i++) {
                         uploadFile(selection[i].dataId);
-//                        $.get("uploadPrivateFile.ht?id=" + selection[i].dataId, function (data, status) {
-//                            if (status == 'success') {
-//                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
-//                            }
-//                        });
                     }
                 }
             }
@@ -318,27 +250,6 @@
             var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
             for (var i = 0; i < selection.length; i++) {
                 window.location.href = "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + selection[i].dataId;
-                <%--$.ajax({--%>
-                <%--async: false,--%>
-                <%--url: "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + selection[i].dataId,--%>
-                <%--success: function (data) {--%>
-                <%--}--%>
-                <%--});--%>
-//            $.get("getPrivatefile.ht?id=" + selection[i].dataId, function (data, status) {
-////                if (status == 'success') {
-////                    for (var j = 0; j < arrayList.length; j++) {
-////                        $("#treeGridOut").jqxTreeGrid('deleteRow', arrayList[j]);
-////                    }
-////                    alertify.set('notifier', 'position', 'top-right');
-////                    var notification = alertify.notify('删除成功！', 'success', delayTimer, function () {
-////                    });
-////                }
-////                else {
-////                    alertify.set('notifier', 'position', 'top-right');
-////                    var notification = alertify.notify('删除失败！', 'error', delayTimer, function () {
-////                    });
-////                }
-//            });
             }
         });
 
@@ -366,28 +277,25 @@
         });
         //保存
         $("#saveChangePrivate").click(function () {
-
             <%
                Long id = UniqueIdUtil.genId();
             %>
-            var yid = <%=id%>//唯一数据ID
+            var yid =
+            <%=id%>//唯一数据ID
             var array = new Map();//键值和数据ID 映射关系
 
-            var jsonObj =  strToJson(updateJson);//转换为json对象
-            var Rjson =  JSON.parse(jsonObj);//转换为json对象
-            for(var i=0;i<Rjson.length;i++){
+            var jsonObj = strToJson(updateJson);//转换为json对象
+            var Rjson = JSON.parse(jsonObj);//转换为json对象
+            for (var i = 0; i < Rjson.length; i++) {
                 // alert(jsonObj[i].id);  //取json中的值
-                if (Rjson[i].dataId<10000000000)
-                {
-                    var id = (yid -10000000000000)*10000+i;
-                    array.set(Rjson[i].dataId,id);
-                    Rjson[i].dataId= id;
+                if (Rjson[i].dataId < 10000000000) {
+                    var id = (yid - 10000000000000) * 10000 + i;
+                    array.set(Rjson[i].dataId, id);
+                    Rjson[i].dataId = id;
                 }
-                if (Rjson[i].parentId != 0&Rjson[i].parentId != '0')
-                {
+                if (Rjson[i].parentId != 0 & Rjson[i].parentId != '0') {
                     array.forEach(function (value, key, map) {
-                        if(Rjson[i].parentId == key)
-                        {
+                        if (Rjson[i].parentId == key) {
                             Rjson[i].parentId = value;
                         }
                     });
@@ -439,24 +347,25 @@
             }
 
             updateJson.push('{"type":' + rowData.type + ',' +
-                    '"dataId":' +rowKey + ',' +
-                    '"taskId":' + rowData.taskId + ',' +
-                    '"dataName":"' + rowData.dataName + '",' +
-                    '"isLeaf":"' + rowData.isLeaf + '",' +
-                    '"filePath":"' + rowData.filePath + '",' +
-                    '"dataType":"' + rowData.dataType + '",' +
-                    '"dataDescription":"' + rowData.dataDescription + '",' +
-                    '"dataUnit":"' + rowData.dataUnit + '",' +
-                    '"dataValue":"' + rowData.dataValue + '",' +
-                    '"parentId":"' + rowData.parentId + '",' +
-                    '"projectId":"' + ${projectId} + '",' +
-                    '"dataSenMin":"' + rowData.dataSenMin + '",' +
-                    '"dataSenMax":"' + rowData.dataSenMax + '"}');
+                '"dataId":' + rowKey + ',' +
+                '"taskId":' + rowData.taskId + ',' +
+                '"dataName":"' + rowData.dataName + '",' +
+                '"isLeaf":"' + rowData.isLeaf + '",' +
+                '"filePath":"' + rowData.filePath + '",' +
+                '"dataType":"' + rowData.dataType + '",' +
+                '"dataDescription":"' + rowData.dataDescription + '",' +
+                '"dataUnit":"' + rowData.dataUnit + '",' +
+                '"dataValue":"' + rowData.dataValue + '",' +
+                '"parentId":"' + rowData.parentId + '",' +
+                '"projectId":"' + ${projectId} +'",' +
+                '"dataSenMin":"' + rowData.dataSenMin + '",' +
+                '"dataSenMax":"' + rowData.dataSenMax + '"}');
 
             $("#treeGridOut").on('rowUnselect', function (event) {
             });
         });
     });
+
     //Excel批量导入
     function importPrivateData(taskId, projectId) {
         $('#importData').modal({
@@ -464,6 +373,7 @@
             remote: "${ctx}/datadriver/privatedata/importPrivateData.ht?id=" + taskId + "&projectId=" + projectId
         });
     }
+
     //模型上传
     function uploadFile(dataId) {
         $('#uploadPrivateFile').modal({
@@ -471,15 +381,6 @@
             remote: "uploadPrivateFile.ht?id=" + dataId
         });
     }
-    //模型下载
-    function downloadFile(dataId) {
-//        window.location.href = "getPrivatefile.ht?id=" + dataId;
-        $('#uploadPrivateFile').modal({
-            keyboard: true,
-            remote: "getPrivatefile.ht?id=" + dataId
-        });
-    }
-
 
     //对话框关闭清除缓存
     $("#uploadPrivateFile").on("hidden.bs.modal", function () {
