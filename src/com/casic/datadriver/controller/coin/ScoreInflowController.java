@@ -27,13 +27,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/datadriver/inflow/")
 public class ScoreInflowController extends AbstractController {
-
+    @Autowired
     private DdScoreInflowService ddScoreInflowService;
 
-    @Autowired
+    /*@Autowired
     public ScoreInflowController(DdScoreInflowService ddScoreInflowService) {
         this.ddScoreInflowService = ddScoreInflowService;
-    }
+    }*/
 
     /**
      * @throws Exception e

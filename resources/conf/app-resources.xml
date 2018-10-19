@@ -154,11 +154,13 @@
 
 	<aop:config proxy-target-class="true">
 		<aop:advisor advice-ref="txAdvice"
-			pointcut="execution(* com.hotent.platform.service..*.*(..))" />
+			pointcut="execution(* com.hotent.platform.service..*.*(..))||execution(* com.casic.datadriver.service.*.*(..))" />
 		<!-- 日志的配置 -->
-		<!-- <aop:aspect ref="logAspect"> <aop:pointcut expression="execution(* 
-			com.*.*.controller..*.*(..))" id="logPointcut"/> <aop:around pointcut-ref="logPointcut" 
-			method="doAudit"/> </aop:aspect> -->
+		 <aop:aspect ref="logAspect">
+			 <aop:pointcut expression="execution(* com.hotent.platform.controller..*.*(..))||execution(* com.hotent.platform.controller..*.*(..))" id="logPointcut"/>
+			 <aop:around pointcut-ref="logPointcut"
+			method="doAudit"/>
+		 </aop:aspect>
 	</aop:config>
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">

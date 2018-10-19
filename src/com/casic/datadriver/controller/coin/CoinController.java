@@ -9,6 +9,7 @@ import com.casic.datadriver.service.coin.CoinService;
 import com.casic.datadriver.service.coin.DdScoreInflowService;
 import com.casic.datadriver.service.coin.DdScoreService;
 import com.casic.datadriver.service.coin.GoldenCoinService;
+import com.hotent.core.annotion.Action;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.platform.dao.system.SysOrgDao;
@@ -33,22 +34,22 @@ import java.util.*;
 @Controller
 @RequestMapping("/coin/")
 public class CoinController extends GenericController {
-
+    @Autowired
     private SysUserDao sysUserDao;
-
+    @Autowired
     private DdScoreService ddScoreService;
-
+    @Autowired
     private CoinService coinService;
-
+    @Autowired
     private DdScoreInflowService ddScoreInflowService;
-
+    @Autowired
     private GoldenCoinService goldenCoinService;
 
     private final static Integer RANK_NUM = 25;
-
+    @Autowired
     private SysOrgDao sysOrgDao;
 
-    @Autowired
+   /* @Autowired
     public CoinController(DdScoreInflowService ddScoreInflowService,
                           SysUserDao sysUserDao, DdScoreService ddScoreService,
                           CoinService coinService,
@@ -60,7 +61,7 @@ public class CoinController extends GenericController {
         this.ddScoreInflowService = ddScoreInflowService;
         this.sysOrgDao = sysOrgDao;
         this.goldenCoinService = goldenCoinService;
-    }
+    }*/
 
     /**
      * 赚取积分接口
@@ -74,6 +75,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("add")
     @ResponseBody
+    @Action(description = "赚取积分")
     public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
@@ -98,6 +100,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("personalScore")
     @ResponseBody
+    @Action(description = "个人所有详情")
     public void personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
@@ -210,6 +213,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("rank")
     @ResponseBody
+    @Action(description = "获取排名")
     public void getRank(String sourceType, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {

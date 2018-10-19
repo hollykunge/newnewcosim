@@ -28,17 +28,17 @@ import java.util.List;
 @Controller
 @RequestMapping("/datadriver/coin/")
 public class ScoreController extends AbstractController {
-
+    @Autowired
     private DdScoreService ddScoreService;
-
+    @Autowired
     private DdScoreInflowService ddScoreInflowService;
 
-    @Autowired
+    /*@Autowired
     public ScoreController(DdScoreService ddScoreService,
                            DdScoreInflowService ddScoreInflowService) {
         this.ddScoreService = ddScoreService;
         this.ddScoreInflowService = ddScoreInflowService;
-    }
+    }*/
 
     /**
      * 积分列表
