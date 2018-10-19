@@ -92,7 +92,8 @@
                                 <c:when test="${projectItem.ddProjectSecretLevel == 'fm'}">value="非密"</c:when>
                                 <c:when test="${projectItem.ddProjectSecretLevel == 'mm'}">value="秘密"</c:when>
                                 <c:when test="${projectItem.ddProjectSecretLevel == 'jm'}">value="机密"</c:when>
-                                <c:otherwise>value="内部"</c:otherwise>
+                                <c:when test="${projectItem.ddProjectSecretLevel == 'nb'}">value="内部"</c:when>
+                                <c:otherwise>value="非密"</c:otherwise>
                             </c:choose>
                                class="form-control" readonly/></td>
                 </tr>
@@ -101,7 +102,7 @@
                     <td>
                         <select class="selectpicker show-tick form-control"
                                 data-live-search="true" id="select-first" title="请选择组织"
-                                data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht">
+                                data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${projectItem.ddProjectId}">
                             <c:forEach var="orgItem" items="${sysOrgList}">
                                 <option value="${orgItem.orgId}"
                                         <c:if test="${TaskInfo.userOrg == '${orgItem.orgName}'}">selected="selected"</c:if>>${orgItem.orgName}</option>

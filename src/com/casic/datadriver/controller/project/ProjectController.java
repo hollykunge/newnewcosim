@@ -84,7 +84,6 @@ public class ProjectController extends BaseController {
     private PrivateDataService privateDataService;
 
     JsonFormat Tjson = new JsonFormat();
-
     /**
      * 保存项目
      *
@@ -140,6 +139,9 @@ public class ProjectController extends BaseController {
         Map<String, Class> map = new HashMap<String, Class>();
         map.put("taskInfoList", TaskInfo.class);
         Project project = (Project) JSONObject.toBean(obj, Project.class, map);
+//        project.setDdProjectPhaseName(obj.getString("ddProjectPhaseName"));
+//        project.setDdProjectSecretLevel(obj.getString("ddProjectSecretLevel"));
+//        project.setDdProjectType(obj.getString("ddProjectType"));
         return project;
     }
 
@@ -205,7 +207,9 @@ public class ProjectController extends BaseController {
             jsonObject.put("projectName", project.getDdProjectName());
             jsonObject.put("projectPhase", project.getDdProjectPhaseId());
 
-            switch (project.getDdProjectPhaseId()) {
+
+
+            switch (project.getDdProjectPhaseId()){
                 case 2:
                     jsonObject.put("phase", "未启动");
                     break;
@@ -216,21 +220,27 @@ public class ProjectController extends BaseController {
                     jsonObject.put("phase", "已完成");
                     break;
             }
-            switch (project.getDdProjectSecretLevel()) {
+            if(project.getDdProjectSecretLevel()!=null){
+                switch (project.getDdProjectSecretLevel()){
 
-                case "jm":
-                    jsonObject.put("projectSecretLevel", "机密");
-                    break;
-                case "mm":
-                    jsonObject.put("projectSecretLevel", "秘密");
-                    break;
-                case "fm":
-                    jsonObject.put("projectSecretLevel", "非密");
-                    break;
-                default:
-                    jsonObject.put("projectSecretLevel", "内部");
-                    break;
+                    case "jm":
+                        jsonObject.put("projectSecretLevel", "机密");
+                        break;
+                    case "mm":
+                        jsonObject.put("projectSecretLevel", "秘密");
+                        break;
+                    case "fm":
+                        jsonObject.put("projectSecretLevel", "非密");
+                        break;
+                    default:
+                        jsonObject.put("projectSecretLevel", "内部");
+                        break;
+                }
             }
+            if(project.getDdProjectSecretLevel() == null){
+                jsonObject.put("projectSecretLevel", "非密");
+            }
+
             jsonMembers.add(jsonObject);
         }
         String jsonstring = JsonFormat.formatJson(jsonMembers.toString());
@@ -338,6 +348,75 @@ public class ProjectController extends BaseController {
         Long creatorId = ContextUtil.getCurrentUser().getUserId();
         return getAutoView().addObject("Project", Project).addObject("creatorName", creatorName).addObject("creatorId", creatorId);
     }
+    /**
+     * 项目创建
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("create")
+    @Action(description = "项目创建")
+    public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String psnSecretLevel = ContextUtil.getCurrentUser().getPsnSecretLevel();
+        Integer psnSecretLevelCode = Integer.parseInt(psnSecretLevel);
+        return getAutoView().addObject("psnSecretLevelCode", psnSecretLevelCode);
+    }
+//    /**
+//     * 启动项目 dd_project_start
+//     *
+//     * @param request
+//     * @param response
+//     * @return
+//     * @throws Exception
+//     */
+//    @RequestMapping("start")
+//    @Action(description = "启动项目")
+//    public void start(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        PrintWriter out = response.getWriter();
+//
+//        try {
+////			if(!Token.isTokenStringValid(request.getParameter(Token.TOKEN_STRING_NAME), request.getSession())) {
+////				ResultMessage resultMessage = new ResultMessage(
+////						ResultMessage.Fail, "非法访问!");
+////				out.print(resultMessage);
+////			}
+//            Long id = RequestUtil.getLong(request, "id");
+//
+//            ProcessCmd processCmd = BpmUtil.getProcessCmd(request);
+//            processCmd.setCurrentUserId(ContextUtil.getCurrentUserId().toString());
+//
+//            ProjectStartCmd projectStartCmd = new ProjectStartCmd();
+//            projectStartCmd.setStartUser(ContextUtil.getCurrentUser());
+//            projectStartCmd.setCurrentUser(ContextUtil.getCurrentUser());
+//
+//            projectStartCmd.setProcessCmd(processCmd);
+//            projectStartService.startProject(id, projectStartCmd);
+//            //更新项目状态
+//            Project project = projectService.getById(id);
+//            project.setDdProjectState(Project.STATUS_RUNNING);
+//            projectService.update(project);
+//            ResultMessage resultMessage = new ResultMessage(
+//                    ResultMessage.Success, "启动流程成功!");
+//            out.print(resultMessage);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            String str = MessageUtil.getMessage();
+//            if (StringUtil.isNotEmpty(str)) {
+//                ResultMessage resultMessage = new ResultMessage(
+//                        ResultMessage.Fail, "创建业务实例失败:\r\n" + str);
+//                out.print(resultMessage);
+//            } else {
+//                String message = ExceptionUtil.getExceptionMessage(ex);
+//                ResultMessage resultMessage = new ResultMessage(
+//                        ResultMessage.Fail, message);
+//                out.print(resultMessage);
+//            }
+//        }
+//    }
+
 
     /**
      * 项目指标
