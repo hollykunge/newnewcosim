@@ -9,6 +9,9 @@ import java.util.Properties;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.casic.datadriver.model.project.Project;
+import com.casic.datadriver.service.project.ProjectService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,6 +83,8 @@ public class SysOrgController extends BaseController {
 	private SysUserService sysUserService;
 	@Resource
 	private SysOrgInfoService sysOrgInfoService;
+	@Resource
+	private ProjectService projectService;
 	
 	/**
 	 * 取得维度下拉
@@ -272,9 +277,45 @@ public class SysOrgController extends BaseController {
 	@Action(description = "根据组织ID获取用户列表")
 	public List<ISysUser> users(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Long orgId = RequestUtil.getLong(request, "parentId");
-		List<ISysUser> userList = iAuthenticate.getUsersInOrg(orgId);
-		return userList;
+		List<ISysUser> sysUserList = iAuthenticate.getUsersInOrg(orgId);
+		Long id = RequestUtil.getLong(request, "projectId");
+		Project project = projectService.getById(id);
+		//List<ISysUser> sysUserList = sysUserService.getAll();
+		List<ISysUser> newUserList = new ArrayList<>();
+		for (int a =0;a<sysUserList.size();a++)
+		{
+
+			if (project.getDdProjectSecretLevel() != null &&(project.getDdProjectSecretLevel().equals("fm") || project.getDdProjectSecretLevel().equals("nb"))){
+				sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
+				newUserList.add(sysUserList.get(a));
+			}else if(project.getDdProjectSecretLevel() != null && project.getDdProjectSecretLevel().equals("mm")){
+				if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65"))){
+					continue;
+				}else if (sysUserList.get(a).getPsnSecretLevel() == null){
+					continue;
+				}else{
+					sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
+					newUserList.add(sysUserList.get(a));
+				}
+			}else if(project.getDdProjectSecretLevel() != null && project.getDdProjectSecretLevel().equals("jm")){
+				if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65") || sysUserList.get(a).getPsnSecretLevel().equals("70"))){
+					continue;
+				}else if (sysUserList.get(a).getPsnSecretLevel() == null){
+					continue;
+				} else{
+					sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
+					newUserList.add(sysUserList.get(a));
+				}
+			}else if(project.getDdProjectSecretLevel() == null){
+				sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
+				newUserList.add(sysUserList.get(a));
+			}
+
+		}
+		return newUserList;
 	}
+
+
 
 	/**
 	 * 获取编辑界面的modelandview

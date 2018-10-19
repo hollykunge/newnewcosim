@@ -58,11 +58,12 @@
                         :
                     </th>
                     <td>
-                        <ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"
-                                     where="parentId=10000022120001" optionValue="itemValue"
-                                     optionText="itemName" table="SYS_DIC"
-                                     selectedValue="${projectSecretLevelItem.id}" styleClass="form-control">
-                        </ap:selectDB>
+                        <select id="ddProjectSecretLevel" name="ddProjectSecretLevel" class="form-control">
+                            <option value="fm" <c:if test="${psnSecretLevelCode < 60 }">style="display:none"</c:if>>非密</option>
+                            <option value="nb" <c:if test="${psnSecretLevelCode <= 60 }">style="display:none"</c:if>>内部</option>
+                            <option value="mm" <c:if test="${psnSecretLevelCode <= 65 }">style="display:none"</c:if>>秘密</option>
+                            <option value="jm" <c:if test="${psnSecretLevelCode <= 70 }">style="display:none"</c:if>>机密</option>
+                        </select>
                     </td>
                 </tr>
                 <%--<tr>--%>
@@ -113,6 +114,7 @@
 </body>
 <script type="text/javascript">
     $(function () {
+        console.log(${psnSecretLevelCode});
         var options = {};
         if (showResponse) {
             options.success = showResponse;
