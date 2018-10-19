@@ -251,13 +251,16 @@ public class PrivateDataService extends BaseService<PrivateData> {
             jsonObject.put("dataValue", privateData.getDdDataLastestValue());
             jsonObject.put("dataSenMax", privateData.getDdDataSenMax());
             jsonObject.put("dataSenMin", privateData.getDdDataSenMin());
+
             QueryParameters queryParameters1 = new QueryParameters();
             queryParameters1.setId(taskId);
             queryParameters1.setType(privateData.getDdDataId());
             if (orderDataRelationDao.getDDOrderDataRelation(queryParameters1).size() > 0) {
-                jsonObject.put("torderState", 1);//已经订阅该数据
+                //已经订阅该数据
+                jsonObject.put("torderState", 1);
             } else {
-                jsonObject.put("torderState", 0);//没有订阅该数据
+                //没有订阅该数据
+                jsonObject.put("torderState", 0);
             }
             jsonMembers.add(jsonObject);
         }
@@ -406,11 +409,11 @@ public class PrivateDataService extends BaseService<PrivateData> {
             privateDataList.add(privateData);
         }
         //私有到发布
-        if (parent.equals("publishpanel")) {
+        if (("publishpanel").equals(parent)) {
             privateDataDao.updateToPublish(privateDataList);
         }
 
-        if (parent.equals("createpanel")) {
+        if (("createpanel").equals(parent)) {
             privateDataDao.updateToPrivate(privateDataList);
         }
     }
@@ -420,7 +423,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
         List<String> listId = Arrays.asList(tempStr);
         List<OrderDataRelation> orderdatarelationList = new ArrayList<>();
         //已订阅到可订阅
-        if (parent.equals("canorderpanel")) {
+        if (("canorderpanel").equals(parent)) {
             for (int i = 0; i < listId.size(); i++) {
                 QueryParameters queryparameters = new QueryParameters();
                 queryparameters.setId(taskId);
@@ -429,7 +432,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
             }
         }
         //可订阅到已订阅
-        if (parent.equals("orderpanel")) {
+        if (("orderpanel").equals(parent)) {
             for (int i = 0; i < listId.size(); i++) {
                 PrivateData privateData = privateDataDao.getDataById(Long.parseLong(listId.get(i)));
                 OrderDataRelation orderdatarelation = new OrderDataRelation();
@@ -437,7 +440,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
                 orderdatarelation.setDdDataId(Long.parseLong(listId.get(i)));
                 orderdatarelation.setDdOrderDataId(UniqueIdUtil.genId());
                 orderdatarelation.setDdDataName(privateData.getDdDataName());
-                orderdatarelation.setDdOrderType(1l);
+                orderdatarelation.setDdOrderType(1L);
                 orderdatarelation.setDdProjectId(privateData.getDdDataProjId());
                 orderdatarelationList.add(orderdatarelation);
 
@@ -449,7 +452,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
                     orderdatarelation_child.setDdDataId(privateData_child.getDdDataId());
                     orderdatarelation_child.setDdOrderDataId(UniqueIdUtil.genId());
                     orderdatarelation_child.setDdDataName(privateData_child.getDdDataName());
-                    orderdatarelation_child.setDdOrderType(1l);
+                    orderdatarelation_child.setDdOrderType(1L);
                     orderdatarelation_child.setDdProjectId(privateData_child.getDdDataProjId());
                     orderdatarelationList.add(orderdatarelation_child);
                 }

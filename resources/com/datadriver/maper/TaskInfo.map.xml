@@ -12,7 +12,7 @@
         <result column="DD_CHILD_TYPE" jdbcType="VARCHAR" property="ddTaskChildType"/>
         <result column="DD_PRIORITY" jdbcType="NUMERIC" property="ddTaskPriority"/>
         <result column="DD_MILESTONE" jdbcType="NUMERIC" property="ddTaskMilestone"/>
-        <result column="DD_ESTIMATE_TIME" jdbcType="DATE" property="ddTaskEstimateTime"/>
+        <result column="DD_ESTIMATE_TIME" jdbcType="VARCHAR" property="ddTaskEstimateTime"/>
         <result column="DD_PLAN_START_TIME" jdbcType="VARCHAR" property="ddTaskPlanStartTime"/>
         <result column="DD_PLAN_END_TIME" jdbcType="VARCHAR" property="ddTaskPlanEndTime"/>
         <result column="DD_COMPLETE_RATE" jdbcType="NUMERIC" property="ddTaskCompleteRate"/>
@@ -20,8 +20,8 @@
         <result column="DD_RESOURCE_ID" jdbcType="NUMERIC" property="ddTaskResourceId"/>
         <result column="DD_ACTUAL_TIME" jdbcType="VARCHAR" property="ddTaskActualTime"/>
         <result column="DD_PLAN_TIME" jdbcType="VARCHAR" property="ddTaskPlanTime"/>
-        <result column="DD_ACTUAL_START_TIME" jdbcType="DATE" property="ddTaskActualStartTime"/>
-        <result column="DD_ACTUAL_END_TIME" jdbcType="DATE" property="ddTaskActualEndTime"/>
+        <result column="DD_ACTUAL_START_TIME" jdbcType="VARCHAR" property="ddTaskActualStartTime"/>
+        <result column="DD_ACTUAL_END_TIME" jdbcType="VARCHAR" property="ddTaskActualEndTime"/>
         <result column="DD_PLAN_DURATION" jdbcType="NUMERIC" property="ddTaskPlanDuration"/>
         <result column="DD_PROJECT_ID" jdbcType="NUMERIC" property="ddTaskProjectId"/>
         <result column="DD_PERSON" jdbcType="VARCHAR" property="ddTaskPerson"/>
@@ -126,7 +126,7 @@
       #{ddTaskPlanStartTime,jdbcType=VARCHAR}, #{ddTaskPlanEndTime,jdbcType=VARCHAR},
       #{ddTaskCompleteRate,jdbcType=NUMERIC}, #{ddTaskCompleteState,jdbcType=NUMERIC},
       #{ddTaskResourceId,jdbcType=NUMERIC}, #{ddTaskActualTime,jdbcType=VARCHAR}, #{ddTaskPlanTime,jdbcType=VARCHAR},
-      #{ddTaskActualStartTime,jdbcType=DATE}, #{ddTaskActualEndTime,jdbcType=DATE},
+      #{ddTaskActualStartTime,jdbcType=VARCHAR}, #{ddTaskActualEndTime,jdbcType=VARCHAR},
       #{ddTaskPlanDuration,jdbcType=NUMERIC},#{ddTaskProjectId,jdbcType=NUMERIC},#{ddTaskPerson,jdbcType=VARCHAR}
       ,#{ddTaskProjectName,jdbcType=VARCHAR},#{ddTaskState,jdbcType=SMALLINT},#{ddSecretLevel,jdbcType=VARCHAR})
   </insert>
@@ -150,8 +150,8 @@
     DD_RESOURCE_ID = #{ddTaskResourceId,jdbcType=NUMERIC},
     DD_ACTUAL_TIME = #{ddTaskActualTime,jdbcType=VARCHAR},
     DD_PLAN_TIME = #{ddTaskPlanTime,jdbcType=VARCHAR},
-    DD_ACTUAL_START_TIME = #{ddTaskActualStartTime,jdbcType=DATE},
-    DD_ACTUAL_END_TIME = #{ddTaskActualEndTime,jdbcType=DATE},
+    DD_ACTUAL_START_TIME = #{ddTaskActualStartTime,jdbcType=VARCHAR},
+    DD_ACTUAL_END_TIME = #{ddTaskActualEndTime,jdbcType=VARCHAR},
     DD_PLAN_DURATION = #{ddTaskPlanDuration,jdbcType=NUMERIC},
     DD_PROJECT_ID = #{ddTaskProjectId,jdbcType=NUMERIC},
     DD_PERSON = #{ddTaskPerson,jdbcType=VARCHAR},
@@ -278,10 +278,10 @@
                 #{ddTaskEstimateTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskPlanStartTime != null">
-                #{ddTaskPlanStartTime,jdbcType=DATE},
+                #{ddTaskPlanStartTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskPlanEndTime != null">
-                #{ddTaskPlanEndTime,jdbcType=DATE},
+                #{ddTaskPlanEndTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskCompleteRate != null">
                 #{ddTaskCompleteRate,jdbcType=NUMERIC},
@@ -299,10 +299,10 @@
                 #{ddTaskPlanTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskActualStartTime != null">
-                #{ddTaskActualStartTime,jdbcType=DATE},
+                #{ddTaskActualStartTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskActualEndTime != null">
-                #{ddTaskActualEndTime,jdbcType=DATE},
+                #{ddTaskActualEndTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskPlanDuration != null">
                 #{ddTaskPlanDuration,jdbcType=NUMERIC},
@@ -408,10 +408,10 @@
                 DD_PLAN_TIME = #{ddTaskPlanTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskActualStartTime != null">
-                DD_ACTUAL_START_TIME = #{ddTaskActualStartTime,jdbcType=DATE},
+                DD_ACTUAL_START_TIME = #{ddTaskActualStartTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskActualEndTime != null">
-                DD_ACTUAL_END_TIME = #{ddTaskActualEndTime,jdbcType=DATE},
+                DD_ACTUAL_END_TIME = #{ddTaskActualEndTime,jdbcType=VARCHAR},
             </if>
             <if test="ddTaskPlanDuration != null">
                 DD_PLAN_DURATION = #{ddTaskPlanDuration,jdbcType=NUMERIC},

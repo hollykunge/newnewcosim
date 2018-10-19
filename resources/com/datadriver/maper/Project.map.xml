@@ -8,7 +8,7 @@
                 property="ddProjectResponsibleUnits"/>
         <result column="DD_PHASE_ID" jdbcType="NUMERIC"
                 property="ddProjectPhaseId"/>
-        <result column="DD_CREATE_DATATIME" jdbcType="DATE"
+        <result column="DD_CREATE_DATATIME" jdbcType="VARCHAR"
                 property="ddProjectCreateDatatime"/>
         <result column="DD_DESCRIPTION" jdbcType="VARCHAR"
                 property="ddProjectDescription"/>
@@ -145,7 +145,7 @@
 		#{ddProjectName,jdbcType=VARCHAR},
 		#{ddProjectResponsibleUnits,jdbcType=VARCHAR},
 		#{ddProjectPhaseId,jdbcType=NUMERIC},
-		#{ddProjectCreateDatatime,jdbcType=DATE},
+		#{ddProjectCreateDatatime,jdbcType=VARCHAR},
 		#{ddProjectDescription,jdbcType=VARCHAR},
 		#{ddProjectOwnerSystemId,jdbcType=NUMERIC},
 		#{ddProjectCreatorId,jdbcType=NUMERIC},
@@ -177,7 +177,7 @@
 		DD_PHASE_ID =
 		#{ddProjectPhaseId,jdbcType=NUMERIC},
 		DD_CREATE_DATATIME =
-		#{ddProjectCreateDatatime,jdbcType=DATE},
+		#{ddProjectCreateDatatime,jdbcType=VARCHAR},
 		DD_DESCRIPTION =
 		#{ddProjectDescription,jdbcType=VARCHAR},
 		DD_OWNER_SYSTEM_ID =
@@ -308,7 +308,7 @@
                 #{ddProjectPhaseId,jdbcType=NUMERIC},
             </if>
             <if test="ddProjectCreateDatatime != null">
-                #{ddProjectCreateDatatime,jdbcType=DATE},
+                #{ddProjectCreateDatatime,jdbcType=VARCHAR},
             </if>
             <if test="ddProjectDescription != null">
                 #{ddProjectDescription,jdbcType=VARCHAR},
@@ -387,7 +387,7 @@
             </if>
             <if test="ddProjectCreateDatatime != null">
                 DD_CREATE_DATATIME =
-                #{ddProjectCreateDatatime,jdbcType=DATE},
+                #{ddProjectCreateDatatime,jdbcType=VARCHAR},
             </if>
             <if test="ddProjectDescription != null">
                 DD_DESCRIPTION =
@@ -474,7 +474,7 @@
 		DD_PHASE_ID =
 		#{ddProjectPhaseId,jdbcType=NUMERIC},
 		DD_CREATE_DATATIME =
-		#{ddProjectCreateDatatime,jdbcType=DATE},
+		#{ddProjectCreateDatatime,jdbcType=VARCHAR},
 		DD_DESCRIPTION =
 		#{ddProjectDescription,jdbcType=VARCHAR},
 		DD_OWNER_SYSTEM_ID =

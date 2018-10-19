@@ -14,13 +14,6 @@
             min-height: 2000px;
         }
 
-        .boxed-group-action {
-            position: relative;
-            z-index: 2;
-            float: right;
-            margin: -5px -10px 0 0;
-        }
-
         .project-card {
             padding-right: 16px !important;
             padding-left: 16px !important;

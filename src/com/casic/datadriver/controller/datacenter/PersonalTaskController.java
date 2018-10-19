@@ -215,7 +215,7 @@ public class PersonalTaskController extends AbstractController {
     @RequestMapping("showorder")
     @Action(description = "显示订阅和已订阅")
     public ModelAndView showorder(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        long taskId = RequestUtil.getLong(request, "id");
+        Long taskId = RequestUtil.getLong(request, "id");
         Long projectId = RequestUtil.getLong(request, "projectId");
         return getAutoView().addObject("taskId", taskId).addObject("projectId", projectId);
     }
@@ -337,11 +337,8 @@ public class PersonalTaskController extends AbstractController {
     public void updatePrivateData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String orderJson = RequestUtil.getString(request, "orderJson");
-        //解码，为了解决中文乱码
-//        String str = URLDecoder.decode(request.getParameter("orderJson"),"UTF-8");
-        JSONObject myjson = new JSONObject();
         //将json格式的字符串转换为json数组对象
-        JSONArray array = (JSONArray) myjson.fromObject(orderJson).get("rows");
+        JSONArray array = (JSONArray) JSONObject.fromObject(orderJson).get("rows");
         //TODO:下面那个最好删除
         Long taskId = Long.valueOf(0);
         Date currentTime = new Date();
@@ -376,9 +373,7 @@ public class PersonalTaskController extends AbstractController {
                 delprivate(dataId);
             } else if (type == 3) {
                 //新增
-                Long dataId = Long.valueOf(myjb.get("dataId").toString());
                 Long projectId = Long.valueOf(myjb.get("projectId").toString());
-                String name = myjb.get("dataName").toString();//获得属性值
                 privateData.setDdDataId(Long.valueOf(myjb.get("dataId").toString()));
                 privateData.setDdDataName(myjb.get("dataName").toString());
                 privateData.setDdDataPath(myjb.get("filePath").toString());
@@ -485,10 +480,8 @@ public class PersonalTaskController extends AbstractController {
     public void DelPrivateData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String orderJson = RequestUtil.getString(request, "orderJson");
-        //解码，为了解决中文乱码
-        JSONObject myjson = new JSONObject();
         //将json格式的字符串转换为json数组对象
-        JSONArray array = (JSONArray) myjson.fromObject(orderJson).get("rows");
+        JSONArray array = (JSONArray) JSONObject.fromObject(orderJson).get("rows");
         //取得json数组中的第一个对象
         for (int i = 0; i < array.size(); i++) {
             JSONObject myjb = (JSONObject) array.get(i);
