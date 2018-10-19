@@ -185,6 +185,9 @@
     //关闭任务详情模态框
     $("#taskdetail").on("hidden.bs.modal", function () {
         $(this).removeData("bs.modal");
+        $.get("showtask.ht?id=${Project.ddProjectId}", function (data) {
+            $('#task').html(data);
+        });
     });
     //关闭任务详情模态框
     //    $("#addindex1").on("hidden.bs.modal", function() {

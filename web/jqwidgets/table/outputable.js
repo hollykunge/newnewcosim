@@ -416,21 +416,21 @@ function outputTableInit(path, taskId, projectId) {
                     //         projectId: projectId
                     //     }, 'first', rowKey);
                     // } else {
-                        if (rowKey == null) {
+                    if (rowKey == null) {
 
-                        }
-                        $("#treeGridOut").jqxTreeGrid('addRow', null, {
-                            type: 3,
-                            dataName: "未定义数据名称",
-                            taskId: taskId,
-                            dataSenMax: 10000,
-                            dataSenMin: 0,
-                            isLeaf: 0,
-                            dataType: "数值",
-                            publishState: "未发布",
-                            parentId: 0,
-                            projectId: projectId
-                        }, 'first');
+                    }
+                    $("#treeGridOut").jqxTreeGrid('addRow', null, {
+                        type: 3,
+                        dataName: "未定义数据名称",
+                        taskId: taskId,
+                        dataSenMax: 10000,
+                        dataSenMin: 0,
+                        isLeaf: 0,
+                        dataType: "数值",
+                        publishState: "未发布",
+                        parentId: 0,
+                        projectId: projectId
+                    }, 'first');
                     // }
 
                     // select the first row and clear the selection.

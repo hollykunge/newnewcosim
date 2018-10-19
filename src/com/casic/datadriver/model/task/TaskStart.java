@@ -4,10 +4,10 @@ import com.hotent.core.model.BaseModel;
 
 public class TaskStart  extends BaseModel
 {
-    public static final Short checkpanel		=2;
-    public static final Short completepanel	    =3;
-    public static final Short createpanel		=0;
-    public static final Short publishpanel	    =1;
+    public static final Long checkpanel		=2L;
+    public static final Long completepanel	    =3L;
+    public static final Long createpanel		=0L;
+    public static final Long publishpanel	    =1L;
 
     private Long ddTaskStartId;
 
@@ -17,7 +17,7 @@ public class TaskStart  extends BaseModel
 
     private Long actInstId;
 
-    private Short ddTaskStatus;
+    private Long ddTaskStatus;
 
     private Long sortOrder;
 
@@ -55,11 +55,11 @@ public class TaskStart  extends BaseModel
         this.actInstId = actInstId;
     }
 
-    public Short getDdTaskStatus() {
+    public Long getDdTaskStatus() {
         return ddTaskStatus;
     }
 
-    public void setDdTaskStatus(Short ddTaskStatus) {
+    public void setDdTaskStatus(Long ddTaskStatus) {
         this.ddTaskStatus = ddTaskStatus;
     }
 

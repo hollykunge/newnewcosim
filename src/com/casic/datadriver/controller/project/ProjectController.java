@@ -508,16 +508,16 @@ public class ProjectController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("movetask")
-    @Action(description = "任务拖拽到发布")//7
+    @Action(description = "任务拖拽到发布")
     public void createtopublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
         String parent = RequestUtil.getString(request, "parent");
-        TaskStart taskStart = new TaskStart();
+        TaskStart taskStart = taskStartService.getByTaskId(taskId);
+
         TaskInfo taskInfo = taskInfoService.getById(taskId);
         //发布任务
         if (taskInfo.getDdTaskChildType().equals("createpanel") && parent.equals("publishpanel")) {
-            TaskStart taskStart1 = taskStartService.getByTaskId(taskId);
-            if (taskStart1 == null) {
+            if (taskStart == null) {
                 taskStart.setDdTaskStartId(UniqueIdUtil.genId());
                 taskStart.setDdTaskId(taskId);
                 taskStart.setDdTaskStatus(TaskStart.publishpanel);
@@ -540,16 +540,16 @@ public class ProjectController extends BaseController {
             return;
         } else {
             //提交任务
-            if (taskInfo.getDdTaskChildType().equals("publishpanel") && parent.equals("checkpanel")) {
-                //更新taskinfo?????createpanel属性是否应该放到taskstart里面
-                taskInfo.setDdTaskChildType("checkpanel");
-                taskInfoService.update(taskInfo);
-                taskInfo.setDdTaskState(TaskInfo.checkpanel);
-
-                taskStart.setDdTaskStatus(TaskStart.checkpanel);
-                taskStartService.update(taskStart);
-                return;
-            } else {
+//            if (taskInfo.getDdTaskChildType().equals("publishpanel") && parent.equals("checkpanel")) {
+//                //更新taskinfo?????createpanel属性是否应该放到taskstart里面
+//                taskInfo.setDdTaskChildType("checkpanel");
+//                taskInfoService.update(taskInfo);
+//                taskInfo.setDdTaskState(TaskInfo.checkpanel);
+//
+//                taskStart.setDdTaskStatus(TaskStart.checkpanel);
+//                taskStartService.update(taskStart);
+//                return;
+//            } else {
                 //驳回任务
                 if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("publishpanel")) {
                     //更新taskinfo?????createpanel属性是否应该放到taskstart里面
@@ -580,7 +580,7 @@ public class ProjectController extends BaseController {
 
                 }
 
-            }
+//            }
 
         }
     }
