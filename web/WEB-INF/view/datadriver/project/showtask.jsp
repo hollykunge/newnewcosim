@@ -11,203 +11,213 @@
 <html>
 <head>
     <title>任务看板</title>
+    <!-- include the style of alertify-->
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
+    <link rel="stylesheet" href="${ctx}/jqwidgets/styles/jqx.base.css" type="text/css" />
+
+    <script type="text/javascript" src="${ctx}/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="${ctx}/jqwidgets/jqxsortable.js"></script>
+    <script type="text/javascript" src="${ctx}/jqwidgets/jqxkanban.js"></script>
+    <script type="text/javascript" src="${ctx}/jqwidgets/jqxdata.js"></script>
+    <!-- include the script alertify-->
+    <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
     <script type="text/javascript" src="${ctx}/styles/layui/jquery.dragsort-0.5.2.min.js"></script>
 </head>
 <body id="task_board">
-<div class="row paneldocker">
-    <div class="col-xs-3" style="height: 100%">
-        <div class="panel panel-default task-panel">
-            <div class="panel-heading">
-                新创建
-                <button type="button" class="btn btn-xs btn-success pull-right" id="OnePunchSend">
-                    <span class="glyphicon glyphicon-send"></span> 全部发布
-                </button>
-            </div>
-            <div class="panel-body panelheight" style="overflow-y:auto; overflow-x: hidden;">
-                <ul id="createpanel" class="scrum-stage-tasks">
-                    <c:forEach var="taskListbyUserItem" items="${taskListbyUser}">
-                        <li class="task task-card ui-sortable-handle "
-                            onclick="showTaskContent(${taskListbyUserItem.ddTaskId})">
-                                ${taskListbyUserItem.ddTaskName}
-                            <input value="${taskListbyUserItem.ddTaskId}" type="hidden">
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-3" style="height: 100%">
-        <div class="panel panel-default task-panel">
-            <div class="panel-heading">
-                已发布
-                <button type="button" class="btn btn-xs btn-default pull-right" id="OnePunchBack">
-                    <span class="glyphicon glyphicon-arrow-left"></span> 全部收回
-                </button>
-            </div>
-            <div class="panel-body panelheight" style="overflow-y:auto; overflow-x: hidden">
-                <ul id="publishpanel" class="scrum-stage-tasks">
-                    <c:forEach var="publishtaskListbyUserItem" items="${publishtaskListbyUser}">
-                        <li class="task task-card ui-sortable-handle"
-                            onclick="showTaskContent(${publishtaskListbyUserItem.ddTaskId})">
-                                ${publishtaskListbyUserItem.ddTaskName}
-                            <input value="${publishtaskListbyUserItem.ddTaskId}" type="hidden">
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-3" style="height: 100%">
-        <div class="panel panel-default task-panel">
-            <div class="panel-heading">
-                待审核
-            </div>
-            <div class="panel-body panelheight" style="overflow-y:auto; overflow-x: hidden">
-                <ul id="checkpanel" class="scrum-stage-tasks">
-                    <c:forEach var="checkTaskInfoListItem" items="${checkTaskInfoList}">
-                        <li class="task task-card ui-sortable-handle"
-                            onclick="showTaskContent(${checkTaskInfoListItem.ddTaskId})">
-                                ${checkTaskInfoListItem.ddTaskName}
-                            <input value="${checkTaskInfoListItem.ddTaskId}" type="hidden">
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-3" style="height: 100%">
-        <div class="panel panel-default task-panel">
-            <div class="panel-heading">
-                已完成
-            </div>
-            <div class="panel-body panelheight" style="overflow-y:auto; overflow-x: hidden;">
-                <ul id="completepanel" class="scrum-stage-tasks">
-                    <c:forEach var="completeTaskInfoListItem" items="${completeTaskInfoList}">
-                        <li class="task task-card ui-sortable-handle"
-                            onclick="showTaskContent(${completeTaskInfoListItem.ddTaskId})">
-                                ${completeTaskInfoListItem.ddTaskName}
-                            <input value="${completeTaskInfoListItem.ddTaskId}" type="hidden">
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+
+<div id="kanban"></div>
+
 </body>
 <script type="text/javascript">
-    //@ sourceURL=showtask.ht
-    function isEmptyValue(value) {
-        var type;
-        if (value == null || value == '') { // 等同于 value === undefined || value === null
-            return true;
-        }
-        type = Object.prototype.toString.call(value).slice(8, -1);
-        switch (type) {
-            case 'String':
-                return !$.trim(value);
-            case 'Array':
-                return !value.length;
-            case 'Object':
-                return $.isEmptyObject(value); // 普通对象使用 for...in 判断，有 key 即为 false
-            default:
-                return false; // 其他对象均视作非空
-        }
-    }
-    ;
     $(document).ready(function () {
-        $(".paneldocker").height($(window).height() - $('.nav-tabs').outerHeight(true)-100);
-        $(".panelheight").height($('.task-panel').innerHeight()-55);
-        $("#createpanel,#publishpanel").dragsort({
-            itemSelector: "li",
-            dragSelector: "li",
-            dragBetween: true,
-            dragEnd: saveOrder,
-            placeHolderTemplate: '<li class="task task-card ui-sortable-handle dropdown-color"></li>'
-        });
+        var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    { name: "id", map: "taskId", type: "string" },
+                    { name: "status", map: "state", type: "string" },
+                    { name: "text", map: "taskName", type: "string" },
+                    { name: "tags", map: "endTime",  type: "string" },
+                    { name: "color", type: "string" }
+                ],
+                url: "${ctx}/datadriver/project/kanban.ht?projectId=${Project.ddProjectId}"
+            };
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        // 看板初始化
+        $('#kanban').jqxKanban({
+            template: "<div class='jqx-kanban-item' id=''>"
+            + "<div class='jqx-kanban-item-color-status'></div>"
+            + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
+            + "<div style='display: none' class='jqx-icon jqx-icon-close-white jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
+            + "<div style='display: none' class='jqx-kanban-item-text'></div>"
+            + "<div class='jqx-kanban-item-footer'></div>"
+            + "</div>",
+            width: "100%",
+            height: "85%",
+            source: dataAdapter,
+            itemRenderer: function(element, item, resource)
+            {
+                $(element).find(".jqx-kanban-item-color-status").html("<span style='line-height: 23px; margin-left: 5px; color:white;'>" + item.text + "</span>");
+                $(element).find(".jqx-kanban-item-footer").html("<span style='line-height: 23px;'>" + item.tags + "</span>");
 
-        $("#checkpanel,#completepanel").dragsort({
-            itemSelector: "li",
-            dragSelector: "li",
-            dragBetween: true,
-            dragEnd: saveOrder,
-            placeHolderTemplate: '<li class="task task-card ui-sortable-handle dropdown-color"></li>'
-        });
-
-        function saveOrder() {
-            var data = $(this).children('input').val();
-            var parentid = $(this).parent().attr("id");
-            $.post("movetask.ht?id=" + data + "&parent=" + parentid);
-        }
-    });
-    //生成全部新建panel中li的list并转换成json发送
-    $('#OnePunchSend').click(function (index) {
-
-        var feedbackMap = new Object();
-        var valueList = new Array();
-        $("#createpanel>li").each(function () {
-            //将input=hidden的值压入list
-            var a = $(this).find("input").val();
-            if (a != null && a != "" && a != undefined) {
-                feedbackMap = a;
-                valueList.push(feedbackMap);
-            } else {
-                alert('生成list异常');
+            },
+            columns: [
+                { text: "新创建", collapsible: false, dataField: "createpanel" },
+                { text: "已发布", collapsible: false, dataField: "publishpanel" },
+                { text: "待审核", collapsible: false, dataField: "checkpanel" },
+                { text: "已完成", collapsible: false, dataField: "completepanel" }
+            ],
+            columnRenderer: function (element, collapsedElement, column) {
+                var columnItems = $("#kanban").jqxKanban('getColumnItems', column.dataField).length;
+                if (column.dataField == "createpanel") {
+                    element.find(".jqx-kanban-column-header-status")
+                        .html("<button type='button' class='btn btn-xs btn-success pull-right' style='margin-top: 4px;'onclick='OnePunchSend()'>\n" +
+                        "<span class='glyphicon glyphicon-send'></span> 全部发布\n" +
+                        "</button>");
+                } else if (column.dataField == "publishpanel") {
+                    element.find(".jqx-kanban-column-header-status")
+                        .html("<button type='button' class='btn btn-xs btn-success pull-right' style='margin-top: 4px;' onclick='OnePunchBack()'>\n" +
+                            "<span class='glyphicon glyphicon-repeat'></span> 全部收回\n" +
+                            "</button>");
+                }
             }
         });
-        if (isEmptyValue(valueList)) {
-            $(".paneldocker").prepend('<div class="alert alert-danger fade in"><button class="close" data-dismiss="alert"><span>&times;</span></button><p>列表为空不能进行相应的操作！</p></div>');
+        // 查看任务详情
+        $('#kanban').on('itemAttrClicked', function (event) {
+            var args = event.args;
+            var taskId = args.itemId;
+            showTaskContent(taskId);
+        });
+        //修改任务状态
+        $('#kanban').on('itemReceived', function (event) {
+            var args = event.args;
+            var taskId = args.itemId;
+            var oldTaskChildType = args.oldColumn.dataField;
+            var newTaskChildType = args.newColumn.dataField;
+            if (oldTaskChildType == "createpanel" && newTaskChildType == "publishpanel") {
+                moveTask(taskId, newTaskChildType, "任务发布成功！")
+            } else if (oldTaskChildType == "publishpanel" && newTaskChildType == "createpanel") {
+                moveTask(taskId, newTaskChildType, "任务收回成功！")
+            } else if (oldTaskChildType == "checkpanel" && newTaskChildType == "completepanel") {
+                moveTask(taskId, newTaskChildType, "任务审核完成！")
+            } else if (oldTaskChildType == "completepanel" && newTaskChildType == "checkpanel") {
+                moveTask(taskId, newTaskChildType, "任务驳回成功！")
+            } else {
+                refreshKanban();
+                alertify.set('notifier','position', 'top-right');
+                alertify.error("操作不合规定！");
+            }
+        });
+    });
+
+    // 刷新看板
+    function refreshKanban() {
+        $.get("showtask.ht?id=${Project.ddProjectId}", function (data) {
+            $('#task').html(data);
+        });
+    }
+
+    // 移动任务请求服务的方法
+    function moveTask(taskId, newTaskChildType, msg) {
+        $.ajax({
+            type: "post",
+            url: "movetask.ht?id=" + taskId + "&parent=" + newTaskChildType,
+            success: function (data, status) {
+                if (status == "success") {
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.success(msg);
+                } else {
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.error("操作失败！");
+                    refreshKanban();
+                }
+            }
+        });
+    }
+
+    // 一键发布全部任务
+    function OnePunchSend() {
+        var items = $('#kanban').jqxKanban('getColumnItems', 'createpanel');
+        if (items.length == 0) {
+            alertify.set('notifier','position', 'top-right');
+            alertify.warning("当前没有任务可以发布！");
         } else {
+            var valueList = new Array();
+            for (var i = 0; i < items.length; i++) {
+                valueList.push(items[i].id);
+            }
             $.ajax({
                 type: "post",
-                url: "onepunchsend.ht?id=${Project.ddProjectId}&&parent=publishpanel",
+                url: "onepunchsend.ht?projectId=${Project.ddProjectId}&&parent=publishpanel",
                 data: {strJson: JSON.stringify(valueList)},
                 success: function (data, status) {
                     if (status == "success") {
-                        $.get("showtask.ht?id=${Project.ddProjectId}", function (data) {
-                            $('#task').html(data);
-                        });
+                        refreshKanban();
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success("发布成功！");
+                    } else {
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.error("操作失败！");
                     }
-                },
-                error: function () {
-                },
-                complete: function () {
                 }
             });
         }
-    });
-    //生成全部发布panel中li的list并转换成json发送
-    $('#OnePunchBack').click(function (index) {
-        var feedbackMap = new Object();
-        var valueList = new Array();
-        $("#publishpanel>li").each(function () {
-            //将input=hidden的值压入list
-            var a = $(this).find("input").val();
-            if (a != null && a != "" && a != undefined) {
-                feedbackMap = a;
-                valueList.push(feedbackMap);
-            } else {
-                alert('生成list异常');
-            }
-        });
+    }
 
-        $.ajax({
-            type: "post",
-            url: "onepunchback.ht?id=${Project.ddProjectId}&&parent=createpanel",
-            data: {strJsonBack: JSON.stringify(valueList)},
-            success: function (data, status) {
-                if (status == "success") {
-                    $.get("showtask.ht?id=${Project.ddProjectId}", function (data) {
-                        $('#task').html(data);
-                    });
-                } else {
-                }
-            },
-            error: function () {
-            },
-            complete: function () {
+    // 一键收回已发布的任务
+    function OnePunchBack() {
+        var items = $('#kanban').jqxKanban('getColumnItems', 'publishpanel');
+        if (items.length == 0) {
+            alertify.set('notifier','position', 'top-right');
+            alertify.warning("当前没有任务可以收回！");
+        } else {
+            var valueList = new Array();
+            for (var i = 0; i < items.length; i++) {
+                valueList.push(items[i].id);
             }
-        });
-    });
+            $.ajax({
+                type: "post",
+                url: "onepunchback.ht?projectId=${Project.ddProjectId}&&parent=createpanel",
+                data: {strJsonBack: JSON.stringify(valueList)},
+                success: function (data, status) {
+                    if (status == "success") {
+                        refreshKanban();
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success("收回成功！");
+                    } else {
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.error("操作失败！");
+                    }
+                }
+            });
+        }
+    }
 </script>
+
+<style>
+    .jqx-kanban-item-color-status {
+        width: 100%;
+        height: 25px;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        position:relative;
+        margin-top:0px;
+        top: 0px;
+    }
+    .jqx-kanban-item {
+        padding-top: 0px;
+    }
+    .jqx-kanban-item-text {
+        padding-top: 6px;
+    }
+    .jqx-kanban-item-avatar {
+        top: 9px;
+    }
+    .jqx-kanban-template-icon {
+        position: absolute;
+        right: 3px;
+        top:12px;
+    }
+</style>
 </html>

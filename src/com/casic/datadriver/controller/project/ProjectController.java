@@ -459,6 +459,24 @@ public class ProjectController extends BaseController {
     }
 
     /**
+     *
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("kanban")
+    @Action(description = "看板数据")
+    public void kanbanData(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long projectId = RequestUtil.getLong(request, "projectId");
+        String jsonString = taskInfoService.getKanbanDataByProjectId(projectId);
+        PrintWriter out = response.getWriter();
+        out.append(jsonString);
+        out.flush();
+        out.close();
+    }
+
+    /**
      * 任务从新建拖拽到发布
      *
      * @param request
@@ -586,7 +604,7 @@ public class ProjectController extends BaseController {
 
                 for (int i = 0; i < jsonArray.size(); i++) {
                     Object ddTaskId = jsonArray.get(i);
-                    Long taskId = Long.parseLong((String) ddTaskId);
+                    Long taskId = (Long) ddTaskId;
 
                     TaskInfo taskInfo = taskInfoService.getById(taskId);
 
@@ -637,7 +655,7 @@ public class ProjectController extends BaseController {
 
                 for (int i = 0; i < jsonArrayBack.size(); i++) {
                     Object ddTaskId = jsonArrayBack.get(i);
-                    Long taskId = Long.parseLong((String) ddTaskId);
+                    Long taskId = (Long) ddTaskId;
 
                     TaskInfo taskInfo = taskInfoService.getById(taskId);
                     //更新taskinfo?????createpanel属性是否应该放到taskstart里面
