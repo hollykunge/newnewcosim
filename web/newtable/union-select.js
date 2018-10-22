@@ -28,11 +28,12 @@ $("#select-first").change(function(){
             $.each(datas, function() {
                 var options = '<option value="'+this.userId+'">'+this.fullname+'</option>';
                 $("#select-second").append(options);
-                $("#select-second").selectpicker('refresh');
             });
+            // 刷新二级select
+            $("#select-second").selectpicker('refresh');
         },
         error:function(){
-            alert("请求失败");
+            console.log("请求当前组织的用户失败！" + "union-select.js");
         }
 
     });

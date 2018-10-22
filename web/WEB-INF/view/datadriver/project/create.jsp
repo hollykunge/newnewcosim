@@ -36,7 +36,7 @@
                     </th>
                     <td>
                         <input type="text" class="form-control" placeholder="项目名称" value="" id="ddProjectName"
-                               name="ddProjectName">
+                               name="ddProjectName" validate="{required:true}">
                     </td>
                 </tr>
                 <%--<tr>--%>
@@ -58,7 +58,7 @@
                         :
                     </th>
                     <td>
-                        <select id="ddProjectSecretLevel" name="ddProjectSecretLevel" class="form-control">
+                        <select id="ddProjectSecretLevel" name="ddProjectSecretLevel" class="form-control" validate="{required:true}">
                             <option value="fm" <c:if test="${psnSecretLevelCode < 60 }">style="display:none"</c:if>>非密</option>
                             <option value="nb" <c:if test="${psnSecretLevelCode <= 60 }">style="display:none"</c:if>>内部</option>
                             <option value="mm" <c:if test="${psnSecretLevelCode <= 65 }">style="display:none"</c:if>>秘密</option>
@@ -114,7 +114,6 @@
 </body>
 <script type="text/javascript">
     $(function () {
-        console.log(${psnSecretLevelCode});
         var options = {};
         if (showResponse) {
             options.success = showResponse;

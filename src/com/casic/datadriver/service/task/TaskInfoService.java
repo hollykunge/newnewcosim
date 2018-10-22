@@ -76,7 +76,8 @@ public class TaskInfoService extends BaseService<TaskInfo> {
             TaskInfo taskData = allTaskData.get(i);
             jsonObject.put("taskId", taskData.getDdTaskId());
             jsonObject.put("taskName", taskData.getDdTaskName());
-            jsonObject.put("endTime", "截止时间："+taskData.getDdTaskPlanEndTime());
+            jsonObject.put("endTime", taskData.getDdTaskPlanEndTime());
+            jsonObject.put("master", taskData.getDdTaskPerson());
             switch (taskData.getDdTaskPriority()) {
                 case 1:
                     jsonObject.put("color", "gray");

@@ -22,7 +22,6 @@
     <script type="text/javascript" src="${ctx}/jqwidgets/jqxdata.js"></script>
     <!-- include the script alertify-->
     <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
-    <script type="text/javascript" src="${ctx}/styles/layui/jquery.dragsort-0.5.2.min.js"></script>
 </head>
 <body id="task_board">
 
@@ -39,6 +38,7 @@
                     { name: "status", map: "state", type: "string" },
                     { name: "text", map: "taskName", type: "string" },
                     { name: "tags", map: "endTime",  type: "string" },
+                    { name: "content", map: "master", type: "string"},
                     { name: "color", type: "string" }
                 ],
                 url: "${ctx}/datadriver/project/kanban.ht?projectId=${Project.ddProjectId}"
@@ -58,9 +58,15 @@
             source: dataAdapter,
             itemRenderer: function(element, item, resource)
             {
-                $(element).find(".jqx-kanban-item-color-status").html("<span style='line-height: 23px; margin-left: 5px; color:white;'>" + item.text + "</span>");
-                $(element).find(".jqx-kanban-item-footer").html("<span style='line-height: 23px;'>" + item.tags + "</span>");
-
+                $(element).find(".jqx-kanban-item-color-status").html(
+                    "<span style='line-height: 23px; margin-left: 5px; color:white;'>" + item.text + "</span>"
+                    +"<a style='float: right; margin: 4px 4px 0 0; color: white;'>编辑</a>"
+                );
+                $(element).find(".jqx-kanban-item-footer").html(
+                    "<span style='line-height: 23px;'>负责人：" + item.content + "</span>"
+                    +"<br>"
+                    +"<span style='line-height: 23px;'>截止日期：" + item.tags + "</span>"
+                );
             },
             columns: [
                 { text: "新创建", collapsible: false, dataField: "createpanel" },
@@ -69,7 +75,6 @@
                 { text: "已完成", collapsible: false, dataField: "completepanel" }
             ],
             columnRenderer: function (element, collapsedElement, column) {
-                var columnItems = $("#kanban").jqxKanban('getColumnItems', column.dataField).length;
                 if (column.dataField == "createpanel") {
                     element.find(".jqx-kanban-column-header-status")
                         .html("<button type='button' class='btn btn-xs btn-success pull-right' style='margin-top: 4px;'onclick='OnePunchSend()'>\n" +
@@ -95,14 +100,15 @@
             var taskId = args.itemId;
             var oldTaskChildType = args.oldColumn.dataField;
             var newTaskChildType = args.newColumn.dataField;
+            if (oldTaskChildType == newTaskChildType) return; // 在同一个面板内移动不处理
             if (oldTaskChildType == "createpanel" && newTaskChildType == "publishpanel") {
-                moveTask(taskId, newTaskChildType, "任务发布成功！")
+                moveTask(taskId, newTaskChildType, "任务发布成功！");
             } else if (oldTaskChildType == "publishpanel" && newTaskChildType == "createpanel") {
-                moveTask(taskId, newTaskChildType, "任务收回成功！")
+                moveTask(taskId, newTaskChildType, "任务收回成功！");
             } else if (oldTaskChildType == "checkpanel" && newTaskChildType == "completepanel") {
-                moveTask(taskId, newTaskChildType, "任务审核完成！")
+                moveTask(taskId, newTaskChildType, "任务审核完成！");
             } else if (oldTaskChildType == "completepanel" && newTaskChildType == "checkpanel") {
-                moveTask(taskId, newTaskChildType, "任务驳回成功！")
+                moveTask(taskId, newTaskChildType, "任务驳回成功！");
             } else {
                 refreshKanban();
                 alertify.set('notifier','position', 'top-right');
