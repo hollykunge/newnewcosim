@@ -28,6 +28,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -323,9 +324,30 @@ public class PersonalTaskController extends AbstractController {
         }
     }
 
+    /**
+     * 删除私有数据
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("delPrivateData")
+    @Action(description = "添加私有数据")//2
+    @ResponseBody
+    public void delPrivateData(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        try {
+            String dataId = RequestUtil.getString(request, "dataId");
+            delprivate(Long.valueOf(dataId));
+        } catch (Exception e) {
+
+        }
+
+    }
 
     /**
-     * 私有数据更新
+     * 更新除私有数据
      *
      * @param request
      * @param response
@@ -333,123 +355,115 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("updatePrivateData")
-    @Action(description = "更新私有数据")//2
+    @Action(description = "更新除私有数据")//2
+    @ResponseBody
     public void updatePrivateData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String orderJson = RequestUtil.getString(request, "orderJson");
-        //将json格式的字符串转换为json数组对象
-        JSONArray array = (JSONArray) JSONObject.fromObject(orderJson).get("rows");
-        //TODO:下面那个最好删除
-        Long taskId = Long.valueOf(0);
-        Date currentTime = new Date();
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject myjb = (JSONObject) array.get(i);
+        try {
+            String dataId = RequestUtil.getString(request, "dataId");
+            String dataName = RequestUtil.getString(request, "dataName");
+            String filePath = RequestUtil.getString(request, "filePath");
+            String parentId = RequestUtil.getString(request, "parentId");
+            String taskId = RequestUtil.getString(request, "taskId");
+            String isLeaf = RequestUtil.getString(request, "isLeaf");
+            String dataType = RequestUtil.getString(request, "dataType");
+            String dataDescription = RequestUtil.getString(request, "dataDescription");
+            String publishState = RequestUtil.getString(request, "publishState");
+            String orderState = RequestUtil.getString(request, "orderState");
+            String submitState = RequestUtil.getString(request, "submitState");
+            String taskName = RequestUtil.getString(request, "taskName");
+            String creator = RequestUtil.getString(request, "creator");
+            String createTime = RequestUtil.getString(request, "createTime");
+            String projectId = RequestUtil.getString(request, "projectId");
+            String creatorId = RequestUtil.getString(request, "creatorId");
+            String dataUnit = RequestUtil.getString(request, "dataUnit");
+            String dataValue = RequestUtil.getString(request, "dataValue");
+            String dataSenMax = RequestUtil.getString(request, "dataSenMax");
+            String dataSenMin = RequestUtil.getString(request, "dataSenMin");
+            String type = RequestUtil.getString(request, "type");
             PrivateData privateData = new PrivateData();
-            Long type = Long.valueOf(myjb.get("type").toString());
-            taskId = Long.valueOf(myjb.get("taskId").toString());
-            //TODO:增加type类型未定义或者为空值其他值得情况
-            if (type == 1) {
-                privateData.setDdDataId(Long.valueOf(myjb.get("dataId").toString()));
-                privateData.setDdDataName(myjb.get("dataName").toString());
-                privateData.setDdDataPath(myjb.get("filePath").toString());
 
-                makeDataType(myjb, privateData);
+            privateData.setDdDataId(Long.valueOf(dataId));
+            privateData.setDdDataName(dataName);
+            privateData.setDdDataPath(filePath);
+            privateData.setDdDataParentId(Long.valueOf(parentId));
+            privateData.setDdDataTaskId(Long.valueOf(taskId));
+            privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
 
-                privateData.setDdDataDescription(myjb.get("dataDescription").toString());
-                privateData.setDdDataUnit(myjb.get("dataUnit").toString());
-                privateData.setDdDataLastestValue(myjb.get("dataValue").toString());
-                String tempMax = myjb.get("dataSenMax").toString();
-                String tempMin = myjb.get("dataSenMin").toString();
-                if (tempMax.equals("undefined") == false) {
-                    privateData.setDdDataSenMax(myjb.get("dataSenMax").toString());
-                }
-                if (tempMin.equals("undefined") == false) {
-                    privateData.setDdDataSenMin(myjb.get("dataSenMin").toString());
-                }
-                privateDataService.updateData(privateData);
-            } else if (type == 2) {
-                //删除
-                Long dataId = Long.valueOf(myjb.get("dataId").toString());
-                delprivate(dataId);
-            } else if (type == 3) {
-                //新增
-                Long projectId = Long.valueOf(myjb.get("projectId").toString());
-                privateData.setDdDataId(Long.valueOf(myjb.get("dataId").toString()));
-                privateData.setDdDataName(myjb.get("dataName").toString());
-                privateData.setDdDataPath(myjb.get("filePath").toString());
-                makeDataType(myjb, privateData);
-                privateData.setDdDataDescription(myjb.get("dataDescription").toString());
-                privateData.setDdDataUnit(myjb.get("dataUnit").toString());
-                privateData.setDdDataLastestValue(myjb.get("dataValue").toString());
-                privateData.setDdDataParentId(Long.valueOf(myjb.get("parentId").toString()));
-                privateData.setDdDataSenMax(myjb.get("dataSenMax").toString());
-                privateData.setDdDataSenMin(myjb.get("dataSenMin").toString());
-                privateData.setDdDataProjId(projectId);
-                if (privateData.getDdDataParentId() > 0) {
-                    privateData.setDdDataIsLeaf((short) 1);
-                } else if (privateData.getDdDataParentId() == 0) {
-                    privateData.setDdDataIsLeaf((short) 0);
-                }
-                privateData.setDdDataTaskId(Long.valueOf(myjb.get("taskId").toString()));
-                privateData.setDdDataPublishState((byte) 0);
-                privateData.setDdDataOrderState((short) 0);
-                privateData.setDdDataIsSubmit((short) 0);
-                privateData.setDdDataCreateTime(currentTime);
-                TaskInfo taskInfo = taskInfoService.getById(Long.valueOf(myjb.get("taskId").toString()));
-                privateData.setDdDataTaskName(taskInfo.getDdTaskName());
-                privateData.setDdDataCreatorId(ContextUtil.getCurrentUserId());
-                privateDataService.addSingleData(privateData);
-            }
-        }
-        Long num = taskVerMapService.getVersionNum(taskId);
-        if (num == null) {
-            num = Long.valueOf(0);
-        }
-        num = num + 1;
-        List<PrivateData> privateDataList = privateDataService.getPrivateByTaskId(taskId);
-        TaskVerMap taskVerMap = new TaskVerMap();
+            makeDataType(dataType, privateData);
 
-        taskVerMap.setDdTaskId(taskId);
-        taskVerMap.setDdTaskVerId(UniqueIdUtil.genId());
-        taskVerMap.setDdVersionTime(currentTime);
-        taskVerMap.setDdVersionNum(Math.toIntExact(num));
+            privateData.setDdDataDescription(dataDescription);
 
-        taskVerMapService.addTaskVerMap(taskVerMap);
-        for (int a = 0; a < privateDataList.size(); a++) {
-            PrivateVersion privateVersion = new PrivateVersion();
-            privateVersion.setDdVersionId(UniqueIdUtil.genId());
-            privateVersion.setDdDataId(privateDataList.get(a).getDdDataId());
-            privateVersion.setDdDataName(privateDataList.get(a).getDdDataName());
-            privateVersion.setDdDataType(privateDataList.get(a).getDdDataType());
-            privateVersion.setDdDataDescription(privateDataList.get(a).getDdDataDescription());
-            privateVersion.setDdDataTaskId(privateDataList.get(a).getDdDataTaskId());
-            privateVersion.setDdDataPublishState(privateDataList.get(a).getDdDataPublishState());
-            privateVersion.setDdDataOrderState(privateDataList.get(a).getDdDataOrderState());
-            privateVersion.setDdDataIsSubmit(privateDataList.get(a).getDdDataIsSubmit());
-            privateVersion.setDdDataCreateTime(privateDataList.get(a).getDdDataCreateTime());
-            privateVersion.setDdDataCreator(privateDataList.get(a).getDdDataCreator());
-            privateVersion.setDdDataCreatorId(privateDataList.get(a).getDdDataCreatorId());
-            privateVersion.setDdDataSenMin(privateDataList.get(a).getDdDataSenMin());
-            privateVersion.setDdDataSenMax(privateDataList.get(a).getDdDataSenMax());
-            privateVersion.setDdDataParentId(privateDataList.get(a).getDdDataParentId());
-            privateVersion.setDdDataLastestValue(privateDataList.get(a).getDdDataLastestValue());
-            privateVersion.setDdDataUnit(privateDataList.get(a).getDdDataUnit());
-            privateVersion.setDdDataTaskName(privateDataList.get(a).getDdDataTaskName());
-            privateVersion.setDdDataEngName(privateDataList.get(a).getDdDataEngName());
-            privateVersion.setDdDataPath(privateDataList.get(a).getDdDataPath());
-            privateVersion.setDdDataNodePath(privateDataList.get(a).getDdDataNodePath());
-            privateVersion.setDdDataDepth(privateDataList.get(a).getDdDataDepth());
-            privateVersion.setDdDataIsLeaf(privateDataList.get(a).getDdDataIsLeaf());
-            privateVersion.setDdDataProjId(privateDataList.get(a).getDdDataProjId());
-            privateVersion.setDdDataReserved1(taskVerMap.getDdTaskVerId());
-            privateVersion.setDdDataReserved2(privateDataList.get(a).getDdDataReserved2());
+            privateData.setDdDataPublishState(Byte.valueOf(publishState));
 
-            privateVersionService.addPrivateVer(privateVersion);
+            privateData.setDdDataOrderState(Short.valueOf(orderState));
+            privateData.setDdDataIsSubmit(Short.valueOf(submitState));
+            privateData.setDdDataTaskName(taskName);
+            privateData.setDdDataCreator(creator);
+            privateData.setDdDataCreateTime(new Date());
+            privateData.setDdDataProjId(Long.valueOf(projectId));
+            privateData.setDdDataCreatorId(Long.valueOf(creatorId));
+            privateData.setDdDataUnit(dataUnit);
+            privateData.setDdDataLastestValue(dataValue);
+            privateData.setDdDataSenMax(dataSenMax);
+            privateData.setDdDataSenMin(dataSenMin);
+            privateDataService.updateData(privateData);
+        } catch (Exception e) {
+
         }
     }
 
-    private void makeDataType(JSONObject myjb, PrivateData privateData) {
-        switch (myjb.get("dataType").toString()) {
+    /**
+     * 添加私有数据
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("addPrivateData")
+    @Action(description = "添加私有数据")
+    public void addPrivateData(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        try {
+            String type = RequestUtil.getString(request, "type");
+            String dataName = RequestUtil.getString(request, "dataName");
+            String taskId = RequestUtil.getString(request, "taskId");
+            String dataSenMax = RequestUtil.getString(request, "dataSenMax");
+            String dataSenMin = RequestUtil.getString(request, "dataSenMin");
+            String isLeaf = RequestUtil.getString(request, "isLeaf");
+            String dataType = RequestUtil.getString(request, "dataType");
+            String publishState = RequestUtil.getString(request, "publishState");
+            String parentId = RequestUtil.getString(request, "parentId");
+            String projectId = RequestUtil.getString(request, "projectId");
+
+            PrivateData privateData = new PrivateData();
+            privateData.setDdDataId(UniqueIdUtil.genId());
+            privateData.setDdDataName(dataName);
+            privateData.setDdDataPath(null);
+            makeDataType(dataType, privateData);
+            privateData.setDdDataDescription("新创建的数据");
+            privateData.setDdDataUnit(null);
+            privateData.setDdDataLastestValue(null);
+            privateData.setDdDataSenMax(dataSenMax);
+            privateData.setDdDataSenMin(dataSenMin);
+            privateData.setDdDataCreateTime(new Date());
+            privateData.setDdDataPublishState((byte) 0);
+            privateData.setDdDataOrderState((short) 0);
+            privateData.setDdDataIsSubmit((short) 0);
+            privateData.setDdDataTaskId(Long.valueOf(taskId));
+            privateData.setDdDataCreatorId(ContextUtil.getCurrentUserId());
+            privateData.setDdDataParentId(Long.valueOf(parentId));
+            privateData.setDdDataProjId(Long.valueOf(projectId));
+            privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
+            privateDataService.addDDPrivateData(privateData);
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void makeDataType(String dataType, PrivateData privateData) {
+        switch (dataType) {
             case "数值":
                 privateData.setDdDataType((byte) 0);
                 break;
@@ -540,4 +554,3 @@ public class PersonalTaskController extends AbstractController {
         return mList;
     }
 }
-
