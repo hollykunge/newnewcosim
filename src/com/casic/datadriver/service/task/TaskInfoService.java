@@ -212,18 +212,16 @@ public class TaskInfoService extends BaseService<TaskInfo> {
                 break;
             case 1:
                 taskInfo.setDdTaskPriority(Short.valueOf(taskInfoJson));
-//                return taskInfo;
-
+                break;
             case 2:
                 taskInfo.setDdTaskPlanEndTime(taskInfoJson);
-//                Integer i=taskInfo.getDdTaskPlanStartTime().compareTo(taskInfoJson);
-//                return taskInfo;
+                break;
             case 3:
                 taskInfo.setDdTaskDescription(taskInfoJson);
-//                return taskInfo;
+                break;
             case 4:
                 taskInfo.setDdTaskPlanStartTime(taskInfoJson);
-//                Integer j=taskInfo.getDdTaskPlanEndTime().compareTo(taskInfoJson);
+                break;
             default:
                 break;
         }

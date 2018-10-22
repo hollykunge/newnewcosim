@@ -134,15 +134,7 @@
         $("#exportCVSOut").click(function () {
             $("#treeGridOut").jqxTreeGrid('exportData', 'csv');
         });
-        //数据添加功能
-        <%--$("#addPrivateData").click(function () {--%>
-            <%--$.get("${ctx}/datadriver/privatedata/addPrivateData.ht?projectId=${projectId}&taskId=${taskId}", function (data, status) {--%>
-                <%--if (status == 'success') {--%>
-                <%--}--%>
-                <%--else {--%>
-                <%--}--%>
-            <%--});--%>
-        <%--});--%>
+
         //取消编辑
         $("#cancelEditPrivate").click(function () {
             var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
@@ -240,6 +232,11 @@
                 if (selection[0] != undefined) {
                     for (var i = 0; i < selection.length; i++) {
                         uploadFile(selection[i].dataId);
+//                        $.get("uploadPrivateFile.ht?id=" + selection[i].dataId, function (data, status) {
+//                            if (status == 'success') {
+//                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
+//                            }
+//                        });
                     }
                 }
             }
@@ -250,6 +247,27 @@
             var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
             for (var i = 0; i < selection.length; i++) {
                 window.location.href = "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + selection[i].dataId;
+                <%--$.ajax({--%>
+                <%--async: false,--%>
+                <%--url: "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + selection[i].dataId,--%>
+                <%--success: function (data) {--%>
+                <%--}--%>
+                <%--});--%>
+//            $.get("getPrivatefile.ht?id=" + selection[i].dataId, function (data, status) {
+////                if (status == 'success') {
+////                    for (var j = 0; j < arrayList.length; j++) {
+////                        $("#treeGridOut").jqxTreeGrid('deleteRow', arrayList[j]);
+////                    }
+////                    alertify.set('notifier', 'position', 'top-right');
+////                    var notification = alertify.notify('删除成功！', 'success', delayTimer, function () {
+////                    });
+////                }
+////                else {
+////                    alertify.set('notifier', 'position', 'top-right');
+////                    var notification = alertify.notify('删除失败！', 'error', delayTimer, function () {
+////                    });
+////                }
+//            });
             }
         });
 
@@ -277,25 +295,28 @@
         });
         //保存
         $("#saveChangePrivate").click(function () {
+
             <%
                Long id = UniqueIdUtil.genId();
             %>
-            var yid =
-            <%=id%>//唯一数据ID
+            var yid = <%=id%>//唯一数据ID
             var array = new Map();//键值和数据ID 映射关系
 
-            var jsonObj = strToJson(updateJson);//转换为json对象
-            var Rjson = JSON.parse(jsonObj);//转换为json对象
-            for (var i = 0; i < Rjson.length; i++) {
+            var jsonObj =  strToJson(updateJson);//转换为json对象
+            var Rjson =  JSON.parse(jsonObj);//转换为json对象
+            for(var i=0;i<Rjson.length;i++){
                 // alert(jsonObj[i].id);  //取json中的值
-                if (Rjson[i].dataId < 10000000000) {
-                    var id = (yid - 10000000000000) * 10000 + i;
-                    array.set(Rjson[i].dataId, id);
-                    Rjson[i].dataId = id;
+                if (Rjson[i].dataId<10000000000)
+                {
+                    var id = (yid -10000000000000)*10000+i;
+                    array.set(Rjson[i].dataId,id);
+                    Rjson[i].dataId= id;
                 }
-                if (Rjson[i].parentId != 0 & Rjson[i].parentId != '0') {
+                if (Rjson[i].parentId != 0&Rjson[i].parentId != '0')
+                {
                     array.forEach(function (value, key, map) {
-                        if (Rjson[i].parentId == key) {
+                        if(Rjson[i].parentId == key)
+                        {
                             Rjson[i].parentId = value;
                         }
                     });
@@ -318,6 +339,37 @@
             });
         });
         outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId});
+        // create context menu
+        // var contextMenu = $("#Menu").jqxMenu({width: 144, height: 108, autoOpenPopup: false, mode: 'popup'});
+        // $("#treeGridOut").on('contextmenu', function () {
+        //     return false;
+        // });
+        // $("#treeGridOut").on('rowClick', function (event) {
+        //     var args = event.args;
+        //     if (args.originalEvent.button == 2) {
+        //         var scrollTop = $(window).scrollTop();
+        //         var scrollLeft = $(window).scrollLeft();
+        //         contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
+        //         return false;
+        //     }
+        // });
+        // $("#Menu").on('itemclick', function (event) {
+        //     var args = event.args;
+        //     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
+        //     var rowid = selection[0].uid
+        //     switch ($.trim($(args).text())) {
+        //         case '删除数据':
+        //         case '添加子数据':
+        //         case '发布数据':
+        //         case '取消数据':
+        //     }
+        //
+        //     if ($.trim($(args).text()) == "Edit Selected Row") {
+        //         $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
+        //     } else {
+        //         $("#treeGridOut").jqxTreeGrid('deleteRow', rowid);
+        //     }
+        // });
         // 结束编辑触发事件
         $("#treeGridOut").on('cellEndEdit', function (event) {
             var args = event.args;
@@ -347,25 +399,24 @@
             }
 
             updateJson.push('{"type":' + rowData.type + ',' +
-                '"dataId":' + rowKey + ',' +
-                '"taskId":' + rowData.taskId + ',' +
-                '"dataName":"' + rowData.dataName + '",' +
-                '"isLeaf":"' + rowData.isLeaf + '",' +
-                '"filePath":"' + rowData.filePath + '",' +
-                '"dataType":"' + rowData.dataType + '",' +
-                '"dataDescription":"' + rowData.dataDescription + '",' +
-                '"dataUnit":"' + rowData.dataUnit + '",' +
-                '"dataValue":"' + rowData.dataValue + '",' +
-                '"parentId":"' + rowData.parentId + '",' +
-                '"projectId":"' + ${projectId} +'",' +
-                '"dataSenMin":"' + rowData.dataSenMin + '",' +
-                '"dataSenMax":"' + rowData.dataSenMax + '"}');
+                    '"dataId":' +rowKey + ',' +
+                    '"taskId":' + rowData.taskId + ',' +
+                    '"dataName":"' + rowData.dataName + '",' +
+                    '"isLeaf":"' + rowData.isLeaf + '",' +
+                    '"filePath":"' + rowData.filePath + '",' +
+                    '"dataType":"' + rowData.dataType + '",' +
+                    '"dataDescription":"' + rowData.dataDescription + '",' +
+                    '"dataUnit":"' + rowData.dataUnit + '",' +
+                    '"dataValue":"' + rowData.dataValue + '",' +
+                    '"parentId":"' + rowData.parentId + '",' +
+                    '"projectId":"' + ${projectId} + '",' +
+                    '"dataSenMin":"' + rowData.dataSenMin + '",' +
+                    '"dataSenMax":"' + rowData.dataSenMax + '"}');
 
             $("#treeGridOut").on('rowUnselect', function (event) {
             });
         });
     });
-
     //Excel批量导入
     function importPrivateData(taskId, projectId) {
         $('#importData').modal({
@@ -373,7 +424,6 @@
             remote: "${ctx}/datadriver/privatedata/importPrivateData.ht?id=" + taskId + "&projectId=" + projectId
         });
     }
-
     //模型上传
     function uploadFile(dataId) {
         $('#uploadPrivateFile').modal({
@@ -381,6 +431,15 @@
             remote: "uploadPrivateFile.ht?id=" + dataId
         });
     }
+    //模型下载
+    function downloadFile(dataId) {
+//        window.location.href = "getPrivatefile.ht?id=" + dataId;
+        $('#uploadPrivateFile').modal({
+            keyboard: true,
+            remote: "getPrivatefile.ht?id=" + dataId
+        });
+    }
+
 
     //对话框关闭清除缓存
     $("#uploadPrivateFile").on("hidden.bs.modal", function () {

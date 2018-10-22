@@ -6,7 +6,7 @@
         <result column="DD_PROJECT_START_ID" jdbcType="NUMERIC" property="ddProjectStartId"/>
         <result column="DD_TASK_ID" jdbcType="NUMERIC" property="ddTaskId"/>
         <result column="ACT_INST_ID" jdbcType="NUMERIC" property="actInstId"/>
-        <result column="DD_TASK_STATUS" jdbcType="SMALLINT" property="ddTaskStatus"/>
+        <result column="DD_TASK_STATUS" jdbcType="NUMERIC" property="ddTaskStatus"/>
         <result column="SORT_ORDER" jdbcType="NUMERIC" property="sortOrder"/>
         <result column="DD_TASK_RESPONCE_PERSON" jdbcType="NUMERIC" property="ddTaskResponcePerson"/>
     </resultMap>
@@ -20,7 +20,7 @@
       DD_TASK_ID, ACT_INST_ID, DD_TASK_STATUS,
       SORT_ORDER,DD_TASK_RESPONCE_PERSON)
     values (#{ddTaskStartId,jdbcType=NUMERIC}, #{ddProjectStartId,jdbcType=NUMERIC},
-      #{ddTaskId,jdbcType=NUMERIC}, #{actInstId,jdbcType=NUMERIC}, #{ddTaskStatus,jdbcType=SMALLINT},
+      #{ddTaskId,jdbcType=NUMERIC}, #{actInstId,jdbcType=NUMERIC}, #{ddTaskStatus,jdbcType=NUMERIC},
       #{sortOrder,jdbcType=NUMERIC},#{ddTaskResponcePerson,jdbcType=NUMERIC})
    </insert>
 
@@ -49,18 +49,33 @@
     </select>
 
     <update id="update" parameterType="com.casic.datadriver.model.task.TaskStart">
-    update dd_task_start
-    set DD_TASK_START_ID = #{ddTaskStartId,jdbcType=NUMERIC},
-    DD_PROJECT_START_ID = #{ddProjectStartId,jdbcType=NUMERIC},
-    DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
-    ACT_INST_ID = #{actInstId,jdbcType=NUMERIC},
-    DD_TASK_STATUS = #{ddTaskStatus,jdbcType=SMALLINT},
-    SORT_ORDER = #{sortOrder,jdbcType=NUMERIC},
-    DD_TASK_RESPONCE_PERSON = #{ddTaskResponcePerson,jdbcType=NUMERIC}
+        update dd_task_start
+        <set>
+            <if test="ddTaskStartId != null">
+                DD_TASK_START_ID = #{ddTaskStartId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddProjectStartId != null">
+                DD_PROJECT_START_ID = #{ddProjectStartId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddTaskId != null">
+                DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
+            </if>
+            <if test="actInstId != null">
+                ACT_INST_ID = #{actInstId,jdbcType=NUMERIC},
+            </if>
+            <if test="ddTaskStatus != null">
+                DD_TASK_STATUS = #{ddTaskStatus,jdbcType=NUMERIC},
+            </if>
+            <if test="sortOrder != null">
+                SORT_ORDER = #{sortOrder,jdbcType=NUMERIC},
+            </if>
+            <if test="ddTaskResponcePerson != null">
+                DD_TASK_RESPONCE_PERSON = #{ddTaskResponcePerson,jdbcType=NUMERIC}
+            </if>
 
-    where DD_TASK_START_ID = #{ddTaskStartId}
-  </update>
-
+        </set>
+        where DD_TASK_START_ID = #{ddTaskStartId}
+    </update>
     <select id="getByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

@@ -54,10 +54,10 @@
                 <tr>
                     <th width="20%">任务开始时间:</th>
                     <td><input id="datetimeStart" name="ddTaskPlanStartTime"
-                               value=""/></td>
+                               value="" class="form-control" readonly/></td>
                     <th width="20%">任务截至时间:</th>
                     <td><input id="datetimeEnd" name="ddTaskPlanEndTime"
-                               value=""/></td>
+                               value="" class="form-control" readonly/></td>
                 </tr>
                 <tr>
                     <th width="20%">优先级:</th>
@@ -96,6 +96,9 @@
                                 <c:otherwise>value="非密"</c:otherwise>
                             </c:choose>
                                class="form-control" readonly/></td>
+                    <th width="20%">任务类型:</th>
+                    <td><input type="text" id="ddTaskType" name="ddTaskType"
+                               value="" class="form-control"/></td>
                 </tr>
                 <tr>
                     <th width="20%">负责人:</th>
@@ -118,9 +121,7 @@
                             <%--</c:forEach>--%>
                         </select>
                     </td>
-                    <th width="20%">任务类型:</th>
-                    <td><input type="text" id="ddTaskType" name="ddTaskType"
-                               value="" class="form-control"/></td>
+
                 </tr>
                 <tr>
                     <th width="20%">任务基本描述:</th>
