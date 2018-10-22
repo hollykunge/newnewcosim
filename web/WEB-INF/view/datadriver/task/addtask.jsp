@@ -23,12 +23,17 @@
     <link href="${ctx}/newtable/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${ctx}/styles/check/build.css" rel="stylesheet" type="text/css"/>
     <link href="${ctx}/styles/select/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
+    <!-- include the style of alertify-->
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
 
     <script src="${ctx}/newtable/bootstrap-editable.js"></script>
     <script src="${ctx}/newtable/bootstrap-datetimepicker.min.js"></script>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
     <script src="${ctx}/timeselect/moment.js"></script>
     <script src="${ctx}/newtable/union-select.js"></script>
+    <!-- include the script alertify-->
+    <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
 </head>
 <body>
 <div class="modal-header">
@@ -46,7 +51,7 @@
                 <tr>
                     <th width="20%">任务名称:</th>
                     <td><input type="text" id="ddTaskName" name="ddTaskName"
-                               value="" class="form-control"/></td>
+                               value="" class="form-control" validate="{required:true}"/></td>
                     <th width="20%">任务所属项目:</th>
                     <td><input type="text" id="ddTaskProjectName" name="ddTaskProjectName"
                                value="${projectItem.ddProjectName}" class="form-control" readonly/></td>
@@ -54,18 +59,18 @@
                 <tr>
                     <th width="20%">任务开始时间:</th>
                     <td><input id="datetimeStart" name="ddTaskPlanStartTime"
-                               value="" class="form-control" readonly/></td>
+                               value="" class="form-control" readonly validate="{required:true}"/></td>
                     <th width="20%">任务截至时间:</th>
                     <td><input id="datetimeEnd" name="ddTaskPlanEndTime"
-                               value="" class="form-control" readonly/></td>
+                               value="" class="form-control" readonly validate="{required:true}"/></td>
                 </tr>
                 <tr>
                     <th width="20%">优先级:</th>
                     <td>
                         <select id="ddTaskPriority" name="ddTaskPriority" class="form-control">
-                            <option value="3">紧急</option>
-                            <option value="2">重要</option>
                             <option value="1">一般</option>
+                            <option value="2">重要</option>
+                            <option value="3">紧急</option>
                         </select>
                     </td>
                     <th width="20%">是否里程碑:</th>
@@ -104,8 +109,9 @@
                     <th width="20%">负责人:</th>
                     <td>
                         <select class="selectpicker show-tick form-control"
+                                noneResultsText="无匹配项"
                                 data-live-search="true" id="select-first" title="请选择组织"
-                                data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${projectItem.ddProjectId}">
+                                data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${projectItem.ddProjectId}" validate="{required:true}">
                             <c:forEach var="orgItem" items="${sysOrgList}">
                                 <option value="${orgItem.orgId}"
                                         <c:if test="${TaskInfo.userOrg == '${orgItem.orgName}'}">selected="selected"</c:if>>${orgItem.orgName}</option>
@@ -114,7 +120,8 @@
                     </td>
                     <td>
                         <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control"
-                                data-live-search="true" id="select-second" title="请选择人员">
+                                noneResultsText="无匹配项"
+                                data-live-search="true" id="select-second" title="请选择人员" validate="{required:true}">
                             <%--<c:forEach var="personItem" items="${sysUserList}">--%>
                             <%--<option value="${personItem.userId}"--%>
                             <%--<c:if test="${TaskInfo.ddTaskPerson == '${personItem.fullname}'}">selected="selected"</c:if>>${personItem.fullname}</option>--%>
@@ -127,7 +134,7 @@
                     <th width="20%">任务基本描述:</th>
                     <td colspan="3"><textarea id="ddTaskDescription" name="ddTaskDescription"
                                               value="" class="form-control"
-                                              rows="5"/></textarea>
+                                              rows="3"/></textarea>
                     </td>
                 </tr>
                 <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${projectItem.ddProjectId}"/>
@@ -160,18 +167,16 @@
         autoclose: true,
         startView: 2,  	//打开时显示的视图。0-'hour' 1-'day' 2-'month' 3-'year' 4-'decade'
         minView: 3,  	//最小时间视图。默认0-'hour'
-// 	maxView: 4, 	//最大时间视图。默认4-'decade'
-// 	todayBtn:true, 	//true时"今天"按钮仅仅将视图转到当天的日期。如果是'linked'，当天日期将会被选中。
-// 	todayHighlight:true,	//默认值: false,如果为true, 高亮当前日期。
+        // 	maxView: 4, 	//最大时间视图。默认4-'decade'
+        // 	todayBtn:true, 	//true时"今天"按钮仅仅将视图转到当天的日期。如果是'linked'，当天日期将会被选中。
+        // 	todayHighlight:true,	//默认值: false,如果为true, 高亮当前日期。
         initialDate: new Date(),	//初始化日期.默认new Date()当前日期
         forceParse: false,  	//当输入非格式化日期时，强制格式化。默认true
         bootcssVer:3,	//显示向左向右的箭头
-        language: 'zh-CN', //语言
+        language: 'zh-CN' //语言
     }).on('changeDate', function(ev){
-        // if (ev.date.valueOf() < date-start-display.valueOf()){
-
+        // 约束 开始时间早于结束时间
         $('#datetimeEnd').datetimepicker('setStartDate', ev.date);
-        // }
     });
     //结束时间
     $('#datetimeEnd').datetimepicker({
@@ -180,32 +185,23 @@
         autoclose: true,
         startView: 2,  	//打开时显示的视图。0-'hour' 1-'day' 2-'month' 3-'year' 4-'decade'
         minView: 3,  	//最小时间视图。默认0-'hour'
-// 	maxView: 4, 	//最大时间视图。默认4-'decade'
-// 	todayBtn:true, 	//true时"今天"按钮仅仅将视图转到当天的日期。如果是'linked'，当天日期将会被选中。
-// 	todayHighlight:true,	//默认值: false,如果为true, 高亮当前日期。
+        // 	maxView: 4, 	//最大时间视图。默认4-'decade'
+        // 	todayBtn:true, 	//true时"今天"按钮仅仅将视图转到当天的日期。如果是'linked'，当天日期将会被选中。
+        // 	todayHighlight:true,	//默认值: false,如果为true, 高亮当前日期。
         initialDate: new Date(),	//初始化日期.默认new Date()当前日期
         forceParse: false,  	//当输入非格式化日期时，强制格式化。默认true
         bootcssVer:3,	//显示向左向右的箭头
         language: 'zh-CN' //语言
+    }).on('changeDate', function (ev) {
+        // 约束 开始时间早于结束时间
+        $('#datetimeStart').datetimepicker('setEndDate', ev.date);
     });
 
-    //任务负责人变更
-    $('#personSelect').on('changed.bs.select', function (e) {
-        var managerId = $('.selectpicker, #personSelect').val();
-        $("#ddTaskPerson").val(managerId);
-    });
 
     $(function () {
-        //任务负责人变更
-        // $('#select-second').on('changed.bs.select', function (e) {
-        //     var userId = $('#select-second').val();
-        //     $("#ddTaskPerson").val(userId);
-        // });
-
 
         $(".selectpicker").selectpicker();
-        // $('#testSelect option:selected').text();//选中的文本
-        // $('#testSelect option:selected').val();//选中的值
+
         var options = {};
         if (showResponse) {
             options.success = showResponse;
@@ -221,8 +217,8 @@
         });
     });
     $('#select-second').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-        var userId = $('#select-second').selectpicker('val');
-        $("#ddTaskPerson").val(userId);
+        var fullName = $('#select-second').find("option:selected").text();
+        $("#ddTaskPerson").val(fullName);
     });
 
     function showResponse(responseText) {
@@ -230,6 +226,8 @@
         if (obj.isSuccess()) {
             window.location.href = "${ctx}/datadriver/project/stepinto.ht?id=${projectItem.ddProjectId}";
         } else {
+            alertify.set('notifier','position', 'top-right');
+            alertify.error("创建失败！");
         }
     }
 </script>
