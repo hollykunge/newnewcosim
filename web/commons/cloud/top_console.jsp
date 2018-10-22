@@ -37,7 +37,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${ctx}/cloud/console/outline.ht?target=/datadriver/personaltask/mydashboard.ht"><strong style="color: orange; font-size: 40px">WorkHub</strong></a>
+            <a class="navbar-brand" href="${ctx}/cloud/console/outline.ht?target=/datadriver/personaltask/mydashboard.ht">
+                <iframe src="${ctx}/img/logo.svg" width="240" height="80" frameborder="0" style="margin-top: -28px"></iframe>
+            </a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
