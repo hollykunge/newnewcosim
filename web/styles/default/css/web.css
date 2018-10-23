@@ -75,7 +75,7 @@ span.tbar-label{
 
 .panel-toolbar a {
 	text-decoration: none;
-	color: #1976d2;
+	color: #0052CC;
 	float: left;
 	margin-left: 2px;
 }
@@ -95,7 +95,7 @@ span.tbar-label{
 
 .tree-toolbar a {
 	text-decoration: none;
-	color: #1976d2;
+	color: #0052CC;
 	float: left;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -524,7 +524,7 @@ a.link.xml-bpm{
 
 a.link.reload{
 	/*background:url(../images/icon/reload.png) 0px  1px no-repeat;*/
-	color: #1976d2;
+	color: #0052CC;
   background-color: #EFEFEF;
   border-color: #C3CDD0;
   padding-left: 10px;
@@ -546,7 +546,7 @@ a.link.preview{
 
 a.link.expand{
 	/*background:url(../images/icon/expand.gif) 0px -0px no-repeat;*/
-	color: #1976d2;
+	color: #0052CC;
   background-color: #EFEFEF;
   border-color: #C3CDD0;
   padding-left: 10px;
@@ -555,7 +555,7 @@ a.link.expand{
 
 a.link.collapse{
 	/*background:url(../images/icon/collapse.gif) 0px -0px no-repeat;*/
-	color: #1976d2;
+	color: #0052CC;
   background-color: #EFEFEF;
   border-color: #C3CDD0;
   padding-left: 10px;
@@ -589,7 +589,7 @@ a.link.edit{
 
 a.link.copy{
 	/*background:url(../images/button/copy.jpg) 0px -0px no-repeat;*/
-	color: #1976d2;
+	color: #0052CC;
   background-color: #EFEFEF;
   border-color: #C3CDD0;
   padding-left: 5px;
@@ -662,7 +662,7 @@ a.link.download{
 
 a.link.reload{
 	/*background: url(../images/button/reload.png)  0px 1px no-repeat;*/
-	color: #1976d2;
+	color: #0052CC;
   background-color: #EFEFEF;
   border-color: #C3CDD0;
   padding-left: 10px;
@@ -712,7 +712,7 @@ a.link.deploy{
 
 a.link.auth{
 	/*background: url(../images/button/auth.gif) 0px -2px no-repeat;*/
-	color: #1976d2;
+	color: #0052CC;
   background-color: #EFEFEF;
   border-color: #C3CDD0;
   padding-left: 10px;
