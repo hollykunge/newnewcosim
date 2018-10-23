@@ -13,6 +13,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
+    <!-- include the style of alertify-->
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
     <link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="${ctx}/newtable/bootstrap-editable.css" rel="stylesheet">
     <link href="${ctx}/styles/check/build.css" rel="stylesheet" type="text/css"/>
@@ -21,6 +24,8 @@
     <script src="${ctx}/newtable/bootstrap-editable.js"></script>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
     <script src="${ctx}/timeselect/moment.js"></script>
+    <!-- include the script alertify-->
+    <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
     <style>
         .panel {
             margin: 0px;
@@ -408,12 +413,14 @@
         $.ajax({
             type: 'post',
             url: "${ctx}/datadriver/task/onchangetaskinfo.ht?taskId=${TaskInfo.ddTaskId}&strJson="+params.value+"&eventId="+taskItem,
-            // data: {strJson: JSON.stringify(curRow)}
-                   success: function (data) {
-                console.log(JSON.stringify(data));
-                       alert('保存成功！');
-                   },
-                   error: function () { alert("error");}
+                success: function (data) {
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.success("设置成功！");
+                },
+                error: function () {
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.error("设置失败！");
+                }
         });
     }
     $(function () {
