@@ -16,7 +16,7 @@ function strToJson(o) {
     return tempJson;
 }
 
-function outputTableInit(path, taskId, projectId) {
+function outputTableInit(path, taskId, projectId, taskName) {
     var cellClass = function (row, dataField, cellText, rowData) {
         var cellValue = rowData[dataField];
         if (Number(cellValue) < rowData.dataSenMin) {
@@ -64,12 +64,13 @@ function outputTableInit(path, taskId, projectId) {
             id: 'dataId',
             url: path,
             addRow: function (rowID, rowData, position, parentID, commit) {
-                $.get("addPrivateData.ht", rowData, function (data, status) {
+                $.get("updatePrivateData.ht", rowData, function (data, status) {
                     if (status == "success") {
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
                     }
                 }, "json");
                 commit(true);
+                newRowID = rowID;
             },
             updateRow: function (rowID, rowData, commit) {
                 $.get("updatePrivateData.ht", rowData, function (data, status) {
@@ -228,6 +229,7 @@ function outputTableInit(path, taskId, projectId) {
                             type: 1,
                             dataName: "未定义数据名称",
                             taskId: taskId,
+                            taskName: taskName,
                             dataSenMax: 10000,
                             dataSenMin: 0,
                             isLeaf: 0,
@@ -370,7 +372,7 @@ function outputTableInit(path, taskId, projectId) {
             ]
         });
     // create context menu
-    var contextMenu = $("#Menu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
+    var contextMenu = $("#DataItemMenu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
     $("#treeGridOut").on('contextmenu', function () {
         return false;
     });
@@ -389,7 +391,7 @@ function outputTableInit(path, taskId, projectId) {
             return false;
         }
     });
-    $("#Menu").on('itemclick', function (event) {
+    $("#DataItemMenu").on('itemclick', function (event) {
         var args = event.args;
         var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
         var rowId = selection[0].uid;

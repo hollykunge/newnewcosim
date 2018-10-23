@@ -18,9 +18,6 @@
 <head>
     <title>数据看板</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
-    <%--<link href="${ctx}/jqwidgets/table/data.cell.css"/>--%>
-
-    <script type="text/javascript" src="${ctx}/jqwidgets/jqxmenu.js"></script>
 </head>
 <body>
 <%--<div class="col-xs-12">--%>
@@ -38,42 +35,48 @@
         color: black \9;
         background-color: #fcffc6 \9;
     }
+
     .avg {
         color: black \9;
         background-color: #f8e984 \9;
     }
+
     .minavg {
         color: black \9;
         background-color: #f9806f \9;
     }
+
     .min {
         color: black \9;
         background-color: #ffced9 \9;
     }
+
     .max:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .max:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
         color: black;
         background-color: #fcffc6;
     }
+
     .avg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .avg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
         color: black;
         background-color: #f8e984;
     }
+
     .minavg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .minavg:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
         color: black;
         background-color: #f9806f;
     }
+
     .min:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .min:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
         color: black;
         background-color: #ffced9;
     }
 </style>
+</br>
 <%--<a class="btn btn-sm btn-default" href="javascript:void(0)"--%>
 <%--onclick="importPrivateData(${taskId}, ${projectId})"><span--%>
 <%--class="glyphicon glyphicon-import"></span> 批量导入</a>--%>
-<div class="tableCtrl">
-</div>
 <div id="treeGridOut" style="width: 100%"></div>
-<div id='Menu'>
+<div id='DataItemMenu'>
     <ul>
         <li id="addSubDataLi">添加子数据</li>
         <li id="uploadFileLi">上传文件</li>
@@ -302,23 +305,21 @@
             <%
                Long id = UniqueIdUtil.genId();
             %>
-            var yid = <%=id%>//唯一数据ID
+            var yid =
+            <%=id%>//唯一数据ID
             var array = new Map();//键值和数据ID 映射关系
-            var jsonObj =  strToJson(updateJson);//转换为json对象
-            var Rjson =  JSON.parse(jsonObj);//转换为json对象
-            for(var i=0;i<Rjson.length;i++){
+            var jsonObj = strToJson(updateJson);//转换为json对象
+            var Rjson = JSON.parse(jsonObj);//转换为json对象
+            for (var i = 0; i < Rjson.length; i++) {
                 // alert(jsonObj[i].id);  //取json中的值
-                if (Rjson[i].dataId<10000000000)
-                {
-                    var id = (yid -10000000000000)*10000+i;
-                    array.set(Rjson[i].dataId,id);
-                    Rjson[i].dataId= id;
+                if (Rjson[i].dataId < 10000000000) {
+                    var id = (yid - 10000000000000) * 10000 + i;
+                    array.set(Rjson[i].dataId, id);
+                    Rjson[i].dataId = id;
                 }
-                if (Rjson[i].parentId != 0&Rjson[i].parentId != '0')
-                {
+                if (Rjson[i].parentId != 0 & Rjson[i].parentId != '0') {
                     array.forEach(function (value, key, map) {
-                        if(Rjson[i].parentId == key)
-                        {
+                        if (Rjson[i].parentId == key) {
                             Rjson[i].parentId = value;
                         }
                     });
@@ -340,7 +341,7 @@
                 }
             });
         });
-        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId});
+        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId}, ${taskName});
         // create context menu
         // var contextMenu = $("#Menu").jqxMenu({width: 144, height: 108, autoOpenPopup: false, mode: 'popup'});
         // $("#treeGridOut").on('contextmenu', function () {
@@ -398,7 +399,7 @@
                 rowData.type = 1
             }
             updateJson.push('{"type":' + rowData.type + ',' +
-                '"dataId":' +rowKey + ',' +
+                '"dataId":' + rowKey + ',' +
                 '"taskId":' + rowData.taskId + ',' +
                 '"dataName":"' + rowData.dataName + '",' +
                 '"isLeaf":"' + rowData.isLeaf + '",' +
@@ -408,13 +409,14 @@
                 '"dataUnit":"' + rowData.dataUnit + '",' +
                 '"dataValue":"' + rowData.dataValue + '",' +
                 '"parentId":"' + rowData.parentId + '",' +
-                '"projectId":"' + ${projectId} + '",' +
+                '"projectId":"' + ${projectId} +'",' +
                 '"dataSenMin":"' + rowData.dataSenMin + '",' +
                 '"dataSenMax":"' + rowData.dataSenMax + '"}');
             $("#treeGridOut").on('rowUnselect', function (event) {
             });
         });
     });
+
     //Excel批量导入
     function importPrivateData(taskId, projectId) {
         $('#importData').modal({
@@ -422,6 +424,7 @@
             remote: "${ctx}/datadriver/privatedata/importPrivateData.ht?id=" + taskId + "&projectId=" + projectId
         });
     }
+
     //模型上传
     function uploadFile(dataId) {
         $('#uploadPrivateFile').modal({
@@ -429,6 +432,7 @@
             remote: "uploadPrivateFile.ht?id=" + dataId
         });
     }
+
     //模型下载
     function downloadFile(dataId) {
 //        window.location.href = "getPrivatefile.ht?id=" + dataId;
@@ -437,6 +441,7 @@
             remote: "getPrivatefile.ht?id=" + dataId
         });
     }
+
     //对话框关闭清除缓存
     $("#uploadPrivateFile").on("hidden.bs.modal", function () {
         $(this).removeData("bs.modal");

@@ -557,6 +557,17 @@ public class ProjectController extends BaseController {
             taskStartService.update(taskStart1);
             return;
         }
+        //从已完成到待审核
+        if (taskInfo.getDdTaskChildType().equals("completepanel") && parent.equals("checkpanel")) {
+            //更新taskinfo?????createpanel属性是否应该放到taskstart里面
+            taskInfo.setDdTaskChildType("checkpanel");
+            taskInfo.setDdTaskState(TaskInfo.checkpanel);
+            taskInfoService.update(taskInfo);
+
+            taskStart1.setDdTaskStatus(TaskStart.checkpanel);
+            taskStartService.update(taskStart1);
+            return;
+        }
     }
 
     /**
