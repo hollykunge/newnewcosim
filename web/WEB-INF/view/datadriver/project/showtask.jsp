@@ -5,6 +5,7 @@
   Time: 下午3:35
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
@@ -28,7 +29,9 @@
 <div id="kanban"></div>
 
 </body>
+
 <script type="text/javascript">
+    //@ sourceURL=showtask.ht
     $(document).ready(function () {
         var source =
             {
@@ -132,7 +135,7 @@
             success: function (data, status) {
                 if (status == "success") {
                     alertify.set('notifier','position', 'top-right');
-                    alertify.success(msg);
+                    alertify.success(data);
                 } else {
                     alertify.set('notifier','position', 'top-right');
                     alertify.error("操作失败！");

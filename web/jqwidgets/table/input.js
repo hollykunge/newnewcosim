@@ -125,9 +125,9 @@ function inputTableInit(path, taskId) {
                             refreshInput.jqxButton({disabled: false});
                             break;
                         case "Unselect":
-                            orderRow.jqxButton({disabled: false});
-                            cancelOrder.jqxButton({disabled: false});
-                            downLoad.jqxButton({disabled: false});
+                            orderRow.jqxButton({disabled: true});
+                            cancelOrder.jqxButton({disabled: true});
+                            downLoad.jqxButton({disabled: true});
                             refreshInput.jqxButton({disabled: false});
                             break;
                     }

@@ -79,7 +79,7 @@
 <div id='DataItemMenu'>
     <ul>
         <li id="addSubDataLi">添加子数据</li>
-        <li id="uploadFileLi">上传文件</li>
+        <%--<li id="uploadFileLi">上传文件</li>--%>
     </ul>
 </div>
 <%--导入数据--%>
@@ -122,298 +122,76 @@
 <script type="text/javascript" src="${ctx}/jqwidgets/table/output.js"></script>
 <script type="text/javascript">
     //@ sourceURL=showdata.ht
-    var delayTimer = 4;
     $(function () {
-        var updateJson = new Array();
         $("#adddata").on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
         });
-        //在关闭页面时弹出确认提示窗口
-//        $(window).bind('beforeunload', function () {
-//            return '您可能有数据没有保存，是否确认离开该页面？';
-//        });
+
         $("#exportExcelOut").click(function () {
             $("#treeGridOut").jqxTreeGrid('exportData', 'xls');
         });
         $("#exportCVSOut").click(function () {
             $("#treeGridOut").jqxTreeGrid('exportData', 'csv');
         });
-        //数据添加功能
-        $("#addPrivateData").click(function () {
-            $.get("${ctx}/datadriver/privatedata/addPrivateData.ht?projectId=${projectId}&taskId=${taskId}", function (data, status) {
-                if (status == 'success') {
-                    $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                    alertify.set('notifier', 'position', 'top-right');
-                    var notification = alertify.notify('添加成功！', 'success', delayTimer, function () {
-                    });
-                }
-                else {
-                    alertify.set('notifier', 'position', 'top-right');
-                    var notification = alertify.notify('添加失败！', 'error', delayTimer, function () {
-                    });
-                }
-            });
-        });
-        //取消编辑
-        $("#cancelEditPrivate").click(function () {
-            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-            if (selection.length == 1) {
-                if (selection[0] == undefined) {
-                } else {
-                    $("#treeGridOut").jqxTreeGrid('endRowEdit', selection[0].dataId, true);
-                }
-            }
-            if (selection.length > 1) {
-                alertify.set('notifier', 'position', 'top-right');
-                var notification = alertify.notify('选择了多行数据，不能进行取消编辑！', 'warning', delayTimer, function () {
-                });
-            }
-        });
-        //删除选中行
-        $("#deletePrivateData").click(function () {
-            var arrayList = new Array();
-            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-            if (selection.length > 1 || selection.length == 1) {
-                if (selection[0] == undefined) {
-                } else {
-                    for (var i = 0; i < selection.length; i++) {
-                        if (selection[i].dataState == 0) {
-                            arrayList.push(selection[i].dataId)
-                        }
-                    }
-                    $.get("${ctx}/datadriver/privatedata/deletePrivateData.ht?dataIds=" + arrayList, function (data, status) {
-                        if (status == 'success') {
-                            for (var j = 0; j < arrayList.length; j++) {
-                                $("#treeGridOut").jqxTreeGrid('deleteRow', arrayList[j]);
-                            }
-                            alertify.set('notifier', 'position', 'top-right');
-                            var notification = alertify.notify('删除成功！', 'success', delayTimer, function () {
-                            });
-                        }
-                        else {
-                            alertify.set('notifier', 'position', 'top-right');
-                            var notification = alertify.notify('删除失败！', 'error', delayTimer, function () {
-                            });
-                        }
-                    });
-                }
-            }
-        });
-        //发布数据
-        $("#publishPrivateData").click(function () {
-            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-            if (selection.length > 1 || selection.length == 1) {
-                if (selection[0] != undefined) {
-                    var rowsDataIds = new Array();
-                    for (var i = 0; i < selection.length; i++) {
-                        if (selection[i].dataState == 0) {
-                            rowsDataIds.push(selection[i].dataId);
-                        }
-                    }
-                    if (rowsDataIds.length > 0) {
-                        $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
-                            if (status == 'success') {
-                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        //取消选中
-        $("#cancelSelected").click(function () {
-            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-            if (selection.length == 1) {
-                if (selection[0] == undefined) {
-                } else {
-                    $("#treeGridOut").jqxTreeGrid('unselectRow', selection[0].dataId);
-                }
-            }
-            if (selection.length > 1) {
-                for (var i = 0; i < selection.length; i++) {
-                    $("#treeGridOut").jqxTreeGrid('unselectRow', selection[i].dataId);
-                }
-            }
-        });
-        //上传模型文件
-        $("#uploadFile").click(function () {
-            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-            if (selection.length > 1 || selection.length == 1) {
-                if (selection[0] != undefined) {
-                    for (var i = 0; i < selection.length; i++) {
-                        uploadFile(selection[i].dataId);
-//                        $.get("uploadPrivateFile.ht?id=" + selection[i].dataId, function (data, status) {
-//                            if (status == 'success') {
-//                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
-//                            }
-//                        });
-                    }
-                }
-            }
-        });
+
         //下载模型文件
         $("#downloadFile").click(function () {
             var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
             for (var i = 0; i < selection.length; i++) {
                 window.location.href = "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + selection[i].dataId;
-                <%--$.ajax({--%>
-                <%--async: false,--%>
-                <%--url: "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + selection[i].dataId,--%>
-                <%--success: function (data) {--%>
-                <%--}--%>
-                <%--});--%>
-//            $.get("getPrivatefile.ht?id=" + selection[i].dataId, function (data, status) {
-////                if (status == 'success') {
-////                    for (var j = 0; j < arrayList.length; j++) {
-////                        $("#treeGridOut").jqxTreeGrid('deleteRow', arrayList[j]);
-////                    }
-////                    alertify.set('notifier', 'position', 'top-right');
-////                    var notification = alertify.notify('删除成功！', 'success', delayTimer, function () {
-////                    });
-////                }
-////                else {
-////                    alertify.set('notifier', 'position', 'top-right');
-////                    var notification = alertify.notify('删除失败！', 'error', delayTimer, function () {
-////                    });
-////                }
-//            });
             }
         });
-        //收回数据
-        $("#recylePrivateData").click(function () {
-            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-            if (selection.length > 1 || selection.length == 1) {
-                if (selection[0] != undefined) {
-                    var rowsDataIds = new Array();
-                    for (var i = 0; i < selection.length; i++) {
-                        if (selection[i].dataState == 1) {
-                            rowsDataIds.push(selection[i].dataId);
-                        }
-                    }
-                    if (rowsDataIds.length > 0) {
-                        $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
-                            if (status == 'success') {
-                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        //保存
-        $("#saveChangePrivate").click(function () {
-            <%
-               Long id = UniqueIdUtil.genId();
-            %>
-            var yid =
-            <%=id%>//唯一数据ID
-            var array = new Map();//键值和数据ID 映射关系
-            var jsonObj = strToJson(updateJson);//转换为json对象
-            var Rjson = JSON.parse(jsonObj);//转换为json对象
-            for (var i = 0; i < Rjson.length; i++) {
-                // alert(jsonObj[i].id);  //取json中的值
-                if (Rjson[i].dataId < 10000000000) {
-                    var id = (yid - 10000000000000) * 10000 + i;
-                    array.set(Rjson[i].dataId, id);
-                    Rjson[i].dataId = id;
-                }
-                if (Rjson[i].parentId != 0 & Rjson[i].parentId != '0') {
-                    array.forEach(function (value, key, map) {
-                        if (Rjson[i].parentId == key) {
-                            Rjson[i].parentId = value;
-                        }
-                    });
-                }
-            }
-            var orderJson = jsonarrayToJson(JSON.stringify(Rjson));
-            console.log(orderJson);
-            //TODO:添加是否确认提交的判断
-            $.ajax({
-                //json数组
-                type: 'POST',
-                url: "updatePrivateData.ht",
-                data: "orderJson=" + orderJson,
-                ContentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    alertify.set('notifier', 'position', 'top-right');
-                    // var notification = alertify.notify('保存成功！', 'success', delayTimer, function () {
-                    // });
-                }
-            });
-        });
-        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId}, ${taskName});
+
+        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId}, "${taskName}");
         // create context menu
-        // var contextMenu = $("#Menu").jqxMenu({width: 144, height: 108, autoOpenPopup: false, mode: 'popup'});
-        // $("#treeGridOut").on('contextmenu', function () {
-        //     return false;
-        // });
-        // $("#treeGridOut").on('rowClick', function (event) {
-        //     var args = event.args;
-        //     if (args.originalEvent.button == 2) {
-        //         var scrollTop = $(window).scrollTop();
-        //         var scrollLeft = $(window).scrollLeft();
-        //         contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
-        //         return false;
-        //     }
-        // });
-        // $("#Menu").on('itemclick', function (event) {
-        //     var args = event.args;
-        //     var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-        //     var rowid = selection[0].uid
-        //     switch ($.trim($(args).text())) {
-        //         case '删除数据':
-        //         case '添加子数据':
-        //         case '发布数据':
-        //         case '取消数据':
-        //     }
-        //
-        //     if ($.trim($(args).text()) == "Edit Selected Row") {
-        //         $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
-        //     } else {
-        //         $("#treeGridOut").jqxTreeGrid('deleteRow', rowid);
-        //     }
-        // });
-        // 结束编辑触发事件
-        $("#treeGridOut").on('cellEndEdit', function (event) {
+        var contextMenu = $("#DataItemMenu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
+        $("#treeGridOut").on('contextmenu', function () {
+            return false;
+        });
+        $("#treeGridOut").on('rowClick', function (event) {
             var args = event.args;
-            // 行键值
-            var rowKey = args.key;
-            // 行数据
-            var rowData = args.row;
-            // 列数据域
-            var columnDataField = args.dataField;
-            // 列显示域
-            var columnDisplayField = args.displayField;
-            // 当前值
-            var value = args.value;
-            // if (columnDataField == "ShippedDate")
-            //     value = dataAdapter.formatDate(value, 'dd/MM/yyyy');
-            for (var i = 0; i < updateJson.length; i++) {
-                var tempJson = $.parseJSON(updateJson[i]);
-                if (rowKey == tempJson.dataId) {
-                    var num = updateJson.splice(i, 1);   //从i位置开始删除
-                    i = i - 1;    //改变循环变量
+
+            if (args.originalEvent.button == 2) {
+                if (args.row.dataType != '模型' || args.row.dataType != '文件') {
+                    // $('#Menu').jqxMenu('disable', 'uploadFileLi', false);
+                } else {
+                    // $('#Menu').jqxMenu('disable', 'uploadFileLi', true);
                 }
+                var scrollTop = $(window).scrollTop();
+                var scrollLeft = $(window).scrollLeft();
+                contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
+                return false;
             }
-            if (rowData.type == 0) {
-                rowData.type = 1
+        });
+        $("#DataItemMenu").on('rowClick', function (event) {
+            var args = event.args;
+            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
+            var rowId = selection[0].uid;
+
+            if ($.trim($(args).text()) == "添加子数据") {
+                // $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
+                $("#treeGridOut").jqxTreeGrid('expandRow', rowId);
+                $("#treeGridOut").jqxTreeGrid('addRow', null, {
+                    type: 1,
+                    dataName: "未定义子数据名称",
+                    taskId: ${taskId},
+                    dataSenMax: 10000,
+                    dataSenMin: 0,
+                    isLeaf: 1,
+                    dataType: "数值",
+                    publishState: "未发布",
+                    parentId: rowId,
+                    projectId: ${projectId}
+                }, 'first', rowId);
             }
-            updateJson.push('{"type":' + rowData.type + ',' +
-                '"dataId":' + rowKey + ',' +
-                '"taskId":' + rowData.taskId + ',' +
-                '"dataName":"' + rowData.dataName + '",' +
-                '"isLeaf":"' + rowData.isLeaf + '",' +
-                '"filePath":"' + rowData.filePath + '",' +
-                '"dataType":"' + rowData.dataType + '",' +
-                '"dataDescription":"' + rowData.dataDescription + '",' +
-                '"dataUnit":"' + rowData.dataUnit + '",' +
-                '"dataValue":"' + rowData.dataValue + '",' +
-                '"parentId":"' + rowData.parentId + '",' +
-                '"projectId":"' + ${projectId} +'",' +
-                '"dataSenMin":"' + rowData.dataSenMin + '",' +
-                '"dataSenMax":"' + rowData.dataSenMax + '"}');
-            $("#treeGridOut").on('rowUnselect', function (event) {
-            });
+            // else if ($.trim($(args).text()) == "上传文件") {
+            //     if (selection[0].dataType == '模型' || selection[0].dataType == '文件') {
+            //         $('#uploadPrivateFile').modal({
+            //             keyboard: true,
+            //             remote: "uploadPrivateFile.ht?id=" + selection[0].dataId
+            //         });
+            //     }
+            // }
         });
     });
 
