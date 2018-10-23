@@ -90,11 +90,30 @@ public class PersonalTaskController extends AbstractController {
         JSONObject jsonObject = new JSONObject();
         for (int i = 0; i < taskInfo_list.size(); i++) {
             TaskInfo taskInfo = taskInfo_list.get(i);
+            String taskSecretLevel = taskInfo.getDdSecretLevel();
             jsonObject.put("ddTaskId", taskInfo.getDdTaskId());
             jsonObject.put("ddTaskPriority", taskInfo.getDdTaskPriority());
             jsonObject.put("ddTaskState", taskInfo.getDdTaskState());
             jsonObject.put("ddTaskProjectName", taskInfo.getDdTaskProjectName());
             jsonObject.put("ddTaskName", taskInfo.getDdTaskName());
+            if (taskSecretLevel == null || taskSecretLevel == "fm") {
+                jsonObject.put("ddTaskSecretLevel", "非密");
+            } else {
+                switch (taskSecretLevel) {
+                    case "nb":
+                        jsonObject.put("ddTaskSecretLevel", "内部");
+                        break;
+                    case "mm":
+                        jsonObject.put("ddTaskSecretLevel", "秘密");
+                        break;
+                    case "jm":
+                        jsonObject.put("ddTaskSecretLevel", "机密");
+                        break;
+                    default:
+                        jsonObject.put("ddTaskSecretLevel", "非密");
+                        break;
+                }
+            }
             if (taskInfo.getDdTaskPriority() == null) {
                 jsonObject.put("priority", "一般");
             } else {
