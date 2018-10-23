@@ -369,7 +369,12 @@
                 url: "${ctx}/datadriver/task/onchangetaskinfo.ht?taskId=${TaskInfo.ddTaskId}&eventId=0",
                 data: {strJson: managerId},
                 success: function (data) {
-
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.success("设置成功！");
+                },
+                error: function () {
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.error("设置失败！");
                 }
             });
         });
