@@ -124,6 +124,16 @@ public class SysUser extends BaseModel implements ISysUser{
 
 	protected String psnSecretLevel;
 
+	protected String xh;
+
+	public String getXh() {
+		return xh;
+	}
+
+	public void setXh(String xh) {
+		this.xh = xh;
+	}
+
 	public String getPsnSecretLevel() {
 		return psnSecretLevel;
 	}

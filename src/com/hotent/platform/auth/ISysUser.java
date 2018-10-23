@@ -197,4 +197,15 @@ public interface ISysUser extends UserDetails{
 	 * @param psnSecretLevel
 	 */
 	public void setPsnSecretLevel(String psnSecretLevel);
+	/**
+	 * 获取序号
+	 * @return
+	 */
+	public String getXh();
+
+	/**
+	 * 设置序号
+	 * @param xh
+	 */
+	public void setXh(String xh);
 }
