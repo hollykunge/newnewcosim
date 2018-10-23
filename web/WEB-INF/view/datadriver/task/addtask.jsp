@@ -139,6 +139,7 @@
                 </tr>
                 <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${projectItem.ddProjectId}"/>
                 <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value=""/>
+                <input type="hidden" id="ddSecretLevel" name="ddSecretLevel" value="${projectItem.ddProjectSecretLevel}"/>
                 <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId"
                        value="${projectItem.ddProjectCreatorId}"/>
             </table>

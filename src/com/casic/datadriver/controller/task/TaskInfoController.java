@@ -282,6 +282,32 @@ public class TaskInfoController extends AbstractController {
             Date date = new Date();
             startime = df.format(date);
         }
+        List<ISysUser> newUserList = new ArrayList<>();
+        for (int a =0;a<sysUserList.size();a++)
+        {
+            if (taskInfo.getDdSecretLevel() != null &&(taskInfo.getDdSecretLevel().equals("fm") || taskInfo.getDdSecretLevel().equals("nb"))){
+                newUserList.add(sysUserList.get(a));
+            }else if(taskInfo.getDdSecretLevel() != null && taskInfo.getDdSecretLevel().equals("mm")){
+                if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65"))){
+                    continue;
+                }else if (sysUserList.get(a).getPsnSecretLevel() == null){
+                    continue;
+                }else{
+                    newUserList.add(sysUserList.get(a));
+                }
+            }else if(taskInfo.getDdSecretLevel() != null && taskInfo.getDdSecretLevel().equals("jm")){
+                if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65") || sysUserList.get(a).getPsnSecretLevel().equals("70"))){
+                    continue;
+                }else if (sysUserList.get(a).getPsnSecretLevel() == null){
+                    continue;
+                } else{
+                    newUserList.add(sysUserList.get(a));
+                }
+            }else if(taskInfo.getDdSecretLevel() == null){
+                newUserList.add(sysUserList.get(a));
+            }
+
+        }
 
 
 
@@ -292,7 +318,7 @@ public class TaskInfoController extends AbstractController {
                 .addObject("orderDataList", orderDataList)
                 .addObject("publishDataList", publishDataList)
                 .addObject("returnUrl", returnUrl)
-                .addObject("sysUserList", sysUserList)
+                .addObject("sysUserList", newUserList)
                 .addObject("executorName", executorName);
     }
 
