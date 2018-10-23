@@ -233,6 +233,7 @@ public class PrivateDataController extends AbstractController {
             long userId = ContextUtil.getCurrentUserId();
             Long dataId = RequestUtil.getLong(request, "id");
             long typeId = RequestUtil.getLong(request, "typeId");
+            String secretLevel = RequestUtil.getString(request, "secretLevel");
             ISysUser appUser = null;
             if(userId>0){
                 appUser = sysUserService.getById(userId);
@@ -299,6 +300,7 @@ public class PrivateDataController extends AbstractController {
                     PrivateData privateData = privateDataService.getDataById(dataId);
                     privateData.setDdDataPath(sysFile.getFilePath());
                     privateData.setDdDataLastestValue(sysFile.getFileName());
+                    privateData.setDdDataReserved2(secretLevel);
                     privateDataService.update(privateData);
                 }
                 writer.println("{\"success\":\"true\",\"fileId\":\"" + fileId + "\"}");

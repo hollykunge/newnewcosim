@@ -295,4 +295,5 @@ function inputTableInit(path, taskId) {
                 }
             ]
         });
+
 }
