@@ -52,6 +52,21 @@
     <table id="AddHandlingFee" class="table table-striped" cellpadding="0" cellspacing="0"
            border="0"
            type="main">
+        <tr>
+            <th>密级
+                <small style="color: #e2463e">(必填)</small>
+                :
+            </th>
+            <td>
+                <select id="secretLevel" name="secretLevel" class="form-control"
+                        validate="{required:true}">
+                    <option value="fm" <c:if test="${psnSecretLevelCode < 60 }">style="display:none"</c:if>>非密</option>
+                    <option value="nb" <c:if test="${psnSecretLevelCode <= 60 }">style="display:none"</c:if>>内部</option>
+                    <option value="mm" <c:if test="${psnSecretLevelCode <= 65 }">style="display:none"</c:if>>秘密</option>
+                    <option value="jm" <c:if test="${psnSecretLevelCode <= 70 }">style="display:none"</c:if>>机密</option>
+                </select>
+            </td>
+        </tr>
         <tr id="newUpload2">
             <th width="20%">上传文件:</th>
             <td><input type="file" name="file" value="上传"></td>
