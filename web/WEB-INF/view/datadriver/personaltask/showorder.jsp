@@ -11,7 +11,6 @@
 <head>
     <title>数据发布列表</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
-    <script type="text/javascript" src="${ctx}/jqwidgets/table/inputable.js"></script>
 </head>
 <body>
 <%--<div class="col-xs-12">--%>
@@ -23,25 +22,7 @@
 <%--<input type="button" value="导出PDF" id='pdfExportIn'/>--%>
 <%--</div>--%>
 <%--</div>--%>
-<div class="btn-group" role="group" aria-label="..." style="margin-bottom: 5px;margin-top: 5px">
-    <%--<button type="button" class="btn btn-sm btn-success" id="selectedOrder"><span--%>
-            <%--class="glyphicon glyphicon-check"></span> 订阅数据--%>
-    <%--</button>--%>
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false"><span class="glyphicon glyphicon-export"></span>
-            导出数据
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="javascript:void(0)" id="exportExcelIn">Excel格式</a></li>
-            <li><a href="javascript:void(0)" id="exportCVSIn">CVS格式</a></li>
-        </ul>
-    </div>
-    <button type="button" class="btn btn-sm btn-default" id="download1"><span
-            class="glyphicon glyphicon-download"></span> 下载模型
-    </button>
-</div>
+</br>
 <div id="treeGridIn" style="width: 100%;"></div>
 <%--模型预览--%>
 <div class="modal fade" id="model_content" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -57,6 +38,7 @@
     只能预览模型数据！
 </div>
 </body>
+<script type="text/javascript" src="${ctx}/jqwidgets/table/input.js"></script>
 <script type="text/javascript">
     //@ sourceURL=showorder.ht
     $(function () {
@@ -66,34 +48,34 @@
         $("#exportCVSIn").click(function () {
             $("#treeGridIn").jqxTreeGrid('exportData', 'csv');
         });
-        $("#unselectRow").click(function () {
-            if (!unselectRow.jqxButton('disabled')) {
-                $("#treeGridIn").jqxTreeGrid('unselectRow', rowKey);
-                rowKey = null;
-            }
-        });
+        // $("#unselectRow").click(function () {
+        //     if (!unselectRow.jqxButton('disabled')) {
+        //         $("#treeGridIn").jqxTreeGrid('unselectRow', rowKey);
+        //         rowKey = null;
+        //     }
+        // });
         //下载模型文件
-        $("#download1").click(function () {
-            var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
-            for (var i = 0; i < selection.length; i++) {
-                downloadF(selection[i].dataId);
-            }
-        });
+        // $("#download1").click(function () {
+        //     var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
+        //     for (var i = 0; i < selection.length; i++) {
+        //         downloadF(selection[i].dataId);
+        //     }
+        // });
         //订阅数据批量发布
-        $("#selectedOrder").click(function () {
-            var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
-            var rowsDataIds = new Array();
-            for (var i = 0; i < selection.length; i++) {
-                if (selection[i].torderState == 0) {
-                    rowsDataIds.push(selection[i].dataId);
-                }
-            }
-            $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=orderpanel" + "&taskId=${taskId}", function (data, status) {
-                if (status == 'success') {
-                    window.location.reload();
-                }
-            });
-        });
+        <%--$("#selectedOrder").click(function () {--%>
+            <%--var selection = $("#treeGridIn").jqxTreeGrid('getSelection');--%>
+            <%--var rowsDataIds = new Array();--%>
+            <%--for (var i = 0; i < selection.length; i++) {--%>
+                <%--if (selection[i].torderState == 0) {--%>
+                    <%--rowsDataIds.push(selection[i].dataId);--%>
+                <%--}--%>
+            <%--}--%>
+            <%--$.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=orderpanel" + "&taskId=${taskId}", function (data, status) {--%>
+                <%--if (status == 'success') {--%>
+                    <%--window.location.reload();--%>
+                <%--}--%>
+            <%--});--%>
+        <%--});--%>
         inputTableInit("${ctx}/datadriver/privatedata/inputData.ht?taskId=${taskId}&projectId=${projectId}", ${taskId});
     });
     //Excel批量导入

@@ -9,14 +9,12 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-
         var value = "";
         var isme = ""
         try {
             isme   = JSInteraction.isme();
             console.log(isme)
             if (JSInteraction.isme()) {
-
                 $("#navbariwork").hide();
             }
         }
@@ -44,10 +42,10 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <%--<form class="navbar-form navbar-left">--%>
-                <%--<div class="input-group">--%>
-                    <%--<span class="input-group-addon" id="basic-addon3">当前项目</span>--%>
-                    <%--<input type="text" class="form-control" id="project_search" aria-describedby="basic-addon3" placeholder="搜索">--%>
-                <%--</div>--%>
+            <%--<div class="input-group">--%>
+            <%--<span class="input-group-addon" id="basic-addon3">当前项目</span>--%>
+            <%--<input type="text" class="form-control" id="project_search" aria-describedby="basic-addon3" placeholder="搜索">--%>
+            <%--</div>--%>
             <%--</form>--%>
 
             <ul class="nav navbar-nav">

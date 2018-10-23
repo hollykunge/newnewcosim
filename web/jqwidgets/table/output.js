@@ -16,7 +16,7 @@ function strToJson(o) {
     return tempJson;
 }
 
-function outputTableInit(path, taskId, projectId) {
+function outputTableInit(path, taskId, projectId, taskName) {
     var cellClass = function (row, dataField, cellText, rowData) {
         var cellValue = rowData[dataField];
         if (Number(cellValue) < rowData.dataSenMin) {
@@ -64,12 +64,13 @@ function outputTableInit(path, taskId, projectId) {
             id: 'dataId',
             url: path,
             addRow: function (rowID, rowData, position, parentID, commit) {
-                $.get("addPrivateData.ht", rowData, function (data, status) {
+                $.get("updatePrivateData.ht", rowData, function (data, status) {
                     if (status == "success") {
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
                     }
                 }, "json");
                 commit(true);
+                newRowID = rowID;
             },
             updateRow: function (rowID, rowData, commit) {
                 $.get("updatePrivateData.ht", rowData, function (data, status) {
@@ -180,24 +181,28 @@ function outputTableInit(path, taskId, projectId) {
                             delRow.jqxButton({disabled: false});
                             pubRow.jqxButton({disabled: false});
                             cancelRow.jqxButton({disabled: true});
+                            refreshTable.jqxButton({disabled: false});
                             break;
                         case "Unselect":
                             addRow.jqxButton({disabled: false});
                             delRow.jqxButton({disabled: false});
                             pubRow.jqxButton({disabled: false});
                             cancelRow.jqxButton({disabled: true});
+                            refreshTable.jqxButton({disabled: false});
                             break;
                         case "Edit":
                             addRow.jqxButton({disabled: false});
                             delRow.jqxButton({disabled: false});
                             pubRow.jqxButton({disabled: false});
                             cancelRow.jqxButton({disabled: true});
+                            refreshTable.jqxButton({disabled: false});
                             break;
                         case "End Edit":
                             addRow.jqxButton({disabled: false});
                             delRow.jqxButton({disabled: false});
                             pubRow.jqxButton({disabled: false});
                             cancelRow.jqxButton({disabled: true});
+                            refreshTable.jqxButton({disabled: false});
                             break;
                     }
                 };
@@ -224,6 +229,7 @@ function outputTableInit(path, taskId, projectId) {
                             type: 1,
                             dataName: "未定义数据名称",
                             taskId: taskId,
+                            taskName: taskName,
                             dataSenMax: 10000,
                             dataSenMin: 0,
                             isLeaf: 0,
@@ -258,39 +264,160 @@ function outputTableInit(path, taskId, projectId) {
                         updateButtons('delete');
                     }
                 });
+                pubRow.click(function () {
+                    if (!pubRow.jqxButton('disabled')) {
+                        var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
+                        var rowsDataIds = new Array();
+                        for (var i = 0; i < selection.length; i++) {
+                            if (selection[i] == undefined) {
+                                continue;
+                            }
+                            if (selection[i].publishState == 0) {
+                                rowsDataIds.push(selection[i].dataId);
+                            }
+                        }
+                        $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
+                            if (status == 'success') {
+                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
+                            }
+                        });
+                    }
+                });
+                cancelRow.click(function () {
+                    if (!cancelRow.jqxButton('disabled')) {
+                        var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
+                        var rowsDataIds = new Array();
+                        for (var i = 0; i < selection.length; i++) {
+                            if (selection[0] == undefined) {
+                                continue;
+                            }
+                            if (selection[i].publishState == 1) {
+                                rowsDataIds.push(selection[i].dataId);
+                            }
+                        }
+                        if (rowsDataIds.length > 0) {
+                            $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
+                                if (status == 'success') {
+                                    $('#treeGridOut').jqxTreeGrid('updateBoundData');
+                                }
+                            });
+                        }
+                    }
+                });
+                refreshTable.click(function () {
+                    if (!refreshTable.jqxButton('disabled')) {
+                        $('#treeGridOut').jqxTreeGrid('refresh');
+                    }
+                });
             },
             columns: [
                 {text: '名称', dataField: "dataName", align: 'left', width: '25%', pinned: true, editable: true},
-                {text: '类型', dataField: "dataType", align: 'left', width: '10%', columnType: "template", value: "数值"},
-                {text: '最新值', dataField: "dataValue", align: 'left', width: '25%'},
-                {text: '单位', dataField: "dataUnit", align: 'left', width: '10%', columnType: "template"},
+                {
+                    text: '类型', dataField: "dataType", align: 'left', width: '10%', columnType: "template", value: "数值",
+                    createEditor: function (row, cellvalue, editor, cellText, width, height) {
+                        // construct the editor.
+                        var source = ["数值", "文件", "模型", "结构型数据"];
+                        editor.jqxDropDownList({
+                            autoDropDownHeight: true,
+                            source: source,
+                            width: '100%',
+                            height: '100%'
+                        });
+                    },
+                    initEditor: function (row, cellvalue, editor, celltext, width, height) {
+                        // set the editor's current value. The callback is called each time the editor is displayed.
+                        editor.jqxDropDownList('selectItem', cellvalue);
+                    },
+                    getEditorValue: function (row, cellvalue, editor) {
+                        // return the editor's value.
+                        return editor.val();
+                    }
+                },
+                {text: '最新值', dataField: "dataValue", align: 'left', width: '25%', cellClassName: cellClass},
+                {
+                    text: '单位', dataField: "dataUnit", align: 'left', width: '10%', columnType: "template",
+                    createEditor: function (row, cellvalue, editor, cellText, width, height) {
+                        // construct the editor.
+                        var source = ["Km/s", "m/s", "s", "km", "m", "kg", "mm", "N", "mm*mm", "μm", "°", "mm*mm", "°/s", "°/h", "Hz", "g", "ppm", "ms", "mm*mm*mm"];
+                        editor.jqxDropDownList({
+                            autoDropDownHeight: true,
+                            source: source,
+                            width: '100%',
+                            height: '100%'
+                        });
+                    },
+                    initEditor: function (row, cellvalue, editor, celltext, width, height) {
+                        // set the editor's current value. The callback is called each time the editor is displayed.
+                        editor.jqxDropDownList('selectItem', cellvalue);
+                    },
+                    getEditorValue: function (row, cellvalue, editor) {
+                        // return the editor's value.
+                        return editor.val();
+                    }
+                },
                 {text: '最小值', dataField: "dataSenMin", align: 'left', width: '12%'},
                 {text: '最大值', dataField: "dataSenMax", align: 'left', width: '12%'},
-                {text: '发布状态', dataField: "publishState", align: ' center', width: '6%', editable: false}
+                {
+                    text: '发布状态', dataField: "publishState", align: ' center', width: '6%', editable: false,
+                    cellsRenderer: function (row, column, value, rowData) {
+                        // render custom column.
+                        if (rowData.publishState == 1) {
+                            return "<strong style='color: #00B83F' id=" + rowData.dataId + ">已发布</strong>";
+                        }
+                        else {
+                            return "<strong style='color: #b4372f' id=" + rowData.dataId + ">未发布</strong>";
+                        }
+                    }
+                }
             ]
         });
     // create context menu
-    var contextMenu = $("#Menu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
+    var contextMenu = $("#DataItemMenu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
     $("#treeGridOut").on('contextmenu', function () {
         return false;
     });
     $("#treeGridOut").on('rowClick', function (event) {
         var args = event.args;
+
         if (args.originalEvent.button == 2) {
+            if (args.row.dataType!='模型'||args.row.dataType != '文件'){
+                // $('#Menu').jqxMenu('disable', 'uploadFileLi', false);
+            }else {
+                // $('#Menu').jqxMenu('disable', 'uploadFileLi', true);
+            }
             var scrollTop = $(window).scrollTop();
             var scrollLeft = $(window).scrollLeft();
             contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
             return false;
         }
     });
-    $("#Menu").on('itemclick', function (event) {
+    $("#DataItemMenu").on('itemclick', function (event) {
         var args = event.args;
         var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-        var rowid = selection[0].uid
+        var rowId = selection[0].uid;
+
         if ($.trim($(args).text()) == "添加子数据") {
-            $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
-        } else {
-            $("#treeGridOut").jqxTreeGrid('deleteRow', rowid);
+            // $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
+            $("#treeGridOut").jqxTreeGrid('expandRow', rowId);
+            $("#treeGridOut").jqxTreeGrid('addRow', null, {
+                type: 1,
+                dataName: "未定义子数据名称",
+                taskId: taskId,
+                dataSenMax: 10000,
+                dataSenMin: 0,
+                isLeaf: 1,
+                dataType: "数值",
+                publishState: "未发布",
+                parentId: rowId,
+                projectId: projectId
+            }, 'first', rowId);
+        } else if ($.trim($(args).text()) == "上传文件"){
+            if (selection[0].dataType=='模型'||selection[0].dataType == '文件'){
+                $('#uploadPrivateFile').modal({
+                    keyboard: true,
+                    remote: "uploadPrivateFile.ht?id="+selection[0].dataId
+                });
+            }
         }
     });
 }

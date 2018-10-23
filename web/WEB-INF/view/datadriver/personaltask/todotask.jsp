@@ -47,8 +47,11 @@
     <script type="text/javascript" src="${ctx}/styles/wizard/bootstro.min.js"></script>
     <script type="text/javascript" src="${ctx}/cookie/jquery.cookie.js"></script>
     <script type="text/javascript" src="${ctx}/styles/wizard/bootwizard.js"></script>
+    <script type="text/javascript" src="${ctx}/jqwidgets/jqxmenu.js"></script>
     <style>
-        html, body	{ height:100%; }
+        html, body {
+            height: 100%;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -159,6 +162,7 @@
         </div>
     </div>
 </div>
+
 </body>
 <script src="${ctx}/styles/slide/js/classie.js"></script>
 <%--<script src="${ctx}/styles/loading/PerfectLoad.js"></script>--%>

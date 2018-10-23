@@ -29,7 +29,7 @@
 <div class="modal-body">
     <strong style="color: #bf3014">发布</strong>
     <strong style="color: #00B83F">审核</strong>
-    <strong style="color: #1976D2">完成</strong>
+    <strong style="color: #0052CC">完成</strong>
     <iframe src="${ctx}/datadriver/designflow/projectflow.ht?flag=1&projectId=${projectId}&processFlowXml=${processFlowXml}" style="width: 900px;height: 600px;" scrolling="no" frameborder="no"></iframe>
 </div>
 </body>

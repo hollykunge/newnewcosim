@@ -131,7 +131,7 @@ public class PersonalTaskController extends AbstractController {
             jsonMembers.add(jsonObject);
         }
 
-        String jsonstring = Tjson.formatJson(jsonMembers.toString());
+        String jsonstring = JsonFormat.formatJson(jsonMembers.toString());
         System.out.println(json.toString());
         PrintWriter out = null;
         out = response.getWriter();
@@ -201,8 +201,11 @@ public class PersonalTaskController extends AbstractController {
     @Action(description = "显示私有和发布")
     public ModelAndView showdata(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
+        TaskInfo taskInfo = taskInfoService.getById(taskId);
         Long projectId = RequestUtil.getLong(request, "projectId");
-        return getAutoView().addObject("taskId", taskId).addObject("projectId", projectId);
+        return getAutoView().addObject("taskId", taskId)
+                .addObject("projectId", projectId)
+                .addObject("taskName", taskInfo.getDdTaskName());
     }
 
     /**
@@ -360,7 +363,7 @@ public class PersonalTaskController extends AbstractController {
     public void updatePrivateData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         try {
-            String dataId = RequestUtil.getString(request, "dataId");
+            String dataId = RequestUtil.getString(request, "uid");
             String dataName = RequestUtil.getString(request, "dataName");
             String filePath = RequestUtil.getString(request, "filePath");
             String parentId = RequestUtil.getString(request, "parentId");
@@ -381,82 +384,60 @@ public class PersonalTaskController extends AbstractController {
             String dataSenMax = RequestUtil.getString(request, "dataSenMax");
             String dataSenMin = RequestUtil.getString(request, "dataSenMin");
             String type = RequestUtil.getString(request, "type");
-            PrivateData privateData = new PrivateData();
-
-            privateData.setDdDataId(Long.valueOf(dataId));
-            privateData.setDdDataName(dataName);
-            privateData.setDdDataPath(filePath);
-            privateData.setDdDataParentId(Long.valueOf(parentId));
-            privateData.setDdDataTaskId(Long.valueOf(taskId));
-            privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
-
-            makeDataType(dataType, privateData);
-
-            privateData.setDdDataDescription(dataDescription);
-
-            privateData.setDdDataPublishState(Byte.valueOf(publishState));
-
-            privateData.setDdDataOrderState(Short.valueOf(orderState));
-            privateData.setDdDataIsSubmit(Short.valueOf(submitState));
-            privateData.setDdDataTaskName(taskName);
-            privateData.setDdDataCreator(creator);
-            privateData.setDdDataCreateTime(new Date());
-            privateData.setDdDataProjId(Long.valueOf(projectId));
-            privateData.setDdDataCreatorId(Long.valueOf(creatorId));
-            privateData.setDdDataUnit(dataUnit);
-            privateData.setDdDataLastestValue(dataValue);
-            privateData.setDdDataSenMax(dataSenMax);
-            privateData.setDdDataSenMin(dataSenMin);
-            privateDataService.updateData(privateData);
-        } catch (Exception e) {
-
-        }
-    }
-
-    /**
-     * 添加私有数据
-     *
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("addPrivateData")
-    @Action(description = "添加私有数据")
-    public void addPrivateData(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        try {
-            String type = RequestUtil.getString(request, "type");
-            String dataName = RequestUtil.getString(request, "dataName");
-            String taskId = RequestUtil.getString(request, "taskId");
-            String dataSenMax = RequestUtil.getString(request, "dataSenMax");
-            String dataSenMin = RequestUtil.getString(request, "dataSenMin");
-            String isLeaf = RequestUtil.getString(request, "isLeaf");
-            String dataType = RequestUtil.getString(request, "dataType");
-            String publishState = RequestUtil.getString(request, "publishState");
-            String parentId = RequestUtil.getString(request, "parentId");
-            String projectId = RequestUtil.getString(request, "projectId");
 
             PrivateData privateData = new PrivateData();
-            privateData.setDdDataId(UniqueIdUtil.genId());
-            privateData.setDdDataName(dataName);
-            privateData.setDdDataPath(null);
-            makeDataType(dataType, privateData);
-            privateData.setDdDataDescription("新创建的数据");
-            privateData.setDdDataUnit(null);
-            privateData.setDdDataLastestValue(null);
-            privateData.setDdDataSenMax(dataSenMax);
-            privateData.setDdDataSenMin(dataSenMin);
-            privateData.setDdDataCreateTime(new Date());
-            privateData.setDdDataPublishState((byte) 0);
-            privateData.setDdDataOrderState((short) 0);
-            privateData.setDdDataIsSubmit((short) 0);
-            privateData.setDdDataTaskId(Long.valueOf(taskId));
-            privateData.setDdDataCreatorId(ContextUtil.getCurrentUserId());
-            privateData.setDdDataParentId(Long.valueOf(parentId));
-            privateData.setDdDataProjId(Long.valueOf(projectId));
-            privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
-            privateDataService.addDDPrivateData(privateData);
+
+
+            PrivateData privateData2 = privateDataService.getDataById(Long.valueOf(dataId));
+
+            if (privateData2 == null) {
+                privateData.setDdDataId(Long.valueOf(dataId));
+                privateData.setDdDataId(UniqueIdUtil.genId());
+                privateData.setDdDataName(dataName);
+                privateData.setDdDataPath(null);
+                makeDataType(dataType, privateData);
+                privateData.setDdDataDescription("新创建的数据");
+                privateData.setDdDataUnit(null);
+                privateData.setDdDataLastestValue(null);
+                privateData.setDdDataSenMax(dataSenMax);
+                privateData.setDdDataSenMin(dataSenMin);
+                privateData.setDdDataCreateTime(new Date());
+                privateData.setDdDataPublishState((byte) 0);
+                privateData.setDdDataOrderState((short) 0);
+                privateData.setDdDataIsSubmit((short) 0);
+                privateData.setDdDataTaskId(Long.valueOf(taskId));
+                privateData.setDdDataCreatorId(ContextUtil.getCurrentUserId());
+                privateData.setDdDataParentId(Long.valueOf(parentId));
+                privateData.setDdDataProjId(Long.valueOf(projectId));
+                privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
+                privateData.setDdDataTaskName(taskName);
+                privateDataService.addDDPrivateData(privateData);
+            } else {
+                privateData.setDdDataName(dataName);
+                privateData.setDdDataPath(filePath);
+                privateData.setDdDataParentId(Long.valueOf(parentId));
+                privateData.setDdDataTaskId(Long.valueOf(taskId));
+                privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
+
+                makeDataType(dataType, privateData);
+
+                privateData.setDdDataDescription(dataDescription);
+
+                privateData.setDdDataPublishState(Byte.valueOf(publishState));
+
+                privateData.setDdDataOrderState(Short.valueOf(orderState));
+                privateData.setDdDataIsSubmit(Short.valueOf(submitState));
+                privateData.setDdDataTaskName(taskName);
+                privateData.setDdDataCreator(creator);
+                privateData.setDdDataCreateTime(new Date());
+                privateData.setDdDataProjId(Long.valueOf(projectId));
+                privateData.setDdDataCreatorId(Long.valueOf(creatorId));
+                privateData.setDdDataUnit(dataUnit);
+                privateData.setDdDataLastestValue(dataValue);
+                privateData.setDdDataSenMax(dataSenMax);
+                privateData.setDdDataSenMin(dataSenMin);
+                privateDataService.updateData(privateData);
+            }
         } catch (Exception e) {
 
         }
@@ -478,29 +459,6 @@ public class PersonalTaskController extends AbstractController {
                 break;
             default:
                 break;
-        }
-    }
-
-    /**
-     * 删除私有数据
-     *
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("DelPrivateData")
-    @Action(description = "删除私有数据")
-    public void DelPrivateData(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        String orderJson = RequestUtil.getString(request, "orderJson");
-        //将json格式的字符串转换为json数组对象
-        JSONArray array = (JSONArray) JSONObject.fromObject(orderJson).get("rows");
-        //取得json数组中的第一个对象
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject myjb = (JSONObject) array.get(i);
-            Long dataID = Long.valueOf(myjb.get("dataId").toString());
-            privateDataService.delById(dataID);
         }
     }
 
@@ -531,27 +489,4 @@ public class PersonalTaskController extends AbstractController {
         return mav;
     }
 
-    //查询是否有
-    private Boolean isHas(Long projectId) {
-        List<Project> proLists = projectService.getAll();
-        for (Project project : proLists) {
-            if (project.getDdProjectId().equals(projectId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //过滤重复元素
-    public static List<Project> removeDuplicate(List<Project> mList) {
-        for (int i = 0; i < mList.size() - 1; i++) {
-            for (int j = mList.size() - 1; j > i; j--) {
-                if (mList.get(j).getDdProjectId().equals(mList.get(i).getDdProjectId())) {
-                    mList.remove(j);
-                }
-            }
-        }
-        return mList;
-    }
 }
-
