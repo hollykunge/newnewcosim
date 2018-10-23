@@ -48,43 +48,9 @@
         $("#exportCVSIn").click(function () {
             $("#treeGridIn").jqxTreeGrid('exportData', 'csv');
         });
-        // $("#unselectRow").click(function () {
-        //     if (!unselectRow.jqxButton('disabled')) {
-        //         $("#treeGridIn").jqxTreeGrid('unselectRow', rowKey);
-        //         rowKey = null;
-        //     }
-        // });
-        //下载模型文件
-        // $("#download1").click(function () {
-        //     var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
-        //     for (var i = 0; i < selection.length; i++) {
-        //         downloadF(selection[i].dataId);
-        //     }
-        // });
-        //订阅数据批量发布
-        <%--$("#selectedOrder").click(function () {--%>
-            <%--var selection = $("#treeGridIn").jqxTreeGrid('getSelection');--%>
-            <%--var rowsDataIds = new Array();--%>
-            <%--for (var i = 0; i < selection.length; i++) {--%>
-                <%--if (selection[i].torderState == 0) {--%>
-                    <%--rowsDataIds.push(selection[i].dataId);--%>
-                <%--}--%>
-            <%--}--%>
-            <%--$.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=orderpanel" + "&taskId=${taskId}", function (data, status) {--%>
-                <%--if (status == 'success') {--%>
-                    <%--window.location.reload();--%>
-                <%--}--%>
-            <%--});--%>
-        <%--});--%>
         inputTableInit("${ctx}/datadriver/privatedata/inputData.ht?taskId=${taskId}&projectId=${projectId}", ${taskId});
     });
-    //Excel批量导入
-    function importPrivateData(taskId, projectId) {
-        $('#importData').modal({
-            keyboard: true,
-            remote: "${ctx}/datadriver/privatedata/importPrivateData.ht?id=" + taskId + "&projectId=" + projectId
-        });
-    }
+
     //对话框关闭清除缓存
     $("#uploadPrivateFile").on("hidden.bs.modal", function () {
         $(this).removeData("bs.modal");
@@ -93,10 +59,5 @@
     $("#model_content").on("hidden.bs.modal", function () {
         $(this).removeData("bs.modal");
     });
-
-    //下载文件和模型
-    function downloadF(dataId) {
-        window.location.href = "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + dataId;
-    }
 </script>
 </html>

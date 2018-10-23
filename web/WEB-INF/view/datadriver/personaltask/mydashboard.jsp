@@ -88,9 +88,9 @@
                             <h4 class="big-text"><span
                                     class="glyphicon glyphicon-book"></span> ${taskItem.ddTaskName}</h4>
                             <p style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                <em>${taskItem.ddTaskProjectName}</em></p>
+                                <em>所属项目：${taskItem.ddTaskProjectName}</em></p>
                             <p style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                <em>${taskItem.ddTaskPlanEndTime}</em></p>
+                                <em>计划完成时间：${taskItem.ddTaskPlanEndTime}</em></p>
                         </a>
                     </li>
                 </c:forEach>

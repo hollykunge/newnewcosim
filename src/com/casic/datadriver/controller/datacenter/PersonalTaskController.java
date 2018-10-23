@@ -311,9 +311,14 @@ public class PersonalTaskController extends AbstractController {
     @RequestMapping("createToPublish")
     @Action(description = "私有与发布数据的切换")//8
     public void createToPublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String resultMsg = "";
         String dataIds = RequestUtil.getString(request, "dataIds");
         String parent = RequestUtil.getString(request, "parent");
-        privateDataService.createToPublish(dataIds, parent);
+        resultMsg = privateDataService.createToPublish(dataIds, parent);
+        PrintWriter out = response.getWriter();
+        out.append(resultMsg);
+        out.flush();
+        out.close();
     }
 
     /**
@@ -383,6 +388,7 @@ public class PersonalTaskController extends AbstractController {
             throws Exception {
         try {
             String dataId = RequestUtil.getString(request, "uid");
+//            String dataId = RequestUtil.getString(request, "dataId");
             String dataName = RequestUtil.getString(request, "dataName");
             String filePath = RequestUtil.getString(request, "filePath");
             String parentId = RequestUtil.getString(request, "parentId");
@@ -410,7 +416,6 @@ public class PersonalTaskController extends AbstractController {
             PrivateData privateData2 = privateDataService.getDataById(Long.valueOf(dataId));
 
             if (privateData2 == null) {
-                privateData.setDdDataId(Long.valueOf(dataId));
                 privateData.setDdDataId(UniqueIdUtil.genId());
                 privateData.setDdDataName(dataName);
                 privateData.setDdDataPath(null);
@@ -432,6 +437,7 @@ public class PersonalTaskController extends AbstractController {
                 privateData.setDdDataTaskName(taskName);
                 privateDataService.addDDPrivateData(privateData);
             } else {
+                privateData.setDdDataId(Long.valueOf(dataId));
                 privateData.setDdDataName(dataName);
                 privateData.setDdDataPath(filePath);
                 privateData.setDdDataParentId(Long.valueOf(parentId));
