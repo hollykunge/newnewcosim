@@ -131,7 +131,7 @@ public class PersonalTaskController extends AbstractController {
             jsonMembers.add(jsonObject);
         }
 
-        String jsonstring = Tjson.formatJson(jsonMembers.toString());
+        String jsonstring = JsonFormat.formatJson(jsonMembers.toString());
         System.out.println(json.toString());
         PrintWriter out = null;
         out = response.getWriter();
@@ -482,29 +482,6 @@ public class PersonalTaskController extends AbstractController {
     }
 
     /**
-     * 删除私有数据
-     *
-     * @param request
-     * @param response
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("DelPrivateData")
-    @Action(description = "删除私有数据")
-    public void DelPrivateData(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        String orderJson = RequestUtil.getString(request, "orderJson");
-        //将json格式的字符串转换为json数组对象
-        JSONArray array = (JSONArray) JSONObject.fromObject(orderJson).get("rows");
-        //取得json数组中的第一个对象
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject myjb = (JSONObject) array.get(i);
-            Long dataID = Long.valueOf(myjb.get("dataId").toString());
-            privateDataService.delById(dataID);
-        }
-    }
-
-    /**
      * 个人主页
      *
      * @param request
@@ -531,26 +508,4 @@ public class PersonalTaskController extends AbstractController {
         return mav;
     }
 
-    //查询是否有
-    private Boolean isHas(Long projectId) {
-        List<Project> proLists = projectService.getAll();
-        for (Project project : proLists) {
-            if (project.getDdProjectId().equals(projectId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //过滤重复元素
-    public static List<Project> removeDuplicate(List<Project> mList) {
-        for (int i = 0; i < mList.size() - 1; i++) {
-            for (int j = mList.size() - 1; j > i; j--) {
-                if (mList.get(j).getDdProjectId().equals(mList.get(i).getDdProjectId())) {
-                    mList.remove(j);
-                }
-            }
-        }
-        return mList;
-    }
 }
