@@ -117,9 +117,35 @@ public class CoinAspect {
     public void createtopublishReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(5);
-        ddScoreInflow.setSourceDetail("design_7");
-        setData(ddScoreInflow);
+        Map<String,String> map = new HashMap<>();
+
+        HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
+        Long taskId = RequestUtil.getLong(request, "taskId");
+        String account = ContextUtil.getCurrentUser().getAccount();
+        if (flagList.size() == 0){
+            map.put(account,taskId.toString());
+            flagList.add(map);
+            ddScoreInflow.setSourceScore(10);
+            ddScoreInflow.setSourceDetail("design_7");
+            setData(ddScoreInflow);
+        }else {
+            for (Map<String,String> flagMap:flagList) {
+                for (Map.Entry<String, String> entry : flagMap.entrySet()) {
+                    if (entry.getKey().equals(account) && entry.getValue().equals(taskId.toString())) {
+                        flag = true;
+                    }
+                }
+            }
+            if (!flag){
+                map.put(account,taskId.toString());
+                flagList.add(map);
+                ddScoreInflow.setSourceScore(10);
+                ddScoreInflow.setSourceDetail("design_7");
+                setData(ddScoreInflow);
+            }
+        }
+
+        flag = false;
     }
     @AfterReturning(returning = "result", pointcut = "orderAndCreateAspect()")
     public void orderAndCreateReturning(JoinPoint joinPoint, Object result) throws Throwable {
@@ -131,8 +157,6 @@ public class CoinAspect {
         //TODO: 需用更好的方法
         if (joinPoint.getSignature().getName().equals("canOrderToOrder")){
             HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-
-
             Long taskId = RequestUtil.getLong(request, "taskId");
             String account = ContextUtil.getCurrentUser().getAccount();
             if (flagList.size() == 0){

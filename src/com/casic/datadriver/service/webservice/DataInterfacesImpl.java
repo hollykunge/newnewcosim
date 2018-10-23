@@ -51,9 +51,9 @@ public class DataInterfacesImpl {
         System.out.println(saveType);
         short shortByOne = 1;
         short shortByZero = 0;
-        long longByThree = 3;
-        long longByZero = 0;
-        long longByOne = 1;
+        long longByThree = 3L;
+        long longByZero = 0L;
+        long longByOne = 1L;
         String flag = "";
 
         if (saveType.equals("User")) {
@@ -72,6 +72,7 @@ public class DataInterfacesImpl {
             String  orgCodeAndOrgSn= (String)infoJson.get("deptTyyhOrgCode");
             String  orgCode = (String)infoJson.get("deptCode");
             String  secretLevel = (String)infoJson.get("psnSecretLevel");
+            String  xh = (String)infoJson.get("xh");
             try{
                 SysUser sysUser = new SysUser();
                 sysUser.setFullname(fullName);
@@ -87,6 +88,7 @@ public class DataInterfacesImpl {
                 //sysUser.setOrgSn(Long.parseLong(orgCodeAndOrgSn));
                 sysUser.setShortAccount(shortAccount1+shortAccount2);
                 sysUser.setPsnSecretLevel(secretLevel);
+                sysUser.setXh(xh);
 
                 SysUserOrg sysUserOrg = new SysUserOrg();
                 //sysUserOrg.setOrgId(Long.parseLong(orgCodeAndOrgSn));

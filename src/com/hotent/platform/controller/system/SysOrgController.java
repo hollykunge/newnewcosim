@@ -284,33 +284,34 @@ public class SysOrgController extends BaseController {
 		List<ISysUser> newUserList = new ArrayList<>();
 		for (int a =0;a<sysUserList.size();a++)
 		{
-
-			if (project.getDdProjectSecretLevel() != null &&(project.getDdProjectSecretLevel().equals("fm") || project.getDdProjectSecretLevel().equals("nb"))){
-				sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
-				newUserList.add(sysUserList.get(a));
-			}else if(project.getDdProjectSecretLevel() != null && project.getDdProjectSecretLevel().equals("mm")){
-				if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65"))){
-					continue;
-				}else if (sysUserList.get(a).getPsnSecretLevel() == null){
-					continue;
-				}else{
+			if(sysUserList.get(a).getIsLock() != null && sysUserList.get(a).getIsLock() == 0){
+				if (project.getDdProjectSecretLevel() != null &&(project.getDdProjectSecretLevel().equals("fm") || project.getDdProjectSecretLevel().equals("nb"))){
+					sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
+					newUserList.add(sysUserList.get(a));
+				}else if(project.getDdProjectSecretLevel() != null && project.getDdProjectSecretLevel().equals("mm")){
+					if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65"))){
+						continue;
+					}else if (sysUserList.get(a).getPsnSecretLevel() == null){
+						continue;
+					}else{
+						sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
+						newUserList.add(sysUserList.get(a));
+					}
+				}else if(project.getDdProjectSecretLevel() != null && project.getDdProjectSecretLevel().equals("jm")){
+					if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65") || sysUserList.get(a).getPsnSecretLevel().equals("70"))){
+						continue;
+					}else if (sysUserList.get(a).getPsnSecretLevel() == null){
+						continue;
+					} else{
+						sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
+						newUserList.add(sysUserList.get(a));
+					}
+				}else if(project.getDdProjectSecretLevel() == null){
 					sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
 					newUserList.add(sysUserList.get(a));
 				}
-			}else if(project.getDdProjectSecretLevel() != null && project.getDdProjectSecretLevel().equals("jm")){
-				if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65") || sysUserList.get(a).getPsnSecretLevel().equals("70"))){
-					continue;
-				}else if (sysUserList.get(a).getPsnSecretLevel() == null){
-					continue;
-				} else{
-					sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
-					newUserList.add(sysUserList.get(a));
-				}
-			}else if(project.getDdProjectSecretLevel() == null){
-				sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
-				newUserList.add(sysUserList.get(a));
-			}
 
+			}else continue;
 		}
 		return newUserList;
 	}
