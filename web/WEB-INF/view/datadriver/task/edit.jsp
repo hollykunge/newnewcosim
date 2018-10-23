@@ -207,8 +207,8 @@
                             </c:otherwise>
                         </c:choose>
                     </a>
-                    <a class="list-group-item" href="javascript:void(0)" title="暂不可用">添加子任务</a>
-                    <a class="list-group-item" href="javascript:void(0)" title="暂不可用">添加标签</a>
+                    <%--<a class="list-group-item" href="javascript:void(0)" title="暂不可用">添加子任务</a>--%>
+                    <%--<a class="list-group-item" href="javascript:void(0)" title="暂不可用">添加标签</a>--%>
                     <a class="list-group-item" href="javascript:void(0)">里程碑
                         <c:choose>
                             <c:when test="${TaskInfo.ddTaskMilestone==1}">
@@ -269,7 +269,7 @@
                                                     <span>${privateDataItem.ddDataCreateTime}</span>
                                                 </div>
                                                 <div class="activity-body-coyness muted">
-                                                    <span>订阅了 ${orderDataItem.ddDataName} 来自 ${orderDataItem.ddTaskId}</span>
+                                                    <span>订阅了 ${orderDataItem.ddDataName} 来自 ${orderDataItem.ddDataName}</span>
                                                 </div>
                                             </li>
                                         </c:forEach>

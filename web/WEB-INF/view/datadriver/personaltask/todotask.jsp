@@ -26,7 +26,9 @@
     <link rel="stylesheet" type="text/css" href="${ctx}/styles/wizard/bootstro.min.css"/>
     <link rel="stylesheet" href="${ctx}/jqwidgets/styles/jqx.base.css" type="text/css"/>
     <link rel="stylesheet" href="${ctx}/jqwidgets/styles/jqx.bootstrap.css" type="text/css"/>
-
+    <!-- include the style of alertify-->
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
     <script src="${ctx}/newtable/jquery.js"></script>
     <script src="${ctx}/newtable/bootstrap.js"></script>
 
@@ -47,7 +49,9 @@
     <script type="text/javascript" src="${ctx}/styles/wizard/bootstro.min.js"></script>
     <script type="text/javascript" src="${ctx}/cookie/jquery.cookie.js"></script>
     <script type="text/javascript" src="${ctx}/styles/wizard/bootwizard.js"></script>
-    <script type="text/javascript" src="${ctx}/jqwidgets/jqxmenu.js"></script>
+    <!-- include the script alertify-->
+    <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
+    <%--<script type="text/javascript" src="${ctx}/jqwidgets/jqxmenu.js"></script>--%>
     <style>
         html, body {
             height: 100%;
@@ -134,13 +138,6 @@
         </div>
         <div role="tabpanel" class="tab-pane board-scrum-view" id="publish" style="height: 100%">
         </div>
-
-        <%--<div role="tabpanel" class="tab-pane board-scrum-view" id="talk" style="height: 100%">--%>
-        <%--</div>--%>
-        <%--<div role="tabpanel" class="tab-pane board-scrum-view" id="source" style="height: 100%">--%>
-        <%--</div>--%>
-        <%--<div role="tabpanel" class="tab-pane board-scrum-view" id="child" style="height: 100%">--%>
-        <%--</div>--%>
     </div>
 
     <%--统计--%>
@@ -165,32 +162,12 @@
 
 </body>
 <script src="${ctx}/styles/slide/js/classie.js"></script>
-<%--<script src="${ctx}/styles/loading/PerfectLoad.js"></script>--%>
 <script type="text/javascript">
     //@ sourceURL=todotask.ht
     $(document).ready(function () {
-//        var isbstro = $.cookie('bootstro');
-//        if (!isbstro) {
-//            wizard.bs.bstro([
-//                ['#switch_attr_publish', '<strong style="margin-top:10px;">该tab页负责私有数据创建、展示、发布、管理，以及发布数据的展示、撤销。</strong>'],
-//                ['#switch_attr_order', {
-//                    content: '<strong style="margin-top:10px;">该tab页负责项目中所有可订阅数据的展示、订阅，以及已订阅数据的管理、展示、撤销订阅。</strong>',
-//                    place: 'right'
-//                }],
-//            ], {
-//                obtn: '下次不再提示',
-//                exit:function () {
-//                    $.cookie('bootstro', 'ok', {expires: 30, path: '/'});
-//                }
-//            });
-//        }
-
         $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
             $('#data').html(data);
         });
-
-//        $("#child _btn").hide();
-
     });
 
     var switch_attr_index = document.getElementById('switch_attr_index'),
@@ -230,12 +207,5 @@
             $('#publish').html(data);
         });
     }
-    //
-    <%--statis_btn.onclick = function () {--%>
-    <%--$('#statis').modal({--%>
-    <%--keyboard: true,--%>
-    <%--remote: "statis.ht?id=${TaskInfo.ddTaskId}"--%>
-    <%--});--%>
-    <%--}--%>
 </script>
 </html>

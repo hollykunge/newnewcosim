@@ -102,8 +102,8 @@ public class OrderDataRelationDao extends BaseDao<OrderDataRelation> {
         return this.getUnique("getOrderDataRelationById", id);
     }
 
-    public List<OrderDataRelation> getBeOrderDataByDataId(Long taskId) {
-        return this.getBySqlKey("getBeOrderDataByDataId", taskId);
+    public List<OrderDataRelation> getBeOrderDataByDataId(Long dataId) {
+        return this.getBySqlKey("getBeOrderDataByDataId", dataId);
     }
 
     public void delOrderByddDataId(Long dataId) {

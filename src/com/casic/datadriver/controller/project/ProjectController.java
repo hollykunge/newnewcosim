@@ -506,7 +506,7 @@ public class ProjectController extends BaseController {
         Long taskId = RequestUtil.getLong(request, "id");
         String parent = RequestUtil.getString(request, "parent");
         TaskStart taskStart1 = taskStartService.getByTaskId(taskId);
-
+        String resultMsg = null;
         TaskInfo taskInfo = taskInfoService.getById(taskId);
         //发布任务
         if (taskInfo.getDdTaskChildType().equals("createpanel") && parent.equals("publishpanel")) {
@@ -521,19 +521,25 @@ public class ProjectController extends BaseController {
                 taskInfo.setDdTaskChildType("publishpanel");
                 taskInfo.setDdTaskState(TaskInfo.publishpanel);
                 taskInfoService.update(taskInfo);
-                return;
+                resultMsg="任务发布成功";
             }
         }
         //收回任务
         if (taskInfo.getDdTaskChildType().equals("publishpanel") && parent.equals("createpanel")) {
             //更新taskinfo?????createpanel属性是否应该放到taskstart里面
 
-            taskStartService.delByTaskId(taskId);
+            List<PrivateData> privateDataList = privateDataService.getPrivateByTaskId(taskId);
 
-            taskInfo.setDdTaskChildType("createpanel");
-            taskInfo.setDdTaskState(TaskInfo.createpanel);
-            taskInfoService.update(taskInfo);
-            return;
+            if (privateDataList.isEmpty()) {
+                taskStartService.delByTaskId(taskId);
+
+                taskInfo.setDdTaskChildType("createpanel");
+                taskInfo.setDdTaskState(TaskInfo.createpanel);
+                taskInfoService.update(taskInfo);
+                resultMsg="收回成功";
+            } else {
+                resultMsg="任务中有私有数据，不能收回";
+            }
         }
         //驳回任务
         if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("publishpanel")) {
@@ -544,7 +550,7 @@ public class ProjectController extends BaseController {
 
             taskStart1.setDdTaskStatus(TaskStart.publishpanel);
             taskStartService.update(taskStart1);
-            return;
+            resultMsg="任务驳回成功";
         }
         //审核通过
         if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("completepanel")) {
@@ -555,7 +561,7 @@ public class ProjectController extends BaseController {
 
             taskStart1.setDdTaskStatus(TaskStart.completepanel);
             taskStartService.update(taskStart1);
-            return;
+            resultMsg="任务审核通过";
         }
         //从已完成到待审核
         if (taskInfo.getDdTaskChildType().equals("completepanel") && parent.equals("checkpanel")) {
@@ -566,8 +572,12 @@ public class ProjectController extends BaseController {
 
             taskStart1.setDdTaskStatus(TaskStart.checkpanel);
             taskStartService.update(taskStart1);
-            return;
+            resultMsg="任务退回待审核";
         }
+        PrintWriter out = response.getWriter();
+        out.append(resultMsg);
+        out.flush();
+        out.close();
     }
 
     /**

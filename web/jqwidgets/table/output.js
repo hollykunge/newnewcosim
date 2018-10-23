@@ -140,11 +140,14 @@ function outputTableInit(path, taskId, projectId, taskName) {
                 var pubRow = $('<button id="pubRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-ok"></span> 发布数据</button>');
                 var cancelRow = $('<button id="cancelRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-remove"></span> 撤销发布</button>');
                 var refreshTable = $('<button id="refreshTable" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-refresh"></span> 刷新表单</button>');
+                var uploadFile = $('<button id="uploadFile" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-upload"></span> 上传文件</button>');
+
                 container.append(addRow);
                 container.append(delRow);
                 container.append(pubRow);
                 container.append(cancelRow);
                 container.append(refreshTable);
+                container.append(uploadFile);
                 toolBar.append(container);
 
                 addRow.jqxButton({
@@ -173,6 +176,11 @@ function outputTableInit(path, taskId, projectId, taskName) {
                     disabled: false
                 });
                 refreshTable.jqxTooltip({position: 'bottom', content: "点击刷新数据列表"});
+                uploadFile.jqxButton({
+                    cursor: "pointer",
+                    disabled: false
+                });
+                uploadFile.jqxTooltip({position: 'bottom', content: "点击下载文件"});
 
                 var updateButtons = function (action) {
                     switch (action) {
@@ -180,29 +188,33 @@ function outputTableInit(path, taskId, projectId, taskName) {
                             addRow.jqxButton({disabled: false});
                             delRow.jqxButton({disabled: false});
                             pubRow.jqxButton({disabled: false});
-                            cancelRow.jqxButton({disabled: true});
+                            cancelRow.jqxButton({disabled: false});
                             refreshTable.jqxButton({disabled: false});
+                            uploadFile.jqxButton({disabled: false});
                             break;
                         case "Unselect":
                             addRow.jqxButton({disabled: false});
-                            delRow.jqxButton({disabled: false});
-                            pubRow.jqxButton({disabled: false});
+                            delRow.jqxButton({disabled: true});
+                            pubRow.jqxButton({disabled: true});
                             cancelRow.jqxButton({disabled: true});
                             refreshTable.jqxButton({disabled: false});
+                            uploadFile.jqxButton({disabled: true});
                             break;
                         case "Edit":
-                            addRow.jqxButton({disabled: false});
-                            delRow.jqxButton({disabled: false});
-                            pubRow.jqxButton({disabled: false});
+                            addRow.jqxButton({disabled: true});
+                            delRow.jqxButton({disabled: true});
+                            pubRow.jqxButton({disabled: true});
                             cancelRow.jqxButton({disabled: true});
                             refreshTable.jqxButton({disabled: false});
+                            uploadFile.jqxButton({disabled: true});
                             break;
                         case "End Edit":
                             addRow.jqxButton({disabled: false});
                             delRow.jqxButton({disabled: false});
                             pubRow.jqxButton({disabled: false});
-                            cancelRow.jqxButton({disabled: true});
+                            cancelRow.jqxButton({disabled: false});
                             refreshTable.jqxButton({disabled: false});
+                            uploadFile.jqxButton({disabled: false});
                             break;
                     }
                 };
@@ -273,12 +285,14 @@ function outputTableInit(path, taskId, projectId, taskName) {
                                 continue;
                             }
                             if (selection[i].publishState == 0) {
-                                rowsDataIds.push(selection[i].dataId);
+                                rowsDataIds.push(selection[i].uid);
                             }
                         }
                         $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
                             if (status == 'success') {
                                 $('#treeGridOut').jqxTreeGrid('updateBoundData');
+                                alertify.set('notifier','position', 'top-right');
+                                alertify.success(data);
                             }
                         });
                     }
@@ -292,13 +306,15 @@ function outputTableInit(path, taskId, projectId, taskName) {
                                 continue;
                             }
                             if (selection[i].publishState == 1) {
-                                rowsDataIds.push(selection[i].dataId);
+                                rowsDataIds.push(selection[i].uid);
                             }
                         }
                         if (rowsDataIds.length > 0) {
                             $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
                                 if (status == 'success') {
                                     $('#treeGridOut').jqxTreeGrid('updateBoundData');
+                                    alertify.set('notifier','position', 'top-right');
+                                    alertify.success(data);
                                 }
                             });
                         }
@@ -306,7 +322,18 @@ function outputTableInit(path, taskId, projectId, taskName) {
                 });
                 refreshTable.click(function () {
                     if (!refreshTable.jqxButton('disabled')) {
-                        $('#treeGridOut').jqxTreeGrid('refresh');
+                        location.reload();
+                    }
+                });
+                uploadFile.click(function () {
+                    if (!uploadFile.jqxButton('disabled')) {
+                        var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
+                        if (selection[0].dataType == '模型' || selection[0].dataType == '文件') {
+                            $('#uploadPrivateFile').modal({
+                                keyboard: true,
+                                remote: "uploadPrivateFile.ht?id=" + selection[0].dataId
+                            });
+                        }
                     }
                 });
             },
@@ -371,53 +398,4 @@ function outputTableInit(path, taskId, projectId, taskName) {
                 }
             ]
         });
-    // create context menu
-    var contextMenu = $("#DataItemMenu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
-    $("#treeGridOut").on('contextmenu', function () {
-        return false;
-    });
-    $("#treeGridOut").on('rowClick', function (event) {
-        var args = event.args;
-
-        if (args.originalEvent.button == 2) {
-            if (args.row.dataType!='模型'||args.row.dataType != '文件'){
-                // $('#Menu').jqxMenu('disable', 'uploadFileLi', false);
-            }else {
-                // $('#Menu').jqxMenu('disable', 'uploadFileLi', true);
-            }
-            var scrollTop = $(window).scrollTop();
-            var scrollLeft = $(window).scrollLeft();
-            contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
-            return false;
-        }
-    });
-    $("#DataItemMenu").on('itemclick', function (event) {
-        var args = event.args;
-        var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-        var rowId = selection[0].uid;
-
-        if ($.trim($(args).text()) == "添加子数据") {
-            // $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
-            $("#treeGridOut").jqxTreeGrid('expandRow', rowId);
-            $("#treeGridOut").jqxTreeGrid('addRow', null, {
-                type: 1,
-                dataName: "未定义子数据名称",
-                taskId: taskId,
-                dataSenMax: 10000,
-                dataSenMin: 0,
-                isLeaf: 1,
-                dataType: "数值",
-                publishState: "未发布",
-                parentId: rowId,
-                projectId: projectId
-            }, 'first', rowId);
-        } else if ($.trim($(args).text()) == "上传文件"){
-            if (selection[0].dataType=='模型'||selection[0].dataType == '文件'){
-                $('#uploadPrivateFile').modal({
-                    keyboard: true,
-                    remote: "uploadPrivateFile.ht?id="+selection[0].dataId
-                });
-            }
-        }
-    });
 }

@@ -400,7 +400,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
         return brandMobileInfos.size();
     }
 
-    public void createToPublish(String dataIds, String parent) {
+    public String createToPublish(String dataIds, String parent) {
         String[] tempStr = dataIds.split("[,|，]");
         List<String> listId = Arrays.asList(tempStr);
         List<PrivateData> privateDataList = new ArrayList<PrivateData>();
@@ -411,11 +411,20 @@ public class PrivateDataService extends BaseService<PrivateData> {
         //私有到发布
         if (("publishpanel").equals(parent)) {
             privateDataDao.updateToPublish(privateDataList);
+            return "发布成功";
         }
 
         if (("createpanel").equals(parent)) {
-            privateDataDao.updateToPrivate(privateDataList);
+            for (PrivateData privateData:privateDataList){
+                List<OrderDataRelation> orderDataRelation = orderDataRelationDao.getBeOrderDataByDataId(privateData.getDdDataId());
+                if (orderDataRelation.isEmpty()){
+                    privateDataDao.updateToPrivate(privateDataList);
+                    return "撤销成功";
+                }
+            }
+
         }
+        return "撤销失败";
     }
 
     public void canOrderToOrder(String dataIds, String parent, Long taskId) {
