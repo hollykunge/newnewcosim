@@ -410,11 +410,11 @@ public class PersonalTaskController extends AbstractController {
             String dataSenMin = RequestUtil.getString(request, "dataSenMin");
             String type = RequestUtil.getString(request, "type");
 
-            PrivateData privateData = new PrivateData();
+
 
 
             PrivateData privateData2 = privateDataService.getDataById(Long.valueOf(dataId));
-
+            PrivateData privateData = new PrivateData();
             if (privateData2 == null) {
                 privateData.setDdDataId(UniqueIdUtil.genId());
                 privateData.setDdDataName(dataName);
@@ -437,31 +437,30 @@ public class PersonalTaskController extends AbstractController {
                 privateData.setDdDataTaskName(taskName);
                 privateDataService.addDDPrivateData(privateData);
             } else {
-                privateData.setDdDataId(Long.valueOf(dataId));
-                privateData.setDdDataName(dataName);
-                privateData.setDdDataPath(filePath);
-                privateData.setDdDataParentId(Long.valueOf(parentId));
-                privateData.setDdDataTaskId(Long.valueOf(taskId));
-                privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
+                privateData2.setDdDataName(dataName);
+                privateData2.setDdDataPath(filePath);
+                privateData2.setDdDataParentId(Long.valueOf(parentId));
+                privateData2.setDdDataTaskId(Long.valueOf(taskId));
+                privateData2.setDdDataIsLeaf(Short.valueOf(isLeaf));
 
-                makeDataType(dataType, privateData);
+                makeDataType(dataType, privateData2);
 
-                privateData.setDdDataDescription(dataDescription);
+                privateData2.setDdDataDescription(dataDescription);
 
-                privateData.setDdDataPublishState(Byte.valueOf(publishState));
+                privateData2.setDdDataPublishState(Byte.valueOf(publishState));
 
-                privateData.setDdDataOrderState(Short.valueOf(orderState));
-                privateData.setDdDataIsSubmit(Short.valueOf(submitState));
-                privateData.setDdDataTaskName(taskName);
-                privateData.setDdDataCreator(creator);
-                privateData.setDdDataCreateTime(new Date());
-                privateData.setDdDataProjId(Long.valueOf(projectId));
-                privateData.setDdDataCreatorId(Long.valueOf(creatorId));
-                privateData.setDdDataUnit(dataUnit);
-                privateData.setDdDataLastestValue(dataValue);
-                privateData.setDdDataSenMax(dataSenMax);
-                privateData.setDdDataSenMin(dataSenMin);
-                privateDataService.updateData(privateData);
+                privateData2.setDdDataOrderState(Short.valueOf(orderState));
+                privateData2.setDdDataIsSubmit(Short.valueOf(submitState));
+                privateData2.setDdDataTaskName(taskName);
+                privateData2.setDdDataCreator(creator);
+                privateData2.setDdDataCreateTime(new Date());
+                privateData2.setDdDataProjId(Long.valueOf(projectId));
+                privateData2.setDdDataCreatorId(Long.valueOf(creatorId));
+                privateData2.setDdDataUnit(dataUnit);
+                privateData2.setDdDataLastestValue(dataValue);
+                privateData2.setDdDataSenMax(dataSenMax);
+                privateData2.setDdDataSenMin(dataSenMin);
+                privateDataService.updateData(privateData2);
             }
         } catch (Exception e) {
 
