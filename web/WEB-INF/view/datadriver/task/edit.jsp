@@ -449,7 +449,7 @@
         });
         $('#taskPrioritySelect').editable({
             showbuttons: false,
-            value: 1,
+            value: ${TaskInfo.ddTaskPriority}, // 默认显示当前优先级
             mode: 'inline',
             onblur: 'submit',
             source: [
