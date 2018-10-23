@@ -124,6 +124,13 @@
                     visible: true
                 }
                 , {
+                    field: 'ddTaskSecretLevel',
+                    title: '密级',
+                    sortable: true,
+                    align: 'left',
+                    visible: true
+                }
+                , {
                     field: 'ddTaskPriority',
                     title: '优先级码',
                     sortable: true,
