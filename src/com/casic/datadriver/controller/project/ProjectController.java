@@ -84,6 +84,7 @@ public class ProjectController extends BaseController {
     private PrivateDataService privateDataService;
 
     JsonFormat Tjson = new JsonFormat();
+
     /**
      * 保存项目
      *
@@ -205,8 +206,7 @@ public class ProjectController extends BaseController {
             jsonObject.put("projectPhase", project.getDdProjectPhaseId());
 
 
-
-            switch (project.getDdProjectPhaseId()){
+            switch (project.getDdProjectPhaseId()) {
                 case 2:
                     jsonObject.put("phase", "未启动");
                     break;
@@ -217,8 +217,8 @@ public class ProjectController extends BaseController {
                     jsonObject.put("phase", "已完成");
                     break;
             }
-            if(project.getDdProjectSecretLevel()!=null){
-                switch (project.getDdProjectSecretLevel()){
+            if (project.getDdProjectSecretLevel() != null) {
+                switch (project.getDdProjectSecretLevel()) {
 
                     case "jm":
                         jsonObject.put("projectSecretLevel", "机密");
@@ -234,7 +234,7 @@ public class ProjectController extends BaseController {
                         break;
                 }
             }
-            if(project.getDdProjectSecretLevel() == null){
+            if (project.getDdProjectSecretLevel() == null) {
                 jsonObject.put("projectSecretLevel", "非密");
             }
 
@@ -346,6 +346,7 @@ public class ProjectController extends BaseController {
         Long creatorId = ContextUtil.getCurrentUser().getUserId();
         return getAutoView().addObject("Project", Project).addObject("creatorName", creatorName).addObject("creatorId", creatorId);
     }
+
     /**
      * 项目创建
      *
@@ -361,7 +362,7 @@ public class ProjectController extends BaseController {
         Integer psnSecretLevelCode = Integer.parseInt(psnSecretLevel);
         return getAutoView().addObject("psnSecretLevelCode", psnSecretLevelCode);
     }
-    
+
     /**
      * 项目指标
      *
@@ -445,19 +446,14 @@ public class ProjectController extends BaseController {
         long projectId = RequestUtil.getLong(request, "id");
         Project project = projectService.getById(projectId);
         Long userId = project.getDdProjectCreatorId();
-        List<TaskInfo> taskInfoList = new ArrayList<TaskInfo>();
+
         List<TaskInfo> createTaskInfoList = new ArrayList<TaskInfo>();
         List<TaskInfo> publishTaskInfoList = new ArrayList<TaskInfo>();
         List<TaskInfo> checkTaskInfoList = new ArrayList<TaskInfo>();
         List<TaskInfo> completeTaskInfoList = new ArrayList<TaskInfo>();
-        List<ProTaskDependance> proTaskDependanceList = proTaskDependanceService.getProTaskDependanceList(projectId);
-        for (int i = 0; i < proTaskDependanceList.size(); i++) {
-            ProTaskDependance proTaskDependance = proTaskDependanceList.get(i);
-            long taskId = proTaskDependance.getDdTaskId();
-            TaskInfo taskInfo = taskInfoService.getById(taskId);
 
-            taskInfoList.add(taskInfo);
-        }
+        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(projectId);
+
         for (TaskInfo taskInfo : taskInfoList) {
             if (taskInfo.getDdTaskChildType().equals("publishpanel")) {
                 publishTaskInfoList.add(taskInfo);
@@ -472,17 +468,14 @@ public class ProjectController extends BaseController {
                 completeTaskInfoList.add(taskInfo);
             }
         }
+
         //根据用户ID获取当前用户拥有项目列表
         List<Project> projectListbyUser = projectService.queryProjectBasicInfoList(userId);
         return getAutoView().addObject("Project", project)
-                .addObject("taskListbyUser", createTaskInfoList)
-                .addObject("publishtaskListbyUser", publishTaskInfoList)
-                .addObject("checkTaskInfoList", checkTaskInfoList)
-                .addObject("completeTaskInfoList", completeTaskInfoList);
+                .addObject("projectListbyUser", projectListbyUser);
     }
 
     /**
-     *
      * @param request
      * @param response
      * @throws Exception
@@ -512,17 +505,18 @@ public class ProjectController extends BaseController {
     public void createtopublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
         String parent = RequestUtil.getString(request, "parent");
-        TaskStart taskStart = taskStartService.getByTaskId(taskId);
+        TaskStart taskStart1 = taskStartService.getByTaskId(taskId);
 
         TaskInfo taskInfo = taskInfoService.getById(taskId);
         //发布任务
         if (taskInfo.getDdTaskChildType().equals("createpanel") && parent.equals("publishpanel")) {
-            if (taskStart == null) {
-                taskStart.setDdTaskStartId(UniqueIdUtil.genId());
-                taskStart.setDdTaskId(taskId);
-                taskStart.setDdTaskStatus(TaskStart.publishpanel);
-                taskStart.setDdTaskResponcePerson(taskInfo.getDdTaskResponsiblePerson());
-                taskStartService.taskStart(taskStart);
+            if (taskStart1 == null) {
+                TaskStart taskStart2 = new TaskStart();
+                taskStart2.setDdTaskStartId(UniqueIdUtil.genId());
+                taskStart2.setDdTaskId(taskId);
+                taskStart2.setDdTaskStatus(TaskStart.publishpanel);
+                taskStart2.setDdTaskResponcePerson(taskInfo.getDdTaskResponsiblePerson());
+                taskStartService.taskStart(taskStart2);
                 //更新taskinfo
                 taskInfo.setDdTaskChildType("publishpanel");
                 taskInfo.setDdTaskState(TaskInfo.publishpanel);
@@ -533,55 +527,35 @@ public class ProjectController extends BaseController {
         //收回任务
         if (taskInfo.getDdTaskChildType().equals("publishpanel") && parent.equals("createpanel")) {
             //更新taskinfo?????createpanel属性是否应该放到taskstart里面
+
+            taskStartService.delByTaskId(taskId);
+
             taskInfo.setDdTaskChildType("createpanel");
             taskInfo.setDdTaskState(TaskInfo.createpanel);
             taskInfoService.update(taskInfo);
-            taskStartService.delByTaskId(taskInfo.getDdTaskId());
             return;
-        } else {
-            //提交任务
-//            if (taskInfo.getDdTaskChildType().equals("publishpanel") && parent.equals("checkpanel")) {
-//                //更新taskinfo?????createpanel属性是否应该放到taskstart里面
-//                taskInfo.setDdTaskChildType("checkpanel");
-//                taskInfoService.update(taskInfo);
-//                taskInfo.setDdTaskState(TaskInfo.checkpanel);
-//
-//                taskStart.setDdTaskStatus(TaskStart.checkpanel);
-//                taskStartService.update(taskStart);
-//                return;
-//            } else {
-                //驳回任务
-                if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("publishpanel")) {
-                    //更新taskinfo?????createpanel属性是否应该放到taskstart里面
-                    taskInfo.setDdTaskChildType("publishpanel");
-                    taskInfoService.update(taskInfo);
-                    taskInfo.setDdTaskState(TaskInfo.publishpanel);
-                    taskStart.setDdTaskStatus(TaskStart.publishpanel);
-                    taskStartService.update(taskStart);
-                    return;
-                } else {
-                    //审核通过
-                    if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("completepanel")) {
-                        //更新taskinfo?????createpanel属性是否应该放到taskstart里面
-                        taskInfo.setDdTaskChildType("completepanel");
-                        taskInfo.setDdTaskState(TaskInfo.completepanel);
-                        taskInfoService.update(taskInfo);
-                        taskStart.setDdTaskStatus(TaskStart.completepanel);
-                        taskStartService.update(taskStart);
-                        return;
-                    } else {
-                        taskInfo.setDdTaskChildType("checkpanel");
-                        taskInfoService.update(taskInfo);
-                        taskInfo.setDdTaskState(TaskInfo.checkpanel);
-                        taskStart.setDdTaskStatus(TaskStart.checkpanel);
-                        taskStartService.update(taskStart);
-                        return;
-                    }
+        }
+        //驳回任务
+        if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("publishpanel")) {
+            //更新taskinfo?????createpanel属性是否应该放到taskstart里面
+            taskInfo.setDdTaskChildType("publishpanel");
+            taskInfo.setDdTaskState(TaskInfo.publishpanel);
+            taskInfoService.update(taskInfo);
 
-                }
+            taskStart1.setDdTaskStatus(TaskStart.publishpanel);
+            taskStartService.update(taskStart1);
+            return;
+        }
+        //审核通过
+        if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("completepanel")) {
+            //更新taskinfo?????createpanel属性是否应该放到taskstart里面
+            taskInfo.setDdTaskChildType("completepanel");
+            taskInfo.setDdTaskState(TaskInfo.completepanel);
+            taskInfoService.update(taskInfo);
 
-//            }
-
+            taskStart1.setDdTaskStatus(TaskStart.completepanel);
+            taskStartService.update(taskStart1);
+            return;
         }
     }
 

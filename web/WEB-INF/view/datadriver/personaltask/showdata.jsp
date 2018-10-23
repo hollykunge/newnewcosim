@@ -75,8 +75,8 @@
 <div id="treeGridOut" style="width: 100%"></div>
 <div id='Menu'>
     <ul>
-        <li>添加子数据</li>
-        <li>上传文件</li>
+        <li id="addSubDataLi">添加子数据</li>
+        <li id="uploadFileLi">上传文件</li>
     </ul>
 </div>
 <%--导入数据--%>

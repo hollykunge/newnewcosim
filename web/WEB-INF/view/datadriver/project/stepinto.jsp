@@ -189,6 +189,13 @@
             $('#task').html(data);
         });
     });
+    //关闭任务创建模态框
+    $("#addtask").on("hidden.bs.modal", function () {
+        $(this).removeData("bs.modal");
+        $.get("showtask.ht?id=${Project.ddProjectId}", function (data) {
+            $('#task').html(data);
+        });
+    });
     //关闭任务详情模态框
     //    $("#addindex1").on("hidden.bs.modal", function() {
     //        $(this).removeData("bs.modal");
