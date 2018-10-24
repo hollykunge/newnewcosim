@@ -1,7 +1,6 @@
-package com.casic.datadriver.service.coin;
+package com.casic.datadriver.service.score;
 
-import com.casic.datadriver.dao.coin.DdScoreDao;
-import com.casic.datadriver.model.coin.DdRank;
+import com.casic.datadriver.dao.score.DdScoreDao;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.coin.DdScoreOutflow;

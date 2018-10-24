@@ -1,4 +1,4 @@
-package com.casic.datadriver.dao.coin;
+package com.casic.datadriver.dao.score;
 
 import com.casic.datadriver.model.coin.DdScoreOutflow;
 import com.hotent.core.db.BaseDao;

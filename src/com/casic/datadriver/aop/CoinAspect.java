@@ -3,7 +3,7 @@ package com.casic.datadriver.aop;
 
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.service.coin.CoinService;
-import com.casic.datadriver.service.coin.DdScoreInflowService;
+import com.casic.datadriver.service.score.DdScoreInflowService;
 import com.hotent.core.util.ContextUtil;
 import com.hotent.core.web.util.RequestUtil;
 import org.apache.commons.logging.Log;

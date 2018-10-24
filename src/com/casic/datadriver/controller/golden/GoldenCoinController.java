@@ -1,15 +1,14 @@
-package com.casic.datadriver.controller.coin;
+package com.casic.datadriver.controller.golden;
 
 import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
-import com.casic.datadriver.service.coin.GoldenCoinService;
+import com.casic.datadriver.service.golden.GoldenCoinService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.query.QueryFilter;
 import com.hotent.core.web.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 

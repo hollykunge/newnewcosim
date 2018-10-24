@@ -1,11 +1,11 @@
-package com.casic.datadriver.service.coin;
+package com.casic.datadriver.service.golden;
 
-import com.casic.datadriver.dao.coin.DdGoldenCoinDao;
-import com.casic.datadriver.dao.coin.DdScoreDao;
-import com.casic.datadriver.dao.coin.DdScoreOutflowDao;
+import com.casic.datadriver.dao.golden.DdGoldenCoinDao;
+import com.casic.datadriver.dao.score.DdScoreOutflowDao;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
+import com.casic.datadriver.service.score.DdScoreService;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;

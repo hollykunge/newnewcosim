@@ -1,4 +1,4 @@
-package com.casic.datadriver.dao.coin;
+package com.casic.datadriver.dao.golden;
 
 import com.casic.datadriver.model.coin.DdGoldenCoin;
 import com.casic.datadriver.model.coin.DdScore;
