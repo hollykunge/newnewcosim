@@ -163,7 +163,7 @@
                 return false;
             }
         });
-        $("#DataItemMenu").on('rowClick', function (event) {
+        $("#DataItemMenu").on('itemclick', function (event) {
             var args = event.args;
             var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
             var rowId = selection[0].uid;
