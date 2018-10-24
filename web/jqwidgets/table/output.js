@@ -63,22 +63,53 @@ function outputTableInit(path, taskId, projectId, taskName) {
             },
             id: 'dataId',
             url: path,
+            // addRow: function (rowID, rowData, position, parentID, commit) {
+            //     $.post("addPrivateData.ht", rowData, function (data, status) {
+            //         if (status == "success") {
+            //             $("#treeGridOut").jqxTreeGrid('updateBoundData');
+            //         }
+            //     }, "json");
+            //     commit(true);
+            //     newRowID = rowID;
+            // },
             addRow: function (rowID, rowData, position, parentID, commit) {
-                $.get("updatePrivateData.ht", rowData, function (data, status) {
-                    if (status == "success") {
+                // synchronize with the server - send insert command
+                $.ajax({
+                    cache: false,
+                    dataType: 'json',
+                    url: 'addPrivateData.ht',
+                    data: rowData,
+                    type: "POST",
+                    async : false,
+                    success: function (data, status, xhr) {
+                        // insert command is executed.
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
+                        commit(true);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                        commit(false);
                     }
-                }, "json");
-                commit(true);
-                newRowID = rowID;
+                });
             },
             updateRow: function (rowID, rowData, commit) {
-                $.get("updatePrivateData.ht", rowData, function (data, status) {
-                    if (status == "success") {
+                $.ajax({
+                    cache: false,
+                    dataType: 'json',
+                    url: 'updatePrivateData.ht',
+                    data: rowData,
+                    type: "POST",
+                    async : false,
+                    success: function (data, status, xhr) {
+                        // insert command is executed.
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
+                        commit(true);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                        commit(false);
                     }
-                }, "json");
-                commit(true);
+                });
             },
             deleteRow: function (dataId, commit) {
                 $.get("delPrivateData.ht?dataId=" + dataId, dataId, function (data, status) {
