@@ -179,6 +179,7 @@
         initTable();
         $("#myCreate").on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
+            refresh(0); // 当模态框关闭时，刷新项目列表
         });
         $("#myModal").on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
