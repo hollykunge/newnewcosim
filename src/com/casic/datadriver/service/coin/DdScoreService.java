@@ -207,7 +207,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         });
         //截断末尾零分项
         Iterator<DdScore> it = tempScoreList.iterator();
-        if(it.hasNext()) {
+        while(it.hasNext()) {
             DdScore x = it.next();
             if(x.getScoreTotal() == 0) {
                 it.remove();
@@ -215,12 +215,19 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         }
         //列表截断，应该是根据不同类型选择不同数目
         if (tempScoreList.size() > rank) {
-            Integer add = 0;
             Integer base = tempScoreList.get(rank - 1).getScoreTotal();
-            while(base.equals(tempScoreList.get(rank + add).getScoreTotal())) {
-                add++;
+            Iterator<DdScore> it2 = tempScoreList.iterator();
+            while(it2.hasNext()) {
+                DdScore x = it2.next();
+                if(x.getScoreTotal() < base) {
+                    it2.remove();
+                    break;
+                }
             }
-            tempScoreList = tempScoreList.subList(0, rank + add);
+            while(it2.hasNext()) {
+                it2.next();
+                it2.remove();
+            }
         }
         return tempScoreList;
     }
