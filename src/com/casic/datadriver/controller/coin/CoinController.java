@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -100,11 +99,4 @@ public class CoinController extends GenericController {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
     }
-
-    private final static ThreadLocal<SimpleDateFormat> DATE_FORMATER2 = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd");
-        }
-    };
 }

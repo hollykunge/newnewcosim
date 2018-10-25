@@ -20,19 +20,25 @@ public class ScoreRegulation {
 
     public static final int SCORE_LIMIT = 10;
 
-    //四种币
+    /**
+     * 四种币
+     */
     public static final String QUAN_JU = "quanju";
     public static final String FENG_XIAN = "fengxian";
     public static final String QIU_SHI = "qiushi";
     public static final String CHUANG_XIN = "chuangxin";
 
-    //获得奖励的人数
-    public static final Integer LIMIT_QUAN_JU = 25;
-    public static final Integer LIMIT_FENG_XIAN = 5;
+    /**
+     * 获得奖励的人数
+     */
+    public static final Integer LIMIT_QUAN_JU = 60;
+    public static final Integer LIMIT_FENG_XIAN = 20;
     public static final Integer LIMIT_QIU_SHI = 20;
-    public static final Integer LIMIT_CHUANG_XIN = 0;
+    //public static final Integer LIMIT_CHUANG_XIN = 0;
 
-    //每种积分榜单回复人数
+    /**
+     * 每种积分榜单回复人数
+     */
     public static final Integer RANK_NUM = 80;
 
     //全局8种
@@ -78,6 +84,39 @@ public class ScoreRegulation {
      * 目前弃用
      */
     private static final String ISSUE_2 = "issue_2";
+    /**
+     * 浏览知识
+     */
+    private static final String KNOWLEDGE_1 = "knowledge_1";
+    /**
+     * 下载知识
+     */
+    private static final String KNOWLEDGE_2 = "knowledge_2";
+    /**
+     * 评星知识
+     */
+    private static final String KNOWLEDGE_3 = "knowledge_3";
+    /**
+     * 点评知识
+     */
+    private static final String KNOWLEDGE_4 = "knowledge_4";
+    /**
+     * 上传被审批
+     */
+    private static final String KNOWLEDGE_5 = "knowledge_5";
+    /**
+     * 上传被阅览
+     */
+    private static final String KNOWLEDGE_6 = "knowledge_6";
+    /**
+     * 上传收评星
+     */
+    private static final String KNOWLEDGE_7 = "knowledge_7";
+    /**
+     * 上传收评论
+     */
+    private static final String KNOWLEDGE_8 = "knowledge_8";
+
 
     //求实10种
     /**
@@ -136,7 +175,7 @@ public class ScoreRegulation {
     private static final String STORE_3 = "store_3";
 
     private ArrayList<String> sourceDetailList = new ArrayList<String>();
-    private Map<String,Integer> overflowmap =  new HashMap();
+    private Map<String,Integer> overflowMap =  new HashMap();
     public ScoreRegulation() {
         //全局
         sourceDetailList.add(DESIGN_1);
@@ -150,6 +189,14 @@ public class ScoreRegulation {
         //奉献
         sourceDetailList.add(ISSUE_1);
         sourceDetailList.add(ISSUE_2);
+        sourceDetailList.add(KNOWLEDGE_1);
+        sourceDetailList.add(KNOWLEDGE_2);
+        sourceDetailList.add(KNOWLEDGE_3);
+        sourceDetailList.add(KNOWLEDGE_4);
+        sourceDetailList.add(KNOWLEDGE_5);
+        sourceDetailList.add(KNOWLEDGE_6);
+        sourceDetailList.add(KNOWLEDGE_7);
+        sourceDetailList.add(KNOWLEDGE_8);
         //求实
         sourceDetailList.add(TALK_1);
         sourceDetailList.add(TALK_2);
@@ -167,18 +214,25 @@ public class ScoreRegulation {
         sourceDetailList.add(STORE_3);
 
         //设置各分项上限
-        overflowmap.put(DESIGN_1, 5);
-        overflowmap.put(DESIGN_2, 8);
-        overflowmap.put(DESIGN_3, 8);
-        overflowmap.put(TALK_1, 3);
-        overflowmap.put(TALK_3, 8);
-        overflowmap.put(SEARCH_1, 6);
-        overflowmap.put(SEARCH_2, 5);
-        overflowmap.put(SEARCH_3, 5);
-        overflowmap.put(TOOL_1, 10);
-        overflowmap.put(TOOL_2, 3);
-        overflowmap.put(TOOL_3, 5);
-        overflowmap.put(TOOL_4, 10);
+        overflowMap.put(DESIGN_1, 10);
+        overflowMap.put(DESIGN_2, 30);
+
+        overflowMap.put(KNOWLEDGE_1, 5);
+        overflowMap.put(KNOWLEDGE_2, 5);
+        overflowMap.put(KNOWLEDGE_3, 5);
+        overflowMap.put(KNOWLEDGE_4, 10);
+        overflowMap.put(KNOWLEDGE_6, 5);
+
+        overflowMap.put(TALK_2, 9);
+        overflowMap.put(TALK_3, 8);
+
+        overflowMap.put(SEARCH_1, 6);
+        overflowMap.put(SEARCH_2, 5);
+        overflowMap.put(SEARCH_3, 5);
+
+        overflowMap.put(TOOL_2, 3);
+        overflowMap.put(TOOL_3, 5);
+        overflowMap.put(TOOL_4, 10);
     }
 
     /**
@@ -214,7 +268,7 @@ public class ScoreRegulation {
         //判断是否是封顶项
         Boolean isCapping = sourceDetailList.contains(sourceDetail);
         if (isCapping) {
-            return scoreInflow + todayScore > overflowmap.get(sourceDetail);
+            return scoreInflow + todayScore > overflowMap.get(sourceDetail);
         } else {
             return false;
         }

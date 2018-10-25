@@ -5,7 +5,7 @@ import com.casic.datadriver.model.coin.DdGoldenCoin;
 import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
-import com.casic.datadriver.service.golden.GoldenCoinService;
+import com.casic.datadriver.service.exchange.ExchangeService;
 import com.casic.datadriver.service.score.DdScoreInflowService;
 import com.casic.datadriver.service.score.DdScoreService;
 import com.hotent.core.util.UniqueIdUtil;
@@ -32,7 +32,7 @@ public class CoinService {
     private DdScoreInflowService ddScoreInflowService;
 
     @Autowired
-    private GoldenCoinService goldenCoinService;
+    private ExchangeService exchangeService;
 
     @Autowired
     private SysUserDao sysUserDao;
@@ -41,11 +41,6 @@ public class CoinService {
 
     @Autowired
     private ScoreRegulation scoreRegulation;
-
-    /**
-     * 每种积分榜单回复人数，考虑使用ScoreRegulation里的
-     */
-    private final static Integer RANK_NUM = 25;
 
     /**
      * @param account 身份证号
@@ -169,7 +164,7 @@ public class CoinService {
         personalMap.put("fengxianTotalCoin", 0);
         personalMap.put("qiushiTotalCoin", 0);
         personalMap.put("chuangxinTotalCoin", 0);
-        List<DdGoldenCoin> personalCoinList = goldenCoinService.getPersonal(userId);
+        List<DdGoldenCoin> personalCoinList = exchangeService.getPersonal(userId);
         for (DdGoldenCoin ddGoldenCoin : personalCoinList) {
             if (ScoreRegulation.QUAN_JU.equals(ddGoldenCoin.getCoinType())) {
                 personalMap.put("quanjuTotalCoin", ddGoldenCoin.getTotal().intValue());
@@ -183,6 +178,7 @@ public class CoinService {
         }
 
         //月币统计，首先全置0以防缺项，表征是否会获得币
+        //TODO:未判断最少100分
         personalMap.put("quanjuMonthCoin", 0);
         personalMap.put("fengxianMonthCoin", 0);
         personalMap.put("qiushiMonthCoin", 0);
@@ -226,7 +222,7 @@ public class CoinService {
      * @return 该类型排行榜
      */
     public List<DdRank> getRank(String sourceType) {
-        List<DdScore> ddScoreList = ddScoreService.getScoresByRankAndType(RANK_NUM, sourceType);
+        List<DdScore> ddScoreList = ddScoreService.getScoresByRankAndType(ScoreRegulation.RANK_NUM, sourceType);
         List<DdRank> itemList = new ArrayList<>();
         for (DdScore ddScore : ddScoreList) {
             DdRank e = new DdRank();

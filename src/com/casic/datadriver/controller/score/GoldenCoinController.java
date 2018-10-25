@@ -1,8 +1,8 @@
-package com.casic.datadriver.controller.golden;
+package com.casic.datadriver.controller.score;
 
 import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
-import com.casic.datadriver.service.golden.GoldenCoinService;
+import com.casic.datadriver.service.score.GoldenCoinService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.query.QueryFilter;
@@ -25,11 +25,6 @@ import java.util.List;
 public class GoldenCoinController extends AbstractController {
     @Autowired
     private GoldenCoinService ddGoldenCoinService;
-
-    /*@Autowired
-    public GoldenCoinController(GoldenCoinService ddGoldenCoinService) {
-        this.ddGoldenCoinService = ddGoldenCoinService;
-    }*/
 
     @RequestMapping("del")
     @Action(description="币删除")
@@ -56,7 +51,7 @@ public class GoldenCoinController extends AbstractController {
         String returnUrl = RequestUtil.getPrePage(request);
         DdGoldenCoin ddGoldenCoin = ddGoldenCoinService.getById(scoreId);
 
-        return getAutoView().addObject("golden",ddGoldenCoin)
+        return getAutoView().addObject("exchange",ddGoldenCoin)
                 .addObject("returnUrl",returnUrl);
     }
 
@@ -73,7 +68,7 @@ public class GoldenCoinController extends AbstractController {
     @Action(description="提交编辑个人币")
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        String resultMsg=null;
+        String resultMsg = null;
         try {
             Long id = RequestUtil.getLong(request,"id");
             Long userId = RequestUtil.getLong(request,"userId");
@@ -91,30 +86,5 @@ public class GoldenCoinController extends AbstractController {
             resultMsg = getText("record.added", "编辑失败");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
         }
-    }
-
-    /**
-     * 后台管理使用，按月点击进行兑换
-     * @param request
-     * @param response
-     * @throws Exception
-     */
-    @RequestMapping("consume")
-    @Action(description="消耗积分兑换币")
-    public void consume(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
-        String resultMsg=null;
-        try{
-//            Long userId = RequestUtil.getLong(request, "userId", 0);
-            String type = RequestUtil.getString(request, "scoreType");
-//            Long scoreNum = RequestUtil.getLong(request, "scoreNum");
-            ddGoldenCoinService.consume(type);
-            resultMsg = getText("coin.consumed", "兑换成功");
-            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
-        } catch (Exception e){
-            resultMsg = getText("coin.consumed", "兑换失败");
-            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
-        }
-//        String returnUrl = RequestUtil.getPrePage(request);
     }
 }

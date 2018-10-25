@@ -1,6 +1,6 @@
-package com.casic.datadriver.service.golden;
+package com.casic.datadriver.service.exchange;
 
-import com.casic.datadriver.dao.golden.DdGoldenCoinDao;
+import com.casic.datadriver.dao.score.DdGoldenCoinDao;
 import com.casic.datadriver.dao.score.DdScoreOutflowDao;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
 import com.casic.datadriver.model.coin.DdScore;
@@ -20,12 +20,13 @@ import java.util.List;
 import static com.casic.datadriver.manager.ScoreRegulation.*;
 
 /**
- * @Author: hollykunge
+ * @Author: workhub
  * @Description:
- * @Date: 创建于 2018/9/27
+ * @Date: 创建于 2018/10/24
  */
+
 @Service
-public class GoldenCoinService extends BaseService<DdGoldenCoin> {
+public class ExchangeService extends BaseService<DdGoldenCoin> {
 
     @Resource
     private DdGoldenCoinDao ddGoldenCoinDao;
@@ -36,42 +37,36 @@ public class GoldenCoinService extends BaseService<DdGoldenCoin> {
     @Resource
     private DdScoreOutflowDao ddScoreOutflowDao;
 
-    public void delAll(Long[] lAryId) {
-        for (Long id : lAryId) {
-            ddGoldenCoinDao.delById(id);
-        }
+    @Override
+    protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
+        return this.ddGoldenCoinDao;
     }
 
     public List<DdGoldenCoin> getPersonal(long uid) {
         return ddGoldenCoinDao.getPersonal(uid);
     }
 
-    @Override
-    protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
-        return this.ddGoldenCoinDao;
-    }
-
     /**
      * 根据传入类型进行积分兑换，定时器周期调用还没有添加
-     * @param scoreType
+     * @param scoreType 一级类型
      */
     public void consume(String scoreType) {
         List<DdScore> ddScoreList = new ArrayList<>();
         Integer lastRank = 0;
         switch (scoreType) {
-            //全局取前25名
+            //全局
             case QUAN_JU:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QUAN_JU, QUAN_JU);
                 //取出最末排名积分
                 lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
                 break;
-            //奉献取前5名
+            //奉献
             case FENG_XIAN:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_FENG_XIAN, FENG_XIAN);
                 //取出最末排名积分
                 lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
                 break;
-            //求实取前20名
+            //求实
             case QIU_SHI:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QIU_SHI, QIU_SHI);
                 //取出最末排名积分
