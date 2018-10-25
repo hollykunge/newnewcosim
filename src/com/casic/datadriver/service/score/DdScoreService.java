@@ -1,6 +1,6 @@
-package com.casic.datadriver.service.coin;
+package com.casic.datadriver.service.score;
 
-import com.casic.datadriver.dao.coin.DdScoreDao;
+import com.casic.datadriver.dao.score.DdScoreDao;
 import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
@@ -29,8 +29,6 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     @Resource
     private DdScoreDao ddScoreDao;
-    @Resource
-    private SysOrgDao sysOrgDao;
 
     @Override
     protected IEntityDao<DdScore, Long> getEntityDao() {
@@ -52,9 +50,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     /**
      * 供对外的CoinService调用的，增加DdScore信息
-     *
      * @param ddScoreInflow 一条流水
-     * @modify
      */
     public Boolean updateScore(DdScoreInflow ddScoreInflow, DdScoreOutflow ddScoreOutflow) {
         if (ddScoreInflow != null) {
@@ -180,9 +176,8 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     /**
      * 通过排名区间和积分类型获取积分列表
-     *
-     * @param rank
-     * @param scoreType
+     * @param rank 名次
+     * @param scoreType 一级类型
      * @return ddScoreList 排序完成
      */
     public List<DdScore> getScoresByRankAndType(Integer rank, String scoreType) {

@@ -1,8 +1,8 @@
-package com.casic.datadriver.controller.coin;
+package com.casic.datadriver.controller.score;
 
 import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.DdScoreInflow;
-import com.casic.datadriver.service.coin.DdScoreInflowService;
+import com.casic.datadriver.service.score.DdScoreInflowService;
 
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;

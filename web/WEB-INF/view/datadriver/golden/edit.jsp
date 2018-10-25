@@ -36,7 +36,7 @@
                     if(rtn){
                         this.close();
                     }else{
-                        window.location.href = "${ctx}/datadriver/golden/list.ht";
+                        window.location.href = "${ctx}/datadriver/exchange/list.ht";
                     }
                 });
             } else {
