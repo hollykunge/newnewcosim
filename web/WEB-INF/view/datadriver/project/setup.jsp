@@ -12,6 +12,11 @@
 <head>
     <title>项目设置</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+    <!-- include the style of alertify-->
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
+    <!-- include the script alertify-->
+    <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
 </head>
 <body>
 <div class="modal-header">
@@ -144,8 +149,7 @@
                     <div class="col-sm-12">
                         <br>
                         <%--<button type="button" class="btn btn-default btn-block">固化项目</button>--%>
-                        <a href="${ctx}/datadriver/project/del.ht?id=${Project.ddProjectId}" type="button"
-                           class="btn btn-danger btn-block">删除</a>
+                        <a id="delProject" type="button" class="btn btn-danger btn-block">删除</a>
                     </div>
                 </div>
             </div>
@@ -156,6 +160,27 @@
 
 <script type="text/javascript">
     //@ sourceURL=setup.ht
+    // 删除项目
+    $('#delProject').click(function () {
+        alertify.confirm("提示信息", "将删除项目及全部所属任务", function () {
+            // 用户点击"ok"按钮
+            $.ajax({
+                type: "get",
+                url: "${ctx}/datadriver/project/del.ht?id=" + ${Project.ddProjectId},
+                success: function (res) {
+                    $("#myCreate").modal('hide');
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.success("删除成功！");
+                },
+                error: function (err) {
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.error("删除失败！");
+                }
+            });
+        }, function() {
+        }).set('labels', {ok:'确认', cancel:'取消'});
+    });
+
     $(function () {
         var options = {};
         if (showResponse) {
@@ -174,11 +199,13 @@
     function showResponse(responseText) {
         var obj = new com.hotent.form.ResultMessage(responseText);
         if (obj.isSuccess()) {
-            window.location.href = "${ctx}/datadriver/project/list.ht";
-            layer.msg('更新成功！');
+            $("#myCreate").modal('hide');
+            alertify.set('notifier','position', 'top-right');
+            alertify.success("更新成功！");
         }
         else {
-            layer.msg('您的添加或更新失败');
+            alertify.set('notifier','position', 'top-right');
+            alertify.error("您的添加或更新失败！");
         }
     }
 </script>

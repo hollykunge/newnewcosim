@@ -269,13 +269,22 @@ public class ProjectController extends BaseController {
         String preUrl = RequestUtil.getPrePage(request);
         Long projectId = RequestUtil.getLong(request, "id");
         String resultMsg = null;
-
+        // 删除项目下的所有任务
+        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(projectId);
+        if (taskInfoList.size() > 0) {
+            for (TaskInfo taskItem : taskInfoList) {
+                Long taskId = taskItem.getDdTaskId();
+                try {
+                    taskInfoService.delById(taskId);
+                    taskStartService.delByTaskId(taskId);
+                    proTaskDependanceService.delByTaskId(taskId);
+                } catch (Exception e) {
+                    writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
+                }
+            }
+        }
         try {
             projectService.delById(projectId);
-
-            //删除所有任务
-            List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(projectId);
-
             resultMsg = getText("added", "项目信息");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception e) {
