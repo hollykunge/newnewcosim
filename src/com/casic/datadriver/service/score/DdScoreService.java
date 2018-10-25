@@ -1,6 +1,7 @@
 package com.casic.datadriver.service.score;
 
 import com.casic.datadriver.dao.score.DdScoreDao;
+import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
@@ -28,8 +29,6 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     @Resource
     private DdScoreDao ddScoreDao;
-    @Resource
-    private SysOrgDao sysOrgDao;
 
     @Override
     protected IEntityDao<DdScore, Long> getEntityDao() {
@@ -51,9 +50,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     /**
      * 供对外的CoinService调用的，增加DdScore信息
-     *
      * @param ddScoreInflow 一条流水
-     * @modify
      */
     public Boolean updateScore(DdScoreInflow ddScoreInflow, DdScoreOutflow ddScoreOutflow) {
         if (ddScoreInflow != null) {
@@ -179,9 +176,8 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     /**
      * 通过排名区间和积分类型获取积分列表
-     *
-     * @param rank
-     * @param scoreType
+     * @param rank 名次
+     * @param scoreType 一级类型
      * @return ddScoreList 排序完成
      */
     public List<DdScore> getScoresByRankAndType(Integer rank, String scoreType) {
@@ -206,7 +202,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         });
         //截断末尾零分项
         Iterator<DdScore> it = tempScoreList.iterator();
-        if(it.hasNext()) {
+        while(it.hasNext()) {
             DdScore x = it.next();
             if(x.getScoreTotal() == 0) {
                 it.remove();
@@ -214,12 +210,19 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         }
         //列表截断，应该是根据不同类型选择不同数目
         if (tempScoreList.size() > rank) {
-            Integer add = 0;
             Integer base = tempScoreList.get(rank - 1).getScoreTotal();
-            while(base.equals(tempScoreList.get(rank + add).getScoreTotal())) {
-                add++;
+            Iterator<DdScore> it2 = tempScoreList.iterator();
+            while(it2.hasNext()) {
+                DdScore x = it2.next();
+                if(x.getScoreTotal() < base) {
+                    it2.remove();
+                    break;
+                }
             }
-            tempScoreList = tempScoreList.subList(0, rank + add);
+            while(it2.hasNext()) {
+                it2.next();
+                it2.remove();
+            }
         }
         return tempScoreList;
     }

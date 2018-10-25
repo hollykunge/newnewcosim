@@ -3,19 +3,20 @@ package com.casic.datadriver.service.exchange;
 import com.casic.datadriver.dao.score.DdGoldenCoinDao;
 import com.casic.datadriver.dao.score.DdScoreOutflowDao;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
+import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
 import com.casic.datadriver.service.score.DdScoreService;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
+import com.hotent.platform.dao.system.SysOrgDao;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.casic.datadriver.manager.ScoreRegulation.*;
 
@@ -37,6 +38,9 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
     @Resource
     private DdScoreOutflowDao ddScoreOutflowDao;
 
+    @Resource
+    private SysOrgDao sysOrgDao;
+
     @Override
     protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
         return this.ddGoldenCoinDao;
@@ -47,10 +51,113 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
     }
 
     /**
+     * 获得某一种积分的排名中奖名单
+     * @param scoreType 一级类型
+     * @return 获奖表
+     */
+    public List<DdRank> getRankByType(String scoreType) {
+        List<DdScore> ddScoreList = new ArrayList<>();
+        switch (scoreType) {
+            //全局
+            case QUAN_JU:
+                ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QUAN_JU, QUAN_JU);
+                break;
+            //奉献
+            case FENG_XIAN:
+                ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_FENG_XIAN, FENG_XIAN);
+            //求实
+            case QIU_SHI:
+                ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QIU_SHI, QIU_SHI);
+                break;
+            default:
+        }
+        List<DdRank> rankList = new ArrayList<>();
+        Integer i = 1;
+        for(DdScore ddScore : ddScoreList) {
+            DdRank ddRank = new DdRank();
+            ddRank.setRank(i);
+            ddRank.setUserName(ddScore.getUserName());
+            String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
+            ddRank.setOrgName(orgName);
+            ddRank.setScoreTotal(ddScore.getScoreTotal());
+            ddRank.setUserId(ddScore.getUserId());
+            rankList.add(ddRank);
+        }
+        return rankList;
+    }
+
+    /**
+     * 获取参与抽奖名单
+     * @return Rank名单
+     */
+    public List<DdRank> getLotteryRank() {
+        List<DdScore> ddScoreList = ddScoreService.getAllScore();
+        List<DdRank> lotteryList = new ArrayList<>();
+        //获取所有用户三项和
+        for(DdScore ddScore : ddScoreList) {
+            if(CHUANG_XIN.equals(ddScore.getScoreType())) {
+                continue;
+            }
+            Boolean isHave = false;
+            for(DdRank ddRank : lotteryList) {
+                if(ddRank.getUserId().equals(ddScore.getUserId())) {
+                    Integer newSum = ddRank.getScoreTotal() + ddScore.getScoreTotal();
+                    ddRank.setScoreTotal(newSum);
+                    isHave = true;
+                    break;
+                }
+            }
+            if(!isHave) {
+                DdRank ddRank = new DdRank();
+                ddRank.setUserId(ddScore.getUserId());
+                ddRank.setUserName(ddScore.getUserName());
+                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
+                ddRank.setOrgName(orgName);
+                ddRank.setScoreType(SUM_QFQ);
+                ddRank.setScoreTotal(ddScore.getScoreTotal());
+            }
+        }
+        //已发币名单
+        List<DdRank> quanjuList = getRankByType(QUAN_JU);
+        List<DdRank> fengxianList = getRankByType(FENG_XIAN);
+        List<DdRank> qiushiList = getRankByType(QIU_SHI);
+        List<Long> exceptList = new ArrayList<>();
+        for(DdRank ddRank : quanjuList) {
+            if(!exceptList.contains(ddRank.getUserId())) {
+                exceptList.add(ddRank.getUserId());
+            }
+        }
+        for(DdRank ddRank : fengxianList) {
+            if(!exceptList.contains(ddRank.getUserId())) {
+                exceptList.add(ddRank.getUserId());
+            }
+        }
+        for(DdRank ddRank : qiushiList) {
+            if(!exceptList.contains(ddRank.getUserId())) {
+                exceptList.add(ddRank.getUserId());
+            }
+        }
+        //筛选
+        Iterator<DdRank> it = lotteryList.iterator();
+        while(it.hasNext()) {
+            DdRank x = it.next();
+            if(x.getScoreTotal() < LOTTERY_BASE) {
+                it.remove();
+                continue;
+            }
+            if(exceptList.contains(x.getUserId())) {
+                it.remove();
+            }
+        }
+        return lotteryList;
+    }
+
+    /**
      * 根据传入类型进行积分兑换，定时器周期调用还没有添加
      * @param scoreType 一级类型
      */
     public void consume(String scoreType) {
+        //TODO:magic number 100
         List<DdScore> ddScoreList = new ArrayList<>();
         Integer lastRank = 0;
         switch (scoreType) {

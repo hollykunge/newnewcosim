@@ -29,6 +29,11 @@ public class ScoreRegulation {
     public static final String CHUANG_XIN = "chuangxin";
 
     /**
+     * 三种币联合类型
+     */
+    public static final String SUM_QFQ = "sum_of_quanju_fengxian_qiushi";
+
+    /**
      * 获得奖励的人数
      */
     public static final Integer LIMIT_QUAN_JU = 60;
@@ -40,6 +45,11 @@ public class ScoreRegulation {
      * 每种积分榜单回复人数
      */
     public static final Integer RANK_NUM = 80;
+
+    /**
+     * 抽奖最低分
+     */
+    public static final Integer LOTTERY_BASE = 200;
 
     //全局8种
     /**
@@ -184,11 +194,11 @@ public class ScoreRegulation {
         sourceDetailList.add(DESIGN_4);
         sourceDetailList.add(DESIGN_5);
         sourceDetailList.add(DESIGN_6);
-        sourceDetailList.add(DESIGN_7);
+        //sourceDetailList.add(DESIGN_7);
         sourceDetailList.add(DESIGN_8);
         //奉献
         sourceDetailList.add(ISSUE_1);
-        sourceDetailList.add(ISSUE_2);
+        //sourceDetailList.add(ISSUE_2);
         sourceDetailList.add(KNOWLEDGE_1);
         sourceDetailList.add(KNOWLEDGE_2);
         sourceDetailList.add(KNOWLEDGE_3);
@@ -198,13 +208,13 @@ public class ScoreRegulation {
         sourceDetailList.add(KNOWLEDGE_7);
         sourceDetailList.add(KNOWLEDGE_8);
         //求实
-        sourceDetailList.add(TALK_1);
+        //sourceDetailList.add(TALK_1);
         sourceDetailList.add(TALK_2);
         sourceDetailList.add(TALK_3);
         sourceDetailList.add(SEARCH_1);
         sourceDetailList.add(SEARCH_2);
         sourceDetailList.add(SEARCH_3);
-        sourceDetailList.add(TOOL_1);
+        //sourceDetailList.add(TOOL_1);
         sourceDetailList.add(TOOL_2);
         sourceDetailList.add(TOOL_3);
         sourceDetailList.add(TOOL_4);

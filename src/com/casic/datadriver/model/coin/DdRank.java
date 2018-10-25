@@ -24,6 +24,11 @@ public class DdRank extends BaseModel {
      */
     private String scoreType;
 
+    /**
+     * 用户ID
+     */
+    private Long userId;
+
     public String getUserName() {
         return userName;
     }
@@ -62,5 +67,13 @@ public class DdRank extends BaseModel {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

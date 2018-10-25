@@ -24,8 +24,6 @@ public class ExchangeController extends AbstractController  {
     @Autowired
     private ExchangeService exchangeService;
 
-
-
     /**
      * 后台管理使用，按月点击进行兑换
      * @throws Exception e
