@@ -256,17 +256,17 @@ public class ScoreRegulation {
         LocalDateTime startTime = LocalDate.now().atTime(0, 0, 0);
         LocalDateTime endTime = LocalDate.now().atTime(23, 59, 59);
         //如果小于今天的开始日期
-        if (localTime.isBefore(startTime)) {
-            System.out.println("时间是过去");
-        }
+//        if (localTime.isBefore(startTime)) {
+//            System.out.println("时间是过去");
+//        }
         //如果大于今天的开始日期，小于今天的结束日期
         if (localTime.isAfter(startTime) && localTime.isBefore(endTime)) {
             return true;
         }
         //如果大于今天的结束日期
-        if (localTime.isAfter(endTime)) {
-            System.out.println("时间是未来");
-        }
+//        if (localTime.isAfter(endTime)) {
+//            System.out.println("时间是未来");
+//        }
         return false;
     }
     /**
