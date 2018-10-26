@@ -4,13 +4,20 @@
  */
 //@ sourceURL=input.js
 var newRowID = null;
+
 function getWidth() {
     return $('#publish').outerWidth();
 }
+
 function getHeight() {
     return $(window).height() - $('.nav-tabs').outerHeight(true) - 100;
 }
-function inputTableInit(path, taskId) {
+
+function inputTableInit(path, taskId, type) {
+    var isView = false;
+    if (type == 1) {
+        isView = true;
+    }
     var source =
         {
             dataType: "json",
@@ -63,8 +70,8 @@ function inputTableInit(path, taskId) {
             height: getHeight(),
             source: dataAdapter,
             pageable: true,
-            editable: true,
-            showToolbar: true,
+            editable: isView,
+            showToolbar: isView,
             altRows: true,
             // hierarchicalCheckboxes: true,
             // checkboxes: true,
@@ -90,8 +97,10 @@ function inputTableInit(path, taskId) {
                 container.append(cancelOrder);
                 container.append(downLoad);
                 container.append(refreshInput);
-                toolBar.append(container);
 
+                if (isView) {
+                    toolBar.append(container);
+                }
 
                 orderRow.jqxButton({
                     cursor: "pointer",
@@ -159,7 +168,7 @@ function inputTableInit(path, taskId) {
                     if (!downLoad.jqxButton('disabled')) {
                         var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
                         for (var i = 0; i < selection.length; i++) {
-                            if (selection[0].dataType=='模型' || selection[0].dataType=='文件'){
+                            if (selection[0].dataType == '模型' || selection[0].dataType == '文件') {
                                 downloadF(selection[i].dataId);
                             } else {
                                 //TODO 添加消息提示

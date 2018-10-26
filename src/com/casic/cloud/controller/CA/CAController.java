@@ -306,5 +306,4 @@ public class CAController extends BaseController {
 			response.addCookie(cookie);
 		}
 	}
-
 }

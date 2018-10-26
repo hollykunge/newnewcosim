@@ -168,10 +168,12 @@ public class PersonalTaskController extends AbstractController {
     @RequestMapping("todotask")
     @Action(description = "进入任务")//1
     public ModelAndView todotask(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        long taskId = RequestUtil.getLong(request, "id");
+        Long taskId = RequestUtil.getLong(request, "id");
+        Long type = RequestUtil.getLong(request, "type");
         TaskInfo taskInfo = taskInfoService.getById(taskId);
         List<TaskInfo> taskInfoList = taskInfoService.getListByResponceIdAndState1(taskInfo.getDdTaskResponsiblePerson());
         return getAutoView().addObject("TaskInfo", taskInfo)
+                .addObject("type", type)
                 .addObject("taskInfoList", taskInfoList);
     }
 
@@ -201,10 +203,15 @@ public class PersonalTaskController extends AbstractController {
     @Action(description = "显示私有和发布")
     public ModelAndView showdata(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
+        Integer type = RequestUtil.getInt(request, "type");
+        if (type == null||type==0){
+            type = 1;
+        }
         TaskInfo taskInfo = taskInfoService.getById(taskId);
         Long projectId = RequestUtil.getLong(request, "projectId");
         return getAutoView().addObject("taskId", taskId)
                 .addObject("projectId", projectId)
+                .addObject("type", type)
                 .addObject("taskName", taskInfo.getDdTaskName());
     }
 
@@ -220,8 +227,14 @@ public class PersonalTaskController extends AbstractController {
     @Action(description = "显示订阅和已订阅")
     public ModelAndView showorder(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
+        Integer type = RequestUtil.getInt(request, "type");
+        if (type == null||type==0){
+            type = 1;
+        }
         Long projectId = RequestUtil.getLong(request, "projectId");
-        return getAutoView().addObject("taskId", taskId).addObject("projectId", projectId);
+        return getAutoView().addObject("taskId", taskId)
+                .addObject("projectId", projectId)
+                .addObject("type", type);
     }
 
 
