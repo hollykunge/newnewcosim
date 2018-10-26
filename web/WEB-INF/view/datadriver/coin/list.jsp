@@ -63,7 +63,7 @@
             <display:column title="管理" media="html" style="width:260px; text-align: center;">
                 <a href="del.ht?id=${scoreItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${scoreItem.id}" class="link edit">编辑</a>
-                <a href="detail.ht?id=${scoreItem.id}&scoreType=${scoreItem.scoreType}" class="link detail">明细</a>
+                <a href="detail.ht?id=${scoreItem.id}" class="link detail">明细</a>
             </display:column>
         </display:table>
         <hotent:paging tableId="scoreItem"/>

@@ -20,9 +20,10 @@
     </sql>
 
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
-    insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time)
+    insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time, user_name)
     values (#{id,jdbcType=NUMERIC}, #{userId,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
-      #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR})
+      #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR},
+       #{userName, jdbcType=VARCHAR})
     </insert>
     <select id="getByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
