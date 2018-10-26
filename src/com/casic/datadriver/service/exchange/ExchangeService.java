@@ -65,6 +65,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             //奉献
             case FENG_XIAN:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_FENG_XIAN, FENG_XIAN);
+                break;
             //求实
             case QIU_SHI:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QIU_SHI, QIU_SHI);
