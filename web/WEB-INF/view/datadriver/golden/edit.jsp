@@ -36,7 +36,7 @@
                     if(rtn){
                         this.close();
                     }else{
-                        window.location.href = "${ctx}/datadriver/exchange/list.ht";
+                        window.location.href = "${ctx}/datadriver/golden/list.ht";
                     }
                 });
             } else {
@@ -63,13 +63,13 @@
     <div class="panel-body">
         <form id="coinForm" method="post" action="save.ht">
             <table class="table-detail" cellpadding="0" cellspacing="0" border="0" type="main">
-                <tr><th style="width:120px;">用户</th><td colspan="3"><input size="35" id="userId" name="userId" value="${golden.userId}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
-                <tr><th style="width:120px;">二币总量</th><td><input size="35" id="total" name="total" value="${golden.total}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
-
-                <tr><th style="width:120px;">类型</th><td><input size="35" id="coinType" name="total" value="${golden.coinType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">用户名</th><td colspan="3"><input size="35" id="userName" name="userName" value="${bizDef.userName}" class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
+                <tr><th style="width:120px;">类型</th><td><input size="35" id="coinType" name="coinType" value="${bizDef.coinType}" class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">数量</th><td><input size="35" id="total" name="total" value="${bizDef.total}" class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
-            <input size="35" type="hidden" name="id" value="${golden.id}" />
-            <input size="35" type="hidden" name="userId" value="${golden.userId}" />
+            <input size="35" type="hidden" name="id" value="${bizDef.id}" />
+            <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
+            <input size="35" type="hidden" name="userId" value="${bizDef.userId}" />
         </form>
 
     </div>
