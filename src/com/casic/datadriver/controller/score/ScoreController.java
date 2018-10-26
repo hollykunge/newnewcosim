@@ -94,7 +94,7 @@ public class ScoreController extends AbstractController {
         String resultMsg = null;
 
         Long scoreId = RequestUtil.getLong(request,"id");
-        Long scoreUid = RequestUtil.getLong(request,"uid");
+        Long scoreUid = RequestUtil.getLong(request,"userId");
         String userName = RequestUtil.getString(request,"userName");
         Integer scoreTotal = RequestUtil.getInt(request, "scoreTotal");
         String crtTime = RequestUtil.getString(request,"crtTime");
@@ -128,19 +128,14 @@ public class ScoreController extends AbstractController {
     @Action(description="积分明细")
     public ModelAndView detail(HttpServletRequest request) throws Exception {
         Long scoreId = RequestUtil.getLong(request,"id");
-        String scoreType = RequestUtil.getString(request,"scoreType");
         DdScore ddScore = ddScoreService.getById(scoreId);
 
         QueryFilter queryFilter = new QueryFilter(request, "detailItem");
         queryFilter.addFilter("userId", ddScore.getUserId());
-        List<DdScoreInflow> detailList = ddScoreInflowService.getByUid(queryFilter);
-        Iterator<DdScoreInflow> it = detailList.iterator();
-        while(it.hasNext()) {
-            DdScoreInflow x = it.next();
-            if(!(x.getSourceType()).equals(scoreType)) {
-                it.remove();
-            }
-        }
+        queryFilter.addFilter("sourceType", ddScore.getScoreType());
+
+        List<DdScoreInflow> detailList = ddScoreInflowService.getByUidAndType(queryFilter);
+
         return this.getAutoView().addObject("detailList", detailList);
     }
 }
