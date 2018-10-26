@@ -1,7 +1,6 @@
-package com.casic.datadriver.service.coin;
+package com.casic.datadriver.service.score;
 
-import com.casic.datadriver.dao.coin.DdScoreOutflowDao;
-import com.casic.datadriver.manager.ScoreRegulation;
+import com.casic.datadriver.dao.score.DdScoreOutflowDao;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;

@@ -1,10 +1,9 @@
-package com.casic.datadriver.service.coin;
+package com.casic.datadriver.service.score;
 
-import com.casic.datadriver.dao.coin.DdScoreInflowDao;
+import com.casic.datadriver.dao.score.DdScoreInflowDao;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.manager.ScoreRegulation;
 import com.hotent.core.db.IEntityDao;
-import com.hotent.core.page.PageBean;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.web.query.QueryFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +116,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
      * @param sourceDetail 二级类型
      * @return 今日该类型所有流水
      */
-    List<DdScoreInflow> getTodayScore(Long userId, String sourceDetail) {
+    public List<DdScoreInflow> getTodayScore(Long userId, String sourceDetail) {
         //联合查询
         Map<String, String> param = new HashMap<>(2);
         param.put("userId", String.valueOf(userId));

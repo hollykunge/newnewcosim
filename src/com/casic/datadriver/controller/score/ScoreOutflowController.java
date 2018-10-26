@@ -1,8 +1,8 @@
-package com.casic.datadriver.controller.coin;
+package com.casic.datadriver.controller.score;
 
 import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
-import com.casic.datadriver.service.coin.DdScoreOutflowService;
+import com.casic.datadriver.service.score.DdScoreOutflowService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.query.QueryFilter;
 import org.springframework.stereotype.Controller;
