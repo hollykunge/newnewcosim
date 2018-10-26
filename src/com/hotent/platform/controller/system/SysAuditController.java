@@ -1,15 +1,23 @@
 
 package com.hotent.platform.controller.system;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.hotent.core.util.ContextUtil;
+import com.hotent.platform.auth.ISysRole;
+import com.hotent.platform.auth.ISysUser;
+import com.hotent.platform.service.system.SysRoleService;
+import com.hotent.platform.service.system.SysUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hotent.core.annotion.Action;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hotent.core.web.ResultMessage;
@@ -32,6 +40,11 @@ public class SysAuditController extends BaseController
 {
 	@Resource
 	private SysAuditService sysAuditService;
+	@Resource
+	private SysUserService sysUserService;
+	@Resource
+	private SysRoleService sysRoleService;
+
 	
 	
 	/**
@@ -43,15 +56,34 @@ public class SysAuditController extends BaseController
 	 * @throws Exception
 	 */
 	@RequestMapping("list")
-	//@Action(description="查看系统日志分页列表")
+	@Action(description="查看系统日志分页列表")
 	public ModelAndView list(HttpServletRequest request,HttpServletResponse response) throws Exception
 	{	
-		List<SysAudit> list=sysAuditService.getAll(new QueryFilter(request,"sysAuditItem"));
-		ModelAndView mv=this.getAutoView().addObject("sysAuditList",list);
-		
-		return mv;
+		//List<SysAudit> list=sysAuditService.getAll(new QueryFilter(request,"sysAuditItem"));
+		List<ISysRole> roles = sysRoleService.getByUserId(ContextUtil.getCurrentUser().getUserId());
+		QueryFilter queryFilter = new QueryFilter(request,"sysAuditItem");
+		if(roles.get(0).getRoleName().equals("安全管理员")){
+			queryFilter.addFilter("roleNameFirst","普通用户");
+			queryFilter.addFilter("roleNameSecond","安全审计员");
+			List<SysAudit> list=sysAuditService.getAuditByFullName(queryFilter);
+			ModelAndView mv=this.getAutoView().addObject("sysAuditList",list);
+			return mv;
+		}else if(roles.get(0).getRoleName().equals("安全审计员")){
+			queryFilter.addFilter("roleNameFirst","安全管理员");
+			queryFilter.addFilter("roleNameSecond","系统管理员");
+			List<SysAudit> list=sysAuditService.getAuditByFullName(queryFilter);
+			ModelAndView mv=this.getAutoView().addObject("sysAuditList",list);
+			return mv;
+		}else if(roles.get(0).getRoleName().equals("管理员")){
+			List<SysAudit> list=sysAuditService.getAll(new QueryFilter(request,"sysAuditItem"));
+			ModelAndView mv=this.getAutoView().addObject("sysAuditList",list);
+			return mv;
+		}else{
+			return null;
+		}
+
 	}
-	
+
 	/**
 	 * 删除系统日志
 	 * @param request
@@ -59,7 +91,7 @@ public class SysAuditController extends BaseController
 	 * @throws Exception
 	 */
 	@RequestMapping("del")
-	//@Action(description="删除系统日志")
+	@Action(description="删除系统日志")
 	public void del(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		ResultMessage message=null;
@@ -119,7 +151,7 @@ public class SysAuditController extends BaseController
 	 * @throws Exception
 	 */
 	@RequestMapping("get")
-	//@Action(description="查看系统日志明细")
+	@Action(description="查看系统日志明细")
 	public ModelAndView get(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		long id=RequestUtil.getLong(request,"auditId");

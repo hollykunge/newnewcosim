@@ -39,12 +39,12 @@ public class LogAspect
 		logger.debug("enetr log aspect doAudit method============================");
 		String methodName = point.getSignature().getName();
 		// 目标方法不为空
-		if (StringUtils.isEmpty(methodName)
+		/*if (StringUtils.isEmpty(methodName)
 				|| (methodName.startsWith("set") || methodName
 						.startsWith("get")))
 		{ // set与get方法除外
 			return point.proceed();
-		}
+		}*/
 		Class targetClass = point.getTarget().getClass();
 		Method[] methods = targetClass.getMethods();
 		Method method = null;
