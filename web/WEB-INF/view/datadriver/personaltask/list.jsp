@@ -187,7 +187,8 @@
         }
         if (row.ddTaskState == 2)
             return [
-                '<a id="rebackTask" href="javascript:void(0)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-repeat"></span> 收回</a>'
+                '<a id="rebackTask" href="javascript:void(0)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-repeat"></span> 收回</a>', ' ',
+                '<a id="viewTask" href="javascript:void(0)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span> 查看</a>'
             ].join('');
     }
 
@@ -198,12 +199,15 @@
 
     window.operateEvents = {
         'click #todoTask': function (e, value, row, index) {
-            window.location.href = "todotask.ht?id=" + row.ddTaskId;
+            window.location.href = "todotask.ht?id=" + row.ddTaskId + "&type=" + 1;
         },
         'click #rebackTask': function (e, value, row, index) {
             $.get("recovertask.ht?id=" + row.ddTaskId, function (data) {
                 window.location.reload()
             });
+        },
+        'click #viewTask': function (e, value, row, index) {
+            window.location.href = "todotask.ht?id=" + row.ddTaskId + "&type=" + 2;
         }
     };
     $(function () {

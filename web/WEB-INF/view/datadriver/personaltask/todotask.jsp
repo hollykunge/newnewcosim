@@ -27,8 +27,8 @@
     <link rel="stylesheet" href="${ctx}/jqwidgets/styles/jqx.base.css" type="text/css"/>
     <link rel="stylesheet" href="${ctx}/jqwidgets/styles/jqx.bootstrap.css" type="text/css"/>
     <!-- include the style of alertify-->
-    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
-    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css"/>
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css"/>
     <script src="${ctx}/newtable/jquery.js"></script>
     <script src="${ctx}/newtable/bootstrap.js"></script>
 
@@ -165,7 +165,7 @@
 <script type="text/javascript">
     //@ sourceURL=todotask.ht
     $(document).ready(function () {
-        $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
+        $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {
             $('#data').html(data);
         });
     });
@@ -193,7 +193,7 @@
     }
     //tab切换操作
     switch_attr_publish.onclick = function () {
-        $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
+        $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {
             $('#data').html(data);
         });
     }
@@ -203,7 +203,7 @@
         });
     }
     switch_attr_order.onclick = function () {
-        $.get("showorder.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
+        $.get("showorder.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {
             $('#publish').html(data);
         });
     }

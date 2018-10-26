@@ -16,7 +16,7 @@ function strToJson(o) {
     return tempJson;
 }
 
-function outputTableInit(path, taskId, projectId, taskName) {
+function outputTableInit(path, taskId, projectId, taskName, type) {
     var cellClass = function (row, dataField, cellText, rowData) {
         var cellValue = rowData[dataField];
         if (Number(cellValue) < rowData.dataSenMin) {
@@ -29,6 +29,11 @@ function outputTableInit(path, taskId, projectId, taskName) {
             return;
         }
     }
+    var isView = false;
+    if (type == 1){
+        isView = true;
+    }
+
     var newRowID = null;
     //加载数据
     var source =
@@ -80,7 +85,7 @@ function outputTableInit(path, taskId, projectId, taskName) {
                     url: 'addPrivateData.ht',
                     data: rowData,
                     type: "POST",
-                    async : false,
+                    async: false,
                     success: function (data, status, xhr) {
                         // insert command is executed.
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
@@ -99,7 +104,7 @@ function outputTableInit(path, taskId, projectId, taskName) {
                     url: 'updatePrivateData.ht',
                     data: rowData,
                     type: "POST",
-                    async : false,
+                    async: false,
                     success: function (data, status, xhr) {
                         // insert command is executed.
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
@@ -130,11 +135,11 @@ function outputTableInit(path, taskId, projectId, taskName) {
             pageable: true,
             pagerMode: 'advanced',
             showHeader: true,
-            editable: true,
+            editable: isView,
             pageSize: 20,
             pageSizeOptions: ['10', '20', '50', '100', '500'],
             columnsResize: true,
-            showToolbar: true,
+            showToolbar: isView,
             altRows: true,
             hierarchicalCheckboxes: false,
             checkboxes: false,
@@ -144,14 +149,14 @@ function outputTableInit(path, taskId, projectId, taskName) {
             pagerButtonsCount: 8,
             toolbarHeight: 35,
             editSettings: {
-                saveOnPageChange: true,
-                saveOnBlur: true,
-                saveOnSelectionChange: true,
-                cancelOnEsc: true,
-                saveOnEnter: true,
-                editSingleCell: true,
-                editOnDoubleClick: true,
-                editOnF2: true
+                saveOnPageChange: isView,
+                saveOnBlur: isView,
+                saveOnSelectionChange: isView,
+                cancelOnEsc: isView,
+                saveOnEnter: isView,
+                editSingleCell: isView,
+                editOnDoubleClick: isView,
+                editOnF2: isView
             },
             ready: function () {
                 // called when the DatatreeGrid is loaded.
@@ -179,7 +184,9 @@ function outputTableInit(path, taskId, projectId, taskName) {
                 container.append(cancelRow);
                 container.append(refreshTable);
                 container.append(uploadFile);
-                toolBar.append(container);
+                if (type == 1) {
+                    toolBar.append(container);
+                }
 
                 addRow.jqxButton({
                     cursor: "pointer",
@@ -232,7 +239,7 @@ function outputTableInit(path, taskId, projectId, taskName) {
                             uploadFile.jqxButton({disabled: true});
                             break;
                         case "Edit":
-                            addRow.jqxButton({disabled: true});
+                            addRow.jqxButton({disabled: false});
                             delRow.jqxButton({disabled: true});
                             pubRow.jqxButton({disabled: true});
                             cancelRow.jqxButton({disabled: true});
@@ -262,9 +269,11 @@ function outputTableInit(path, taskId, projectId, taskName) {
                 $("#treeGridOut").on('rowEndEdit', function (event) {
                     updateButtons('End Edit');
                 });
-                $("#treeGridOut").on('rowBeginEdit', function (event) {
-                    updateButtons('Edit');
-                });
+
+                    $("#treeGridOut").on('rowBeginEdit', function (event) {
+                        updateButtons('Edit');
+                    });
+
                 addRow.click(function (event) {
                     if (!addRow.jqxButton('disabled')) {
                         // $("#treeGridOut").jqxTreeGrid('expandRow', rowKey);
@@ -322,7 +331,7 @@ function outputTableInit(path, taskId, projectId, taskName) {
                         $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
                             if (status == 'success') {
                                 $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                                alertify.set('notifier','position', 'top-right');
+                                alertify.set('notifier', 'position', 'top-right');
                                 alertify.success(data);
                             }
                         });
@@ -344,7 +353,7 @@ function outputTableInit(path, taskId, projectId, taskName) {
                             $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
                                 if (status == 'success') {
                                     $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                                    alertify.set('notifier','position', 'top-right');
+                                    alertify.set('notifier', 'position', 'top-right');
                                     alertify.success(data);
                                 }
                             });
