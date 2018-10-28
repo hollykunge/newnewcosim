@@ -28,9 +28,9 @@
     <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
 
     <script src="${ctx}/newtable/bootstrap-editable.js"></script>
-    <script src="${ctx}/newtable/bootstrap-datetimepicker.min.js"></script>
+    <script src="${ctx}/newtable/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="${ctx}/newtable/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
-    <script src="${ctx}/timeselect/moment.js"></script>
     <script src="${ctx}/newtable/union-select.js"></script>
     <!-- include the script alertify-->
     <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
