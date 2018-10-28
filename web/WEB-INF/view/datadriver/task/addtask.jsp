@@ -54,15 +54,18 @@
                                value="" class="form-control" validate="{required:true}"/></td>
                     <th width="20%">任务所属项目:</th>
                     <td><input type="text" id="ddTaskProjectName" name="ddTaskProjectName"
-                               value="${projectItem.ddProjectName}" class="form-control" readonly/></td>
+                               value="${projectItem.ddProjectName}" class="form-control" readonly/>
+                    </td>
                 </tr>
                 <tr>
-                    <th width="20%">任务开始时间:</th>
+                    <th width="20%">计划开始时间:</th>
                     <td><input id="datetimeStart" name="ddTaskPlanStartTime"
-                               value="" class="form-control" readonly validate="{required:true}"/></td>
-                    <th width="20%">任务截至时间:</th>
+                               value="" class="form-control" readonly validate="{required:true}"/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span></td>
+                    <th width="20%">计划完成时间:</th>
                     <td><input id="datetimeEnd" name="ddTaskPlanEndTime"
-                               value="" class="form-control" readonly validate="{required:true}"/></td>
+                               value="" class="form-control" readonly validate="{required:true}"/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span></td>
                 </tr>
                 <tr>
                     <th width="20%">优先级:</th>
