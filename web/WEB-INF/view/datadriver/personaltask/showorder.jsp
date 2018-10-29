@@ -48,12 +48,14 @@
         $("#exportCVSIn").click(function () {
             $("#treeGridIn").jqxTreeGrid('exportData', 'csv');
         });
-        inputTableInit("${ctx}/datadriver/privatedata/inputData.ht?taskId=${taskId}&projectId=${projectId}", ${taskId});
+        inputTableInit("${ctx}/datadriver/privatedata/inputData.ht?taskId=${taskId}&projectId=${projectId}", ${taskId}, ${type});
     });
+
     //下载文件和模型
     function downloadF(dataId) {
         window.location.href = "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + dataId;
     }
+
     //对话框关闭清除缓存
     $("#uploadPrivateFile").on("hidden.bs.modal", function () {
         $(this).removeData("bs.modal");

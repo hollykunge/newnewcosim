@@ -47,6 +47,19 @@
             </div>
         </div>
         <div class="panel-body">
+            <div id="toolbar">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default active">
+                        <input type="radio" name="options" id="myCreated" autocomplete="off" checked> 我创建的
+                    </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="options" id="myJoined" autocomplete="off"> 我参与的
+                    </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="options" id="myDone" autocomplete="off"> 已完成
+                    </label>
+                </div>
+            </div>
             <table id="table_project_task"></table>
         </div>
     </div>

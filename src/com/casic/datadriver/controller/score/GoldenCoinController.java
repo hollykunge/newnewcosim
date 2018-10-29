@@ -51,7 +51,7 @@ public class GoldenCoinController extends AbstractController {
         String returnUrl = RequestUtil.getPrePage(request);
         DdGoldenCoin ddGoldenCoin = ddGoldenCoinService.getById(scoreId);
 
-        return getAutoView().addObject("exchange",ddGoldenCoin)
+        return getAutoView().addObject("bizDef",ddGoldenCoin)
                 .addObject("returnUrl",returnUrl);
     }
 
@@ -80,10 +80,10 @@ public class GoldenCoinController extends AbstractController {
             ddGoldenCoin.setTotal(total);
 
             ddGoldenCoinService.update(ddGoldenCoin);
-            resultMsg = getText("record.added", "编辑成功");
+            resultMsg = getText("record.updated", "编辑");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception ex){
-            resultMsg = getText("record.added", "编辑失败");
+            resultMsg = getText("record.updated", "编辑");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
         }
     }

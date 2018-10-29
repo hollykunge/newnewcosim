@@ -142,7 +142,7 @@
             }
         });
 
-        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId}, "${taskName}");
+        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId}, "${taskName}",${type});
         // create context menu
         var contextMenu = $("#DataItemMenu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
         $("#treeGridOut").on('contextmenu', function () {

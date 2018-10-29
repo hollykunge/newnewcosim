@@ -86,16 +86,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     public DdScoreInflow getById(long id) {
         return ddScoreInflowDao.getById(id);
     }
-    /**
-     * 通过用户id查找
-     * @return DdScoreInflow流水
-     */
 
-    public List<DdScoreInflow> getByUid(QueryFilter queryFilter) {
-        //Map<String, String> param = new HashMap<>(1);
-        //param.put("uid", String.valueOf(uid));
-        return ddScoreInflowDao.getBySqlKey("getByUid", queryFilter);
-    }
     /**
      * 更改
      * @param entity DdScoreInflow
@@ -144,5 +135,14 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
         param.put("userId", String.valueOf(userId));
         param.put("sourceType", sourceType);
         return ddScoreInflowDao.getList("getTypeTotalScore", param);
+    }
+
+    /**
+     *  分页获取个人的一级类型流水
+     * @param queryFilter {userId："",sourceType: ""}
+     * @return DdScoreInflow分页列表
+     */
+    public List<DdScoreInflow> getByUidAndType(QueryFilter queryFilter) {
+        return ddScoreInflowDao.getBySqlKey("getTypeTotalScore", queryFilter);
     }
 }
