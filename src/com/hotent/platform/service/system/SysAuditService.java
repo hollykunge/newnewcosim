@@ -1,11 +1,15 @@
 package com.hotent.platform.service.system;
 
 import javax.annotation.Resource;
+
+import com.hotent.core.web.query.QueryFilter;
 import org.springframework.stereotype.Service;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.platform.model.system.SysAudit;
 import com.hotent.platform.dao.system.SysAuditDao;
+
+import java.util.List;
 
 /**
  * 对象功能:系统日志 Service类
@@ -26,5 +30,9 @@ public class SysAuditService extends BaseService<SysAudit>
 	@Override
 	protected IEntityDao<SysAudit, Long> getEntityDao() {
 		return dao;
+	}
+
+	public List<SysAudit> getAuditByFullName(QueryFilter fullName){
+		return dao.getAuditByFullName(fullName);
 	}
 }

@@ -65,16 +65,47 @@
 		WHERE
 		auditId=#{auditId}
 	</select>
-	
+
 	<select id="getAll" resultMap="SysAudit">
 		SELECT <include refid="columns"/>
-		FROM SYS_AUDIT   
+		FROM SYS_AUDIT
 		<include refid="dynamicWhere" />
 		<if test="@Ognl@isNotEmpty(orderField)">
 		order by ${orderField} ${orderSeq}
 		</if>
 		<if test="@Ognl@isEmpty(orderField)">
 		order by auditId  desc
+		</if>
+	</select>
+
+	<select id="getByUserNameAndRole"  resultMap="SysAudit">
+		SELECT
+		<include refid="columns"/>
+			FROM
+			SYS_AUDIT SA
+		WHERE 1=1
+        AND SA.EXECUTORID IN (
+		SELECT
+			SU.USERID
+		FROM
+			SYS_USER SU
+		LEFT JOIN SYS_USER_ROLE SUR ON SU.USERID = SUR.USERID
+		WHERE
+			SUR.ROLEID IN (
+				SELECT
+					SR.ROLEID
+				FROM
+					SYS_ROLE SR
+				WHERE
+					SR.ROLENAME = #{roleNameFirst} OR SR.ROLENAME = #{roleNameSecond}
+			)
+		)
+		<if test="@Ognl@isNotEmpty(executor)">AND executor  LIKE #{executor}</if>
+		<if test="@Ognl@isNotEmpty(orderField)">
+			order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+			order by auditId  desc
 		</if>
 	</select>
 </mapper>
