@@ -78,6 +78,8 @@ public class CoinService {
                     ddScoreInflow.setSourceType(sourceType);
                     ddScoreInflow.setUpdTime(timeDate);
                     ddScoreInflow.setUserName(sysUser.getFullname());
+                    ddScoreInflow.setOrgId(sysUser.getOrgId());
+                    ddScoreInflow.setOrgName(sysOrgDao.getOrgsByUserId(sysUser.getUserId()).get(0).getOrgName());
                     //写入数据库和缓存
                     ddScoreInflowService.add(ddScoreInflow);
                     resultMsg = "赚取积分成功";
