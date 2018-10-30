@@ -73,6 +73,8 @@
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
             <input size="35" type="hidden" name="crtTime" value="${bizDef.crtTime}" />
             <input size="35" type="hidden" name="udpTime" value="${bizDef.udpTime}" />
+            <input size="35" type="hidden" name="orgName" value="${bizDef.orgName}" />
+            <input size="35" type="hidden" name="orgId" value="${bizDef.orgId}" />
         </form>
 
     </div>

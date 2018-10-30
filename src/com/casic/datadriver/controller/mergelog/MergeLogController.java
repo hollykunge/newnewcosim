@@ -1,6 +1,5 @@
 package com.casic.datadriver.controller.mergelog;
 
-import com.hotent.core.annotion.Action;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.util.RequestUtil;
@@ -40,22 +39,28 @@ public class MergeLogController extends GenericController {
 	//http://localhost:8080/mergelog/add.ht?logType="搜索"&logContent="搜索"&logUser="user1"&logIP="127.0.0.1"&logFrom="search"
 	public void add(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		String logUser = RequestUtil.getString(request,"logUser");
-		String logType = RequestUtil.getString(request,"logType");
-		String logContent = RequestUtil.getString(request,"logContent");
-		String logIP = RequestUtil.getString(request,"logIP");
-		String logFrom = RequestUtil.getString(request,"logFrom");
-		SysAudit sysAudit = new SysAudit();
-		ISysUser sysUser = sysUserService.getByAccount(logUser);
-		sysAudit.setAuditId(UniqueIdUtil.genId());
-		sysAudit.setOpName(logType);
-		sysAudit.setExecutorId(sysUser.getUserId());
-		sysAudit.setExecutor(sysUser.getFullname());
-		sysAudit.setExeTime(new Date());
-		sysAudit.setExeMethod(logContent);
-		sysAudit.setFromIp(logIP);
-		sysAudit.setRequestURI(request.getRequestURI());
-		sysAudit.setReqParams(logFrom);
-		sysAuditService.add(sysAudit);
+
+		try{
+			String logUser = RequestUtil.getString(request,"logUser");
+			String logType = RequestUtil.getString(request,"logType");
+			String logContent = RequestUtil.getString(request,"logContent");
+			String logIP = RequestUtil.getString(request,"logIP");
+			String logFrom = RequestUtil.getString(request,"logFrom");
+			SysAudit sysAudit = new SysAudit();
+			ISysUser sysUser = sysUserService.getByAccount(logUser);
+			sysAudit.setAuditId(UniqueIdUtil.genId());
+			sysAudit.setOpName(logType);
+			sysAudit.setExecutorId(sysUser.getUserId());
+			sysAudit.setExecutor(sysUser.getFullname());
+			sysAudit.setExeTime(new Date());
+			sysAudit.setExeMethod(logContent);
+			sysAudit.setFromIp(logIP);
+			sysAudit.setRequestURI(request.getRequestURI());
+			sysAudit.setReqParams(logFrom);
+			sysAuditService.add(sysAudit);
+		}catch(Exception e){
+			logger.error("Exception:",e);
+			e.printStackTrace();
+		}
     }
 }

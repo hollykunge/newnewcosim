@@ -70,6 +70,9 @@
             <input size="35" type="hidden" name="id" value="${bizDef.id}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
             <input size="35" type="hidden" name="userId" value="${bizDef.userId}" />
+            <input size="35" type="hidden" name="orgName" value="${bizDef.orgName}" />
+            <input size="35" type="hidden" name="orgId" value="${bizDef.orgId}" />
+            <input size="35" type="hidden" name="updTime" value="${bizDef.updTime}" />
         </form>
 
     </div>
