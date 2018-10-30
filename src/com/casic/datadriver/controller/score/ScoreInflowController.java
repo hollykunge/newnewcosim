@@ -56,7 +56,7 @@ public class ScoreInflowController extends AbstractController {
         String preUrl = RequestUtil.getPrePage(request);
         ResultMessage message = null;
         try{
-            Long[] lAryId =RequestUtil.getLongAryByStr(request, "id");
+            Long[] lAryId =RequestUtil.getLongAryByStr(request, "bizDefId");
             ddScoreInflowService.delAll(lAryId);
             message = new ResultMessage(ResultMessage.Success,"删除成功!");
         }catch(Exception ex){
@@ -95,6 +95,9 @@ public class ScoreInflowController extends AbstractController {
         String sourceType = RequestUtil.getString(request, "sourceType");
         String sourceDetail = RequestUtil.getString(request,"sourceDetail");
         String updTime = RequestUtil.getString(request,"updTime");
+        Long orgId = RequestUtil.getLong(request, "orgId");
+        String orgName = RequestUtil.getString(request, "orgName");
+        Long total = RequestUtil.getLong(request, "total");
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
         ddScoreInflow.setId(scoreInflowId);
         ddScoreInflow.setUserId(scoreInflowUid);
@@ -102,6 +105,9 @@ public class ScoreInflowController extends AbstractController {
         ddScoreInflow.setSourceType(sourceType);
         ddScoreInflow.setSourceDetail(sourceDetail);
         ddScoreInflow.setUpdTime(updTime);
+        ddScoreInflow.setOrgId(orgId);
+        ddScoreInflow.setOrgName(orgName);
+        ddScoreInflow.setTotal(total);
 
         try {
             ddScoreInflowService.updateOne(ddScoreInflow);

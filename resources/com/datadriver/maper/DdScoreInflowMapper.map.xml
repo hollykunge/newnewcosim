@@ -13,17 +13,19 @@
         <result column="upd_time" property="updTime" jdbcType="VARCHAR"/>
         <result column="total" property="total" jdbcType="NUMERIC"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="org_id" property="orgId" jdbcType="NUMERIC"/>
+        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, user_id, source_score, source_type, source_detail, upd_time, total, user_name
+        id, user_id, source_score, source_type, source_detail, upd_time, total, user_name, org_id, org_name
     </sql>
 
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
-    insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time, user_name)
+    insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time, user_name, org_id, org_name)
     values (#{id,jdbcType=NUMERIC}, #{userId,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
       #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR},
-       #{userName, jdbcType=VARCHAR})
+       #{userName,jdbcType=VARCHAR}, #{orgId,jdbcType=NUMERIC}, #{orgName,jdbcType=VARCHAR})
     </insert>
     <select id="getByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
@@ -52,6 +54,12 @@
         1=1
         <if test="@Ognl@isNotEmpty(userName)"> AND ddsin.user_name LIKE #{userName} </if>
         <if test="@Ognl@isNotEmpty(sourceType)"> AND ddsin.source_type LIKE #{sourceType}</if>
+        <if test="@Ognl@isNotEmpty(orgName)"> AND ddsin.org_name LIKE #{orgName}</if>
+        <if test="@Ognl@isNotEmpty(sourceDetail)"> AND ddsin.source_detail LIKE #{sourceDetail} escape '|'</if>
+        <if test="@Ognl@isNotEmpty(begincreatetime)"> AND ddsin.upd_time LIKE #{begincreatetime}</if>
+        <if test="@Ognl@isNotEmpty(orderField)">
+            order by ${orderField} ${orderSeq}
+        </if>
     </select>
 
     <delete id="delById" parameterType="java.lang.Long">
@@ -87,7 +95,13 @@
                 total = #{total,jdbcType=VARCHAR},
             </if>
             <if test="userName !=null">
-                user_name = #{userName,jdbcType=VARCHAR}
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId !=null">
+                org_id = #{orgId,jdbcType=NUMERIC},
+            </if>
+            <if test="orgName !=null">
+                org_name = #{orgName,jdbcType=VARCHAR}
             </if>
         </set>
         WHERE
