@@ -278,7 +278,16 @@ public class ScoreRegulation {
         //判断是否是封顶项
         Boolean isCapping = sourceDetailList.contains(sourceDetail);
         if (isCapping) {
-            return scoreInflow + todayScore > overflowMap.get(sourceDetail);
+            // 判断该项积分是否有封顶
+            if (!overflowMap.containsKey(sourceDetail)) {
+                return false;
+            }
+            // 判断该项积分是否已达到封顶
+            if (scoreInflow + todayScore > overflowMap.get(sourceDetail)) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
             return false;
         }
