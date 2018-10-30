@@ -48,6 +48,16 @@ public class DdScoreInflow extends BaseModel {
      */
     private String userName;
 
+    /**
+     * 组织id
+     */
+    private Long orgId;
+
+    /**
+     * 组织名称
+     */
+    private String orgName;
+
 
     /**
      *
@@ -179,6 +189,38 @@ public class DdScoreInflow extends BaseModel {
         this.userName = userName;
     }
 
+    /**
+     * 获取组织id
+     * @return orgId 组织id
+     */
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    /**
+     * 设置组织id
+     * @param orgId 组织id
+     */
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    /**
+     * 获取组织名称
+     * @return orgName 组织名称
+     */
+    public String getOrgName() {
+        return orgName;
+    }
+
+    /**
+     * 设置组织名称
+     * @param orgName 组织名称
+     */
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
     @Override
     public String toString() {
         return "DdScoreInflow{" +
@@ -190,6 +232,8 @@ public class DdScoreInflow extends BaseModel {
                 ", updTime='" + updTime + '\'' +
                 ", total=" + total +
                 ", userName='" + userName + '\'' +
+                ", orgId=" + orgId +
+                ", orgName='" + orgName + '\'' +
                 '}';
     }
 }

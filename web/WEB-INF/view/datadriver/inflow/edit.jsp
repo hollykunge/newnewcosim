@@ -65,6 +65,7 @@
         <form id="scoreInflowForm" method="post" action="save.ht">
             <table class="table-detail" cellpadding="0" cellspacing="0" border="0" type="main">
                 <tr><th style="width:120px;">用户名</th><td colspan="3"><input size="35" id="userName" name="userName" value="${bizDef.userName}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
+                <tr><th style="width:120px;">组织</th><td colspan="3"><input size="35" id="orgName" name="userName" value="${bizDef.orgName}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
                 <tr><th style="width:120px;">积分来源</th><td><input size="35" id="sourceType" name="sourceType" value="${bizDef.sourceType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
                 <tr><th style="width:120px;">获得详情</th><td><input size="35" id="sourceDetail" name="sourceDetail" value="${bizDef.sourceDetail}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
                 <tr><th style="width:120px;">获得积分</th><td><input size="35" id="sourceScore" name="sourceScore" value="${bizDef.sourceScore}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
@@ -74,6 +75,8 @@
             <input size="35" type="hidden" name="updTime" value="${bizDef.updTime}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />
             <input size="35" type="hidden" name="total" value="${bizDef.total}" />
+            <input size="35" type="hidden" name="orgId" value="${bizDef.orgId}" />
+            <input size="35" type="hidden" name="orgName" value="${bizDef.orgName}" />
         </form>
 
     </div>
