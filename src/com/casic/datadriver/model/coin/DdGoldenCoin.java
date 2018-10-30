@@ -14,6 +14,35 @@ public class DdGoldenCoin extends BaseModel {
     private Long userId;
     private Long total;
     private String coinType;
+    private String orgName;
+    private String orgId;
+    private String updTime;
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getUpdTime() {
+        return updTime;
+    }
+
+    public void setUpdTime(String updTime) {
+        this.updTime = updTime;
+    }
+
+
 
     public String getUserName() {
         return userName;
