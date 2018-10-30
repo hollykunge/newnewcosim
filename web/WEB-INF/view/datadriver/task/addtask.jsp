@@ -28,9 +28,9 @@
     <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
 
     <script src="${ctx}/newtable/bootstrap-editable.js"></script>
-    <script src="${ctx}/newtable/bootstrap-datetimepicker.min.js"></script>
+    <script src="${ctx}/newtable/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="${ctx}/newtable/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
-    <script src="${ctx}/timeselect/moment.js"></script>
     <script src="${ctx}/newtable/union-select.js"></script>
     <!-- include the script alertify-->
     <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
@@ -54,15 +54,18 @@
                                value="" class="form-control" validate="{required:true}"/></td>
                     <th width="20%">任务所属项目:</th>
                     <td><input type="text" id="ddTaskProjectName" name="ddTaskProjectName"
-                               value="${projectItem.ddProjectName}" class="form-control" readonly/></td>
+                               value="${projectItem.ddProjectName}" class="form-control" readonly/>
+                    </td>
                 </tr>
                 <tr>
-                    <th width="20%">任务开始时间:</th>
+                    <th width="20%">计划开始时间:</th>
                     <td><input id="datetimeStart" name="ddTaskPlanStartTime"
-                               value="" class="form-control" readonly validate="{required:true}"/></td>
-                    <th width="20%">任务截至时间:</th>
+                               value="" class="form-control" readonly validate="{required:true}"/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span></td>
+                    <th width="20%">计划完成时间:</th>
                     <td><input id="datetimeEnd" name="ddTaskPlanEndTime"
-                               value="" class="form-control" readonly validate="{required:true}"/></td>
+                               value="" class="form-control" readonly validate="{required:true}"/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span></td>
                 </tr>
                 <tr>
                     <th width="20%">优先级:</th>
