@@ -447,7 +447,7 @@ public class PrivateDataController extends AbstractController {
             // 设置一旦文件大小超过getSizeThreshold()的值时数据存放在硬盘的目录
             fu.setRepositoryPath(temp);
             // 开始读取上传信息
-            TaskInfo taskinfo = taskInfoService.getUserIdbyTaskId(taskId);
+            TaskInfo taskinfo = taskInfoService.getTaskById(taskId);
             if (file == null){
                 return;
             }

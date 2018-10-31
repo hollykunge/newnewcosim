@@ -21,12 +21,19 @@
         <div class="panel-toolbar">
             <div class="toolBar">
                 <div class="group"><a class="link search" id="btnSearch">查询</a></div>
+                <%--<div class="group"><a class="link del"  action="del.ht">删除</a></div>--%>
             </div>
         </div>
         <div class="panel-search">
             <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
-                    <span class="label">用户(userId):</span><input type="text" name="Q_userId_SL"  class="inputText" />
+                    <span class="label">用户名:</span><input type="text" name="Q_userName_SL"  class="inputText" style="width: 9%;" value="${param['Q_userName_SL']}" />
+                    <span class="label">组织:</span><input type="text" name="Q_orgName_SL"  class="inputText" style="width: 9%;" value="${param['Q_orgName_SL']}" />
+                    <span class="label">消费详情:</span><input type="text" name="Q_expendDetail_SL"  class="inputText" style="width: 9%;" value="${param['Q_expendDetail_SL']}" />
+                    <span class="label">更新时间:</span><input type="text" name="Q_udpTime_SL"  class="inputText" style="width: 9%;" value="${param['Q_udpTime_SL']}" />
+                    <span class="label">积分下限:</span><input type="text" name="Q_expendScoreLow_L"  class="inputText" style="width: 9%;" value="${param['Q_expendScoreLow_L']}" />
+                    <span class="label">积分上限:</span><input type="text" name="Q_expendScoreHigh_L"  class="inputText" style="width: 9%;" value="${param['Q_expendScoreHigh_L']}" />
+
                     <span class="label">积分类型:</span>
                     <select name="Q_sourceType_S" class="select" value="${param['Q_sourceType_S']}">
                         <option value="">全部</option>
@@ -44,19 +51,19 @@
             <input type="checkbox" id="chkall"/>
         </c:set>
         <display:table name="scoreOutflowList" id="scoreOutflowItem" requestURI="list.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
-            <display:column title="${checkAll}" media="html" style="width:30px;">
-                <input type="checkbox" class="pk" name="bizDefId" value="${bizDefItem.bizDefId}">
+            <display:column title="${checkAll}" media="html" style="width:30px; text-align: center;">
+                <input type="checkbox" class="pk" name="id" value="${bizDefItem.bizDefId}">
             </display:column>
 
-            <display:column property="userId" title="用户" sortable="true" sortName="userId" maxLength="80"></display:column>
-            <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expendScore" maxLength="80"></display:column>
-            <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80"></display:column>
-            <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expendDetail" maxLength="80"></display:column>
-            <display:column property="udpTime" title="时间" sortable="true" sortName="udpTime"></display:column>
+            <display:column property="userName" title="用户名" sortable="true" sortName="userName" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="orgName" title="组织" sortable="true" sortName="orgName" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expendScore" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expendDetail" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="udpTime" title="更新时间" sortable="true" sortName="udpTime" maxLength="80" style="text-align: center;"></display:column>
             <display:column title="管理" media="html" style="width:260px">
-
-                <a href="del.ht?bizDefId=${scoreOutflowItem.id}" class="link del">删除</a>
-                <a href="edit.ht?bizDefId=${scoreOutflowItem.id}" class="link edit">编辑</a>
+                <a href="del.ht?id=${scoreOutflowItem.id}" class="link del">删除</a>
+                <a href="edit.ht?id=${scoreOutflowItem.id}" class="link edit">编辑</a>
             </display:column>
         </display:table>
         <hotent:paging tableId="scoreOutflowItem"/>

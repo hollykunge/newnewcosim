@@ -14,7 +14,7 @@
         <result column="org_id" property="orgId" jdbcType="NUMERIC"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, user_id, user_name, score_total, crt_time, udp_time, score_type, score_action
+        id, user_id, user_name, score_total, crt_time, udp_time, score_type, score_action, org_name, org_id
     </sql>
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScore">
     insert into dd_score (id, user_id, user_name, score_total, crt_time, udp_time, score_type, score_action, org_name, org_id)
@@ -43,6 +43,14 @@
         <if test="@Ognl@isNotEmpty(userName)"> AND dds.user_name LIKE #{userName} </if>
         <if test="@Ognl@isNotEmpty(scoreType)"> AND dds.score_type LIKE #{scoreType}</if>
         <if test="@Ognl@isNotEmpty(orgName)"> AND dds.score_type LIKE #{orgName}</if>
+        <if test="@Ognl@isNotEmpty(scoreAction)"> AND dds.score_action LIKE #{scoreAction}</if>
+        <if test="@Ognl@isNotEmpty(crtTime)"> AND dds.crt_time LIKE #{crtTime}</if>
+        <if test="@Ognl@isNotEmpty(udpTime)"> AND dds.udp_time LIKE #{udpTime}</if>
+        <if test="@Ognl@isNotEmpty(scoreTotalLow)"> AND dds.score_total >= #{scoreTotalLow}</if>
+        <if test="@Ognl@isNotEmpty(scoreTotalHigh)"> AND dds.score_total &lt;= #{scoreTotalHigh}</if>
+        <if test="@Ognl@isNotEmpty(orderField)">
+            order by ${orderField} ${orderSeq}
+        </if>
     </select>
     <select id="getType" resultMap="BaseResultMap">
         SELECT
@@ -86,10 +94,10 @@
                 score_type = #{scoreType,jdbcType=VARCHAR},
             </if>
             <if test="scoreAction !=null">
-                score_action = #{scoreAction,jdbcType=VARCHAR}
+                score_action = #{scoreAction,jdbcType=VARCHAR},
             </if>
             <if test="orgName !=null">
-                org_name= #{orgName,jdbcType=VARCHAR}
+                org_name= #{orgName,jdbcType=VARCHAR},
             </if>
             <if test="orgId !=null">
                 org_id = #{orgId,jdbcType=NUMERIC}

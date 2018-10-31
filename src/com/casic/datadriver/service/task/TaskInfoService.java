@@ -129,7 +129,7 @@ public class TaskInfoService extends BaseService<TaskInfo> {
      *
      * @return the list
      */
-    public List<TaskInfo> queryTaskInfoByProjectId(long ProjectId) {
+    public List<TaskInfo> queryTaskInfoByProjectId(Long ProjectId) {
         return this.taskInfoDao.queryTaskInfoByProjectId(ProjectId);
     }
 
@@ -140,7 +140,7 @@ public class TaskInfoService extends BaseService<TaskInfo> {
      *
      * @return the list
      */
-    public TaskInfo getUserIdbyTaskId(long taskId) {
+    public TaskInfo getTaskById(Long taskId) {
         return this.taskInfoDao.getById(taskId);
     }
 
@@ -151,11 +151,11 @@ public class TaskInfoService extends BaseService<TaskInfo> {
      *
      * @return the list
      */
-    public List<TaskInfo> getListByResponceId(long ResponceId) {
+    public List<TaskInfo> getListByResponceId(Long ResponceId) {
         return this.taskInfoDao.getListByResponceId(ResponceId);
     }
 
-    public List<TaskInfo> getListByResponceIdAndState1(long ResponceId) {
+    public List<TaskInfo> getListByResponceIdAndState1(Long ResponceId) {
         return this.taskInfoDao.getListByResponceIdAndState1(ResponceId);
     }
 

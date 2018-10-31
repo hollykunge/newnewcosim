@@ -63,7 +63,7 @@
             {
                 $(element).find(".jqx-kanban-item-color-status").html(
                     "<span style='line-height: 23px; margin-left: 5px; color:white;'>" + item.text + "</span>"
-                    +"<a style='float: right; margin: 4px 4px 0 0; color: white;'>编辑</a>"
+                    +"<a style='float: right; margin: 4px 4px 0 0; color: white;'>详情</a>"
                 );
                 $(element).find(".jqx-kanban-item-footer").html(
                     "<span style='line-height: 23px;'>负责人：" + item.content + "</span>"

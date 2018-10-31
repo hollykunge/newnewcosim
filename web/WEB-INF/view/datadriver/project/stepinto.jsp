@@ -146,7 +146,7 @@
     function showTaskContent(taskId) {
         $('#taskdetail').modal({
             keyboard: true,
-            remote: "${ctx}/datadriver/task/edit.ht?id=" + taskId
+            remote: "${ctx}/datadriver/task/edittask.ht?id=" + taskId
         });
     }
     //创建任务
