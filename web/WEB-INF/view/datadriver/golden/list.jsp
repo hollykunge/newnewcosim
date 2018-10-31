@@ -21,12 +21,18 @@
         <div class="panel-toolbar">
             <div class="toolBar">
                 <div class="group"><a class="link search" id="btnSearch">查询</a></div>
+                <div class="group"><a class="link del"  action="del.ht">删除</a></div>
             </div>
         </div>
         <div class="panel-search">
             <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
-                    <span class="label">用户(id):</span><input type="text" name="Q_userId_SL"  class="inputText" />
+                    <span class="label">用户名:</span><input type="text" name="Q_userName_SL"  class="inputText" style="width:9%" value="${param['Q_userName_SL']}" />
+                    <span class="label">组织</span><input type="text" name="Q_orgName_SL"  class="inputText" style="width:9%" value="${param['Q_orgName_SL']}" />
+                    <span class="label">积分下限值:</span><input type="text" name="Q_totalLow_L"  class="inputText" style="width:5%" value="${param['Q_totalLow_L']}" />
+                    <span class="label">积分上限值:</span><input type="text" name="Q_totalHigh_L"  class="inputText" style="width:5%" value="${param['Q_totalHigh_L']}" />
+                    <span class="label">更新时间从:</span><input type="text" id="Q_beginupdTime_DL" name="Q_beginupdTime_DL"  class="inputText Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'Q_endupdTime_DG\');}'})" style="width:9%" value="${param['Q_beginupdTime_DL']}"/>
+                    <span class="label">至</span><input type="text" id="Q_endupdTime_DG" name="Q_endupdTime_DG"  class="inputText Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'Q_beginupdTime_DL\');}'})" style="width:9%" value="${param['Q_endupdTime_DG']}"/>
                     <span class="label">积分类型:</span>
                     <select name="Q_coinType_S" class="select" value="${param['Q_coinType_S']}">
                         <option value="">全部</option>
@@ -44,12 +50,16 @@
             <input type="checkbox" id="chkall"/>
         </c:set>
         <display:table name="goldenList" id="goldenItem" requestURI="list.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
-            <display:column title="${checkAll}" media="html" style="width:30px;">
-                <input type="checkbox" class="pk" name="bizDefId" value="${goldenItem.id}">
+            <display:column title="${checkAll}" media="html" style="width:30px;text-align: center;">
+                <input type="checkbox" class="pk" name="id" value="${goldenItem.id}">
             </display:column>
             <display:column property="userName" title="用户名" sortable="true" sortName="userName" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="total" title="二币总量" sortable="true" sortName="total" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="orgName" title="组织" sortable="true" sortName="orgName" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="coinType" title="类型" sortable="true" sortName="coinType" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="coinNum" title="二币总量" sortable="true" sortName="coinNum" maxLength="80" style="text-align: center;"></display:column>
+            <display:column title="更新时间" sortable="true" sortName="updTime" maxLength="80" style="text-align: center;">
+                <fmt:formatDate value="${goldenItem.updTime}" pattern="yyyy-MM-dd"/>
+            </display:column>
             <display:column title="管理" media="html" style="width:260px; text-align: center;">
                 <a href="del.ht?id=${goldenItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${goldenItem.id}" class="link edit">编辑</a>

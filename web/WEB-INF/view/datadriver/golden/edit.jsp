@@ -64,8 +64,9 @@
         <form id="coinForm" method="post" action="save.ht">
             <table class="table-detail" cellpadding="0" cellspacing="0" border="0" type="main">
                 <tr><th style="width:120px;">用户名</th><td colspan="3"><input size="35" id="userName" name="userName" value="${bizDef.userName}" class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
+                <tr><th style="width:120px;">组织</th><td colspan="3"><input size="35" id="orgName" name="userName" value="${bizDef.orgName}" class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
                 <tr><th style="width:120px;">类型</th><td><input size="35" id="coinType" name="coinType" value="${bizDef.coinType}" class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
-                <tr><th style="width:120px;">数量</th><td><input size="35" id="total" name="total" value="${bizDef.total}" class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
+                <tr><th style="width:120px;">数量</th><td><input size="35" id="coinNum" name="total" value="${bizDef.coinNum}" class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>
             <input size="35" type="hidden" name="id" value="${bizDef.id}" />
             <input size="35" type="hidden" name="userName" value="${bizDef.userName}" />

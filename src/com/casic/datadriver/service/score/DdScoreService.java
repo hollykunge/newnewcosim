@@ -74,6 +74,8 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
                 ddScore.setScoreType(ddScoreInflow.getSourceType());
                 ddScore.setCrtTime(ddScoreInflow.getUpdTime());
                 ddScore.setUdpTime(ddScoreInflow.getUpdTime());
+                ddScore.setOrgId(ddScoreInflow.getOrgId());
+                ddScore.setOrgName(ddScoreInflow.getOrgName());
                 //如果缓存中没有该用户，把该用户积分对象先写入数据库，再缓存到concurrentHashMap中
                 ddScoreDao.add(ddScore);
                 initCache(cacheKey, ddScore);

@@ -64,6 +64,7 @@
         <form id="scoreForm" method="post" action="save.ht">
             <table class="table-detail" cellpadding="0" cellspacing="0" border="0" type="main">
                 <tr><th style="width:120px;">用户名</th><td colspan="3"><input size="35" id="userName" name="userName" value="${bizDef.userName}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
+                <tr><th style="width:120px;">组织</th><td colspan="3"><input size="35" id="orgName" name="orgName" value="${bizDef.orgName}"  class="inputText" disabled="disabled" validate="{required:true,maxlength:96}"></td></tr>
                 <tr><th style="width:120px;">积分类型</th><td><input size="35" id="scoreType" name="scoreType" value="${bizDef.scoreType}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
                 <tr><th style="width:120px;">积分总量</th><td><input size="35" id="scoreTotal" name="scoreTotal" value="${bizDef.scoreTotal}"  class="inputText" validate="{required:true,maxlength:96}"/></td></tr>
             </table>

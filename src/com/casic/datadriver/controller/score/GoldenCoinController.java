@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,18 +73,29 @@ public class GoldenCoinController extends AbstractController {
         try {
             Long id = RequestUtil.getLong(request,"id");
             Long userId = RequestUtil.getLong(request,"userId");
-            Long total = RequestUtil.getLong(request,"total");
+            Long coinNum = RequestUtil.getLong(request,"coinNum");
+            String coinType = RequestUtil.getString(request, "coinType");
+            String userName = RequestUtil.getString(request, "userName");
+            String orgName = RequestUtil.getString(request, "orgName");
+            Date updTime = RequestUtil.getDate(request, "updTime");
+            Long orgId = RequestUtil.getLong(request, "orgId");
 
             DdGoldenCoin ddGoldenCoin = new DdGoldenCoin();
             ddGoldenCoin.setId(id);
             ddGoldenCoin.setUserId(userId);
-            ddGoldenCoin.setTotal(total);
+            ddGoldenCoin.setCoinNum(coinNum);
+            ddGoldenCoin.setCoinType(coinType);
+            ddGoldenCoin.setOrgName(userName);
+            ddGoldenCoin.setOrgId(orgId);
+            ddGoldenCoin.setOrgName(orgName);
+            ddGoldenCoin.setUpdTime(updTime);
+
 
             ddGoldenCoinService.update(ddGoldenCoin);
-            resultMsg = getText("record.updated", "编辑");
+            resultMsg = getText("record.updated", "二币");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception ex){
-            resultMsg = getText("record.updated", "编辑");
+            resultMsg = getText("record.updated", "二币");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
         }
     }

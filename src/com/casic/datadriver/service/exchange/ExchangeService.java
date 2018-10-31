@@ -220,14 +220,14 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
                 }
             }
             if(isHave) {
-                Long nowCoin = userTypeCoin.getTotal();
-                userTypeCoin.setTotal(nowCoin + getCoin);
+                Long nowCoin = userTypeCoin.getCoinNum();
+                userTypeCoin.setCoinNum(nowCoin + getCoin);
                 ddGoldenCoinDao.updateCoin(userTypeCoin);
             } else {
                 userTypeCoin.setId(UniqueIdUtil.genId());
                 userTypeCoin.setUserId(ddScore.getUserId());
                 userTypeCoin.setCoinType(ddScore.getScoreType());
-                userTypeCoin.setTotal(Integer.toUnsignedLong(getCoin));
+                userTypeCoin.setCoinNum(Integer.toUnsignedLong(getCoin));
                 ddGoldenCoinDao.add(userTypeCoin);
             }
 

@@ -11,25 +11,39 @@
     <result column="expend_score" property="expendScore" jdbcType="NUMERIC" />
     <result column="expend_detail" property="expendDetail" jdbcType="VARCHAR" />
     <result column="udp_time" property="udpTime" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="NUMERIC" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, source_type, expend_score, expend_detail, udp_time
+    id, user_id, source_type, expend_score, expend_detail, udp_time, org_id, org_name, user_name
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
     FROM dd_score_outflow ddsout
     WHERE
     1=1
-    <if test="@Ognl@isNotEmpty(userId)"> AND ddsout.user_id LIKE #{userId} </if>
+    <if test="@Ognl@isNotEmpty(userName)"> AND ddsout.user_name LIKE #{userName} </if>
+    <if test="@Ognl@isNotEmpty(orgName)"> AND ddsout.org_name LIKE #{orgName} </if>
     <if test="@Ognl@isNotEmpty(sourceType)"> AND ddsout.source_type LIKE #{sourceType}</if>
+    <if test="@Ognl@isNotEmpty(expendDetail)"> AND ddsout.expend_detail LIKE #{expendDetail} escape '|'</if>
+    <if test="@Ognl@isNotEmpty(udpTime)"> AND ddsout.udp_time LIKE #{udpTime}</if>
+    <if test="@Ognl@isNotEmpty(expendScoreLow)"> AND ddsout.expend_score >= #{expendScoreLow}</if>
+    <if test="@Ognl@isNotEmpty(expendScoreHigh)"> AND ddsout.expend_score &lt;= #{expendScoreHigh}</if>
+    <if test="@Ognl@isNotEmpty(orderField)">
+      order by ${orderField} ${orderSeq}
+    </if>
   </select>
   <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreOutflow">
-    insert into dd_score_outflow (id, user_id, source_type, expend_score, expend_detail, udp_time)
+    insert into dd_score_outflow (id, user_id, source_type, expend_score, expend_detail, udp_time, org_id, org_name, user_name)
     values (#{id,jdbcType=NUMERIC},
       #{userId,jdbcType=NUMERIC},
       #{sourceType,jdbcType=VARCHAR},
       #{expendScore,jdbcType=NUMERIC},
       #{expendDetail,jdbcType=VARCHAR},
-      #{udpTime,jdbcType=VARCHAR})
+      #{udpTime,jdbcType=VARCHAR},
+      #{orgId,jdbcType=NUMERIC},
+      #{orgName,jdbcType=VARCHAR},
+      #{userName,jdbcType=VARCHAR})
     </insert>
 </mapper>

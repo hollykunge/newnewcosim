@@ -56,7 +56,7 @@ public class ScoreInflowController extends AbstractController {
         String preUrl = RequestUtil.getPrePage(request);
         ResultMessage message = null;
         try{
-            Long[] lAryId =RequestUtil.getLongAryByStr(request, "bizDefId");
+            Long[] lAryId =RequestUtil.getLongAryByStr(request, "id");
             ddScoreInflowService.delAll(lAryId);
             message = new ResultMessage(ResultMessage.Success,"删除成功!");
         }catch(Exception ex){

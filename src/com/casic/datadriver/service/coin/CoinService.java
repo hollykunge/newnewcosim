@@ -169,13 +169,13 @@ public class CoinService {
         List<DdGoldenCoin> personalCoinList = exchangeService.getPersonal(userId);
         for (DdGoldenCoin ddGoldenCoin : personalCoinList) {
             if (ScoreRegulation.QUAN_JU.equals(ddGoldenCoin.getCoinType())) {
-                personalMap.put("quanjuTotalCoin", ddGoldenCoin.getTotal().intValue());
+                personalMap.put("quanjuTotalCoin", ddGoldenCoin.getCoinNum().intValue());
             } else if (ScoreRegulation.FENG_XIAN.equals(ddGoldenCoin.getCoinType())) {
-                personalMap.put("fengxianTotalCoin", ddGoldenCoin.getTotal().intValue());
+                personalMap.put("fengxianTotalCoin", ddGoldenCoin.getCoinNum().intValue());
             } else if (ScoreRegulation.QIU_SHI.equals(ddGoldenCoin.getCoinType())) {
-                personalMap.put("qiushiTotalCoin", ddGoldenCoin.getTotal().intValue());
+                personalMap.put("qiushiTotalCoin", ddGoldenCoin.getCoinNum().intValue());
             } else if (ScoreRegulation.CHUANG_XIN.equals(ddGoldenCoin.getCoinType())) {
-                personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getTotal().intValue());
+                personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getCoinNum() .intValue());
             }
         }
 
