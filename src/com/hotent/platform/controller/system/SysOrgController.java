@@ -280,7 +280,6 @@ public class SysOrgController extends BaseController {
 		List<ISysUser> sysUserList = iAuthenticate.getUsersInOrg(orgId);
 		Long id = RequestUtil.getLong(request, "projectId");
 		Project project = projectService.getById(id);
-		//List<ISysUser> sysUserList = sysUserService.getAll();
 		List<ISysUser> newUserList = new ArrayList<>();
 		for (int a =0;a<sysUserList.size();a++)
 		{
@@ -311,7 +310,9 @@ public class SysOrgController extends BaseController {
 					newUserList.add(sysUserList.get(a));
 				}
 
-			}else continue;
+			}else {
+				continue;
+			}
 		}
 		return newUserList;
 	}

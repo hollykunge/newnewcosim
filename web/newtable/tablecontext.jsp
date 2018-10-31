@@ -8,7 +8,7 @@
 <%--<link rel="stylesheet" href="${ctx}/newtable/bootstrap.css">--%>
 <link rel="stylesheet" href="${ctx}/newtable/bootstrap-table.css">
 <link rel="stylesheet" href="${ctx}/newtable/bootstrap-editable.css">
-<link href="${ctx}/timeselect/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+<%--<link href="${ctx}/timeselect/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>--%>
 <%--<script src="${ctx}/newtable/jquery.js"></script>--%>
 <script src="${ctx}/newtable/bootstrap.js"></script>
 <script src="${ctx}/newtable/bootstrap-table.js"></script>
@@ -17,4 +17,4 @@
 <script src="${ctx}/newtable/tableExport.js"></script>
 <script src="${ctx}/newtable/bootstrap-editable.js"></script>
 <script src="${ctx}/newtable/bootstrap-table-editable.js"></script>
-<script type="text/javascript" src="${ctx}/timeselect/bootstrap-datetimepicker.min.js"></script>
+<%--<script type="text/javascript" src="${ctx}/timeselect/bootstrap-datetimepicker.min.js"></script>--%>
