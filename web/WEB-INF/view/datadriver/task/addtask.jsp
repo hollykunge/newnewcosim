@@ -235,5 +235,5 @@
         }
     }
 </script>
-<script type="text/javascript" src="${ctx}/timeselect/bootstrap-datetimepicker.zh-CN.js"></script>
+<%--<script type="text/javascript" src="${ctx}/timeselect/bootstrap-datetimepicker.zh-CN.js"></script>--%>
 </html>

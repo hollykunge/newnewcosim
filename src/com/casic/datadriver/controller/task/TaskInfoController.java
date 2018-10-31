@@ -8,6 +8,7 @@ import com.casic.datadriver.model.project.ProjectStart;
 import com.casic.datadriver.model.task.ProTaskDependance;
 import com.casic.datadriver.model.task.TaskInfo;
 import com.casic.datadriver.model.task.TaskStart;
+import com.casic.datadriver.model.task.TaskUser;
 import com.casic.datadriver.service.data.OrderDataRelationService;
 import com.casic.datadriver.service.data.PrivateDataService;
 import com.casic.datadriver.service.project.ProjectService;
@@ -26,7 +27,6 @@ import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.service.system.SysOrgService;
 import com.hotent.platform.service.system.SysUserService;
 import net.sf.ezmorph.object.DateMorpher;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -39,14 +39,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -209,7 +201,6 @@ public class TaskInfoController extends AbstractController {
     }
 
 
-
     /**
      * Del.
      *
@@ -240,86 +231,27 @@ public class TaskInfoController extends AbstractController {
      * @param request
      * @throws Exception
      */
-    @RequestMapping("edit")
+    @RequestMapping("edittask")
     @Action(description = "任务编辑")
     public ModelAndView edit(HttpServletRequest request) throws Exception {
+        Long taskId =RequestUtil.getLong(request,"id");
+        TaskInfo taskInfo = taskInfoService.getById(taskId);
+        ISysUser iSysUser;
 
-        String time = "2017年12月10日";
-        String startime = "2017年12月10日";
-        ISysUser executorName;
-        Long id = RequestUtil.getLong(request, "id");
-        String returnUrl = RequestUtil.getPrePage(request);
-        TaskInfo taskInfo = taskInfoService.getById(id);
-        if (taskInfo.getDdTaskResponsiblePerson() != null) {
-            executorName = sysUserService.getById(taskInfo.getDdTaskResponsiblePerson());
-        } else {
-            executorName = ContextUtil.getCurrentUser();
-        }
-
-        List<PrivateData> privateDataList = taskInfoService.getPrivateDataList(id);
-        List<OrderDataRelation> orderDataList = orderDataRelationService.getOrderDataRelationList(id);
-        List<OrderDataRelation> publishDataList = orderDataRelationService.getPublishDataRelationList(id);
-
-        List<ISysUser> sysUserList = sysUserService.getAll();
-
-        for (int a =0;a<sysUserList.size();a++)
-        {
-            sysUserList.get(a).setOrgName(sysOrgService.getById(sysUserList.get(a).getOrgId()).getOrgName());
-        }
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        if (taskInfo.getDdTaskPlanEndTime() != null) {
-//            time = df.format(taskInfo.getDdTaskPlanEndTime());
-            time = taskInfo.getDdTaskPlanEndTime();
-        } else {
-            Date date = new Date();
-            time = df.format(date);
-        }
-        if (taskInfo.getDdTaskPlanStartTime() != null) {
-//            time = df.format(taskInfo.getDdTaskPlanEndTime());
-            startime = taskInfo.getDdTaskPlanStartTime();
-        } else {
-            Date date = new Date();
-            startime = df.format(date);
-        }
-        List<ISysUser> newUserList = new ArrayList<>();
-        for (int a =0;a<sysUserList.size();a++)
-        {
-            if (taskInfo.getDdSecretLevel() != null &&(taskInfo.getDdSecretLevel().equals("fm") || taskInfo.getDdSecretLevel().equals("nb"))){
-                newUserList.add(sysUserList.get(a));
-            }else if(taskInfo.getDdSecretLevel() != null && taskInfo.getDdSecretLevel().equals("mm")){
-                if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65"))){
-                    continue;
-                }else if (sysUserList.get(a).getPsnSecretLevel() == null){
-                    continue;
-                }else{
-                    newUserList.add(sysUserList.get(a));
-                }
-            }else if(taskInfo.getDdSecretLevel() != null && taskInfo.getDdSecretLevel().equals("jm")){
-                if ((sysUserList.get(a).getPsnSecretLevel() != null) && (sysUserList.get(a).getPsnSecretLevel().equals("60") || sysUserList.get(a).getPsnSecretLevel().equals("65") || sysUserList.get(a).getPsnSecretLevel().equals("70"))){
-                    continue;
-                }else if (sysUserList.get(a).getPsnSecretLevel() == null){
-                    continue;
-                } else{
-                    newUserList.add(sysUserList.get(a));
-                }
-            }else if(taskInfo.getDdSecretLevel() == null){
-                newUserList.add(sysUserList.get(a));
-            }
+        if (taskInfo.getDdTaskResponsiblePerson() == null){
+            iSysUser = ContextUtil.getCurrentUser();
+        }else {
+            iSysUser = sysUserService.getById(taskInfo.getDdTaskResponsiblePerson());
 
         }
+        ISysOrg iSysOrg = sysOrgService.getById(iSysUser.getOrgId());
+        TaskUser taskUser = new TaskUser(iSysUser.getUserId(), iSysUser.getUsername(), iSysOrg.getOrgName(), iSysUser.getOrgId());
 
-
+        List<ISysOrg> sysOrgList = sysOrgService.getAll();
 
         return getAutoView().addObject("TaskInfo", taskInfo)
-                .addObject("endtime", time)
-                .addObject("startime", startime)
-                .addObject("privateDataList", privateDataList)
-                .addObject("orderDataList", orderDataList)
-                .addObject("publishDataList", publishDataList)
-                .addObject("returnUrl", returnUrl)
-                .addObject("sysUserList", newUserList)
-                .addObject("executorName", executorName);
+                .addObject("sysOrgList", sysOrgList)
+                .addObject("taskUser", taskUser);
     }
 
     /**
