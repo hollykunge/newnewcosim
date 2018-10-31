@@ -52,7 +52,7 @@ public class DdScore extends BaseModel {
     /**
      * 组织ID
      */
-    private String orgId;
+    private Long orgId;
 
     public String getOrgName() {
         return orgName;
@@ -62,11 +62,11 @@ public class DdScore extends BaseModel {
         this.orgName = orgName;
     }
 
-    public String getOrgId() {
+    public Long getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(String orgId) {
+    public void setOrgId(Long orgId) {
         this.orgId = orgId;
     }
 
@@ -197,5 +197,21 @@ public class DdScore extends BaseModel {
      */
     public void setScoreAction(String scoreAction) {
         this.scoreAction = scoreAction;
+    }
+
+    @Override
+    public String toString() {
+        return "DdScore{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", scoreTotal=" + scoreTotal +
+                ", crtTime='" + crtTime + '\'' +
+                ", udpTime='" + udpTime + '\'' +
+                ", scoreType='" + scoreType + '\'' +
+                ", scoreAction='" + scoreAction + '\'' +
+                ", orgName='" + orgName + '\'' +
+                ", orgId=" + orgId +
+                '}';
     }
 }

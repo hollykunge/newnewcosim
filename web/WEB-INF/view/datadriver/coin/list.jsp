@@ -21,21 +21,28 @@
         <div class="panel-toolbar">
             <div class="toolBar">
                 <div class="group"><a class="link search" id="btnSearch">查询</a></div>
+                <div class="group"><a class="link del"  action="del.ht">删除</a></div>
             </div>
             <div class="toolBar" style="float: right;">
-                <div class="group"><a class="link search"  href="${ctx}/datadriver/golden/consume.ht?scoreType=quanju">兑换全局币</a></div>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=quanju">兑换全局币</a></div>
                 <div class="l-bar-separator"></div>
-                <div class="group"><a class="link add"  href="${ctx}/datadriver/golden/consume.ht?scoreType=gongxian">兑换贡献币</a></div>
+                <div class="group"><a class="link add"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=gongxian">兑换贡献币</a></div>
                 <div class="l-bar-separator"></div>
-                <div class="group"><a class="link search"  href="${ctx}/datadriver/golden/consume.ht?scoreType=qiushi">兑换求实币</a></div>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=qiushi">兑换求实币</a></div>
                 <div class="l-bar-separator"></div>
-                <div class="group"><a class="link detail"  href="${ctx}/datadriver/golden/consume.ht?scoreType=chuangxin">兑换创新币</a></div>
+                <div class="group"><a class="link detail"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=chuangxin">兑换创新币</a></div>
             </div>
         </div>
         <div class="panel-search">
             <form id="searchForm" method="post" action="list.ht">
                 <div class="row">
-                    <span class="label">用户名:</span><input type="text" name="Q_userName_SL"  class="inputText" />
+                    <span class="label">用户名:</span><input type="text" name="Q_userName_SL"  class="inputText" style="width: 5%;" value="${param['Q_userName_SL']}" />
+                    <span class="label">组织:</span><input type="text" name="Q_orgName_SL"  class="inputText" style="width: 5%;" value="${param['Q_orgName_SL']}" />
+                    <span class="label">积分动作:</span><input type="text" name="Q_scoreAction_SL"  class="inputText" style="width: 5%;" value="${param['Q_scoreAction_SL']}" />
+                    <span class="label">积分下限:</span><input type="text" name="Q_scoreTotalLow_L"  class="inputText" style="width: 5%;" value="${param['Q_scoreTotalLow_L']}" />
+                    <span class="label">积分上限:</span><input type="text" name="Q_scoreTotalHigh_L"  class="inputText" style="width: 5%;" value="${param['Q_scoreTotalHigh_L']}" />
+                    <span class="label">创建时间:</span><input type="text" name="Q_crtTime_SL"  class="inputText" style="width: 9%;" value="${param['Q_crtTime_SL']}" />
+                    <span class="label">更新时间:</span><input type="text" name="Q_udpTime_SL"  class="inputText" style="width: 9%;" value="${param['Q_udpTime_SL']}" />
                     <span class="label">积分类型:</span>
                     <select name="Q_scoreType_S" class="select" value="${param['Q_scoreType_S']}">
                         <option value="">全部</option>
@@ -53,13 +60,16 @@
             <input type="checkbox" id="chkall"/>
         </c:set>
         <display:table name="scoreList" id="scoreItem" requestURI="list.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
-            <display:column title="${checkAll}" media="html" style="width:30px;">
-                <input type="checkbox" class="pk" name="bizDefId" value="${scoreItem.id}">
+            <display:column title="${checkAll}" media="html" style="width:30px; text-align: center;">
+                <input type="checkbox" class="pk" name="id" value="${scoreItem.id}">
             </display:column>
             <display:column property="userName" title="用户名" sortable="true" sortName="userName" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="orgName" title="组织" sortable="true" sortName="orgName" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="scoreType" title="积分类型" sortable="true" sortName="scoreType" style="text-align: center;"></display:column>
+            <display:column property="scoreAction" title="积分动作" sortable="true" sortName="scoreAction" style="text-align: center;"></display:column>
             <display:column property="scoreTotal" title="积分总量" sortable="true" sortName="scoreTotal" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="udpTime" title="更新时间" sortable="true" sortName="udpTime" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="scoreType" title="积分类型" sortable="true" sortName="scoreType" style="text-align: center;"></display:column>
+            <display:column property="crtTime" title="创建时间" sortable="true" sortName="crtTime" style="text-align: center;"></display:column>
             <display:column title="管理" media="html" style="width:260px; text-align: center;">
                 <a href="del.ht?id=${scoreItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${scoreItem.id}" class="link edit">编辑</a>

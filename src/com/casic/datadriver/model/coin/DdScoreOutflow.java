@@ -18,6 +18,23 @@ public class DdScoreOutflow extends BaseModel {
     private Long userId;
 
     /**
+     * 用户名
+     */
+    @Column(name = "user_name")
+    private String userName;
+
+    /**
+     * 组织id
+     */
+    @Column(name = "org_id")
+    private Long orgId;
+
+    /**
+     * 组织名称
+     */
+    @Column(name = "org_name")
+    private String orgName;
+    /**
      * 积分来源
      */
     @Column(name = "source_type")
@@ -144,15 +161,42 @@ public class DdScoreOutflow extends BaseModel {
         this.udpTime = udpTime;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
     @Override
     public String toString() {
         return "DdScoreOutflow{" +
                 "id=" + id +
                 ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", orgId=" + orgId +
+                ", orgName='" + orgName + '\'' +
                 ", sourceType='" + sourceType + '\'' +
                 ", expendScore=" + expendScore +
                 ", expendDetail='" + expendDetail + '\'' +
-                ", udpTime=" + udpTime +
+                ", udpTime='" + udpTime + '\'' +
                 '}';
     }
 }

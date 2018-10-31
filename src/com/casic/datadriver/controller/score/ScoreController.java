@@ -101,6 +101,8 @@ public class ScoreController extends AbstractController {
         String udpTime = RequestUtil.getString(request,"udpTime");
         String scoreType = RequestUtil.getString(request,"scoreType");
         String scoreAction = RequestUtil.getString(request,"scoreAction");
+        String orgName = RequestUtil.getString(request,"orgName");
+        Long orgId = RequestUtil.getLong(request,"orgId");
         DdScore ddScore = new DdScore();
         ddScore.setId(scoreId);
         ddScore.setUserId(scoreUid);
@@ -110,6 +112,8 @@ public class ScoreController extends AbstractController {
         ddScore.setUdpTime(udpTime);
         ddScore.setScoreType(scoreType);
         ddScore.setScoreAction(scoreAction);
+        ddScore.setOrgName(orgName);
+        ddScore.setOrgId(orgId);
 
         try {
             ddScoreService.updateOne(ddScore);
