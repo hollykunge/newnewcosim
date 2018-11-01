@@ -15,6 +15,7 @@ import com.hotent.core.web.util.RequestUtil;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.model.system.SysAudit;
 import com.hotent.platform.service.system.SysAuditService;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
@@ -83,17 +84,35 @@ public class LogAspect
 				HttpServletRequest request = RequestUtil.getHttpServletRequest();
 				if (request != null)
 				{
-					sysAudit.setFromIp(request.getRemoteAddr());
+					String clientip = request.getHeader("clientip");
+					if (clientip != null) {
+						sysAudit.setFromIp(clientip);
+					}else {
+						sysAudit.setFromIp(request.getRemoteAddr());
+					}
 					sysAudit.setRequestURI(request.getRequestURI());
 					sysAudit.setReqParams(RequestUtil.getRequestInfo(request).toString());
 				}
 				sysAuditService.add(sysAudit);
 			} catch (Exception ex)
 			{
-				logger.error(ex.getMessage());
+				logger.error("Exception :",ex);
 			}
 		}
 
 		return point.proceed();
 	}
+
+	/*@Around("execution(* *.*(..))")
+	public Object afterThrowing(ProceedingJoinPoint point) throws Throwable {
+
+			try {
+				return  point.proceed();
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(e.toString(),e);
+			}
+		return this;
+	}*/
+
 }

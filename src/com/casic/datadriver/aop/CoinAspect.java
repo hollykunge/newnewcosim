@@ -72,14 +72,6 @@ public class CoinAspect {
     }
 
     /**
-     * design_7,奖励5积分
-     */
-    @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.createtopublish(..))||" +
-            "execution(public * com.casic.datadriver.controller.project.ProjectController.onepunchsend(..))")
-    public void createtopublishAspect() {
-    }
-
-    /**
      * design_8,奖励10积分
      */
     @Pointcut("execution(public * com.casic.datadriver.controller.datacenter.PersonalTaskController.canOrderToOrder(..))||" +
@@ -131,41 +123,6 @@ public class CoinAspect {
         ddScoreInflow.setSourceScore(10);
         ddScoreInflow.setSourceDetail("design_6");
         setData(ddScoreInflow);
-    }
-
-    @AfterReturning(returning = "result", pointcut = "createtopublishAspect()")
-    public void createtopublishReturning(JoinPoint joinPoint, Object result) throws Throwable {
-        logger.info(joinPoint.getSignature().getName());
-        DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        Map<String, String> map = new HashMap<>();
-
-        HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-        Long taskId = RequestUtil.getLong(request, "taskId");
-        String account = ContextUtil.getCurrentUser().getAccount();
-        if (flagList.size() == 0) {
-            map.put(account, taskId.toString());
-            flagList.add(map);
-            ddScoreInflow.setSourceScore(10);
-            ddScoreInflow.setSourceDetail("design_7");
-            setData(ddScoreInflow);
-        } else {
-            for (Map<String, String> flagMap : flagList) {
-                for (Map.Entry<String, String> entry : flagMap.entrySet()) {
-                    if (entry.getKey().equals(account) && entry.getValue().equals(taskId.toString())) {
-                        flag = true;
-                    }
-                }
-            }
-            if (!flag) {
-                map.put(account, taskId.toString());
-                flagList.add(map);
-                ddScoreInflow.setSourceScore(10);
-                ddScoreInflow.setSourceDetail("design_7");
-                setData(ddScoreInflow);
-            }
-        }
-
-        flag = false;
     }
 
     @AfterReturning(returning = "result", pointcut = "orderAndCreateAspect()")

@@ -39,7 +39,6 @@ public class MergeLogController extends GenericController {
 	//http://localhost:8080/mergelog/add.ht?logType="搜索"&logContent="搜索"&logUser="user1"&logIP="127.0.0.1"&logFrom="search"
 	public void add(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-
 		try{
 			String logUser = RequestUtil.getString(request,"logUser");
 			String logType = RequestUtil.getString(request,"logType");
@@ -59,7 +58,7 @@ public class MergeLogController extends GenericController {
 			sysAudit.setReqParams(logFrom);
 			sysAuditService.add(sysAudit);
 		}catch(Exception e){
-			logger.error("Exception:",e);
+			logger.error(e.getMessage(),e);
 			e.printStackTrace();
 		}
     }
