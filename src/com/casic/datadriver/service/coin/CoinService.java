@@ -1,15 +1,11 @@
 package com.casic.datadriver.service.coin;
 
+import com.casic.datadriver.jms.ScoreMessageProducer;
 import com.casic.datadriver.manager.ScoreRegulation;
-import com.casic.datadriver.model.coin.DdGoldenCoin;
-import com.casic.datadriver.model.coin.DdRank;
-import com.casic.datadriver.model.coin.DdScore;
-import com.casic.datadriver.model.coin.DdScoreInflow;
+import com.casic.datadriver.model.coin.*;
 import com.casic.datadriver.service.exchange.ExchangeService;
 import com.casic.datadriver.service.score.DdScoreInflowService;
 import com.casic.datadriver.service.score.DdScoreService;
-import com.hotent.core.util.UniqueIdUtil;
-import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.dao.system.SysOrgDao;
 import com.hotent.platform.dao.system.SysUserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,63 +38,33 @@ public class CoinService {
     @Autowired
     private ScoreRegulation scoreRegulation;
 
+    @Autowired
+    private ScoreMessageProducer scoreMessageProducer;
+
     /**
-     * @param account 身份证号
-     * @param sourceScore 分数
-     * @param sourceType 一级类型
-     * @param sourceDetail 二级类型
-     * @param updTime 更新时间
+     * @param addScoreModel 加分模型
+     *                      account 身份证号
+     *                      sourceScore 分数
+     *                      sourceType 一级类型
+     *                      sourceDetail 二级类型
+     *                      updTime 更新时间
      * @return 是否成功的字符串
      */
-    public String addScore(String account, String sourceScore, String sourceType, String sourceDetail, String updTime){
+    public String addScore(AddScoreModel addScoreModel) {
         String resultMsg;
-        String timeDate;
-        //判断是否当天消息
-        Date time = new Date();
-        timeDate = DATE_FORMATTER2.get().format(time);
-        if (account != null) {
-            //获取用户
-            ISysUser sysUser = sysUserDao.getByAccount(account);
-            if (sourceScore != null) {
-                //这里仅传入detail
-                List<DdScoreInflow> todayInflows = ddScoreInflowService.getTodayScore(sysUser.getUserId(), sourceDetail);
-                //判断当前积分是否超出当日上限
-                Integer todayScore = 0;
-                for (DdScoreInflow ddScoreInflow : todayInflows) {
-                    todayScore += ddScoreInflow.getSourceScore();
-                }
-                Boolean isOverFlow = scoreRegulation.isOverFlow(Integer.valueOf(sourceScore), todayScore, sourceDetail);
-                if (!isOverFlow) {
-                    //增加流水
-                    DdScoreInflow ddScoreInflow = new DdScoreInflow();
-                    ddScoreInflow.setId(UniqueIdUtil.genId());
-                    ddScoreInflow.setUserId(sysUser.getUserId());
-                    ddScoreInflow.setSourceScore(Integer.valueOf(sourceScore));
-                    ddScoreInflow.setSourceDetail(sourceDetail);
-                    ddScoreInflow.setSourceType(sourceType);
-                    ddScoreInflow.setUpdTime(timeDate);
-                    ddScoreInflow.setUserName(sysUser.getFullname());
-                    ddScoreInflow.setOrgId(sysUser.getOrgId());
-                    ddScoreInflow.setOrgName(sysOrgDao.getOrgsByUserId(sysUser.getUserId()).get(0).getOrgName());
-                    //写入数据库和缓存
-                    ddScoreInflowService.add(ddScoreInflow);
-                    resultMsg = "赚取积分成功";
-                    //添加总积分量
-                    ddScoreService.updateScore(ddScoreInflow, null);
-                } else {
-                    resultMsg = "单日积分总量已满";
-                }
-            } else {
-                resultMsg = "积分为空";
-            }
-        } else {
-            resultMsg = "用户id为空或者获取日期不正确";
+        //判断参数有效性
+        if (!scoreRegulation.dataVerify(addScoreModel.getSourceDetail())) {
+            resultMsg = "工作活动信息未被收录到加分项中！";
+            return resultMsg;
         }
+        scoreMessageProducer.send(addScoreModel);
+        resultMsg = "加分请求加入消息队列成功！";
         return resultMsg;
     }
 
     /**
      * 获取个人的年积分，月积分，年币数，月币数
+     *
      * @param account 身份证号
      * @return 十六行的种类和数目对应关系
      */
@@ -175,7 +141,7 @@ public class CoinService {
             } else if (ScoreRegulation.QIU_SHI.equals(ddGoldenCoin.getCoinType())) {
                 personalMap.put("qiushiTotalCoin", ddGoldenCoin.getCoinNum().intValue());
             } else if (ScoreRegulation.CHUANG_XIN.equals(ddGoldenCoin.getCoinType())) {
-                personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getCoinNum() .intValue());
+                personalMap.put("chuangxinTotalCoin", ddGoldenCoin.getCoinNum().intValue());
             }
         }
 
@@ -188,32 +154,32 @@ public class CoinService {
         //全局月币
         List<DdScore> ddScoreListQuanJu = ddScoreService.getScoresByRankAndType(
                 ScoreRegulation.LIMIT_QUAN_JU, ScoreRegulation.QUAN_JU);
-        if(!ddScoreListQuanJu.isEmpty()) {
+        if (!ddScoreListQuanJu.isEmpty()) {
             Integer least = ddScoreListQuanJu.get(ddScoreListQuanJu.size() - 1).getScoreTotal();
-            if(personalMap.get("quanjuMonthScore") >= least) {
+            if (personalMap.get("quanjuMonthScore") >= least) {
                 personalMap.put("quanjuMonthCoin", 1);
             }
         }
         //奉献月币
         List<DdScore> ddScoreListFengXian = ddScoreService.getScoresByRankAndType(
                 ScoreRegulation.LIMIT_FENG_XIAN, ScoreRegulation.FENG_XIAN);
-        if(!ddScoreListFengXian.isEmpty()) {
+        if (!ddScoreListFengXian.isEmpty()) {
             Integer least = ddScoreListFengXian.get(ddScoreListFengXian.size() - 1).getScoreTotal();
-            if(personalMap.get("fengxianMonthScore") >= least) {
+            if (personalMap.get("fengxianMonthScore") >= least) {
                 personalMap.put("fengxianMonthCoin", 1);
             }
         }
         //求实月币
         List<DdScore> ddScoreListQiuShi = ddScoreService.getScoresByRankAndType(
                 ScoreRegulation.LIMIT_QIU_SHI, ScoreRegulation.QIU_SHI);
-        if(!ddScoreListQiuShi.isEmpty()) {
+        if (!ddScoreListQiuShi.isEmpty()) {
             Integer least = ddScoreListQiuShi.get(ddScoreListQiuShi.size() - 1).getScoreTotal();
-            if(personalMap.get("qiushiMonthScore") >= least) {
+            if (personalMap.get("qiushiMonthScore") >= least) {
                 personalMap.put("qiushiMonthCoin", 1);
             }
         }
         //创新月币
-        if(personalMap.get("chuangxinMonthScore") >= 100) {
+        if (personalMap.get("chuangxinMonthScore") >= 100) {
             personalMap.put("chuangxinMonthCoin", 1);
         }
         return personalMap;
@@ -249,3 +215,4 @@ public class CoinService {
         }
     };
 }
+

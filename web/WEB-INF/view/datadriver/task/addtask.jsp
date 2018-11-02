@@ -24,12 +24,13 @@
     <link href="${ctx}/styles/check/build.css" rel="stylesheet" type="text/css"/>
     <link href="${ctx}/styles/select/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
     <!-- include the style of alertify-->
-    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
-    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css"/>
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css"/>
 
     <script src="${ctx}/newtable/bootstrap-editable.js"></script>
     <script src="${ctx}/newtable/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="${ctx}/newtable/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="${ctx}/newtable/locales/bootstrap-datetimepicker.zh-CN.js"
+            charset="UTF-8"></script>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
     <script src="${ctx}/newtable/union-select.js"></script>
     <!-- include the script alertify-->
@@ -59,13 +60,21 @@
                 </tr>
                 <tr>
                     <th width="20%">计划开始时间:</th>
-                    <td><input id="datetimeStart" name="ddTaskPlanStartTime"
-                               value="" class="form-control" readonly validate="{required:true}"/>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span></td>
+                    <td>
+                        <div class="input-group date form_date">
+                            <input id="datetimeStart" name="ddTaskPlanStartTime"
+                                   value="" class="form-control" readonly validate="{required:true}"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </td>
                     <th width="20%">计划完成时间:</th>
-                    <td><input id="datetimeEnd" name="ddTaskPlanEndTime"
-                               value="" class="form-control" readonly validate="{required:true}"/>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span></td>
+                    <td>
+                        <div class="input-group date form_date">
+                            <input id="datetimeEnd" name="ddTaskPlanEndTime"
+                                   value="" class="form-control" readonly validate="{required:true}"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th width="20%">优先级:</th>
@@ -114,7 +123,8 @@
                         <select class="selectpicker show-tick form-control"
                                 noneResultsText="无匹配项"
                                 data-live-search="true" id="select-first" title="请选择组织"
-                                data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${projectItem.ddProjectId}" validate="{required:true}">
+                                data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${projectItem.ddProjectId}"
+                                validate="{required:true}">
                             <c:forEach var="orgItem" items="${sysOrgList}">
                                 <option value="${orgItem.orgId}"
                                         <c:if test="${TaskInfo.userOrg == '${orgItem.orgName}'}">selected="selected"</c:if>>${orgItem.orgName}</option>
@@ -142,14 +152,15 @@
                 </tr>
                 <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${projectItem.ddProjectId}"/>
                 <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value=""/>
-                <input type="hidden" id="ddSecretLevel" name="ddSecretLevel" value="${projectItem.ddProjectSecretLevel}"/>
+                <input type="hidden" id="ddSecretLevel" name="ddSecretLevel"
+                       value="${projectItem.ddProjectSecretLevel}"/>
                 <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId"
                        value="${projectItem.ddProjectCreatorId}"/>
             </table>
         </form>
         <div class="row">
             <div class="col-xs-6">
-                <button class="btn btn-success btn-block" id="dataFormSave">创建新任务</button>
+                <button class="btn btn-success btn-block" id="dataFormSave">创建任务</button>
             </div>
             <div class="col-xs-6">
                 <button class="btn btn-default btn-block" id="createfrommodel" disabled="disabled" title="暂不可用">
@@ -176,9 +187,9 @@
         // 	todayHighlight:true,	//默认值: false,如果为true, 高亮当前日期。
         initialDate: new Date(),	//初始化日期.默认new Date()当前日期
         forceParse: false,  	//当输入非格式化日期时，强制格式化。默认true
-        bootcssVer:3,	//显示向左向右的箭头
+        bootcssVer: 3,	//显示向左向右的箭头
         language: 'zh-CN' //语言
-    }).on('changeDate', function(ev){
+    }).on('changeDate', function (ev) {
         // 约束 开始时间早于结束时间
         $('#datetimeEnd').datetimepicker('setStartDate', ev.date);
     });
@@ -194,7 +205,7 @@
         // 	todayHighlight:true,	//默认值: false,如果为true, 高亮当前日期。
         initialDate: new Date(),	//初始化日期.默认new Date()当前日期
         forceParse: false,  	//当输入非格式化日期时，强制格式化。默认true
-        bootcssVer:3,	//显示向左向右的箭头
+        bootcssVer: 3,	//显示向左向右的箭头
         language: 'zh-CN' //语言
     }).on('changeDate', function (ev) {
         // 约束 开始时间早于结束时间
@@ -203,9 +214,7 @@
 
 
     $(function () {
-
         $(".selectpicker").selectpicker();
-
         var options = {};
         if (showResponse) {
             options.success = showResponse;
@@ -230,7 +239,7 @@
         if (obj.isSuccess()) {
             window.location.href = "${ctx}/datadriver/project/stepinto.ht?id=${projectItem.ddProjectId}";
         } else {
-            alertify.set('notifier','position', 'top-right');
+            alertify.set('notifier', 'position', 'top-right');
             alertify.error("创建失败！");
         }
     }

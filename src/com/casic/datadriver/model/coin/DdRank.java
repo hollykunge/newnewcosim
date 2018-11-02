@@ -2,6 +2,10 @@ package com.casic.datadriver.model.coin;
 
 import com.hotent.core.model.BaseModel;
 
+/**
+ * 这个类不应该加dd，因为没有数据库对应
+ * @author workhub
+ */
 public class DdRank extends BaseModel {
     /**
      * 用户排名
