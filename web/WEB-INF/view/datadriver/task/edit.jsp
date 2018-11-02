@@ -23,7 +23,7 @@
 
     <script src="${ctx}/newtable/bootstrap-editable.js"></script>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
-    <script src="${ctx}/timeselect/moment.js"></script>
+    <%--<script src="${ctx}/timeselect/moment.js"></script>--%>
     <!-- include the script alertify-->
     <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
     <style>
