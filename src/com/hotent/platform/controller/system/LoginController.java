@@ -36,9 +36,9 @@ import com.hotent.platform.service.system.SysUserService;
 
 /**
  * 登录访问控制器，用于扩展Spring Security 缺省的登录处理器
- * 
+ *
  * @author csx
- * 
+ *
  */
 @Controller
 @RequestMapping("/login.ht")
@@ -49,35 +49,29 @@ public class LoginController extends BaseController {
 	private AuthenticationManager authenticationManager = null;
 	@Resource
 	private Properties configproperties;
-	
+
 	@Resource
 	private LdapUserDao ldapUserDao;
-	
+
 	@Resource
 	private SessionAuthenticationStrategy sessionStrategy=new NullAuthenticatedSessionStrategy();
-	
 
-	
 //	@Resource
 //	HtSecurityMetadataSource securityMetadataSource;
-	//must the same as <remember-me key="bpm3PrivateKey"/> of app-security.xml 
+	//must the same as <remember-me key="bpm3PrivateKey"/> of app-security.xml
 	private String rememberPrivateKey="bpm3PrivateKey";
 	public final static String TRY_MAX_COUNT="tryMaxCount";
 	public final static int maxTryCount=5;
-	
 
 	/**
 	 * 登录成功跳转的路径
 	 */
 	private String succeedUrl="/platform/console/main.ht";
-	
-	
+
 	@RequestMapping("*")
 	public void login(HttpServletRequest request,HttpServletResponse response,@RequestParam(value = "username") String username,@RequestParam(value = "password") String password)
 			throws IOException {
-		
 		String validCodeEnabled=configproperties.getProperty("validCodeEnabled");
-
 		boolean error=false;
 		try{
 			if(validCodeEnabled!=null && "true".equals(validCodeEnabled)){
@@ -93,7 +87,7 @@ public class LoginController extends BaseController {
 			if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
 				request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, "用户名或密码均不能为空!");
 				error=true;
-				return;	
+				return;
 			}
 			////ht:raie del b
 			/**
@@ -104,7 +98,7 @@ public class LoginController extends BaseController {
 			//ISysUser sysUser=sysUserService.getSysUserByOrgSnAndAccount(Long.valueOf(sysOrgNo),username);
 			ISysUser sysUser=sysUserService.getByAccount(username);
 			////ht:raie add e
-					
+
 			String encrptPassword=EncryptUtil.encryptSha256(password);
 			//ad 用户登录
 			if(sysUser!=null&&sysUser.getFromType()==1){
@@ -124,30 +118,30 @@ public class LoginController extends BaseController {
 				if(sysUser==null || !encrptPassword.equals(sysUser.getPassword())){
 					request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, "用户名密码输入错误!");
 					error=true;
-					return;	
+					return;
 				}
 			}
-			
+
 			UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
 			authRequest.setDetails(new WebAuthenticationDetails(request));
 			SecurityContext securityContext = SecurityContextHolder.getContext();
 			Authentication auth = authenticationManager.authenticate(authRequest);
-			
+
 			securityContext.setAuthentication(auth);
-			
-			
-			request.getSession().setAttribute(WebAttributes.LAST_USERNAME, sysUser.getAccount());	
+
+
+			request.getSession().setAttribute(WebAttributes.LAST_USERNAME, sysUser.getAccount());
 			//登陆时移除管理员标识
 			request.getSession().removeAttribute("isAdmin");
-			
+
 			sessionStrategy.onAuthentication(auth, request, response);
 			//从session中删除组织数据。
 			ContextUtil.removeCurrentOrg(request,response);
-			
-			
+
+
 			//删除cookie。
 			CookieUitl.delCookie("loginAction", request, response);
-			
+
 			writeRememberMeCookie(request,response,username,encrptPassword);
 		}catch (LockedException e) {
 			request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, username+":用户被锁定!");
@@ -174,10 +168,10 @@ public class LoginController extends BaseController {
 		    }
 			response.sendRedirect(request.getContextPath() + succeedUrl);
 		}
-			
-		
+
+
 	}
-	
+
 
 	/**
 	 * 加上用户登录的remember me 的cookie
@@ -200,11 +194,11 @@ public class LoginController extends BaseController {
 			response.addCookie(cookie);
 		}
 	}
-	
-	
-	
+
+
+
 	private boolean ldapUserAuthentication(String userId,String password){
 		return ldapUserDao.authenticate(userId, password);
 	}
-	
+
 }
