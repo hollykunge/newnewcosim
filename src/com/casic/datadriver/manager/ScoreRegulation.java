@@ -185,7 +185,8 @@ public class ScoreRegulation {
     private static final String STORE_3 = "store_3";
 
     private ArrayList<String> sourceDetailList = new ArrayList<String>();
-    private Map<String,Integer> overflowMap =  new HashMap();
+    private Map<String, Integer> overflowMap = new HashMap();
+
     public ScoreRegulation() {
         //全局
         sourceDetailList.add(DESIGN_1);
@@ -247,6 +248,7 @@ public class ScoreRegulation {
 
     /**
      * 判断是否今天
+     *
      * @param time time
      */
     public boolean isToday(String time) {
@@ -275,21 +277,26 @@ public class ScoreRegulation {
      * @param sourceDetail 来源动作
      */
     public Boolean isOverFlow(Integer scoreInflow, Integer todayScore, String sourceDetail) {
-        //判断是否是封顶项
-        Boolean isCapping = sourceDetailList.contains(sourceDetail);
-        if (isCapping) {
-            // 判断该项积分是否有封顶
-            if (!overflowMap.containsKey(sourceDetail)) {
-                return false;
-            }
-            // 判断该项积分是否已达到封顶
-            if (scoreInflow + todayScore > overflowMap.get(sourceDetail)) {
-                return false;
-            } else {
-                return true;
-            }
+        // 判断该项积分是否有封顶
+        if (!overflowMap.containsKey(sourceDetail)) {
+            return false;
+        }
+        // 判断该项积分是否已达到封顶
+        if (scoreInflow + todayScore > overflowMap.get(sourceDetail)) {
+            return true;
         } else {
             return false;
         }
     }
+
+    /**
+     * 传参有效性检验，目前只检验二级类型是否在加分列表种
+     *
+     * @param sourceDetail 二级类型，来源动作
+     * @return 是否合理
+     */
+    public Boolean dataVerify(String sourceDetail) {
+        return sourceDetailList.contains(sourceDetail);
+    }
 }
+

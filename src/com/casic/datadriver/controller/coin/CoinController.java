@@ -1,5 +1,6 @@
 package com.casic.datadriver.controller.coin;
 
+import com.casic.datadriver.model.coin.AddScoreModel;
 import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.service.coin.CoinService;
 import com.hotent.core.annotion.Action;
@@ -45,7 +46,14 @@ public class CoinController extends GenericController {
     public void add(String account, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
-            resultMsg = coinService.addScore(account, sourceScore, sourceType, sourceDetail, updTime);
+            //TODO：传整个model
+            AddScoreModel addScoreModel = new AddScoreModel();
+            addScoreModel.setAccount(account);
+            addScoreModel.setSourceScore(sourceScore);
+            addScoreModel.setSourceType(sourceType);
+            addScoreModel.setSourceDetail(sourceDetail);
+            addScoreModel.setUpdTime(updTime);
+            resultMsg = coinService.addScore(addScoreModel);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", resultMsg);
