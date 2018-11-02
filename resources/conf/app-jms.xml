@@ -6,9 +6,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
            http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
 	<!--(嵌入配置)activeMq消息容器-->
     <amq:broker useJmx="false" persistent="false">
-    	
     	<!--
         <amq:persistenceAdapter>
             <amq:jdbcPersistenceAdapter id="jdbcAdapter" dataSource="#dataSource" createTablesOnStartup="false" useDatabaseLock="false"/>
@@ -26,7 +26,8 @@
     <amq:connectionFactory id="simpleJmsConnectionFactory" brokerURL="tcp://{ip}:61616?wireFormat.maxInactivityDuration=0" />
     -->
      <!--  Message 转换器  -->
-    <bean id="activeMqMessageConverter" class="com.hotent.core.jms.ActiveMqMessageConverter"/>
+    <!--<bean id="activeMqMessageConverter" class="com.hotent.core.jms.ActiveMqMessageConverter"/>-->
+    <bean id="activeMqScoreMessageConverter" class="com.casic.datadriver.jms.ActiveMqScoreMessageConverter"/>
     
     <!--  Spring Jms模板 -->
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -36,13 +37,16 @@
                 <property name="targetConnectionFactory" ref="simpleJmsConnectionFactory"/>
             </bean>
         </property>
-        <property name="messageConverter" ref="activeMqMessageConverter"/>
+        <!--<property name="messageConverter" ref="activeMqMessageConverter"/>-->
+        <property name="messageConverter" ref="activeMqScoreMessageConverter"/>
     </bean>
     
     <!-- 消息对象队列  -->
-    <amq:queue id="messageQueue" name="messageQueue" physicalName="messageQueue" />
+    <!--<amq:queue id="messageQueue" name="messageQueue" physicalName="messageQueue" />-->
+    <amq:queue id="scoreMessageQueue" name="scoreMessageQueue" physicalName="scoreMessageQueue" />
     <!-- 消息生产者   	-->
-    <bean id="messageProducer" class="com.hotent.core.jms.MessageProducer"/>
+    <!--<bean id="messageProducer" class="com.hotent.core.jms.MessageProducer"/>-->
+    <bean id="scoreMessageProducer" class="com.casic.datadriver.jms.ScoreMessageProducer"/>
   
     <!-- 
     	消息消费者 
@@ -50,39 +54,50 @@
     	键：队列中消息类 对应的类 全路径 如： com.hotent.core.model.MailModel
     	值：消息处理类,需要实现接口类IJmsHandler 。如：com.hotent.platform.service.jms.impl.MailHandler 
     	用户也可以配置自己的处理方式，配置到这里。
-     -->   
-    
-    <bean name="messageConsumer" class="com.hotent.core.jms.MessageConsumer">
-		<property name="handlers">
-			<map>
-				<entry  key="com.hotent.core.model.MailModel">
-					<bean class="com.hotent.platform.service.jms.impl.MailHandler"></bean>
-				</entry>
-				<entry  key="com.hotent.core.model.SmsMobile">
-					<bean class="com.hotent.platform.service.jms.impl.SmsHandler"></bean>
-				</entry>
-				<entry  key="com.hotent.core.model.InnerMessage">
-					<bean class="com.hotent.platform.service.jms.impl.InnerHandler"></bean>
-				</entry>
-			</map>
-		</property> 
+     -->
+    <!--<bean name="messageConsumer" class="com.hotent.core.jms.MessageConsumer">-->
+		<!--<property name="handlers">-->
+			<!--<map>-->
+				<!--<entry  key="com.hotent.core.model.MailModel">-->
+					<!--<bean class="com.hotent.platform.service.jms.impl.MailHandler"></bean>-->
+				<!--</entry>-->
+				<!--<entry  key="com.hotent.core.model.SmsMobile">-->
+					<!--<bean class="com.hotent.platform.service.jms.impl.SmsHandler"></bean>-->
+				<!--</entry>-->
+				<!--<entry  key="com.hotent.core.model.InnerMessage">-->
+					<!--<bean class="com.hotent.platform.service.jms.impl.InnerHandler"></bean>-->
+				<!--</entry>-->
+			<!--</map>-->
+		<!--</property> -->
+    <!--</bean>-->
+
+    <bean name="scoreMessageConsumer" class="com.casic.datadriver.jms.ScoreMessageConsumer">
+        <property name="handlers">
+            <map>
+                <entry  key="com.casic.datadriver.model.coin.AddScoreModel">
+                    <bean class="com.casic.datadriver.jms.AddScoreHandler"></bean>
+                </entry>
+            </map>
+        </property>
     </bean>
-   
-   
+
     <!--消息监听容器 --> 
 	<bean id="messageListenerContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="simpleJmsConnectionFactory" />
-		<property name="destination" ref="messageQueue" />
+		<!--<property name="destination" ref="messageQueue" />-->
+        <property name="destination" ref="scoreMessageQueue" />
 		<property name="messageListener" ref="messageMsgListener" />
 	</bean>
     
     <!-- 邮件消息消费监听器  --> 
 	<bean id="messageMsgListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
 		<constructor-arg>
-			<ref bean="messageConsumer"/>		
+			<!--<ref bean="messageConsumer"/>		-->
+            <ref bean="scoreMessageConsumer"/>
 		</constructor-arg>
-		<property name="messageConverter" ref="activeMqMessageConverter" />
+		<!--<property name="messageConverter" ref="activeMqMessageConverter" />-->
+        <property name="messageConverter" ref="activeMqScoreMessageConverter" />
 		<property name="defaultListenerMethod" value="sendMessage" />
 	</bean>
 

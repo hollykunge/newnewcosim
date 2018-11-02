@@ -1,6 +1,7 @@
 package com.casic.datadriver.aop;
 
 
+import com.casic.datadriver.model.coin.AddScoreModel;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.service.coin.CoinService;
 import com.casic.datadriver.service.score.DdScoreInflowService;
@@ -227,10 +228,13 @@ public class CoinAspect {
         ddScoreInflow.setUpdTime(updTime);
 
         //传递身份证号、分数、类型、详情、更新时间
-        coinService.addScore(ContextUtil.getCurrentUser().getAccount(),
-                String.valueOf(ddScoreInflow.getSourceScore()),
-                ddScoreInflow.getSourceType(),
-                ddScoreInflow.getSourceDetail(),
-                ddScoreInflow.getUpdTime());
+        AddScoreModel addScoreModel = new AddScoreModel();
+        addScoreModel.setAccount(ContextUtil.getCurrentUser().getAccount());
+        addScoreModel.setSourceScore(String.valueOf(ddScoreInflow.getSourceScore()));
+        addScoreModel.setSourceType(ddScoreInflow.getSourceType());
+        addScoreModel.setSourceDetail(ddScoreInflow.getSourceDetail());
+        addScoreModel.setUpdTime(ddScoreInflow.getUpdTime());
+
+        coinService.addScore(addScoreModel);
     }
 }
