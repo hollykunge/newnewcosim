@@ -63,13 +63,13 @@
             <display:column title="${checkAll}" media="html" style="width:30px; text-align: center;">
                 <input type="checkbox" class="pk" name="id" value="${scoreItem.id}">
             </display:column>
-            <display:column property="userName" title="用户名" sortable="true" sortName="userName" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="orgName" title="组织" sortable="true" sortName="orgName" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="scoreType" title="积分类型" sortable="true" sortName="scoreType" style="text-align: center;"></display:column>
-            <display:column property="scoreAction" title="积分动作" sortable="true" sortName="scoreAction" style="text-align: center;"></display:column>
-            <display:column property="scoreTotal" title="积分总量" sortable="true" sortName="scoreTotal" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="udpTime" title="更新时间" sortable="true" sortName="udpTime" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="crtTime" title="创建时间" sortable="true" sortName="crtTime" style="text-align: center;"></display:column>
+            <display:column property="userName" title="用户名" sortable="true" sortName="user_name" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="orgName" title="组织" sortable="true" sortName="org_name" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="scoreType" title="积分类型" sortable="true" sortName="score_type" style="text-align: center;"></display:column>
+            <display:column property="scoreAction" title="积分动作" sortable="true" sortName="score_action" style="text-align: center;"></display:column>
+            <display:column property="scoreTotal" title="积分总量" sortable="true" sortName="score_total" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="udpTime" title="更新时间" sortable="true" sortName="udp_time" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="crtTime" title="创建时间" sortable="true" sortName="crt_time" style="text-align: center;"></display:column>
             <display:column title="管理" media="html" style="width:260px; text-align: center;">
                 <a href="del.ht?id=${scoreItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${scoreItem.id}" class="link edit">编辑</a>

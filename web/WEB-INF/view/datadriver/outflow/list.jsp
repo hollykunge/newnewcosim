@@ -55,13 +55,13 @@
                 <input type="checkbox" class="pk" name="id" value="${bizDefItem.bizDefId}">
             </display:column>
 
-            <display:column property="userName" title="用户名" sortable="true" sortName="userName" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="orgName" title="组织" sortable="true" sortName="orgName" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expendScore" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expendDetail" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="udpTime" title="更新时间" sortable="true" sortName="udpTime" maxLength="80" style="text-align: center;"></display:column>
-            <display:column title="管理" media="html" style="width:260px">
+            <display:column property="userName" title="用户名" sortable="true" sortName="user_name" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="orgName" title="组织" sortable="true" sortName="org_name" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expend_score" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="sourceType" title="积分类型" sortable="true" sortName="source_type" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expend_detail" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="udpTime" title="更新时间" sortable="true" sortName="udp_time" maxLength="80" style="text-align: center;"></display:column>
+            <display:column title="管理" media="html" style="width:260px; text-align: center;">
                 <a href="del.ht?id=${scoreOutflowItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${scoreOutflowItem.id}" class="link edit">编辑</a>
             </display:column>
