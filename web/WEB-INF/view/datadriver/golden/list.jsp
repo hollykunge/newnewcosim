@@ -53,11 +53,11 @@
             <display:column title="${checkAll}" media="html" style="width:30px;text-align: center;">
                 <input type="checkbox" class="pk" name="id" value="${goldenItem.id}">
             </display:column>
-            <display:column property="userName" title="用户名" sortable="true" sortName="userName" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="orgName" title="组织" sortable="true" sortName="orgName" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="coinType" title="类型" sortable="true" sortName="coinType" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="coinNum" title="二币总量" sortable="true" sortName="coinNum" maxLength="80" style="text-align: center;"></display:column>
-            <display:column title="更新时间" sortable="true" sortName="updTime" maxLength="80" style="text-align: center;">
+            <display:column property="userName" title="用户名" sortable="true" sortName="user_name" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="orgName" title="组织" sortable="true" sortName="org_name" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="coinType" title="类型" sortable="true" sortName="coin_type" maxLength="80" style="text-align: center;"></display:column>
+            <display:column property="coinNum" title="二币总量" sortable="true" sortName="coin_num" maxLength="80" style="text-align: center;"></display:column>
+            <display:column title="更新时间" sortable="true" sortName="upd_time" maxLength="80" style="text-align: center;">
                 <fmt:formatDate value="${goldenItem.updTime}" pattern="yyyy-MM-dd"/>
             </display:column>
             <display:column title="管理" media="html" style="width:260px; text-align: center;">
