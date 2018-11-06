@@ -37,14 +37,17 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
         this.ddScoreInflowDao = ddScoreInflowDao;
         this.scoreRegulation = scoreRegulation;
     }
+
     @Override
     protected IEntityDao<DdScoreInflow, Long> getEntityDao() {
         return this.ddScoreInflowDao;
     }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         this.initCacheList();
     }
+
     private void initCacheList() {
         //缓存所有数据
         List<DdScoreInflow> ddScoreInflows = ddScoreInflowDao.getAll();
@@ -52,6 +55,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
             initCache(String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceDetail(), ddScoreInflow);
         }
     }
+
     private void initCache(String cacheKey, DdScoreInflow ddScoreInflow) {
         //一般是进行数据库查询，将查询的结果进行缓存
         SCORE_INFLOW_LIST_CACHE.put(cacheKey, ddScoreInflow);
@@ -59,6 +63,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
 
     /**
      * 增加
+     *
      * @param ddScoreInflow DdScoreInflow
      */
     @Override
@@ -69,8 +74,10 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
         String cacheKey = String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceDetail();
         initCache(cacheKey, ddScoreInflow);
     }
+
     /**
      * 删除
+     *
      * @param lAryId id列表
      */
     public void delAll(Long[] lAryId) {
@@ -78,8 +85,10 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
             ddScoreInflowDao.delById(id);
         }
     }
+
     /**
      * 通过id查找
+     *
      * @param id id
      * @return DdScoreInflow
      */
@@ -89,21 +98,26 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
 
     /**
      * 更改
+     *
      * @param entity DdScoreInflow
      */
     public void updateOne(DdScoreInflow entity) {
         ddScoreInflowDao.update(entity);
     }
+
     /**
      * 查找所有
+     *
      * @return DdScoreInflow列表
      */
     public List<DdScoreInflow> getAllScoreInflow() {
         return ddScoreInflowDao.getAll();
     }
+
     /**
      * 获取当前用户今日特定类型流水，按二级类型
-     * @param userId 用户id
+     *
+     * @param userId       用户id
      * @param sourceDetail 二级类型
      * @return 今日该类型所有流水
      */
@@ -123,9 +137,11 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
         }
         return todayInflows;
     }
+
     /**
      * 获取个人的一级类型流水
-     * @param userId userId
+     *
+     * @param userId     userId
      * @param sourceType 一级类型
      * @return DdScoreInflow列表
      */
@@ -138,7 +154,8 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
 
     /**
-     *  分页获取个人的一级类型流水
+     * 分页获取个人的一级类型流水
+     *
      * @param queryFilter {userId："",sourceType: ""}
      * @return DdScoreInflow分页列表
      */
