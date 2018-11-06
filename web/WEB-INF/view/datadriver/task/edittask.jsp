@@ -42,15 +42,15 @@
 </div>
 <div class="modal-body">
     <%--<ul class="nav nav-tabs" role="tablist" id="myTab">--%>
-        <%--<li role="presentation" class="active reponav-item" id="switch_attr_publish"><a href="#data"--%>
-                                                                                        <%--data-toggle="tab"--%>
-                                                                                        <%--role="tab"><span--%>
-                <%--class="glyphicon glyphicon-log-out"></span> 任务编辑</a>--%>
-        <%--</li>--%>
-        <%--<li role="presentation" class="reponav-item" id="switch_attr_order"><a href="#publish" data-toggle="tab"--%>
-                                                                               <%--role="tab"><span--%>
-                <%--class="glyphicon glyphicon-log-in"></span> 任务活动</a>--%>
-        <%--</li>--%>
+    <%--<li role="presentation" class="active reponav-item" id="switch_attr_publish"><a href="#data"--%>
+    <%--data-toggle="tab"--%>
+    <%--role="tab"><span--%>
+    <%--class="glyphicon glyphicon-log-out"></span> 任务编辑</a>--%>
+    <%--</li>--%>
+    <%--<li role="presentation" class="reponav-item" id="switch_attr_order"><a href="#publish" data-toggle="tab"--%>
+    <%--role="tab"><span--%>
+    <%--class="glyphicon glyphicon-log-in"></span> 任务活动</a>--%>
+    <%--</li>--%>
     <%--</ul>--%>
     <form id="taskInfoForm" name="taskInfoForm" method="post" action="${ctx}/datadriver/task/save.ht"
           class="form-horizontal">
@@ -73,7 +73,6 @@
                 </td>
             </tr>
             <tr>
-
                 <th width="20%">优先级:</th>
                 <td>
                     <select id="ddTaskPriority" name="ddTaskPriority" class="form-control">
@@ -95,7 +94,6 @@
                     <input name="ddTaskPlanStartTime" class="form-control" id="plan-start" size="16" type="text"
                            value="${TaskInfo.ddTaskPlanStartTime}" readonly>
                 </td>
-
             </tr>
             <tr>
                 <th width="20%">计划完成时间:</th>
@@ -150,11 +148,9 @@
                                     <c:if test="${taskUser.orgName == orgItem.orgName}">selected="selected"</c:if>>${orgItem.orgName}</option>
                         </c:forEach>
                     </select>
-
                     <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control"
                             noneResultsText="无匹配项"
                             data-live-search="true" id="select-second" validate="{required:true}">
-
                     </select>
                 </td>
             </tr>

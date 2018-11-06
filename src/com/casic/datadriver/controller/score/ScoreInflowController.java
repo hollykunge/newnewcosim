@@ -30,11 +30,6 @@ public class ScoreInflowController extends AbstractController {
     @Autowired
     private DdScoreInflowService ddScoreInflowService;
 
-    /*@Autowired
-    public ScoreInflowController(DdScoreInflowService ddScoreInflowService) {
-        this.ddScoreInflowService = ddScoreInflowService;
-    }*/
-
     /**
      * @throws Exception e
      */
@@ -118,35 +113,4 @@ public class ScoreInflowController extends AbstractController {
         }
 
     }
-
-    /*
-    @RequestMapping("save")
-    @Action(description = "task")
-    public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String resultMsg = null;
-
-//        DdScoreInflow ddScoreInflow = getFormObject(request);
-        try {
-//            if (taskInfo.getDdTaskId() == null || taskInfo.getDdTaskId() == 0) {
-//                taskInfo.setDdTaskId(UniqueIdUtil.genId());
-//                taskInfo.setDdTaskChildType("createpanel");
-//                taskInfo.setDdTaskState(taskInfo.createpanel);
-//                //TODO:需要添加任务优先级，否则会造成个人任务显示列表出错
-//                taskInfoService.addDDTask(taskInfo);
-//                proTaskDependance.setDdTaskId(UniqueIdUtil.genId());
-//                proTaskDependance.setDdTaskId(taskInfo.getDdTaskId());
-//                proTaskDependanceService.addDDProTaskDependance(proTaskDependance);
-//
-//                resultMsg = getText("record.added", "添加完成");
-//            } else {
-//                taskInfoService.updateDDTask(taskInfo);
-//                resultMsg = getText("record.updated", "更新完成");
-//            }
-//
-//            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
-        } catch (Exception e) {
-            writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
-        }
-    }
-    */
 }

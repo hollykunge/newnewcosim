@@ -79,32 +79,9 @@ public class DataCenterController extends AbstractController {
         out.close();
     }
 
-    //过滤重复元素
-    public static List<Project> removeDuplicate(List<Project> mList) {
-        for (int i = 0; i < mList.size() - 1; i++) {
-            for (int j = mList.size() - 1; j > i; j--) {
-                if (mList.get(j).getDdProjectId().equals(mList.get(i).getDdProjectId())) {
-                    mList.remove(j);
-                }
-            }
-        }
-        return mList;
-    }
-
-    public static String replaceBlank(String str) {
-        String dest = "";
-        if (str != null) {
-            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-            Matcher m = p.matcher(str);
-            dest = m.replaceAll("");
-        }
-        return dest;
-    }
-
     /**
      * 排序
      */
-
     class desc implements Comparator<OrderDataRelation> {
         @Override
         public int compare(OrderDataRelation u1, OrderDataRelation u2) {
@@ -124,9 +101,6 @@ public class DataCenterController extends AbstractController {
     @Action(description = "获得发布数据列表")
     public void getReleasedatanew(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String B = RequestUtil.getString(request, "DataType");
-//        String  DataType= RequestUtil.getString(request, "DataType");
-        String A = RequestUtil.getString(request, "sortOrder");
         Long ddTaskId = RequestUtil.getLong(request, "id");
         Long pageSize = RequestUtil.getLong(request, "pageSize");
         Long pageNumber = RequestUtil.getLong(request, "pageNumber");
@@ -166,22 +140,9 @@ public class DataCenterController extends AbstractController {
         List<PrivateData> taskPrivateDatas = null;
         int allnum = 0;
 
-//        if (A.compareTo("desc")==0) {
-//            //desc 降序
-//            Comparator<OrderDataRelation> cmp = new desc();
-//            Collections.sort(orderDataRelation_list, cmp);
-//        }
-//        else if(A.compareTo("asc")==0){ //asc 升序
-//            Comparator<OrderDataRelation> cmp = new asc();
-//            Collections.sort(orderDataRelation_list, cmp);
-//            }
-
-
         if (DataType == null || DataType.length() <= 0) {
-//            taskPrivateDatas = this.privateDataService.queryPrivateDataByddTaskID(ddTaskId);
             allnum = taskPrivateDatas.size();
         } else {
-//            taskPrivateDatas = this.privateDataService.getBymodel(pageinfo);
             allnum = taskPrivateDatas.size();
         }
         if (b > taskPrivateDatas.size()) {
@@ -213,13 +174,11 @@ public class DataCenterController extends AbstractController {
             jsonObject.put("DdDataId", mymode.getDdDataId());
             jsonMembers.add(jsonObject);
         }
-//        }
 
         json.put("total", allnum);
         json.put("rows", jsonMembers);
-        String jsonstring = Tjson.formatJson(json.toString());
+        String jsonstring = JsonFormat.formatJson(json.toString());
         System.out.println(json.toString());
-//            system.out(json.toString());
         PrintWriter out = null;
         out = response.getWriter();
         out.append(jsonstring);
@@ -249,17 +208,10 @@ public class DataCenterController extends AbstractController {
         Long ddTaskId = RequestUtil.getLong(request, "id");
         Long pageSize = RequestUtil.getLong(request, "pageSize");
         Long pageNumber = RequestUtil.getLong(request, "pageNumber");
-//        PageInfo pageinfo = new PageInfo();
-//        pageinfo.setPageSize((pageNumber - 1) * pageSize);
-//        pageinfo.setPageNumber(pageSize);
-//        pageinfo.setId(ddTaskId);
 
         PageInfo pageinfo = pagination(pageSize, pageNumber, ddTaskId);
-//        var db = new QHC_IIMSContext();
-        //获得发布数据列表
+
         List<OrderDataRelation> orderDataRelation_list = this.orderDataRelationService.getPublishDataRelationListF(pageinfo);
-//        List<OrderDataRelation>  orderDataRelation_list =  this.orderDataRelationService.getPublishDataRelationList(ddTaskId);
-        List<PrivateData> privateData = new ArrayList<PrivateData>();
         int allnum = this.orderDataRelationService.getPublishDataRelationList(ddTaskId).size();
         JSONObject jsonObject = new JSONObject();
         JSONObject json = new JSONObject();
@@ -269,7 +221,6 @@ public class DataCenterController extends AbstractController {
             Long ddDataId = orderDataRelation.getDdDataId();
 
             List<PrivateData> taskPrivateDatas = null;
-//            List<PrivateData> taskPrivateDatas = this.privateDataService.getByddDataId(ddDataId);
 
             for (int i = 0; i < taskPrivateDatas.size(); i++) {
                 PrivateData mymode = taskPrivateDatas.get(i);
@@ -285,10 +236,8 @@ public class DataCenterController extends AbstractController {
         }
         json.put("total", allnum);
         json.put("rows", jsonMembers);
-//        String jsonstring = "{\n\"total\":800,\n\"rows\":[\n{\n\"id\":0,\n\"name\":\"Item 0\",\n\"price\":\"$0\"\n},\n{\n\"id\":19,\n\"name\":\"Item 19\",\n\"price\":\"$19\"\n}\n]\n}";
-        String jsonstring = Tjson.formatJson(json.toString());
+        String jsonstring = JsonFormat.formatJson(json.toString());
         System.out.println(json.toString());
-//            system.out(json.toString());
         PrintWriter out = null;
         out = response.getWriter();
         out.append(jsonstring);
@@ -310,7 +259,6 @@ public class DataCenterController extends AbstractController {
         pageinfo.setId(ddTaskId);
 
         List<OrderDataRelation> orderDataRelation_list = this.orderDataRelationService.getOrderDataRelationListF(pageinfo);
-//        List<OrderDataRelation> orderDataRelation_list = this.orderDataRelationService.getOrderDataRelationList(ddTaskId);
         List<PrivateData> privateData = new ArrayList<PrivateData>();
 
         JSONObject jsonObject = new JSONObject();
@@ -319,7 +267,6 @@ public class DataCenterController extends AbstractController {
 
         for (OrderDataRelation orderDataRelation : orderDataRelation_list) {
             Long ddDataId = orderDataRelation.getDdDataId();
-//            List<PrivateData> taskPrivateDatas = this.privateDataService.getByddDataId(ddDataId);
 
             List<PrivateData> taskPrivateDatas = null;
 
@@ -337,22 +284,13 @@ public class DataCenterController extends AbstractController {
         }
         json.put("total", orderDataRelation_list.size());
         json.put("rows", jsonMembers);
-//        String jsonstring = "{\n\"total\":800,\n\"rows\":[\n{\n\"id\":0,\n\"name\":\"Item 0\",\n\"price\":\"$0\"\n},\n{\n\"id\":19,\n\"name\":\"Item 19\",\n\"price\":\"$19\"\n}\n]\n}";
-        String jsonstring = Tjson.formatJson(json.toString());
+        String jsonstring = JsonFormat.formatJson(json.toString());
         System.out.println(json.toString());
-//            system.out(json.toString());
         PrintWriter out = null;
         out = response.getWriter();
         out.append(jsonstring);
         out.flush();
         out.close();
-    }
-
-    //添加空格
-    private static void addIndentBlank(StringBuilder sb, int indent) {
-        for (int i = 0; i < indent; i++) {
-            sb.append('\t');
-        }
     }
 
     /**
@@ -369,7 +307,6 @@ public class DataCenterController extends AbstractController {
             throws Exception {
         String preUrl = RequestUtil.getPrePage(request);
         Long projectId = RequestUtil.getLong(request, "projectId");
-//        String ddDataTag = RequestUtil.getString(request, "ddDataTag");
         DataSnapInfoId dataSnapInfoId = new DataSnapInfoId();
 
         dataSnapInfoId.setDdDataSnapShotId(UniqueIdUtil.genId());

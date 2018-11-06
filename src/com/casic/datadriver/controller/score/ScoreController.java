@@ -33,13 +33,6 @@ public class ScoreController extends AbstractController {
     @Autowired
     private DdScoreInflowService ddScoreInflowService;
 
-    /*@Autowired
-    public ScoreController(DdScoreService ddScoreService,
-                           DdScoreInflowService ddScoreInflowService) {
-        this.ddScoreService = ddScoreService;
-        this.ddScoreInflowService = ddScoreInflowService;
-    }*/
-
     /**
      * 积分列表
      * @throws Exception e

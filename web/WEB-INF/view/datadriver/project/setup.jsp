@@ -8,13 +8,15 @@
 --%>
 <%@ taglib prefix="ap" uri="/appleTag" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html lang="zh-CN">
 <head>
     <title>项目设置</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
     <!-- include the style of alertify-->
-    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css" />
-    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css" />
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css"/>
+    <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css"/>
     <!-- include the script alertify-->
     <script src="${ctx}/js/alertifyjs/alertify.min.js"></script>
 </head>
@@ -49,34 +51,34 @@
                                     </td>
                                 </tr>
                                 <%--<tr>--%>
-                                    <%--<th>所属型号</th>--%>
-                                    <%--<td>--%>
-                                        <%--<ap:selectDB name="ddProjectBelongModel" id="ddProjectBelongModel"--%>
-                                                     <%--where="parentId=10000027440014" optionValue="itemValue"--%>
-                                                     <%--optionText="itemName" table="SYS_DIC"--%>
-                                                     <%--selectedValue="${Project.ddProjectBelongModel}"--%>
-                                                     <%--styleClass="form-control">--%>
-                                        <%--</ap:selectDB>--%>
-                                    <%--</td>--%>
-                                    <%--<th>项目类型</th>--%>
-                                    <%--<td>--%>
-                                        <%--<ap:selectDB name="ddProjectType" id="ddProjectType"--%>
-                                                     <%--where="parentId=10000027440025" optionValue="itemValue"--%>
-                                                     <%--optionText="itemName" table="SYS_DIC"--%>
-                                                     <%--selectedValue="${Project.ddProjectType}"--%>
-                                                     <%--styleClass="form-control">--%>
-                                        <%--</ap:selectDB>--%>
-                                    <%--</td>--%>
+                                <%--<th>所属型号</th>--%>
+                                <%--<td>--%>
+                                <%--<ap:selectDB name="ddProjectBelongModel" id="ddProjectBelongModel"--%>
+                                <%--where="parentId=10000027440014" optionValue="itemValue"--%>
+                                <%--optionText="itemName" table="SYS_DIC"--%>
+                                <%--selectedValue="${Project.ddProjectBelongModel}"--%>
+                                <%--styleClass="form-control">--%>
+                                <%--</ap:selectDB>--%>
+                                <%--</td>--%>
+                                <%--<th>项目类型</th>--%>
+                                <%--<td>--%>
+                                <%--<ap:selectDB name="ddProjectType" id="ddProjectType"--%>
+                                <%--where="parentId=10000027440025" optionValue="itemValue"--%>
+                                <%--optionText="itemName" table="SYS_DIC"--%>
+                                <%--selectedValue="${Project.ddProjectType}"--%>
+                                <%--styleClass="form-control">--%>
+                                <%--</ap:selectDB>--%>
+                                <%--</td>--%>
                                 <%--</tr>--%>
                                 <tr>
                                     <%--<th>密级</th>--%>
                                     <%--<td>--%>
-                                        <%--<ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"--%>
-                                                     <%--where="parentId=10000027440019" optionValue="itemValue"--%>
-                                                     <%--optionText="itemName" table="SYS_DIC"--%>
-                                                     <%--selectedValue="${Project.ddProjectSecretLevel}"--%>
-                                                     <%--styleClass="form-control">--%>
-                                        <%--</ap:selectDB>--%>
+                                    <%--<ap:selectDB name="ddProjectSecretLevel" id="ddProjectSecretLevel"--%>
+                                    <%--where="parentId=10000027440019" optionValue="itemValue"--%>
+                                    <%--optionText="itemName" table="SYS_DIC"--%>
+                                    <%--selectedValue="${Project.ddProjectSecretLevel}"--%>
+                                    <%--styleClass="form-control">--%>
+                                    <%--</ap:selectDB>--%>
                                     <%--</td>--%>
                                     <th>项目阶段</th>
                                     <td>
@@ -123,25 +125,25 @@
                     </div>
                 </div>
                 <%--<div role="tabpanel" class="tab-pane" id="profile">--%>
-                    <%--<p>--%>
-                    <%--<h3>动态提醒</h3>--%>
-                    <%--<small>（仅对个人）</small>--%>
-                    <%--</p>--%>
-                    <%--<div class="col-sm-12">--%>
-                        <%--<div class="radio">--%>
-                            <%--<label>--%>
-                                <%--<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"--%>
-                                       <%--checked>--%>
-                                <%--推送动态提醒（显示标记并以桌面通知的方式进行推送）--%>
-                            <%--</label>--%>
-                        <%--</div>--%>
-                        <%--<div class="radio">--%>
-                            <%--<label>--%>
-                                <%--<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">--%>
-                                <%--不推送动态提醒（只显示标记）--%>
-                            <%--</label>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+                <%--<p>--%>
+                <%--<h3>动态提醒</h3>--%>
+                <%--<small>（仅对个人）</small>--%>
+                <%--</p>--%>
+                <%--<div class="col-sm-12">--%>
+                <%--<div class="radio">--%>
+                <%--<label>--%>
+                <%--<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"--%>
+                <%--checked>--%>
+                <%--推送动态提醒（显示标记并以桌面通知的方式进行推送）--%>
+                <%--</label>--%>
+                <%--</div>--%>
+                <%--<div class="radio">--%>
+                <%--<label>--%>
+                <%--<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">--%>
+                <%--不推送动态提醒（只显示标记）--%>
+                <%--</label>--%>
+                <%--</div>--%>
+                <%--</div>--%>
                 <%--</div>--%>
                 <div role="tabpanel" class="tab-pane" id="more">
                     <p>
@@ -170,11 +172,11 @@
                 url: "${ctx}/datadriver/project/del.ht?id=" + ${Project.ddProjectId},
                 success: function (res) {
                     $("#myCreate").modal('hide');
-                    alertify.set('notifier','position', 'top-right');
+                    alertify.set('notifier', 'position', 'top-right');
                     alertify.success("删除成功！");
                 },
                 error: function (err) {
-                    alertify.set('notifier','position', 'top-right');
+                    alertify.set('notifier', 'position', 'top-right');
                     alertify.error("删除失败！");
                 }
             });
@@ -205,11 +207,11 @@
         var obj = new com.hotent.form.ResultMessage(responseText);
         if (obj.isSuccess()) {
             $("#myCreate").modal('hide');
-            alertify.set('notifier','position', 'top-right');
+            alertify.set('notifier', 'position', 'top-right');
             alertify.success("更新成功！");
         }
         else {
-            alertify.set('notifier','position', 'top-right');
+            alertify.set('notifier', 'position', 'top-right');
             alertify.error("您的添加或更新失败！");
         }
     }
