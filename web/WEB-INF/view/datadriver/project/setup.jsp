@@ -164,7 +164,8 @@
     //@ sourceURL=setup.ht
     // 删除项目
     $('#delProject').click(function () {
-        alertify.confirm("提示信息", "将删除项目及全部所属任务", function () {
+        if(${temp}){
+            alertify.confirm("提示信息", "将删除项目及全部所属任务", function () {
             // 用户点击"ok"按钮
             $.ajax({
                 type: "get",
@@ -179,8 +180,12 @@
                     alertify.error("删除失败！");
                 }
             });
-        }, function () {
-        }).set('labels', {ok: '确认', cancel: '取消'});
+        }, function() {
+        }).set('labels', {ok:'确认', cancel:'取消'});
+        }else if(!${temp}){
+            alertify.confirm("提示信息", "任务已发布，无法删除项目，请收回后再删除",function () {},function () {
+            }).set('labels', {ok:'确认', cancel:'取消'});
+        }
     });
 
     $(function () {
