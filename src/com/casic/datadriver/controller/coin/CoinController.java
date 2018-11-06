@@ -67,6 +67,40 @@ public class CoinController extends GenericController {
     }
 
     /**
+     *  测试接口
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("test/test")
+    @ResponseBody
+    @Action(description = "测试获取用户信息")
+    public void testGetUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        if (request.getHeader("clientip") != null) {
+            jsonObject.put("clientip", request.getHeader("clientip"));
+        }
+        if (request.getHeader("username") != null ) {
+            jsonObject.put("username", request.getHeader("username"));
+        }
+        if (request.getHeader("password") != null ) {
+            jsonObject.put("password", request.getHeader("password"));
+        }
+
+        jsonObject.put("test", "test");
+        try {
+            // 解决跨域
+            String callback = request.getParameter("callback");
+            if (callback == null) {
+                callback = "success";
+            }
+            response.getWriter().write("{" + callback + ":" + jsonObject + "}");
+        } catch (Exception e) {
+            writeResultMessage(response.getWriter(), "获取用户信息" + e.getMessage(), ResultMessage.Fail);
+        }
+    }
+
+    /**
      * 获取个人所有详情
      *
      * @param response 响应

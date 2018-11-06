@@ -165,9 +165,10 @@
             '<a id="stepIntoProject" href="javascript:void(0)" class="btn btn-success btn-xs" title="点击进入项目"><span class="glyphicon glyphicon-log-in"></span> 进入',
             '</a>', ' ',
             '<a id="setupProject" href="javascript:void(0)" class="btn btn-default btn-xs" title="点击设置项目"><span class="glyphicon glyphicon-cog"></span> 设置',
-            '</a>', ' ',
-            '<a id="processFlow" href="javascript:void(0)" class="btn btn-default btn-xs" title="点击进入进行任务创建"><span class="glyphicon glyphicon-road"></span> 流程创建',
             '</a>'
+            // , ' ',
+            // '<a id="processFlow" href="javascript:void(0)" class="btn btn-default btn-xs" title="点击进入进行任务创建"><span class="glyphicon glyphicon-road"></span> 流程创建',
+            // '</a>'
         ].join('');
     }
     //设置table高度

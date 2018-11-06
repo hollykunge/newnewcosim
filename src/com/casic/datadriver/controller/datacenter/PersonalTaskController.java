@@ -53,16 +53,6 @@ public class PersonalTaskController extends AbstractController {
     private PrivateDataService privateDataService;
     @Resource
     private OrderDataRelationService orderDataRelationService;
-    @Resource
-    private TaskStartService taskStartService;
-    @Resource
-    private TaskVerMapService taskVerMapService;
-    @Resource
-    private PrivateVersionService privateVersionService;
-    @Resource
-    private ProjectService projectService;
-
-    JsonFormat Tjson = new JsonFormat();
 
     /**
      * 2016/12/4/
@@ -224,7 +214,7 @@ public class PersonalTaskController extends AbstractController {
     public ModelAndView showdata(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
         Integer type = RequestUtil.getInt(request, "type");
-        if (type == null||type==0){
+        if (type == null || type == 0) {
             type = 1;
         }
         TaskInfo taskInfo = taskInfoService.getById(taskId);
@@ -248,7 +238,7 @@ public class PersonalTaskController extends AbstractController {
     public ModelAndView showorder(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
         Integer type = RequestUtil.getInt(request, "type");
-        if (type == null||type==0){
+        if (type == null || type == 0) {
             type = 1;
         }
         Long projectId = RequestUtil.getLong(request, "projectId");
@@ -323,7 +313,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("createToPublish")
-    @Action(description = "私有与发布数据的切换")//8
+    @Action(description = "私有与发布数据的切换")
     public void createToPublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = "";
         String dataIds = RequestUtil.getString(request, "dataIds");
@@ -353,9 +343,9 @@ public class PersonalTaskController extends AbstractController {
 
     public void delprivate(Long privateId) {
         privateDataService.delDataById(privateId);
-        if (privateDataService.getDataListByPId(privateId).size() == 0)
+        if (privateDataService.getDataListByPId(privateId).size() == 0) {
             return;
-        else {
+        } else {
             Long pid = privateId;
             List<PrivateData> privateDatalist = privateDataService.getDataListByPId(pid);
             privateDataService.delDataById(pid);
