@@ -76,8 +76,8 @@
         <li role="presentation" id="switch_attr_index"><a href="#indextab" data-toggle="tab" role="tab"><span class="glyphicon glyphicon-list-alt"></span> 指标</a></li>
         <%--<li role="presentation"><a href="#calendar" data-toggle="tab" role="tab" title="暂不可用">日程</a></li>--%>
         <div class="pull-right">
-            <a id="statis_btn" class="btn btn-default" onclick="showStatis(${Project.ddProjectId})"><span
-                    class="glyphicon glyphicon-stats"></span> 进度监控</a>
+            <%--<a id="statis_btn" class="btn btn-default" onclick="showStatis(${Project.ddProjectId})"><span--%>
+                    <%--class="glyphicon glyphicon-stats"></span> 进度监控</a>--%>
             <a class="btn btn-default btn-success" href="javascript:void(0)" id="create_task"
                onclick="createTask(${Project.ddProjectId})"><span class="glyphicon glyphicon-bookmark"></span> 创建任务</a>
             <a class="btn btn-default" href="javascript:void(0)" id="done"

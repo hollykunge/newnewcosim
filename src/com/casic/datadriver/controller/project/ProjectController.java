@@ -83,8 +83,6 @@ public class ProjectController extends BaseController {
     @Resource
     private PrivateDataService privateDataService;
 
-    JsonFormat Tjson = new JsonFormat();
-
     /**
      * 保存项目
      *
@@ -247,13 +245,6 @@ public class ProjectController extends BaseController {
         out.append(jsonstring);
         out.flush();
         out.close();
-    }
-
-    //添加空格
-    private static void addIndentBlank(StringBuilder sb, int indent) {
-        for (int i = 0; i < indent; i++) {
-            sb.append('\t');
-        }
     }
 
     /**

@@ -84,6 +84,7 @@ public class PrivateDataController extends AbstractController {
 
     @Resource
     private SysUserService sysUserService;
+
     /**
      * ?????????.
      *
@@ -140,7 +141,6 @@ public class PrivateDataController extends AbstractController {
     private PrivateData getFormObject(HttpServletRequest request) throws Exception {
         JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher((new String[]{"yyyy-MM-dd"})));
         String name = RequestUtil.getString(request, "ddDataName1");
-//        String name1 = RequestUtil.getString(request, "ddDataName");
         String json = RequestUtil.getString(request, "json");
         JSONObject obj = JSONObject.fromObject(json);
 
@@ -235,7 +235,7 @@ public class PrivateDataController extends AbstractController {
             long typeId = RequestUtil.getLong(request, "typeId");
             String secretLevel = RequestUtil.getString(request, "secretLevel");
             ISysUser appUser = null;
-            if(userId>0){
+            if (userId > 0) {
                 appUser = sysUserService.getById(userId);
             }
             // 获取附件类型
@@ -296,7 +296,7 @@ public class PrivateDataController extends AbstractController {
                 sysFile.setDelFlag(SysFile.FILE_NOT_DEL);
                 sysFileService.add(sysFile);
 
-                if (dataId>0){
+                if (dataId > 0) {
                     PrivateData privateData = privateDataService.getDataById(dataId);
                     privateData.setDdDataPath(sysFile.getFilePath());
                     privateData.setDdDataLastestValue(sysFile.getFileName());
@@ -448,7 +448,7 @@ public class PrivateDataController extends AbstractController {
             fu.setRepositoryPath(temp);
             // 开始读取上传信息
             TaskInfo taskinfo = taskInfoService.getTaskById(taskId);
-            if (file == null){
+            if (file == null) {
                 return;
             }
 
@@ -457,7 +457,7 @@ public class PrivateDataController extends AbstractController {
             String name = file.getOriginalFilename();// 获取上传文件名,包括路径
             //name = name.substring(name.lastIndexOf("\\") + 1);// 从全路径中提取文件名
             long size = file.getSize();
-            if ((name == null || name.equals("")) && size == 0){
+            if ((name == null || name.equals("")) && size == 0) {
                 return;
             }
 

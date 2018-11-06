@@ -28,38 +28,39 @@ public class MergeLogController extends GenericController {
     private SysAuditService sysAuditService;
     @Autowired
     private SysUserService sysUserService;
+
     /**
      * 添加其他模块日志
+     *
      * @param request
      * @param response
      * @throws Exception
      */
-	@RequestMapping("add")
-	@ResponseBody
-	//http://localhost:8080/mergelog/add.ht?logType="搜索"&logContent="搜索"&logUser="user1"&logIP="127.0.0.1"&logFrom="search"
-	public void add(HttpServletRequest request, HttpServletResponse response) throws Exception
-	{
-		try{
-			String logUser = RequestUtil.getString(request,"logUser");
-			String logType = RequestUtil.getString(request,"logType");
-			String logContent = RequestUtil.getString(request,"logContent");
-			String logIP = RequestUtil.getString(request,"logIP");
-			String logFrom = RequestUtil.getString(request,"logFrom");
-			SysAudit sysAudit = new SysAudit();
-			ISysUser sysUser = sysUserService.getByAccount(logUser);
-			sysAudit.setAuditId(UniqueIdUtil.genId());
-			sysAudit.setOpName(logType);
-			sysAudit.setExecutorId(sysUser.getUserId());
-			sysAudit.setExecutor(sysUser.getFullname());
-			sysAudit.setExeTime(new Date());
-			sysAudit.setExeMethod(logContent);
-			sysAudit.setFromIp(logIP);
-			sysAudit.setRequestURI(request.getRequestURI());
-			sysAudit.setReqParams(logFrom);
-			sysAuditService.add(sysAudit);
-		}catch(Exception e){
-			logger.error(e.getMessage(),e);
-			e.printStackTrace();
-		}
+    @RequestMapping("add")
+    @ResponseBody
+    //http://localhost:8080/mergelog/add.ht?logType="搜索"&logContent="搜索"&logUser="user1"&logIP="127.0.0.1"&logFrom="search"
+    public void add(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            String logUser = RequestUtil.getString(request, "logUser");
+            String logType = RequestUtil.getString(request, "logType");
+            String logContent = RequestUtil.getString(request, "logContent");
+            String logIP = RequestUtil.getString(request, "logIP");
+            String logFrom = RequestUtil.getString(request, "logFrom");
+            SysAudit sysAudit = new SysAudit();
+            ISysUser sysUser = sysUserService.getByAccount(logUser);
+            sysAudit.setAuditId(UniqueIdUtil.genId());
+            sysAudit.setOpName(logType);
+            sysAudit.setExecutorId(sysUser.getUserId());
+            sysAudit.setExecutor(sysUser.getFullname());
+            sysAudit.setExeTime(new Date());
+            sysAudit.setExeMethod(logContent);
+            sysAudit.setFromIp(logIP);
+            sysAudit.setRequestURI(request.getRequestURI());
+            sysAudit.setReqParams(logFrom);
+            sysAuditService.add(sysAudit);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
     }
 }
