@@ -54,11 +54,11 @@ public class CoinService {
         String resultMsg;
         //判断参数有效性
         if (!scoreRegulation.dataVerify(addScoreModel.getSourceDetail())) {
-            resultMsg = "工作活动信息未被收录到加分项中！";
+            resultMsg = "积分赚取失败！";
             return resultMsg;
         }
         scoreMessageProducer.send(addScoreModel);
-        resultMsg = "加分请求加入消息队列成功！";
+        resultMsg = "积分已赚取！";
         return resultMsg;
     }
 

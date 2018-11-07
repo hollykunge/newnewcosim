@@ -33,7 +33,7 @@ public class CoinController extends GenericController {
     /**
      * 赚取积分接口
      *
-     * @param account      身份证号
+     * @param uid      身份证号
      * @param sourceScore  分数
      * @param sourceType   一级类型
      * @param sourceDetail 二级类型
@@ -43,12 +43,12 @@ public class CoinController extends GenericController {
     @RequestMapping("add")
     @ResponseBody
     @Action(description = "赚取积分")
-    public void add(String account, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
             //TODO：传整个model
             AddScoreModel addScoreModel = new AddScoreModel();
-            addScoreModel.setAccount(account);
+            addScoreModel.setAccount(uid);
             addScoreModel.setSourceScore(sourceScore);
             addScoreModel.setSourceType(sourceType);
             addScoreModel.setSourceDetail(sourceDetail);
