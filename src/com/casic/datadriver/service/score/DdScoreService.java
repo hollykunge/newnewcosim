@@ -1,14 +1,13 @@
 package com.casic.datadriver.service.score;
 
 import com.casic.datadriver.dao.score.DdScoreDao;
-import com.casic.datadriver.model.coin.DdRank;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
+import com.hotent.core.bpmn20.entity.activiti.In;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
-import com.hotent.platform.dao.system.SysOrgDao;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
@@ -50,6 +49,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     /**
      * 供对外的CoinService调用的，增加DdScore信息
+     *
      * @param ddScoreInflow 一条流水
      */
     public Boolean updateScore(DdScoreInflow ddScoreInflow, DdScoreOutflow ddScoreOutflow) {
@@ -85,13 +85,13 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
             //首先获取积分统计缓存，每一个用户的一种SourceType对应一个积分统计对象
             String cacheKey = String.valueOf(ddScoreOutflow.getUserId()) + ddScoreOutflow.getSourceType();
             DdScore ddScoreTemp = getCache(cacheKey);
-            if (ddScoreTemp!=null){
+            if (ddScoreTemp != null) {
                 //计算出
                 Integer scoreTemp = ddScoreTemp.getScoreTotal() - ddScoreOutflow.getExpendScore();
                 ddScoreTemp.setUdpTime(ddScoreOutflow.getUdpTime());
                 ddScoreTemp.setScoreTotal(scoreTemp);
                 ddScoreDao.updateScore(ddScoreTemp);
-            }else {
+            } else {
                 return false;
             }
         }
@@ -170,6 +170,7 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
 
     /**
      * 查询类型
+     *
      * @param sourceType s
      */
     public List<DdScore> getType(String sourceType) {
@@ -177,55 +178,61 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
     }
 
     /**
+     * 通过最低分限和积分类型获取积分列表
+     *
+     * @param least     最低分限
+     * @param scoreType 一级类型
+     * @return 符合条件的列表
+     */
+    public List<DdScore> getScoresByLeastAndType(Integer least, String scoreType) {
+        List<DdScore> ddScoreList = this.getAllScore();
+        Iterator<DdScore> it = ddScoreList.iterator();
+        while (it.hasNext()) {
+            DdScore x = it.next();
+            if ((x.getScoreTotal() < 100) || (!scoreType.equals(x.getScoreType()))) {
+                it.remove();
+            }
+        }
+        return ddScoreList;
+    }
+
+    /**
      * 通过排名区间和积分类型获取积分列表
-     * @param rank 名次
+     *
+     * @param rank      名次
      * @param scoreType 一级类型
      * @return ddScoreList 排序完成
      */
     public List<DdScore> getScoresByRankAndType(Integer rank, String scoreType) {
         //初始化列表
         List<DdScore> ddScoreList = this.getAllScore();
-
-        //该列表负责筛选类型、排序和截断
-        List<DdScore> tempScoreList = new ArrayList<>();
-
-        //筛选类型
-        for (DdScore ddScore : ddScoreList) {
-            if (scoreType.equals(ddScore.getScoreType())) {
-                tempScoreList.add(ddScore);
+        //筛选类型并去除末尾零分项
+        Iterator<DdScore> it = ddScoreList.iterator();
+        while (it.hasNext()) {
+            DdScore x = it.next();
+            if ((x.getScoreTotal() == 0) || (!scoreType.equals(x.getScoreType()))) {
+                it.remove();
             }
         }
         //排序
-        Collections.sort(tempScoreList, new Comparator<DdScore>() {
+        Collections.sort(ddScoreList, new Comparator<DdScore>() {
             @Override
             public int compare(DdScore ddScore1, DdScore ddScore2) {
                 return ddScore2.getScoreTotal().compareTo(ddScore1.getScoreTotal());
             }
         });
-        //截断末尾零分项
-        Iterator<DdScore> it = tempScoreList.iterator();
-        while(it.hasNext()) {
-            DdScore x = it.next();
-            if(x.getScoreTotal() == 0) {
-                it.remove();
-            }
-        }
-        //列表截断，应该是根据不同类型选择不同数目
-        if (tempScoreList.size() > rank) {
-            Integer base = tempScoreList.get(rank - 1).getScoreTotal();
-            Iterator<DdScore> it2 = tempScoreList.iterator();
-            while(it2.hasNext()) {
+        //根据排名数获取列表
+        if (ddScoreList.size() > rank) {
+            //符合条件的最后一名分数
+            Integer base = ddScoreList.get(rank - 1).getScoreTotal();
+            Iterator<DdScore> it2 = ddScoreList.iterator();
+            while (it2.hasNext()) {
                 DdScore x = it2.next();
-                if(x.getScoreTotal() < base) {
+                if (x.getScoreTotal() < base) {
                     it2.remove();
-                    break;
                 }
             }
-            while(it2.hasNext()) {
-                it2.next();
-                it2.remove();
-            }
         }
-        return tempScoreList;
+        return ddScoreList;
     }
 }
