@@ -51,6 +51,25 @@ public class ScoreRegulation {
      */
     public static final Integer LOTTERY_BASE = 200;
 
+    /**
+     * 抽奖最少人数
+     */
+    public static final Integer LOTTERY_MIN_POOL = 100;
+
+    /**
+     * 积分兑币消耗类型
+     */
+    public static final String QUAN_JU_MONTH_RANK = "quan_ju_month_rank";
+    public static final String FENG_XIAN_MONTH_RANK = "feng_xian_month_rank";
+    public static final String QIU_SHI_MONTH_RANK = "qiu_shi_month_rank";
+    public static final String CHUANG_XIN_MONTH_RANK = "chuang_xin_month_rank";
+    public static final String LOTTERY_MONTH = "lottery_month";
+
+    /**
+     * 创新兑币积分
+     */
+    public static final Integer CHUANG_XIN_BASE = 100;
+
     //全局8种
     /**
      * 查看其他专业发来的任务数据

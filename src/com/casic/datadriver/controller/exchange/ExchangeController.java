@@ -1,7 +1,7 @@
 package com.casic.datadriver.controller.exchange;
 
 import com.casic.datadriver.controller.AbstractController;
-import com.casic.datadriver.model.coin.DdRank;
+import com.casic.datadriver.model.coin.RankModel;
 import com.casic.datadriver.service.exchange.ExchangeService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,22 +23,22 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/datadriver/exchange/")
-public class ExchangeController extends AbstractController  {
+public class ExchangeController extends AbstractController {
 
     @Autowired
     private ExchangeService exchangeService;
 
     /**
      * 获取单类积分的入围名单，每人一个币，平分奖池
-     * @param scoreType 一级类型
+     *
      * @throws Exception e
      */
-    @RequestMapping("getRankByType")
-    public void getRankByType(String scoreType, HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
+    @RequestMapping("getMonthRankByType")
+    public void getMonthRankByType(HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR;
         try {
-            List<DdRank> itemList = exchangeService.getRankByType(scoreType);
+            String type = RequestUtil.getString(request, "scoreType");
+            List<RankModel> itemList = exchangeService.getMonthRankByType(type);
             jsonR = JSONArray.fromObject(itemList);
             //解决跨域
             String callback = request.getParameter("callback");
@@ -49,14 +50,14 @@ public class ExchangeController extends AbstractController  {
 
     /**
      * 获取三类积分和够某一数值后，并且没入围平分金钱名单的人名单
+     *
      * @throws Exception e
      */
-    @RequestMapping("getLotteryRank")
-    public void getLotteryRank(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
+    @RequestMapping("getLotteryList")
+    public void getLotteryList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR;
         try {
-            List<DdRank> itemList = exchangeService.getLotteryRank();
+            List<RankModel> itemList = exchangeService.getLotteryList();
             jsonR = JSONArray.fromObject(itemList);
             //解决跨域
             String callback = request.getParameter("callback");
@@ -67,26 +68,44 @@ public class ExchangeController extends AbstractController  {
     }
 
     /**
-     * 后台管理使用，按月点击进行兑换
+     * 传入抽奖列表生成抽奖结果并写入数据库
+     *
      * @throws Exception e
      */
-    @RequestMapping("consume")
-    @Action(description="消耗积分兑换币")
-    public void consume(HttpServletRequest request, HttpServletResponse response) throws Exception
-    {
-        String resultMsg=null;
-        try{
-//            Long userId = RequestUtil.getLong(request, "userId", 0);
-            String type = RequestUtil.getString(request, "scoreType");
-//            Long scoreNum = RequestUtil.getLong(request, "scoreNum");
-            exchangeService.consume(type);
-            resultMsg = getText("coin.consumed", "兑换成功");
-            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
-        } catch (Exception e){
-            resultMsg = getText("coin.consumed", "兑换失败");
-            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
+    @RequestMapping("getLotteryResult")
+    public void getLotteryResult(List<RankModel> rankModelList, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        JSONArray jsonR;
+        try {
+            List<RankModel> lotteryResult = exchangeService.getLotteryResult(rankModelList);
+            jsonR = JSONArray.fromObject(lotteryResult);
+            //解决跨域
+            String callback = request.getParameter("callback");
+            response.getWriter().write(callback + "(" + jsonR.toString() + ")");
+        } catch (Exception e) {
+            writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
-//        String returnUrl = RequestUtil.getPrePage(request);
     }
 
+    /**
+     * 后台管理使用，按月点击进行兑换
+     *
+     * @throws Exception e
+     */
+//    @RequestMapping("consume")
+//    @Action(description = "消耗积分兑换币")
+//    public void consume(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        String resultMsg = null;
+//        try {
+////            Long userId = RequestUtil.getLong(request, "userId", 0);
+//            String type = RequestUtil.getString(request, "scoreType");
+////            Long scoreNum = RequestUtil.getLong(request, "scoreNum");
+//            exchangeService.consume(type);
+//            resultMsg = getText("coin.consumed", "兑换成功");
+//            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+//        } catch (Exception e) {
+//            resultMsg = getText("coin.consumed", "兑换失败");
+//            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
+//        }
+////        String returnUrl = RequestUtil.getPrePage(request);
+//    }
 }
