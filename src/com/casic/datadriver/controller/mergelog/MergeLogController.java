@@ -49,11 +49,11 @@ public class MergeLogController extends GenericController {
             SysAudit sysAudit = new SysAudit();
             ISysUser sysUser = sysUserService.getByAccount(logUser);
             sysAudit.setAuditId(UniqueIdUtil.genId());
-            sysAudit.setOpName(logType);
+            sysAudit.setOpName(logContent);
             sysAudit.setExecutorId(sysUser.getUserId());
             sysAudit.setExecutor(sysUser.getFullname());
             sysAudit.setExeTime(new Date());
-            sysAudit.setExeMethod(logContent);
+            sysAudit.setExeMethod(logType);
             sysAudit.setFromIp(logIP);
             sysAudit.setRequestURI(request.getRequestURI());
             sysAudit.setReqParams(logFrom);

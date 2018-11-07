@@ -31,7 +31,7 @@ public class CoinController extends GenericController {
     private CoinService coinService;
 
     /**
-     * 赚取积分接口
+     * 赚取积分接口，参数不能改
      *
      * @param uid      身份证号
      * @param sourceScore  分数
@@ -39,6 +39,7 @@ public class CoinController extends GenericController {
      * @param sourceDetail 二级类型
      * @param updTime      更新时间
      * @throws Exception the exception
+     *
      */
     @RequestMapping("add")
     @ResponseBody
