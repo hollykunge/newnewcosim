@@ -83,8 +83,6 @@ public class ProjectController extends BaseController {
     @Resource
     private PrivateDataService privateDataService;
 
-    JsonFormat Tjson = new JsonFormat();
-
     /**
      * 保存项目
      *
@@ -249,13 +247,6 @@ public class ProjectController extends BaseController {
         out.close();
     }
 
-    //添加空格
-    private static void addIndentBlank(StringBuilder sb, int indent) {
-        for (int i = 0; i < indent; i++) {
-            sb.append('\t');
-        }
-    }
-
     /**
      * Del.
      *
@@ -352,8 +343,21 @@ public class ProjectController extends BaseController {
         long id = RequestUtil.getLong(request, "id");
         Project Project = projectService.getById(id);
         String creatorName = ContextUtil.getCurrentUser().getFullname();
+        List<TaskInfo> taskInfos = taskInfoService.queryTaskInfoByProjectId(id);
+        boolean temp = false;
+        for (TaskInfo taskInfo:taskInfos){
+            if (taskInfo.getDdTaskChildType() != null && taskInfo.getDdTaskChildType().equals("createpanel")){
+                temp = true;
+            }else {
+                temp = false;
+                break;
+            }
+        }
+        if(taskInfos.size() == 0){
+            temp=true;
+        }
         Long creatorId = ContextUtil.getCurrentUser().getUserId();
-        return getAutoView().addObject("Project", Project).addObject("creatorName", creatorName).addObject("creatorId", creatorId);
+        return getAutoView().addObject("Project", Project).addObject("creatorName", creatorName).addObject("creatorId", creatorId).addObject("temp",temp);
     }
 
     /**

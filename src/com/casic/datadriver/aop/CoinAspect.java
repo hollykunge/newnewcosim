@@ -80,12 +80,14 @@ public class CoinAspect {
     public void orderAndCreateAspect() {
     }
 
-    //TODO controller方法移植到SERVICE
+    /**
+     * TODO controller方法移植到SERVICE
+     */
     @AfterReturning(returning = "result", pointcut = "todotaskAspect()")
     public void todotaskReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(1);
+        ddScoreInflow.setSourceScore(2);
         ddScoreInflow.setSourceDetail("design_1");
         setData(ddScoreInflow);
     }
@@ -94,7 +96,7 @@ public class CoinAspect {
     public void updatePrivateDataReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(2);
+        ddScoreInflow.setSourceScore(10);
         ddScoreInflow.setSourceDetail("design_2");
         setData(ddScoreInflow);
     }
@@ -103,7 +105,7 @@ public class CoinAspect {
     public void uploadPrivateFileReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(2);
+        ddScoreInflow.setSourceScore(5);
         ddScoreInflow.setSourceDetail("design_3");
         setData(ddScoreInflow);
     }
@@ -112,7 +114,7 @@ public class CoinAspect {
     public void submittaskReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(10);
+        ddScoreInflow.setSourceScore(30);
         ddScoreInflow.setSourceDetail("design_4");
         setData(ddScoreInflow);
     }
@@ -121,7 +123,7 @@ public class CoinAspect {
     public void saveReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(10);
+        ddScoreInflow.setSourceScore(30);
         ddScoreInflow.setSourceDetail("design_6");
         setData(ddScoreInflow);
     }
@@ -141,7 +143,7 @@ public class CoinAspect {
             if (flagList.size() == 0) {
                 map.put(account, taskId.toString());
                 flagList.add(map);
-                ddScoreInflow.setSourceScore(10);
+                ddScoreInflow.setSourceScore(30);
                 ddScoreInflow.setSourceDetail("design_8");
                 setData(ddScoreInflow);
             } else {
@@ -155,14 +157,14 @@ public class CoinAspect {
                 if (!flag) {
                     map.put(account, taskId.toString());
                     flagList.add(map);
-                    ddScoreInflow.setSourceScore(10);
+                    ddScoreInflow.setSourceScore(30);
                     ddScoreInflow.setSourceDetail("design_8");
                     setData(ddScoreInflow);
                 }
             }
         } else {
 
-            ddScoreInflow.setSourceScore(10);
+            ddScoreInflow.setSourceScore(30);
             ddScoreInflow.setSourceDetail("design_8");
             setData(ddScoreInflow);
         }
@@ -173,7 +175,7 @@ public class CoinAspect {
     public void doneReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(10);
+        ddScoreInflow.setSourceScore(50);
         ddScoreInflow.setSourceDetail("design_5");
         setData(ddScoreInflow);
     }

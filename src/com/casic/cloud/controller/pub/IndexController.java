@@ -251,7 +251,7 @@ public class IndexController extends BaseController {
     @RequestMapping("loginiwork")
     @Action(description = "平台登录")
     public ModelAndView loginiwork(HttpServletRequest request,
-                                   HttpServletResponse response, String id, int type) throws Exception {
+                                   HttpServletResponse response, String id, String type) throws Exception {
 
         String password = "123456";
         String errMsg = "";
@@ -311,19 +311,27 @@ public class IndexController extends BaseController {
             // 重定向到我的页面中
 //            response.sendRedirect(request.getContextPath() + "/cloud/console/home.ht");
 //            http://192.168.8.102:8080/cloud/console/outline.ht?target=/datadriver/personaltask/list.ht&resId=10000026700011
+            Long taskId = Long.valueOf(type);
+            if (taskId>100){
+                type = "8";
+            }
             switch (type) {
-                case 1:
+                case "1":
                     response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/personaltask/list.ht&resId=10000022100001");
                     break;
-                case 2:
+                case "2":
                     response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/modelcenter/list.ht&resId=10000026700011");
                     break;
-                case 3:
+                case "3":
                     response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/datacenter/list.ht&resId=10000022100003");
                     break;
-                case 4:
+                case "4":
                     response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/project/list.ht&resId=10000022100002");
                     break;
+                case "8":
+                    response.sendRedirect(request.getContextPath() + "/cloud/console/outline.ht?target=/datadriver/personaltask/todotask.ht?id=" + taskId + "&type=+ 1");
+                    break;
+//                "todotask.ht?id=" + row.ddTaskId + "&type=" + 1;
                 default:
                     break;
             }
