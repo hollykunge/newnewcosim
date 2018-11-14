@@ -205,7 +205,7 @@
                         minHeight: 600,
                         minWidth: 180,
                         height: 720,
-                        width: 300,
+                        width: 320,
                         autoOpen: false,
                         initContent: function () {
                             $('#knowledge_frame').jqxWindow('focus');
@@ -275,7 +275,7 @@
         });
     }
     knowledge_btn.onclick = function () {
-        $('#knowledgeContent').attr('src', 'http://10.12.97.21:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=%E6%8B%89%E5%A7%86&targets=%E7%A9%BA%E5%9C%B0%E5%AF%BC%E5%BC%B9%20%E5%B7%A1%E8%88%AA%E5%AF%BC%E5%BC%B9&type=2');
+        $('#knowledgeContent').attr('src', 'http://10.12.97.21:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=abc&type=2');
         // $('#windowContent').html(data);
     }
 </script>
