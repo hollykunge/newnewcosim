@@ -6,19 +6,46 @@ import java.util.Date;
 
 /**
  * @Author: hollykunge
- * @Description:
  * @Date: 创建于 2018/9/27
- * @Modified:
  */
+
 public class DdGoldenCoin extends BaseModel {
+
     private Long id;
 
+    /**
+     * 用户id
+     */
     private Long userId;
+
+    /**
+     * 币总数
+     */
     private Long coinNum;
+
+    /**
+     * 币类型
+     */
     private String coinType;
+
+    /**
+     * 用户名称
+     */
     private String userName;
+
+    /**
+     * 组织名称
+     */
     private String orgName;
+
+    /**
+     * 组织id
+     */
     private Long orgId;
+
+    /**
+     * 时间戳
+     */
     private java.util.Date updTime;
 
     public Long getId() {

@@ -1,7 +1,7 @@
 package com.casic.datadriver.controller.coin;
 
 import com.casic.datadriver.model.coin.AddScoreModel;
-import com.casic.datadriver.model.coin.DdRank;
+import com.casic.datadriver.model.coin.RankModel;
 import com.casic.datadriver.service.coin.CoinService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.controller.GenericController;
@@ -19,6 +19,7 @@ import java.util.*;
 
 /**
  * 主要是积分部分的对外接口，可以提供丰富的积分和协同币展示方式
+ *
  * @Author: hollykunge
  * @Date: 创建于 2018/9/20
  */
@@ -31,24 +32,25 @@ public class CoinController extends GenericController {
     private CoinService coinService;
 
     /**
-     * 赚取积分接口
+     * 赚取积分接口，参数不能改
      *
-     * @param account      身份证号
+     * @param uid      身份证号
      * @param sourceScore  分数
      * @param sourceType   一级类型
      * @param sourceDetail 二级类型
      * @param updTime      更新时间
      * @throws Exception the exception
+     *
      */
     @RequestMapping("add")
     @ResponseBody
     @Action(description = "赚取积分")
-    public void add(String account, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
             //TODO：传整个model
             AddScoreModel addScoreModel = new AddScoreModel();
-            addScoreModel.setAccount(account);
+            addScoreModel.setAccount(uid);
             addScoreModel.setSourceScore(sourceScore);
             addScoreModel.setSourceType(sourceType);
             addScoreModel.setSourceDetail(sourceDetail);
@@ -57,7 +59,6 @@ public class CoinController extends GenericController {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", resultMsg);
-//            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
             //解决跨域
             String callback = request.getParameter("callback");
             response.getWriter().write(callback + "(" + jsonObject + ")");
@@ -104,7 +105,7 @@ public class CoinController extends GenericController {
      * 获取个人所有详情
      *
      * @param response 响应
-     * @throws Exception 扔
+     * @throws Exception the exception
      */
     @RequestMapping("personalScore")
     @ResponseBody
@@ -124,7 +125,7 @@ public class CoinController extends GenericController {
 
     /**
      * @param response 响应
-     * @throws Exception 扔
+     * @throws Exception the exception
      */
     @RequestMapping("rank")
     @ResponseBody
@@ -132,7 +133,7 @@ public class CoinController extends GenericController {
     public void getRank(String sourceType, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
-            List<DdRank> itemList = coinService.getRank(sourceType);
+            List<RankModel> itemList = coinService.getRank(sourceType);
             jsonR = JSONArray.fromObject(itemList);
             //解决跨域
             String callback = request.getParameter("callback");

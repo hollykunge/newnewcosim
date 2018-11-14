@@ -70,7 +70,17 @@
         });
     </script>
 </head>
-<body>
+<body id="jqxWidget">
+<div id="knowledge_frame">
+    <div id="windowHeader">
+                    <span>
+                        相关知识
+                    </span>
+    </div>
+    <div style="overflow: hidden;" id="windowContent">
+        <iframe id="knowledgeContent" src="" width="300" height="720" frameborder="0" scrolling="auto" marginheight="2px" marginwidth="2px"></iframe>
+    </div>
+</div>
 <div class="container" id="dataList">
     <div class="row">
         <div class="col-xs-9">
@@ -84,6 +94,8 @@
             <div class="pull-right">
                 <a class="btn btn-success" href="javascript:void(0)" id="submit_btn"><span
                         class="glyphicon glyphicon-ok"></span> 提交审核</a>
+                <a class="btn btn-default" href="javascript:void(0)" id="knowledge_btn"><span
+                        class="glyphicon glyphicon-book"></span> 知识获取</a>
                 <%--<a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span--%>
                 <%--class="glyphicon glyphicon-stats"></span>--%>
                 <%--流程监控--%>
@@ -164,10 +176,64 @@
 <script src="${ctx}/styles/slide/js/classie.js"></script>
 <script type="text/javascript">
     //@ sourceURL=todotask.ht
+    var knowledgeWindow = (function () {
+                var currentWidth = $(window).width();
+
+                //Adding event listeners
+                function _addEventListeners() {
+                    $('#knowledge_frame').jqxWindow('resizable', true);
+                    $('#knowledge_frame').jqxWindow('draggable', true);
+
+                    $('#knowledge_btn').click(function () {
+                        $('#knowledge_frame').jqxWindow('open');
+                    });
+                    // $('#hideWindowButton').click(function () {
+                    //     $('#knowledge_frame').jqxWindow('close');
+                    // });
+                }
+                ;
+
+                //Creating the window
+                function _createWindow() {
+                    var jqxWidget = $('#jqxWidget');
+                    var offset = jqxWidget.offset();
+                    $('#knowledge_frame').jqxWindow({
+                        position: {x: offset.left + (currentWidth - 360), y: offset.top},
+                        showCollapseButton: true,
+                        maxHeight: 800,
+                        maxWidth: 360,
+                        minHeight: 600,
+                        minWidth: 180,
+                        height: 720,
+                        width: 320,
+                        autoOpen: false,
+                        initContent: function () {
+                            $('#knowledge_frame').jqxWindow('focus');
+                        }
+                    });
+                };
+                return {
+                    config: {
+                        dragArea: null
+                    },
+                    init: function () {
+                        //Attaching event listeners
+                        _addEventListeners();
+                        //Adding jqxWindow
+                        _createWindow();
+                    }
+                };
+            }
+            ()
+        )
+    ;
     $(document).ready(function () {
         $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {
             $('#data').html(data);
         });
+
+        knowledgeWindow.init();
+
     });
 
     var switch_attr_index = document.getElementById('switch_attr_index'),
@@ -179,6 +245,7 @@
 
         switch_attr_child = document.getElementById('switch_attr_child'),
         submit_btn = document.getElementById('submit_btn'),
+        knowledge_btn = document.getElementById('knowledge_btn'),
         switch_attr_talk = document.getElementById('switch_attr_talk');
 
 
@@ -206,6 +273,10 @@
         $.get("showorder.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {
             $('#publish').html(data);
         });
+    }
+    knowledge_btn.onclick = function () {
+        $('#knowledgeContent').attr('src', 'http://10.12.97.21:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=abc&type=2');
+        // $('#windowContent').html(data);
     }
 </script>
 </html>

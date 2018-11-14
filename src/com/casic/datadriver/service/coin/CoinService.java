@@ -54,11 +54,11 @@ public class CoinService {
         String resultMsg;
         //判断参数有效性
         if (!scoreRegulation.dataVerify(addScoreModel.getSourceDetail())) {
-            resultMsg = "工作活动信息未被收录到加分项中！";
+            resultMsg = "积分赚取失败！";
             return resultMsg;
         }
         scoreMessageProducer.send(addScoreModel);
-        resultMsg = "加分请求加入消息队列成功！";
+        resultMsg = "积分已赚取！";
         return resultMsg;
     }
 
@@ -189,11 +189,11 @@ public class CoinService {
      * @param sourceType 一级类型
      * @return 该类型排行榜
      */
-    public List<DdRank> getRank(String sourceType) {
+    public List<RankModel> getRank(String sourceType) {
         List<DdScore> ddScoreList = ddScoreService.getScoresByRankAndType(ScoreRegulation.RANK_NUM, sourceType);
-        List<DdRank> itemList = new ArrayList<>();
+        List<RankModel> itemList = new ArrayList<>();
         for (DdScore ddScore : ddScoreList) {
-            DdRank e = new DdRank();
+            RankModel e = new RankModel();
             e.setUserName(ddScore.getUserName());
             String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
             e.setOrgName(orgName);
@@ -202,7 +202,7 @@ public class CoinService {
         }
         //写排名
         int i = 1;
-        for (DdRank item : itemList) {
+        for (RankModel item : itemList) {
             item.setRank(i++);
         }
         return itemList;

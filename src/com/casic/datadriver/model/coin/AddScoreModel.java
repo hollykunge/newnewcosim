@@ -2,12 +2,35 @@ package com.casic.datadriver.model.coin;
 
 import com.hotent.core.model.BaseModel;
 
+/**
+ * @author workhub
+ */
+
 public class AddScoreModel extends BaseModel {
 
+    /**
+     * 身份证号
+     */
     private String account;
+
+    /**
+     * 积分数目
+     */
     private String sourceScore;
+
+    /**
+     * 积分种类
+     */
     private String sourceType;
+
+    /**
+     * 积分明细
+     */
     private String sourceDetail;
+
+    /**
+     * 时间戳
+     */
     private String updTime;
 
     public String getAccount() {
@@ -48,5 +71,16 @@ public class AddScoreModel extends BaseModel {
 
     public void setUpdTime(String updTime) {
         this.updTime = updTime;
+    }
+
+    @Override
+    public String toString() {
+        return "AddScoreModel {" +
+                "account='" + account + '\'' +
+                ", sourceScore=" + sourceScore +
+                ", sourceType='" + sourceType + '\'' +
+                ", sourceDetail='" + sourceDetail + '\'' +
+                ", updTime='" + updTime +
+                '}';
     }
 }

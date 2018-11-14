@@ -12,6 +12,10 @@
           var isme = false
           try {
               isme = JSInteraction.isme();
+              var taskId = isme;
+              if (taskId > 100) {
+                  isme=8;
+              }
               switch (isme){
                   case 1:
                       value = "/datadriver/personaltask/list.ht";
@@ -27,6 +31,9 @@
                       break;
                   case 5://项目管理
                       value = "/datadriver/project/list.ht";
+                      break;
+                  case 8://任务详情
+                      value = "/datadriver/personaltask/todotask.ht?id=" + taskId + "&type=" + 8;
                       break;
                   default:
                       break;
