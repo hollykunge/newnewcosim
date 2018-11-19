@@ -44,7 +44,6 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("add")
     @ResponseBody
-    @Action(description = "赚取积分")
     public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
@@ -75,7 +74,6 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("test/test")
     @ResponseBody
-    @Action(description = "测试获取用户信息")
     public void testGetUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONObject jsonObject = new JSONObject();
         if (request.getHeader("clientip") != null) {
@@ -109,7 +107,6 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("personalScore")
     @ResponseBody
-    @Action(description = "个人所有详情")
     public void personalScore(String account, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
@@ -129,7 +126,6 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("rank")
     @ResponseBody
-    @Action(description = "获取排名")
     public void getRank(String sourceType, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
