@@ -122,7 +122,7 @@
                 </td>
             </tr>
             <tr>
-                <th width="20%">里程碑:</th>
+                <th width="20%">密级:</th>
                 <td>
                     <input type="text" id="task-secret" name="ddProjectSecretLevel"
                             <c:choose>
