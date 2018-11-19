@@ -218,7 +218,7 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                     cursor: "pointer",
                     disabled: false
                 });
-                uploadFile.jqxTooltip({position: 'bottom', content: "点击下载文件"});
+                uploadFile.jqxTooltip({position: 'bottom', content: "点击上传文件"});
 
                 var updateButtons = function (action) {
                     switch (action) {
