@@ -275,7 +275,7 @@
         });
     }
     knowledge_btn.onclick = function () {
-        $('#knowledgeContent').attr('src', 'http://10.12.97.21:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=abc&type=2');
+        $('#knowledgeContent').attr('src', 'http://10.12.97.21:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=${TaskInfo.ddTaskName}&type=2&j_username=${account}');
         // $('#windowContent').html(data);
     }
 </script>
