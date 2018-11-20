@@ -24,6 +24,8 @@ import com.hotent.core.util.ContextUtil;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.util.RequestUtil;
+import com.hotent.platform.auth.ISysUser;
+import com.hotent.platform.service.system.SysUserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -53,6 +55,8 @@ public class PersonalTaskController extends AbstractController {
     private PrivateDataService privateDataService;
     @Resource
     private OrderDataRelationService orderDataRelationService;
+    @Resource
+    private SysUserService sysUserService;
 
     /**
      * 2016/12/4/
@@ -181,9 +185,12 @@ public class PersonalTaskController extends AbstractController {
         Long taskId = RequestUtil.getLong(request, "id");
         Long type = RequestUtil.getLong(request, "type");
         TaskInfo taskInfo = taskInfoService.getById(taskId);
+        ISysUser sysUser = sysUserService.getById(taskInfo.getDdTaskResponsiblePerson());
+        String account = sysUser.getAccount();
         List<TaskInfo> taskInfoList = taskInfoService.getListByResponceIdAndState1(taskInfo.getDdTaskResponsiblePerson());
         return getAutoView().addObject("TaskInfo", taskInfo)
                 .addObject("type", type)
+                .addObject("account", account)
                 .addObject("taskInfoList", taskInfoList);
     }
 
