@@ -235,4 +235,8 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         }
         return ddScoreList;
     }
+
+    public void updateByType(DdScore ddScore){
+        ddScoreDao.updateByType(ddScore);
+    }
 }

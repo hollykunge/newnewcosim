@@ -2,6 +2,7 @@ package com.casic.datadriver.service.exchange;
 
 import com.casic.datadriver.dao.score.DdGoldenCoinDao;
 import com.casic.datadriver.dao.score.DdScoreOutflowDao;
+import com.casic.datadriver.jms.AddScoreHandler;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
 import com.casic.datadriver.model.coin.RankModel;
 import com.casic.datadriver.model.coin.DdScore;
@@ -60,12 +61,28 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
     }
 
     /**
-     * 获得某一种积分的排名中奖名单
+     * 根据积分类型清除月积分
      *
-     * @param scoreType 一级类型
-     * @return 获奖表
+     * @param scoreType
+     * @return
      */
-    public List<RankModel> getMonthRankByType(String scoreType) {
+    public void clearMonthScore(String scoreType){
+        DdScore ddScore = new DdScore();
+        Date updTime = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeDate = dateFormat.format(updTime);
+        ddScore.setScoreTotal(0);
+        ddScore.setUdpTime(timeDate);
+        ddScoreService.updateByType(ddScore);
+    }
+
+    /**
+     * 统计兑币人员，不包含抽奖人员，加币
+     *
+     * @param scoreType
+     * @return
+     */
+    public Set<RankModel> getRankByType(String scoreType){
         List<DdScore> ddScoreList;
         //本月消耗的积分
         Integer consumeScore = 0;
@@ -75,19 +92,19 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             //全局
             case QUAN_JU:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QUAN_JU, QUAN_JU);
-                consumeScore = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
+                clearMonthScore(QUAN_JU);
                 consumeType = QUAN_JU_MONTH_RANK;
                 break;
             //奉献
             case FENG_XIAN:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_FENG_XIAN, FENG_XIAN);
-                consumeScore = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
+                clearMonthScore(FENG_XIAN);
                 consumeType = FENG_XIAN_MONTH_RANK;
                 break;
             //求实
             case QIU_SHI:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QIU_SHI, QIU_SHI);
-                consumeScore = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
+                clearMonthScore(QIU_SHI);
                 consumeType = QIU_SHI_MONTH_RANK;
                 break;
             //创新
@@ -99,8 +116,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             default:
                 return null;
         }
-        //先写返回，再写数据库
-        List<RankModel> rankList = new ArrayList<>();
+        Set<RankModel> rankList = new HashSet<>();
         Integer i = 1;
         for (DdScore ddScore : ddScoreList) {
             RankModel ddRank = new RankModel();
@@ -112,10 +128,41 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             ddRank.setUserId(ddScore.getUserId());
             rankList.add(ddRank);
         }
+        return rankList;
+    }
+
+    /**
+     * 统计参与摇奖人员名单
+     *
+     * @param scoreType
+     * @return
+     */
+    public void getGamblers(){
+
+    }
+
+    /**
+     * 抽奖并且统计中奖人员名单
+     *
+     * @param scoreType
+     * @return
+     */
+    public void getWinners(){
+
+    }
+
+    /**
+     * 获得某一种积分的排名中奖名单
+     *
+     * @param scoreType 一级类型
+     * @return 获奖表
+     */
+    public List<RankModel> getMonthRankByType(String scoreType) {
+
         //写消耗积分的流水数据库
         for (DdScore ddScore : ddScoreList) {
             //币数
-            int getCoin;
+            Integer getCoin;
             if (CHUANG_XIN.equals(scoreType)) {
                 Integer chuangxinCoin = ddScore.getScoreTotal() / CHUANG_XIN_BASE;
                 consumeScore = chuangxinCoin * CHUANG_XIN_BASE;
