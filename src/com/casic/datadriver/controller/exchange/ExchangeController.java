@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: workhub
@@ -38,7 +39,7 @@ public class ExchangeController extends AbstractController {
         JSONArray jsonR;
         try {
             String type = RequestUtil.getString(request, "scoreType");
-            List<RankModel> itemList = exchangeService.getMonthRankByType(type);
+            Set<RankModel> itemList = exchangeService.getRankByType(type);
             jsonR = JSONArray.fromObject(itemList);
             //解决跨域
             String callback = request.getParameter("callback");

@@ -66,7 +66,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      * @param scoreType
      * @return
      */
-    public void clearMonthScore(String scoreType) {
+    private void clearMonthScore(String scoreType) {
         DdScore ddScore = new DdScore();
         Date updTime = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -142,7 +142,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             ddRank.setScoreTotal(ddScore.getScoreTotal());
             ddRank.setUserId(ddScore.getUserId());
             rankList.add(ddRank);
-            this.consumeScore(consumeType, consumeScore, ddScore);
+            this.consumeScore(consumeType, ddScore);
             this.gainCoin(ddScore, getCoin);
         }
         return rankList;
@@ -152,15 +152,14 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      * 消耗积分
      *
      * @param consumeType
-     * @param consumeScore
      * @param ddScore
      * @return
      */
-    public void consumeScore(String consumeType, Integer consumeScore, DdScore ddScore) {
+    private void consumeScore(String consumeType, DdScore ddScore) {
         //消耗积分
         DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
         ddScoreOutflow.setExpendDetail(consumeType);
-        ddScoreOutflow.setExpendScore(consumeScore);
+        ddScoreOutflow.setExpendScore(ddScore.getScoreTotal());
         ddScoreOutflow.setId(UniqueIdUtil.genId());
         ddScoreOutflow.setSourceType(ddScore.getScoreType());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -178,7 +177,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      * @param ddScore
      * @return
      */
-    public void gainCoin(DdScore ddScore, Integer getCoin) {
+    private void gainCoin(DdScore ddScore, Integer getCoin) {
         List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUserId());
         DdGoldenCoin userTypeCoin = new DdGoldenCoin();
         //币表中是否有
