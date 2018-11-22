@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.casic.datadriver.model.coin.DdGambler">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdGambler">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="NUMERIC"/>
+        <result column="user_id" property="userId" jdbcType="NUMERIC"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="org_id" property="orgId" jdbcType="NUMERIC"/>
+        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+        <result column="is_winner" property="isWinner" jdbcType="NUMERIC"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, user_name, org_id, org_name, is_winner
+    </sql>
+    <insert id="add" parameterType="com.casic.datadriver.model.coin.DdGambler">
+    insert into dd_gambler (id, user_id, user_name, org_id, org_name, is_winner)
+    values (#{id,jdbcType=NUMERIC},
+      #{userId,jdbcType=NUMERIC},
+      #{userName,jdbcType=VARCHAR},
+      #{orgId,jdbcType=NUMERIC},
+      #{orgName,jdbcType=VARCHAR},
+      #{isWinner,jdbcType=NUMERIC})
+    </insert>
+    <delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM dd_gambler
+		WHERE
+		id=#{id}
+	</delete>
+</mapper>
