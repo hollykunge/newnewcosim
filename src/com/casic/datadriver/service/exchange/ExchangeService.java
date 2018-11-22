@@ -66,13 +66,14 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      * @param scoreType
      * @return
      */
-    public void clearMonthScore(String scoreType){
+    public void clearMonthScore(String scoreType) {
         DdScore ddScore = new DdScore();
         Date updTime = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timeDate = dateFormat.format(updTime);
         ddScore.setScoreTotal(0);
         ddScore.setUdpTime(timeDate);
+        ddScore.setScoreType(scoreType);
         ddScoreService.updateByType(ddScore);
     }
 
@@ -82,7 +83,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      * @param scoreType
      * @return
      */
-    public Set<RankModel> getRankByType(String scoreType){
+    public Set<RankModel> getRankByType(String scoreType) {
         List<DdScore> ddScoreList;
         //本月消耗的积分
         Integer consumeScore = 0;
@@ -116,53 +117,12 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             default:
                 return null;
         }
+
         Set<RankModel> rankList = new HashSet<>();
         Integer i = 1;
+        //币数
+        Integer getCoin;
         for (DdScore ddScore : ddScoreList) {
-            RankModel ddRank = new RankModel();
-            ddRank.setRank(i);
-            ddRank.setUserName(ddScore.getUserName());
-            String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
-            ddRank.setOrgName(orgName);
-            ddRank.setScoreTotal(ddScore.getScoreTotal());
-            ddRank.setUserId(ddScore.getUserId());
-            rankList.add(ddRank);
-        }
-        return rankList;
-    }
-
-    /**
-     * 统计参与摇奖人员名单
-     *
-     * @param scoreType
-     * @return
-     */
-    public void getGamblers(){
-
-    }
-
-    /**
-     * 抽奖并且统计中奖人员名单
-     *
-     * @param scoreType
-     * @return
-     */
-    public void getWinners(){
-
-    }
-
-    /**
-     * 获得某一种积分的排名中奖名单
-     *
-     * @param scoreType 一级类型
-     * @return 获奖表
-     */
-    public List<RankModel> getMonthRankByType(String scoreType) {
-
-        //写消耗积分的流水数据库
-        for (DdScore ddScore : ddScoreList) {
-            //币数
-            Integer getCoin;
             if (CHUANG_XIN.equals(scoreType)) {
                 Integer chuangxinCoin = ddScore.getScoreTotal() / CHUANG_XIN_BASE;
                 consumeScore = chuangxinCoin * CHUANG_XIN_BASE;
@@ -174,47 +134,76 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
                     EXCEPT_USER_LIST.add(ddScore.getUserId());
                 }
             }
-            //消耗积分
-            DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
-            ddScoreOutflow.setExpendDetail(consumeType);
-            ddScoreOutflow.setExpendScore(consumeScore);
-            ddScoreOutflow.setId(UniqueIdUtil.genId());
-            ddScoreOutflow.setSourceType(ddScore.getScoreType());
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            ddScoreOutflow.setUdpTime(df.format(new Date()));
-            ddScoreOutflow.setUserId(ddScore.getUserId());
-            Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
-            if (done) {
-                ddScoreOutflowDao.add(ddScoreOutflow);
-            }
-            //获取币
-            List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUserId());
-            DdGoldenCoin userTypeCoin = new DdGoldenCoin();
-            //币表中是否有
-            Boolean isHave = false;
-            for (DdGoldenCoin ddGoldenCoin : userCoinList) {
-                if (ddGoldenCoin.getCoinType().equals(ddScore.getScoreType())) {
-                    userTypeCoin = ddGoldenCoin;
-                    isHave = true;
-                    break;
-                }
-            }
-            if (isHave) {
-                Long nowCoin = userTypeCoin.getCoinNum();
-                userTypeCoin.setCoinNum(nowCoin + getCoin);
-                ddGoldenCoinDao.updateCoin(userTypeCoin);
-            } else {
-                userTypeCoin.setId(UniqueIdUtil.genId());
-                userTypeCoin.setUserId(ddScore.getUserId());
-                userTypeCoin.setCoinType(ddScore.getScoreType());
-                userTypeCoin.setCoinNum(Integer.toUnsignedLong(getCoin));
-                userTypeCoin.setUserName(ddScore.getUserName());
-                userTypeCoin.setOrgId(ddScore.getOrgId());
-                userTypeCoin.setOrgName(ddScore.getOrgName());
-                ddGoldenCoinDao.add(userTypeCoin);
-            }
+            RankModel ddRank = new RankModel();
+            ddRank.setRank(i);
+            ddRank.setUserName(ddScore.getUserName());
+            String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
+            ddRank.setOrgName(orgName);
+            ddRank.setScoreTotal(ddScore.getScoreTotal());
+            ddRank.setUserId(ddScore.getUserId());
+            rankList.add(ddRank);
+            this.consumeScore(consumeType, consumeScore, ddScore);
+            this.gainCoin(ddScore, getCoin);
         }
         return rankList;
+    }
+
+    /**
+     * 消耗积分
+     *
+     * @param consumeType
+     * @param consumeScore
+     * @param ddScore
+     * @return
+     */
+    public void consumeScore(String consumeType, Integer consumeScore, DdScore ddScore) {
+        //消耗积分
+        DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
+        ddScoreOutflow.setExpendDetail(consumeType);
+        ddScoreOutflow.setExpendScore(consumeScore);
+        ddScoreOutflow.setId(UniqueIdUtil.genId());
+        ddScoreOutflow.setSourceType(ddScore.getScoreType());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ddScoreOutflow.setUdpTime(df.format(new Date()));
+        ddScoreOutflow.setUserId(ddScore.getUserId());
+        Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
+        if (done) {
+            ddScoreOutflowDao.add(ddScoreOutflow);
+        }
+    }
+
+    /**
+     * 赚取二币
+     *
+     * @param ddScore
+     * @return
+     */
+    public void gainCoin(DdScore ddScore, Integer getCoin) {
+        List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUserId());
+        DdGoldenCoin userTypeCoin = new DdGoldenCoin();
+        //币表中是否有
+        Boolean isHave = false;
+        for (DdGoldenCoin ddGoldenCoin : userCoinList) {
+            if (ddGoldenCoin.getCoinType().equals(ddScore.getScoreType())) {
+                userTypeCoin = ddGoldenCoin;
+                isHave = true;
+                break;
+            }
+        }
+        if (isHave) {
+            Long nowCoin = userTypeCoin.getCoinNum();
+            userTypeCoin.setCoinNum(nowCoin + getCoin);
+            ddGoldenCoinDao.updateCoin(userTypeCoin);
+        } else {
+            userTypeCoin.setId(UniqueIdUtil.genId());
+            userTypeCoin.setUserId(ddScore.getUserId());
+            userTypeCoin.setCoinType(ddScore.getScoreType());
+            userTypeCoin.setCoinNum(Integer.toUnsignedLong(getCoin));
+            userTypeCoin.setUserName(ddScore.getUserName());
+            userTypeCoin.setOrgId(ddScore.getOrgId());
+            userTypeCoin.setOrgName(ddScore.getOrgName());
+            ddGoldenCoinDao.add(userTypeCoin);
+        }
     }
 
     /**
