@@ -2,6 +2,8 @@ package com.casic.datadriver.model.coin;
 
 import com.hotent.core.model.BaseModel;
 
+import java.util.Objects;
+
 /**
  * @author workhub
  */
@@ -96,5 +98,23 @@ public class RankModel extends BaseModel {
                 ", scoreTotal='" + scoreTotal + '\'' +
                 ", scoreType='" + scoreType +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RankModel rankModel = (RankModel) o;
+        return Objects.equals(rank, rankModel.rank) &&
+                Objects.equals(userName, rankModel.userName) &&
+                Objects.equals(userId, rankModel.userId) &&
+                Objects.equals(orgName, rankModel.orgName) &&
+                Objects.equals(scoreTotal, rankModel.scoreTotal) &&
+                Objects.equals(scoreType, rankModel.scoreType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rank, userName, userId, orgName, scoreTotal, scoreType);
     }
 }
