@@ -6,23 +6,23 @@
           WARNING - @mbg.generated
         -->
         <id column="id" property="id" jdbcType="NUMERIC"/>
-        <result column="user_id" property="userId" jdbcType="NUMERIC"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-        <result column="org_id" property="orgId" jdbcType="NUMERIC"/>
-        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
-        <result column="is_winner" property="isWinner" jdbcType="NUMERIC"/>
+        <result column="period" property="period" jdbcType="NUMERIC"/>
+        <result column="gambler_num" property="gamblerNum" jdbcType="NUMERIC"/>
+        <result column="gambler_name" property="gamblerName" jdbcType="VARCHAR"/>
+        <result column="winner_num" property="winnerNum" jdbcType="NUMERIC"/>
+        <result column="winner_name" property="winnerName" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, user_id, user_name, org_id, org_name, is_winner
+        id, period, gambler_num, gambler_name, winner_num, winner_name
     </sql>
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdGambler">
-    insert into dd_gambler (id, user_id, user_name, org_id, org_name, is_winner)
+    insert into dd_gambler (id, period, gambler_num, gambler_name, winner_num, winner_name)
     values (#{id,jdbcType=NUMERIC},
-      #{userId,jdbcType=NUMERIC},
-      #{userName,jdbcType=VARCHAR},
-      #{orgId,jdbcType=NUMERIC},
-      #{orgName,jdbcType=VARCHAR},
-      #{isWinner,jdbcType=NUMERIC})
+    #{period,jdbcType=NUMERIC},
+      #{gamblerNum,jdbcType=NUMERIC},
+      #{gamblerName,jdbcType=VARCHAR},
+      #{winnerNum,jdbcType=NUMERIC},
+      #{winnerName,jdbcType=VARCHAR})
     </insert>
     <delete id="delById" parameterType="java.lang.Long">
 		DELETE FROM dd_gambler
