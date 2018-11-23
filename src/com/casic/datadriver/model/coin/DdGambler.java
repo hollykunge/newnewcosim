@@ -9,20 +9,20 @@ public class DdGambler {
     @Id
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "period")
+    private Long period;
 
-    @Column(name = "user_name")
-    private String userName;
+    @Column(name = "gambler_num")
+    private Long gamblerNum;
 
-    @Column(name = "org_id")
-    private Long orgId;
+    @Column(name = "gambler_name")
+    private String gamblerName;
 
-    @Column(name = "org_name")
-    private String orgName;
+    @Column(name = "winner_num")
+    private Long winnerNum;
 
-    @Column(name = "is_winner")
-    private Integer isWinner;
+    @Column(name = "winner_name")
+    private String winnerName;
 
     /**
      * @return id
@@ -38,73 +38,44 @@ public class DdGambler {
         this.id = id;
     }
 
-    /**
-     * @return user_id
-     */
-    public Long getUserId() {
-        return userId;
+    public Long getPeriod() {
+        return period;
     }
 
-    /**
-     * @param userId
-     */
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setPeriod(Long period) {
+        this.period = period;
     }
 
-    /**
-     * @return user_name
-     */
-    public String getUserName() {
-        return userName;
+    public Long getGamblerNum() {
+        return gamblerNum;
     }
 
-    /**
-     * @param userName
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setGamblerNum(Long gamblerNum) {
+        this.gamblerNum = gamblerNum;
     }
 
-    /**
-     * @return org_id
-     */
-    public Long getOrgId() {
-        return orgId;
+    public String getGamblerName() {
+        return gamblerName;
     }
 
-    /**
-     * @param orgId
-     */
-    public void setOrgId(Long orgId) {
-        this.orgId = orgId;
+    public void setGamblerName(String gamblerName) {
+        this.gamblerName = gamblerName;
     }
 
-    /**
-     * @return org_name
-     */
-    public String getOrgName() {
-        return orgName;
+    public Long getWinnerNum() {
+        return winnerNum;
     }
 
-    /**
-     * @param orgName
-     */
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
+    public void setWinnerNum(Long winnerNum) {
+        this.winnerNum = winnerNum;
     }
 
-    /**
-     * @return is_winner
-     */
-    public Integer getIsWinner() {
-        return isWinner;
+    public String getWinnerName() {
+        return winnerName;
     }
 
-    /**
-     * @param isWinner
-     */
-    public void setIsWinner(Integer isWinner) {
-        this.isWinner = isWinner;
+    public void setWinnerName(String winnerName) {
+        this.winnerName = winnerName;
     }
+
 }
