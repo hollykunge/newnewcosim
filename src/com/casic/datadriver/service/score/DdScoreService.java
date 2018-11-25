@@ -130,6 +130,10 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
         }
     }
 
+    public void delByType(String sourceType) {
+        ddScoreDao.delByType(sourceType);
+    }
+
     /**
      * 修改
      *

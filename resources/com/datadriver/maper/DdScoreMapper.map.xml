@@ -34,6 +34,11 @@
 		WHERE
 		id=#{id}
 	</delete>
+    <delete id="delByType" parameterType="java.lang.String">
+		DELETE FROM dd_score
+		WHERE
+		source_type=#{sourceType}
+	</delete>
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

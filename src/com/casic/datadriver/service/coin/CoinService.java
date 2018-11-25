@@ -133,6 +133,7 @@ public class CoinService {
         personalMap.put("qiushiTotalCoin", 0);
         personalMap.put("chuangxinTotalCoin", 0);
         List<DdGoldenCoin> personalCoinList = exchangeService.getPersonal(userId);
+        //TODO:还未处理混币
         for (DdGoldenCoin ddGoldenCoin : personalCoinList) {
             if (ScoreRegulation.QUAN_JU.equals(ddGoldenCoin.getCoinType())) {
                 personalMap.put("quanjuTotalCoin", ddGoldenCoin.getCoinNum().intValue());

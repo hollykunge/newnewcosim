@@ -30,7 +30,7 @@ public class ExchangeController extends AbstractController {
     private ExchangeService exchangeService;
 
     /**
-     * 获取单类积分的入围名单，每人一个币，平分奖池
+     * 获取单类积分的入围名单，每人一个币
      *
      * @throws Exception e
      */

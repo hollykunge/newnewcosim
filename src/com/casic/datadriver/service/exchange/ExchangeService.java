@@ -1,16 +1,14 @@
 package com.casic.datadriver.service.exchange;
 
+import com.casic.datadriver.dao.score.DdGamblerDao;
 import com.casic.datadriver.dao.score.DdGoldenCoinDao;
 import com.casic.datadriver.dao.score.DdScoreOutflowDao;
-import com.casic.datadriver.jms.AddScoreHandler;
-import com.casic.datadriver.model.coin.DdGoldenCoin;
-import com.casic.datadriver.model.coin.RankModel;
-import com.casic.datadriver.model.coin.DdScore;
-import com.casic.datadriver.model.coin.DdScoreOutflow;
+import com.casic.datadriver.model.coin.*;
 import com.casic.datadriver.service.score.DdScoreService;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
+import com.hotent.platform.auth.ISysOrg;
 import com.hotent.platform.dao.system.SysOrgDao;
 
 import org.apache.commons.lang.math.RandomUtils;
@@ -24,7 +22,12 @@ import static com.casic.datadriver.manager.ScoreRegulation.*;
 
 /**
  * @Author: workhub
- * @Description:
+ * @Description: 为月底结算服务写的service
+ * 首先获取三种币的排行前列名单（60，20，20），每人一个币
+ * 获取结束后写分数输出表（同步更新了月积分表），写得币表
+ * 在剩余表中选抽奖人，写入数据库
+ * 抽奖，得出中奖人，写入数据库，写分数输出表，写得币表
+ * 目前分数输出表并不是所有分数输出，对应了得币情况
  * @Date: 创建于 2018/10/24
  */
 
@@ -43,128 +46,94 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
     @Resource
     private SysOrgDao sysOrgDao;
 
+    @Resource
+    private DdGamblerDao ddGamblerDao;
+
     @Override
     protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
         return this.ddGoldenCoinDao;
     }
 
-    private static final List<Long> EXCEPT_USER_LIST = new ArrayList<>();
-
     /**
-     * 获取个人金币数
+     * 特定种类积分每月排名前列人员公开方法，删月积分对应项（耗光），增加输出流水，加币
      *
-     * @param uid 用户id
-     * @return 如果都有的话应该是四项
-     */
-    public List<DdGoldenCoin> getPersonal(long uid) {
-        return ddGoldenCoinDao.getPersonal(uid);
-    }
-
-    /**
-     * 根据积分类型清除月积分
-     *
-     * @param scoreType
-     * @return
-     */
-    private void clearMonthScore(String scoreType) {
-        DdScore ddScore = new DdScore();
-        Date updTime = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String timeDate = dateFormat.format(updTime);
-        ddScore.setScoreTotal(0);
-        ddScore.setUdpTime(timeDate);
-        ddScore.setScoreType(scoreType);
-        ddScoreService.updateByType(ddScore);
-    }
-
-    /**
-     * 统计兑币人员，不包含抽奖人员，加币
-     *
-     * @param scoreType
-     * @return
+     * @param scoreType 一级类型
+     * @return 人员列表
      */
     public Set<RankModel> getRankByType(String scoreType) {
         List<DdScore> ddScoreList;
-        //本月消耗的积分
-        Integer consumeScore = 0;
-        //积分消耗类型
-        String consumeType;
+        //读月积分数据库，获取排名集
         switch (scoreType) {
-            //全局
             case QUAN_JU:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QUAN_JU, QUAN_JU);
-                clearMonthScore(QUAN_JU);
-                consumeType = QUAN_JU_MONTH_RANK;
                 break;
-            //奉献
             case FENG_XIAN:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_FENG_XIAN, FENG_XIAN);
-                clearMonthScore(FENG_XIAN);
-                consumeType = FENG_XIAN_MONTH_RANK;
                 break;
-            //求实
             case QIU_SHI:
                 ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QIU_SHI, QIU_SHI);
-                clearMonthScore(QIU_SHI);
-                consumeType = QIU_SHI_MONTH_RANK;
                 break;
-            //创新
             case CHUANG_XIN:
-                ddScoreList = ddScoreService.getScoresByLeastAndType(CHUANG_XIN_BASE, scoreType);
-                consumeScore = CHUANG_XIN_BASE;
-                consumeType = CHUANG_XIN_MONTH_RANK;
+                ddScoreList = ddScoreService.getScoresByLeastAndType(CHUANG_XIN_BASE, CHUANG_XIN);
                 break;
             default:
                 return null;
         }
-
+        //返回集
         Set<RankModel> rankList = new HashSet<>();
         Integer i = 1;
-        //币数
-        Integer getCoin;
+        //处理排名集
         for (DdScore ddScore : ddScoreList) {
+            //消耗的积分，默认所有，创新会变
+            Integer consumeScore = ddScore.getScoreTotal();
+            //获取币数，默认为1，创新会变
+            Integer getCoin = 1;
             if (CHUANG_XIN.equals(scoreType)) {
+                //TODO:创新每月累计，不删？
+                //统计获币数
                 Integer chuangxinCoin = ddScore.getScoreTotal() / CHUANG_XIN_BASE;
+                //消耗积分
                 consumeScore = chuangxinCoin * CHUANG_XIN_BASE;
+                //赋值获币数
                 getCoin = chuangxinCoin;
-            } else {
-                getCoin = 1;
-                //其他三种币加LIST，LIST的清除在摇完奖后
-                if (!EXCEPT_USER_LIST.contains(ddScore.getUserId())) {
-                    EXCEPT_USER_LIST.add(ddScore.getUserId());
-                }
             }
+            //更新输出流水表，其中会同步更新月积分表
+            this.consumeScore(ddScore.getUserId(), scoreType, MONTH_RANK, consumeScore);
+            //写得币表
+            this.gainCoin(ddScore.getUserId(), scoreType, getCoin);
+            //返回集
             RankModel ddRank = new RankModel();
             ddRank.setRank(i);
             ddRank.setUserName(ddScore.getUserName());
             String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
             ddRank.setOrgName(orgName);
-            ddRank.setScoreTotal(ddScore.getScoreTotal());
+            ddRank.setScoreTotal(consumeScore);
             ddRank.setUserId(ddScore.getUserId());
             rankList.add(ddRank);
-            this.consumeScore(consumeType, ddScore);
-            this.gainCoin(ddScore, getCoin);
+            i++;
         }
         return rankList;
     }
 
     /**
-     * 消耗积分
+     * 写消耗积分私有方法
      *
-     * @param consumeType
-     * @param ddScore
-     * @return
+     * @param userId       用户ID
+     * @param scoreType    一级类型
+     * @param consumeType  消耗原因
+     * @param consumeScore 消耗分数
      */
-    private void consumeScore(String consumeType, DdScore ddScore) {
-        //消耗积分
+    private void consumeScore(Long userId,
+                              String scoreType,
+                              String consumeType,
+                              Integer consumeScore) {
         DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
-        ddScoreOutflow.setExpendDetail(consumeType);
-        ddScoreOutflow.setExpendScore(ddScore.getScoreTotal());
         ddScoreOutflow.setId(UniqueIdUtil.genId());
-        ddScoreOutflow.setSourceType(ddScore.getScoreType());
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        ddScoreOutflow.setUdpTime(df.format(new Date()));
-        ddScoreOutflow.setUserId(ddScore.getUserId());
+        ddScoreOutflow.setUserId(userId);
+        ddScoreOutflow.setSourceType(scoreType);
+        ddScoreOutflow.setExpendDetail(consumeType);
+        ddScoreOutflow.setExpendScore(consumeScore);
+        ddScoreOutflow.setUdpTime(DATE_FORMATTER2.get().format(new Date()));
         Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
         if (done) {
             ddScoreOutflowDao.add(ddScoreOutflow);
@@ -172,18 +141,19 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
     }
 
     /**
-     * 赚取二币
+     * 写得币表私有方法
      *
-     * @param ddScore
-     * @return
+     * @param userId   用户
+     * @param coinType 一级类型
+     * @param coinNum  数目
      */
-    private void gainCoin(DdScore ddScore, Integer getCoin) {
-        List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUserId());
+    private void gainCoin(Long userId, String coinType, Integer coinNum) {
+        List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(userId);
         DdGoldenCoin userTypeCoin = new DdGoldenCoin();
         //币表中是否有
         Boolean isHave = false;
         for (DdGoldenCoin ddGoldenCoin : userCoinList) {
-            if (ddGoldenCoin.getCoinType().equals(ddScore.getScoreType())) {
+            if (coinType.equals(ddGoldenCoin.getCoinType())) {
                 userTypeCoin = ddGoldenCoin;
                 isHave = true;
                 break;
@@ -191,24 +161,27 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
         }
         if (isHave) {
             Long nowCoin = userTypeCoin.getCoinNum();
-            userTypeCoin.setCoinNum(nowCoin + getCoin);
+            userTypeCoin.setCoinNum(nowCoin + coinNum);
             ddGoldenCoinDao.updateCoin(userTypeCoin);
         } else {
             userTypeCoin.setId(UniqueIdUtil.genId());
-            userTypeCoin.setUserId(ddScore.getUserId());
-            userTypeCoin.setCoinType(ddScore.getScoreType());
-            userTypeCoin.setCoinNum(Integer.toUnsignedLong(getCoin));
-            userTypeCoin.setUserName(ddScore.getUserName());
-            userTypeCoin.setOrgId(ddScore.getOrgId());
-            userTypeCoin.setOrgName(ddScore.getOrgName());
+            userTypeCoin.setUserId(userId);
+            userTypeCoin.setCoinType(coinType);
+            userTypeCoin.setCoinNum(Integer.toUnsignedLong(coinNum));
+            ISysOrg user = sysOrgDao.getOrgsByUserId(userId).get(0);
+            //TODO:?
+            userTypeCoin.setUserName(user.getOwnUserName());
+            userTypeCoin.setOrgId(user.getOrgId());
+            userTypeCoin.setOrgName(user.getOrgName());
             ddGoldenCoinDao.add(userTypeCoin);
         }
     }
 
     /**
-     * 获取参与抽奖名单
+     * 获取参与抽奖名单公开方法
+     * 三项和至少200分，上限150人
      *
-     * @return Rank名单
+     * @return 一张名单
      */
     public List<RankModel> getLotteryList() {
         List<DdScore> ddScoreList = ddScoreService.getAllScore();
@@ -219,11 +192,11 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             if (CHUANG_XIN.equals(ddScore.getScoreType())) {
                 continue;
             }
-            //非已排名用户
-            if (EXCEPT_USER_LIST.contains(ddScore.getUserId())) {
+            //非零分用户
+            if (0 == ddScore.getScoreTotal()) {
                 continue;
             }
-            //写所有人列表
+            //写个人三项积分和列表
             Boolean isHave = false;
             for (RankModel rankModel : lotteryList) {
                 if (rankModel.getUserId().equals(ddScore.getUserId())) {
@@ -243,54 +216,71 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
                 rankModel.setScoreTotal(ddScore.getScoreTotal());
             }
         }
-        //筛选
+        //筛选200分以上
+        StringBuilder gamList = new StringBuilder();
         Iterator<RankModel> it = lotteryList.iterator();
         while (it.hasNext()) {
             RankModel x = it.next();
             if (x.getScoreTotal() < LOTTERY_BASE) {
                 it.remove();
+            } else {
+                gamList.append(x.getUserId()).append(",");
             }
         }
+        //写gambler数据库
+        DdGambler ddGambler = new DdGambler();
+        ddGambler.setId(UniqueIdUtil.genId());
+        /* TODO:ddGambler.setPeriod(); */
+        ddGambler.setGamblerNum(lotteryList.size());
+        ddGambler.setGamblerName(gamList.toString());
+        ddGamblerDao.add(ddGambler);
         return lotteryList;
     }
 
     /**
-     * 抽奖过程
+     * 抽奖公开方法
      *
-     * @param rankModelList 抽奖列表
-     * @return 中奖列表
+     * @return 一张名单
      */
     public List<RankModel> getLotteryResult(List<RankModel> rankModelList) {
-        List<RankModel> lotteryList = new ArrayList<>();
+        List<RankModel> winnerList = new ArrayList<>();
         if (rankModelList.size() > LOTTERY_MIN_POOL) {
             List<Integer> result = randomList(rankModelList.size());
             Iterator<Integer> it = result.iterator();
             while (it.hasNext()) {
                 Integer x = it.next();
-                lotteryList.add(rankModelList.get(x));
+                winnerList.add(rankModelList.get(x));
             }
         } else {
-            lotteryList = rankModelList;
+            winnerList = rankModelList;
         }
+        //写获币数据库，抽奖数据库，不写输出流水和月积分数据库
+        StringBuilder winList = new StringBuilder();
+        for (RankModel rankModel : winnerList) {
+            winList.append(rankModel.getUserId()).append(",");
+            this.gainCoin(rankModel.getUserId(), rankModel.getScoreType(), 1);
+            //TODO:是否要写outflow，是写一整条还是三条，写一整条的话要改consume，不update了
+        }
+        //TODO:period
+        DdGambler ddGambler = ddGamblerDao.getByPeriod(1).get(0);
+        ddGambler.setWinnerNum(winnerList.size());
+        ddGambler.setWinnerName(winList.toString());
+        ddGamblerDao.update(ddGambler);
+        //最后，清空本月三种积分数据库
+        ddScoreService.delByType(QUAN_JU);
+        ddScoreService.delByType(FENG_XIAN);
+        ddScoreService.delByType(QIU_SHI);
+        return winnerList;
+    }
 
-        //写outflow数据库
-        for (RankModel rankModel : lotteryList) {
-            DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
-            ddScoreOutflow.setExpendDetail(LOTTERY_MONTH);
-            ddScoreOutflow.setExpendScore(0);
-            ddScoreOutflow.setId(UniqueIdUtil.genId());
-            ddScoreOutflow.setSourceType(rankModel.getScoreType());
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            ddScoreOutflow.setUdpTime(df.format(new Date()));
-            ddScoreOutflow.setUserId(rankModel.getUserId());
-            Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
-            if (done) {
-                ddScoreOutflowDao.add(ddScoreOutflow);
-            }
-        }
-        //清除已中奖用户LIST
-        EXCEPT_USER_LIST.clear();
-        return lotteryList;
+    /**
+     * 获取个人金币数
+     *
+     * @param uid 用户id
+     * @return 如果都有的话应该是四项
+     */
+    public List<DdGoldenCoin> getPersonal(long uid) {
+        return ddGoldenCoinDao.getPersonal(uid);
     }
 
     /**
@@ -310,85 +300,10 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
         return result;
     }
 
-    /**
-     * 根据传入类型进行积分兑换
-     *
-     * @param scoreType 一级类型
-     */
-//    public void consume(String scoreType) {
-//        //TODO:magic number 100
-//        List<DdScore> ddScoreList = new ArrayList<>();
-//        Integer lastRank = 0;
-//        switch (scoreType) {
-//            //全局
-//            case QUAN_JU:
-//                ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QUAN_JU, QUAN_JU);
-//                //取出最末排名积分
-//                lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
-//                break;
-//            //奉献
-//            case FENG_XIAN:
-//                ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_FENG_XIAN, FENG_XIAN);
-//                //取出最末排名积分
-//                lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
-//                break;
-//            //求实
-//            case QIU_SHI:
-//                ddScoreList = ddScoreService.getScoresByRankAndType(LIMIT_QIU_SHI, QIU_SHI);
-//                //取出最末排名积分
-//                lastRank = ddScoreList.get(ddScoreList.size() - 1).getScoreTotal();
-//                break;
-//            //创新每月100个积分换一个币
-//            case CHUANG_XIN:
-//                ddScoreList = ddScoreService.getType(CHUANG_XIN);
-//                break;
-//            default:
-//                return;
-//        }
-//
-//        //写消耗积分的流水数据库
-//        for (DdScore ddScore : ddScoreList) {
-//            int getCoin = 1;
-//            if (CHUANG_XIN.equals(scoreType)) {
-//                Integer chuangxinCoin = ddScore.getScoreTotal() / 100;
-//                lastRank = chuangxinCoin * 100;
-//                getCoin = chuangxinCoin;
-//            }
-//            DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
-//            ddScoreOutflow.setExpendDetail("yuedijiesuan");
-//            ddScoreOutflow.setExpendScore(lastRank - 1);
-//            ddScoreOutflow.setId(UniqueIdUtil.genId());
-//            ddScoreOutflow.setSourceType(ddScore.getScoreType());
-//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            ddScoreOutflow.setUdpTime(df.format(new Date()));
-//            ddScoreOutflow.setUserId(ddScore.getUserId());
-//            Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
-//            if (done) {
-//                ddScoreOutflowDao.add(ddScoreOutflow);
-//            }
-//            //获取币
-//            List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(ddScore.getUserId());
-//            DdGoldenCoin userTypeCoin = new DdGoldenCoin();
-//            Boolean isHave = false;
-//            for (DdGoldenCoin ddGoldenCoin : userCoinList) {
-//                if (ddGoldenCoin.getCoinType().equals(ddScore.getScoreType())) {
-//                    userTypeCoin = ddGoldenCoin;
-//                    isHave = true;
-//                    break;
-//                }
-//            }
-//            if (isHave) {
-//                Long nowCoin = userTypeCoin.getCoinNum();
-//                userTypeCoin.setCoinNum(nowCoin + getCoin);
-//                ddGoldenCoinDao.updateCoin(userTypeCoin);
-//            } else {
-//                userTypeCoin.setId(UniqueIdUtil.genId());
-//                userTypeCoin.setUserId(ddScore.getUserId());
-//                userTypeCoin.setCoinType(ddScore.getScoreType());
-//                userTypeCoin.setCoinNum(Integer.toUnsignedLong(getCoin));
-//                ddGoldenCoinDao.add(userTypeCoin);
-//            }
-//
-//        }
-//    }
+    private final static ThreadLocal<SimpleDateFormat> DATE_FORMATTER2 = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }
+    };
 }

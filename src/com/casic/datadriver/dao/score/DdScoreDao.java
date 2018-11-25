@@ -32,6 +32,10 @@ public class DdScoreDao extends BaseDao<DdScore> {
         this.update("updateByType", ddScore);
     }
 
+    public void delByType(String sourceType) {
+        this.update("delByType", sourceType);
+    }
+
     /**
      * 插入
      */

@@ -4,6 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author workhub
+ */
+
 @Table(name = "dd_gambler")
 public class DdGambler {
     @Id
@@ -13,13 +17,13 @@ public class DdGambler {
     private Long period;
 
     @Column(name = "gambler_num")
-    private Long gamblerNum;
+    private Integer gamblerNum;
 
     @Column(name = "gambler_name")
     private String gamblerName;
 
     @Column(name = "winner_num")
-    private Long winnerNum;
+    private Integer winnerNum;
 
     @Column(name = "winner_name")
     private String winnerName;
@@ -46,11 +50,11 @@ public class DdGambler {
         this.period = period;
     }
 
-    public Long getGamblerNum() {
+    public Integer getGamblerNum() {
         return gamblerNum;
     }
 
-    public void setGamblerNum(Long gamblerNum) {
+    public void setGamblerNum(Integer gamblerNum) {
         this.gamblerNum = gamblerNum;
     }
 
@@ -62,11 +66,11 @@ public class DdGambler {
         this.gamblerName = gamblerName;
     }
 
-    public Long getWinnerNum() {
+    public Integer getWinnerNum() {
         return winnerNum;
     }
 
-    public void setWinnerNum(Long winnerNum) {
+    public void setWinnerNum(Integer winnerNum) {
         this.winnerNum = winnerNum;
     }
 
