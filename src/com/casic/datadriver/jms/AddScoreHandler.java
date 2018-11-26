@@ -39,7 +39,9 @@ public class AddScoreHandler implements IJmsHandler {
 
         AddScoreModel addScoreModel = (AddScoreModel) model;
 
-        String resultMsg;
+        logger.info("handle message : " + addScoreModel.getAccount()
+                + " " + addScoreModel.getSourceDetail() + " score : " + addScoreModel.getSourceScore());
+
         //判断是否当天消息
         String timeDate;
         Date time = new Date();
@@ -73,17 +75,17 @@ public class AddScoreHandler implements IJmsHandler {
                     ddScoreInflow.setOrgName(orgName);
                     //写入数据库和缓存
                     ddScoreInflowService.add(ddScoreInflow);
-                    resultMsg = "赚取积分成功";
+                    logger.info("赚取积分成功");
                     //添加总积分量
                     ddScoreService.updateScore(ddScoreInflow, null);
                 } else {
-                    resultMsg = "单日积分总量已满";
+                    logger.warn("单日积分总量已满");
                 }
             } else {
-                resultMsg = "积分为空";
+                logger.warn("积分为空");
             }
         } else {
-            resultMsg = "用户id为空或者获取日期不正确";
+            logger.warn("用户id为空或者获取日期不正确");
         }
     }
 

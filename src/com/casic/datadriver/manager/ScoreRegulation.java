@@ -59,11 +59,8 @@ public class ScoreRegulation {
     /**
      * 积分兑币消耗类型
      */
-    public static final String QUAN_JU_MONTH_RANK = "quan_ju_month_rank";
-    public static final String FENG_XIAN_MONTH_RANK = "feng_xian_month_rank";
-    public static final String QIU_SHI_MONTH_RANK = "qiu_shi_month_rank";
-    public static final String CHUANG_XIN_MONTH_RANK = "chuang_xin_month_rank";
-    public static final String LOTTERY_MONTH = "lottery_month";
+    public static final String MONTH_RANK = "month_rank";
+    public static final String MONTH_LOTTERY = "month_lottery";
 
     /**
      * 创新兑币积分

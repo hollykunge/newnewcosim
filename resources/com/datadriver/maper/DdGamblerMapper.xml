@@ -29,4 +29,11 @@
 		WHERE
 		id=#{id}
 	</delete>
+    <select id="getByPeriod" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_gambler
+        WHERE
+        period=#{period}
+    </select>
 </mapper>
