@@ -3,7 +3,6 @@ package com.casic.datadriver.controller.exchange;
 import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.RankModel;
 import com.casic.datadriver.service.exchange.ExchangeService;
-import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.util.RequestUtil;
 import net.sf.json.JSONArray;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -58,8 +55,8 @@ public class ExchangeController extends AbstractController {
     public void getLotteryList(HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR;
         try {
-            List<RankModel> itemList = exchangeService.getLotteryList();
-            jsonR = JSONArray.fromObject(itemList);
+            Set<RankModel> itemSet = exchangeService.getLotteryList();
+            jsonR = JSONArray.fromObject(itemSet);
             //解决跨域
             String callback = request.getParameter("callback");
             response.getWriter().write(callback + "(" + jsonR.toString() + ")");
@@ -77,7 +74,7 @@ public class ExchangeController extends AbstractController {
     public void getLotteryResult(HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR;
         try {
-            List<RankModel> lotteryResult = exchangeService.getLotteryResult();
+            Set<RankModel> lotteryResult = exchangeService.getLotteryResult();
             jsonR = JSONArray.fromObject(lotteryResult);
             //解决跨域
             String callback = request.getParameter("callback");

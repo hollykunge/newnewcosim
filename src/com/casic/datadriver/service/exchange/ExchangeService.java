@@ -5,19 +5,16 @@ import com.casic.datadriver.dao.score.DdGoldenCoinDao;
 import com.casic.datadriver.dao.score.DdScoreOutflowDao;
 import com.casic.datadriver.model.coin.*;
 import com.casic.datadriver.service.score.DdScoreService;
-import com.hotent.core.db.IEntityDao;
-import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.platform.auth.ISysUser;
-import com.hotent.platform.dao.system.SysOrgDao;
 
 import com.hotent.platform.dao.system.SysUserDao;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -36,29 +33,24 @@ import static com.casic.datadriver.manager.ScoreRegulation.*;
  */
 
 @Service
-public class ExchangeService extends BaseService<DdGoldenCoin> {
+public class ExchangeService {
 
     private final Log logger = LogFactory.getLog(ExchangeService.class);
 
-    @Resource
+    @Autowired
     private DdGoldenCoinDao ddGoldenCoinDao;
 
-    @Resource
+    @Autowired
     private DdScoreService ddScoreService;
 
-    @Resource
+    @Autowired
     private DdScoreOutflowDao ddScoreOutflowDao;
 
-    @Resource
+    @Autowired
     private SysUserDao sysUserDao;
 
-    @Resource
+    @Autowired
     private DdGamblerDao ddGamblerDao;
-
-    @Override
-    protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
-        return this.ddGoldenCoinDao;
-    }
 
     /**
      * 特定种类积分每月排名前列人员公开方法，删月积分对应项（耗光），增加输出流水，加币
@@ -95,7 +87,6 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             //获取币数，默认为1，创新会变
             Integer getCoin = 1;
             if (CHUANG_XIN.equals(scoreType)) {
-                //TODO:创新每月累计，不删？
                 //统计获币数
                 Integer chuangxinCoin = ddScore.getScoreTotal() / CHUANG_XIN_BASE;
                 //消耗积分
@@ -147,7 +138,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             if (done) {
                 ddScoreOutflowDao.add(ddScoreOutflow);
             } else {
-                logger.warn("兑币失败");
+                logger.warn("月度积分表消耗积分失败");
                 return;
             }
         } else {
@@ -198,9 +189,9 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      *
      * @return 一张名单
      */
-    public List<RankModel> getLotteryList() {
+    public Set<RankModel> getLotteryList() {
         List<DdScore> ddScoreList = ddScoreService.getAllScore();
-        List<RankModel> lotteryList = new ArrayList<>();
+        Set<RankModel> lotteryList = new HashSet<>();
         //获取所有用户三项和
         for (DdScore ddScore : ddScoreList) {
             //非创新分数
@@ -229,6 +220,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
                 rankModel.setOrgName(orgName);
                 rankModel.setScoreType(SUM_QFQ);
                 rankModel.setScoreTotal(ddScore.getScoreTotal());
+                lotteryList.add(rankModel);
             }
         }
         //筛选200分以上
@@ -258,11 +250,13 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      *
      * @return 一张名单
      */
-    public List<RankModel> getLotteryResult() {
+    public Set<RankModel> getLotteryResult() {
         //TODO:DANGER
         DdGambler ddGambler = ddGamblerDao.getByPeriod(Integer.toUnsignedLong(201811)).get(0);
         String lotteryList = ddGambler.getGamblerName();
+        //使用逗号分隔成字符串数组
         String[] lotteryArray = lotteryList.split(",");
+        //初始化
         Set<Long> winnerUidSet = new HashSet<>();
         if(lotteryArray.length > LOTTERY_MIN_POOL) {
             List<Integer> result = randomList(lotteryArray.length);
@@ -277,7 +271,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             }
         }
 
-        List<RankModel> winnerList = new ArrayList<>();
+        Set<RankModel> winnerList = new HashSet<>();
         for(Long uid : winnerUidSet) {
             RankModel rankModel = new RankModel();
             ISysUser user = sysUserDao.getById(uid);
