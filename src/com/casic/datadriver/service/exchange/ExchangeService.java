@@ -8,10 +8,13 @@ import com.casic.datadriver.service.score.DdScoreService;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
-import com.hotent.platform.auth.ISysOrg;
+import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.dao.system.SysOrgDao;
 
+import com.hotent.platform.dao.system.SysUserDao;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,15 +27,18 @@ import static com.casic.datadriver.manager.ScoreRegulation.*;
  * @Author: workhub
  * @Description: 为月底结算服务写的service
  * 首先获取三种币的排行前列名单（60，20，20），每人一个币
- * 获取结束后写分数输出表（同步更新了月积分表），写得币表
- * 在剩余表中选抽奖人，写入数据库
- * 抽奖，得出中奖人，写入数据库，写分数输出表，写得币表
+ * 创新分每100一个币
+ * 获取结束后写分数输出表（同步更新了月积分表，除创新外清零），写得币表
+ * 在剩余表中选抽奖人，写入gambler数据库
+ * 抽奖，得出中奖人，写入gambler数据库，写得币表
  * 目前分数输出表并不是所有分数输出，对应了得币情况
  * @Date: 创建于 2018/10/24
  */
 
 @Service
 public class ExchangeService extends BaseService<DdGoldenCoin> {
+
+    private final Log logger = LogFactory.getLog(ExchangeService.class);
 
     @Resource
     private DdGoldenCoinDao ddGoldenCoinDao;
@@ -44,7 +50,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
     private DdScoreOutflowDao ddScoreOutflowDao;
 
     @Resource
-    private SysOrgDao sysOrgDao;
+    private SysUserDao sysUserDao;
 
     @Resource
     private DdGamblerDao ddGamblerDao;
@@ -98,15 +104,15 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
                 getCoin = chuangxinCoin;
             }
             //更新输出流水表，其中会同步更新月积分表
-            this.consumeScore(ddScore.getUserId(), scoreType, MONTH_RANK, consumeScore);
+            this.consumeScore(ddScore.getUserId(), scoreType, MONTH_RANK, consumeScore, true);
             //写得币表
             this.gainCoin(ddScore.getUserId(), scoreType, getCoin);
             //返回集
             RankModel ddRank = new RankModel();
             ddRank.setRank(i);
-            ddRank.setUserName(ddScore.getUserName());
-            String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
-            ddRank.setOrgName(orgName);
+            ISysUser user = sysUserDao.getById(ddScore.getUserId());
+            ddRank.setUserName(user.getFullname());
+            ddRank.setOrgName(user.getOrgName());
             ddRank.setScoreTotal(consumeScore);
             ddRank.setUserId(ddScore.getUserId());
             rankList.add(ddRank);
@@ -122,11 +128,13 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      * @param scoreType    一级类型
      * @param consumeType  消耗原因
      * @param consumeScore 消耗分数
+     * @param isClearMonth 是否同步删除月积分
      */
     private void consumeScore(Long userId,
                               String scoreType,
                               String consumeType,
-                              Integer consumeScore) {
+                              Integer consumeScore,
+                              boolean isClearMonth) {
         DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
         ddScoreOutflow.setId(UniqueIdUtil.genId());
         ddScoreOutflow.setUserId(userId);
@@ -134,10 +142,18 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
         ddScoreOutflow.setExpendDetail(consumeType);
         ddScoreOutflow.setExpendScore(consumeScore);
         ddScoreOutflow.setUdpTime(DATE_FORMATTER2.get().format(new Date()));
-        Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
-        if (done) {
+        if(isClearMonth) {
+            Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
+            if (done) {
+                ddScoreOutflowDao.add(ddScoreOutflow);
+            } else {
+                logger.warn("兑币失败");
+                return;
+            }
+        } else {
             ddScoreOutflowDao.add(ddScoreOutflow);
         }
+        logger.info(userId + "使用" + consumeScore + "分兑换一枚" + scoreType + "币");
     }
 
     /**
@@ -168,9 +184,8 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
             userTypeCoin.setUserId(userId);
             userTypeCoin.setCoinType(coinType);
             userTypeCoin.setCoinNum(Integer.toUnsignedLong(coinNum));
-            ISysOrg user = sysOrgDao.getOrgsByUserId(userId).get(0);
-            //TODO:?
-            userTypeCoin.setUserName(user.getOwnUserName());
+            ISysUser user = sysUserDao.getById(userId);
+            userTypeCoin.setUserName(user.getFullname());
             userTypeCoin.setOrgId(user.getOrgId());
             userTypeCoin.setOrgName(user.getOrgName());
             ddGoldenCoinDao.add(userTypeCoin);
@@ -210,7 +225,7 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
                 RankModel rankModel = new RankModel();
                 rankModel.setUserId(ddScore.getUserId());
                 rankModel.setUserName(ddScore.getUserName());
-                String orgName = sysOrgDao.getOrgsByUserId(ddScore.getUserId()).get(0).getOrgName();
+                String orgName = sysUserDao.getById(ddScore.getUserId()).getOrgName();
                 rankModel.setOrgName(orgName);
                 rankModel.setScoreType(SUM_QFQ);
                 rankModel.setScoreTotal(ddScore.getScoreTotal());
@@ -230,7 +245,8 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
         //写gambler数据库
         DdGambler ddGambler = new DdGambler();
         ddGambler.setId(UniqueIdUtil.genId());
-        /* TODO:ddGambler.setPeriod(); */
+        //TODO:DANGER
+        ddGambler.setPeriod(Integer.toUnsignedLong(201811));
         ddGambler.setGamblerNum(lotteryList.size());
         ddGambler.setGamblerName(gamList.toString());
         ddGamblerDao.add(ddGambler);
@@ -242,8 +258,36 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
      *
      * @return 一张名单
      */
-    public List<RankModel> getLotteryResult(List<RankModel> rankModelList) {
+    public List<RankModel> getLotteryResult() {
+        //TODO:DANGER
+        DdGambler ddGambler = ddGamblerDao.getByPeriod(Integer.toUnsignedLong(201811)).get(0);
+        String lotteryList = ddGambler.getGamblerName();
+        String[] lotteryArray = lotteryList.split(",");
+        Set<Long> winnerUidSet = new HashSet<>();
+        if(lotteryArray.length > LOTTERY_MIN_POOL) {
+            List<Integer> result = randomList(lotteryArray.length);
+            Iterator<Integer> it = result.iterator();
+            while (it.hasNext()) {
+                Integer x = it.next();
+                winnerUidSet.add(Long.getLong(lotteryArray[x]));
+            }
+        } else {
+            for(String s : lotteryArray) {
+                winnerUidSet.add(Long.getLong(s));
+            }
+        }
+
         List<RankModel> winnerList = new ArrayList<>();
+        for(Long uid : winnerUidSet) {
+            RankModel rankModel = new RankModel();
+            ISysUser user = sysUserDao.getById(uid);
+            rankModel.setUserName(user.getFullname());
+            rankModel.setOrgName(user.getOrgName());
+            rankModel.setScoreType(SUM_QFQ);
+            rankModel.setScoreTotal(0);
+            winnerList.add(rankModel);
+        }
+        /*
         if (rankModelList.size() > LOTTERY_MIN_POOL) {
             List<Integer> result = randomList(rankModelList.size());
             Iterator<Integer> it = result.iterator();
@@ -254,15 +298,16 @@ public class ExchangeService extends BaseService<DdGoldenCoin> {
         } else {
             winnerList = rankModelList;
         }
+        */
         //写获币数据库，抽奖数据库，不写输出流水和月积分数据库
         StringBuilder winList = new StringBuilder();
         for (RankModel rankModel : winnerList) {
             winList.append(rankModel.getUserId()).append(",");
+            this.consumeScore(rankModel.getUserId(), rankModel.getScoreType(),
+                    MONTH_LOTTERY, rankModel.getScoreTotal(), false);
             this.gainCoin(rankModel.getUserId(), rankModel.getScoreType(), 1);
-            //TODO:是否要写outflow，是写一整条还是三条，写一整条的话要改consume，不update了
         }
-        //TODO:period
-        DdGambler ddGambler = ddGamblerDao.getByPeriod(1).get(0);
+
         ddGambler.setWinnerNum(winnerList.size());
         ddGambler.setWinnerName(winList.toString());
         ddGamblerDao.update(ddGambler);

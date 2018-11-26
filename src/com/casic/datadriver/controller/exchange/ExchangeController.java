@@ -74,10 +74,10 @@ public class ExchangeController extends AbstractController {
      * @throws Exception e
      */
     @RequestMapping("getLotteryResult")
-    public void getLotteryResult(List<RankModel> rankModelList, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void getLotteryResult(HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR;
         try {
-            List<RankModel> lotteryResult = exchangeService.getLotteryResult(rankModelList);
+            List<RankModel> lotteryResult = exchangeService.getLotteryResult();
             jsonR = JSONArray.fromObject(lotteryResult);
             //解决跨域
             String callback = request.getParameter("callback");
