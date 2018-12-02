@@ -184,7 +184,7 @@ public class CoinAspect {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String updTime = simpleDateFormat.format(new Date());
         ddScoreInflow.setSourceType("quanju");
-        ddScoreInflow.setUpdTime(updTime);
+        ddScoreInflow.setUpdTime(new Date());
 
         //传递身份证号、分数、类型、详情、更新时间
         AddScoreModel addScoreModel = new AddScoreModel();

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,7 +90,6 @@ public class ScoreInflowController extends AbstractController {
         Integer sourceScore = RequestUtil.getInt(request,"sourceScore");
         String sourceType = RequestUtil.getString(request, "sourceType");
         String sourceDetail = RequestUtil.getString(request,"sourceDetail");
-        String updTime = RequestUtil.getString(request,"updTime");
         Long orgId = RequestUtil.getLong(request, "orgId");
         String orgName = RequestUtil.getString(request, "orgName");
         Long total = RequestUtil.getLong(request, "total");
@@ -99,7 +99,7 @@ public class ScoreInflowController extends AbstractController {
         ddScoreInflow.setSourceScore(sourceScore);
         ddScoreInflow.setSourceType(sourceType);
         ddScoreInflow.setSourceDetail(sourceDetail);
-        ddScoreInflow.setUpdTime(updTime);
+        ddScoreInflow.setUpdTime(new Date());
         ddScoreInflow.setOrgId(orgId);
         ddScoreInflow.setOrgName(orgName);
         ddScoreInflow.setTotal(total);

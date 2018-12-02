@@ -2,6 +2,8 @@ package com.casic.datadriver.model.coin;
 
 import com.hotent.core.model.BaseModel;
 
+import java.util.Date;
+
 /**
  * @author workhub
  */
@@ -32,7 +34,7 @@ public class DdScoreInflow extends BaseModel {
     /**
      * 获得时间
      */
-    private String updTime;
+    private Date updTime;
 
     /**
      * 总和
@@ -102,11 +104,11 @@ public class DdScoreInflow extends BaseModel {
         this.sourceDetail = sourceDetail;
     }
 
-    public String getUpdTime() {
+    public Date getUpdTime() {
         return updTime;
     }
 
-    public void setUpdTime(String updTime) {
+    public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
 

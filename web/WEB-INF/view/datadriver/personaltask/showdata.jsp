@@ -71,10 +71,6 @@
         background-color: #ffced9;
     }
 </style>
-</br>
-<%--<a class="btn btn-sm btn-default" href="javascript:void(0)"--%>
-<%--onclick="importPrivateData(${taskId}, ${projectId})"><span--%>
-<%--class="glyphicon glyphicon-import"></span> 批量导入</a>--%>
 <div id="treeGridOut" style="width: 100%"></div>
 <div id='DataItemMenu'>
     <ul>
@@ -83,7 +79,7 @@
     </ul>
 </div>
 <%--导入数据--%>
-<div class="modal fade" id="importData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="importDataFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -93,15 +89,6 @@
 <%--上传私有数据文件或模型--%>
 <div class="modal fade" id="uploadPrivateFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-        </div>
-    </div>
-</div>
-
-<%--添加数据--%>
-<div class="modal fade" id="adddata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
 
         </div>
@@ -123,6 +110,8 @@
 <script type="text/javascript">
     //@ sourceURL=showdata.ht
     $(function () {
+        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId}, "${taskName}", ${type});
+
         $("#adddata").on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
         });
@@ -142,8 +131,6 @@
             }
         });
 
-        outputTableInit("${ctx}/datadriver/privatedata/outputData.ht?taskId=${taskId}", ${taskId}, ${projectId}, "${taskName}",${type});
-        // create context menu
         var contextMenu = $("#DataItemMenu").jqxMenu({width: 200, height: 58, autoOpenPopup: false, mode: 'popup'});
         $("#treeGridOut").on('contextmenu', function () {
             return false;
@@ -163,65 +150,14 @@
                 return false;
             }
         });
-        $("#DataItemMenu").on('itemclick', function (event) {
-            var args = event.args;
-            var selection = $("#treeGridOut").jqxTreeGrid('getSelection');
-            var rowId = selection[0].uid;
-
-            if ($.trim($(args).text()) == "添加子数据") {
-                // $("#treeGridOut").jqxTreeGrid('beginRowEdit', rowid);
-                $("#treeGridOut").jqxTreeGrid('expandRow', rowId);
-                $("#treeGridOut").jqxTreeGrid('addRow', null, {
-                    type: 1,
-                    dataName: "未定义子数据名称",
-                    taskId: ${taskId},
-                    dataSenMax: 10000,
-                    dataSenMin: 0,
-                    isLeaf: 1,
-                    dataType: "数值",
-                    publishState: "未发布",
-                    parentId: rowId,
-                    projectId: ${projectId}
-                }, 'first', rowId);
-            }
-            // else if ($.trim($(args).text()) == "上传文件") {
-            //     if (selection[0].dataType == '模型' || selection[0].dataType == '文件') {
-            //         $('#uploadPrivateFile').modal({
-            //             keyboard: true,
-            //             remote: "uploadPrivateFile.ht?id=" + selection[0].dataId
-            //         });
-            //     }
-            // }
-        });
     });
-
-    //Excel批量导入
-    function importPrivateData(taskId, projectId) {
-        $('#importData').modal({
-            keyboard: true,
-            remote: "${ctx}/datadriver/privatedata/importPrivateData.ht?id=" + taskId + "&projectId=" + projectId
-        });
-    }
-
-    //模型上传
-    function uploadFile(dataId) {
-        $('#uploadPrivateFile').modal({
-            keyboard: true,
-            remote: "uploadPrivateFile.ht?id=" + dataId
-        });
-    }
-
-    //模型下载
-    function downloadFile(dataId) {
-//        window.location.href = "getPrivatefile.ht?id=" + dataId;
-        $('#uploadPrivateFile').modal({
-            keyboard: true,
-            remote: "getPrivatefile.ht?id=" + dataId
-        });
-    }
 
     //对话框关闭清除缓存
     $("#uploadPrivateFile").on("hidden.bs.modal", function () {
+        $(this).removeData("bs.modal");
+    });
+    //对话框关闭清除缓存
+    $("#importDataFile").on("hidden.bs.modal", function () {
         $(this).removeData("bs.modal");
     });
 </script>

@@ -348,6 +348,24 @@ public class PersonalTaskController extends AbstractController {
         return mv;
     }
 
+    /**
+     * 数据导入
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("importPrivateData")
+    @Action(description = "数据导入")//3
+    public ModelAndView importPrivateData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Long id = RequestUtil.getLong(request, "id");
+        Long projectId = RequestUtil.getLong(request, "projectId");
+        ModelAndView mv = this.getAutoView().addObject("taskId", id)
+                .addObject("projectId", projectId);
+        return mv;
+    }
+
     public void delprivate(Long privateId) {
         privateDataService.delDataById(privateId);
         if (privateDataService.getDataListByPId(privateId).size() == 0) {

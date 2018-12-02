@@ -132,7 +132,7 @@ public class ExchangeService {
         ddScoreOutflow.setSourceType(scoreType);
         ddScoreOutflow.setExpendDetail(consumeType);
         ddScoreOutflow.setExpendScore(consumeScore);
-        ddScoreOutflow.setUdpTime(DATE_FORMATTER2.get().format(new Date()));
+        ddScoreOutflow.setUdpTime(new Date());
         if(isClearMonth) {
             Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
             if (done) {

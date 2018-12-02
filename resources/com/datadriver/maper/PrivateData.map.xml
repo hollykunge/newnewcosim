@@ -91,6 +91,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_private_data
+        order by DD_DATA_ID  desc
     </select>
 
     <select id="getDataById" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -105,6 +106,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_TASK_ID = #{taskId}
+        order by DD_DATA_ID  desc
     </select>
 
 
@@ -113,6 +115,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_TASK_ID = #{taskId,jdbcType=NUMERIC}
+        order by DD_DATA_ID  desc
     </select>
 
     <select id="getDataListByPId" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -120,6 +123,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_PARENT_ID = #{parentId,jdbcType=NUMERIC}
+        order by DD_DATA_ID  desc
     </select>
 
     <select id="getPubListByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -127,6 +131,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_TASK_ID = #{taskId} AND DD_DATA_PUBLISH_STATE = 1
+        order by DD_DATA_ID  desc
     </select>
 
     <select id="getUnPubListByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -134,6 +139,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_TASK_ID = #{taskId} AND DD_DATA_PUBLISH_STATE = 0
+        order by DD_DATA_ID  desc
     </select>
 
     <select id="getOrdListByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -141,6 +147,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_TASK_ID = #{taskId} AND DD_DATA_ORDER_STATE = 1
+        order by DD_DATA_ID  desc
     </select>
 
     <select id="getUnOrdListByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -148,6 +155,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_TASK_ID = #{taskId} AND DD_DATA_ORDER_STATE = 0
+        order by DD_DATA_ID  desc
     </select>
 
     <select id="getDataIdByTaskIdAndDataName" parameterType="com.casic.datadriver.publicClass.QueryParameters"
@@ -163,6 +171,7 @@
         <include refid="Base_Column_List"/>
         from dd_private_data
         where DD_DATA_PROJ_ID = #{id} AND DD_DATA_TASK_ID != #{backupsL} AND DD_DATA_PUBLISH_STATE = 1
+        order by DD_DATA_ID  desc
     </select>
 
     <update id="update" parameterType="com.casic.datadriver.model.data.PrivateData">
