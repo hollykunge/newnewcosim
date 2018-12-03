@@ -52,7 +52,7 @@
         </c:set>
         <display:table name="scoreOutflowList" id="scoreOutflowItem" requestURI="list.ht" sort="external" cellpadding="1" cellspacing="1" export="true"  class="table-grid">
             <display:column title="${checkAll}" media="html" style="width:30px; text-align: center;">
-                <input type="checkbox" class="pk" name="id" value="${bizDefItem.bizDefId}">
+                <input type="checkbox" class="pk" name="id" value="${scoreOutflowItem.bizDefId}">
             </display:column>
 
             <display:column property="userName" title="用户名" sortable="true" sortName="user_name" maxLength="80" style="text-align: center;"></display:column>
@@ -60,7 +60,9 @@
             <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expend_score" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="sourceType" title="积分类型" sortable="true" sortName="source_type" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expend_detail" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="udpTime" title="更新时间" sortable="true" sortName="udp_time" maxLength="80" style="text-align: center;"></display:column>
+            <display:column  title="更新时间" sortable="true" sortName="createtime">
+                <fmt:formatDate value="${scoreOutflowItem.udpTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </display:column>
             <display:column title="管理" media="html" style="width:260px; text-align: center;">
                 <a href="del.ht?id=${scoreOutflowItem.id}" class="link del">删除</a>
                 <a href="edit.ht?id=${scoreOutflowItem.id}" class="link edit">编辑</a>
