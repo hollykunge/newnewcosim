@@ -230,9 +230,9 @@ public class PrivateDataController extends AbstractController {
             throws Exception {
         PrintWriter writer = response.getWriter();
         try {
-            long userId = ContextUtil.getCurrentUserId();
+            Long userId = ContextUtil.getCurrentUserId();
             Long dataId = RequestUtil.getLong(request, "id");
-            long typeId = RequestUtil.getLong(request, "typeId");
+            Long typeId = RequestUtil.getLong(request, "typeId");
             String secretLevel = RequestUtil.getString(request, "secretLevel");
             ISysUser appUser = null;
             if (userId > 0) {
@@ -248,11 +248,12 @@ public class PrivateDataController extends AbstractController {
             Iterator<MultipartFile> it = files.values().iterator();
 
             while (it.hasNext()) {
+
                 Long fileId = UniqueIdUtil.genId();
                 MultipartFile f = it.next();
                 String oriFileName = f.getOriginalFilename();
                 String extName = FileUtil.getFileExt(oriFileName);
-                String fileName = fileId + "." + extName;
+                String fileName = oriFileName + "." + extName;
 
                 //开始写入物理文件
                 String filePath = createFilePath(AppUtil.getRealPath("/attachFiles/temp"), fileName);
