@@ -129,7 +129,7 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
     // create Tree Grid
     $("#treeGridOut").jqxTreeGrid(
         {
-            width: getWidth(),
+            width: '100%',
             height: getHeight(),
             source: dataAdapter,
             pageable: true,

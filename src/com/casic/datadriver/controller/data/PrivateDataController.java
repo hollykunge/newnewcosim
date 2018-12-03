@@ -28,6 +28,7 @@ import net.sf.ezmorph.object.DateMorpher;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
 import org.apache.commons.fileupload.DiskFileUpload;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -40,6 +41,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -47,6 +49,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.appleframe.utils.web.Struts2Utils.getResponse;
 import static com.hotent.core.util.AppUtil.getServletContext;
 
 /**
@@ -234,6 +237,24 @@ public class PrivateDataController extends AbstractController {
             Long dataId = RequestUtil.getLong(request, "id");
             Long typeId = RequestUtil.getLong(request, "typeId");
             String secretLevel = RequestUtil.getString(request, "secretLevel");
+            String tempSecretLevel = "非密";
+            switch (secretLevel) {
+                case "fm":
+                    tempSecretLevel = "非密";
+                    break;
+                case "nb":
+                    tempSecretLevel = "内部";
+                    break;
+                case "mm":
+                    tempSecretLevel = "秘密";
+                    break;
+                case "jm":
+                    tempSecretLevel = "机密";
+                    break;
+                default:
+                    tempSecretLevel = "非密";
+                    break;
+            }
             ISysUser appUser = null;
             if (userId > 0) {
                 appUser = sysUserService.getById(userId);
@@ -248,12 +269,11 @@ public class PrivateDataController extends AbstractController {
             Iterator<MultipartFile> it = files.values().iterator();
 
             while (it.hasNext()) {
-
                 Long fileId = UniqueIdUtil.genId();
                 MultipartFile f = it.next();
                 String oriFileName = f.getOriginalFilename();
                 String extName = FileUtil.getFileExt(oriFileName);
-                String fileName = oriFileName + "." + extName;
+                String fileName = fileId + "." + extName;
 
                 //开始写入物理文件
                 String filePath = createFilePath(AppUtil.getRealPath("/attachFiles/temp"), fileName);
@@ -263,7 +283,7 @@ public class PrivateDataController extends AbstractController {
                 SysFile sysFile = new SysFile();
                 sysFile.setFileId(fileId);
                 //附件名称
-                sysFile.setFileName(oriFileName.substring(0, oriFileName.lastIndexOf('.')));
+                sysFile.setFileName("(" + tempSecretLevel + ")" + oriFileName.substring(0, oriFileName.lastIndexOf('.')));
 
                 Calendar cal = Calendar.getInstance();
                 Integer year = cal.get(Calendar.YEAR);
@@ -358,6 +378,12 @@ public class PrivateDataController extends AbstractController {
             // 取得文件的后缀名。
             String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
 
+            String fileId = filename.substring(0, filename.lastIndexOf("."));
+
+            //下载前改变文件名
+            String fileTrueName = sysFileService.getById(Long.valueOf(fileId)).getFileName();
+            fileTrueName = fileTrueName + "." + ext;
+            fileTrueName = URLEncoder.encode(fileTrueName, "UTF-8").replaceAll("\\+", "%20").replaceAll("%28", "\\(").replaceAll("%29", "\\)").replaceAll("%3B", ";").replaceAll("%40", "@").replaceAll("%23", "\\#").replaceAll("%26", "\\&");
             // 以流的形式下载文件。
             InputStream fis = new BufferedInputStream(new FileInputStream(file));
             byte[] buffer = new byte[fis.available()];
@@ -366,10 +392,10 @@ public class PrivateDataController extends AbstractController {
             // 清空response
             response.reset();
             // 设置response的Header
-            response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+            response.addHeader("Content-Disposition", "attachment;filename=" + fileTrueName);
             response.addHeader("Content-Length", "" + file.length());
             OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-            response.setContentType("application/octet-stream");
+            response.setContentType("application/octet-stream; charset=utf-8");
             toClient.write(buffer);
             toClient.flush();
             toClient.close();
@@ -423,6 +449,69 @@ public class PrivateDataController extends AbstractController {
     public void initBinder(ServletRequestDataBinder bin) {
         bin.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
     }
+
+    @RequestMapping("exportDataFile")
+    @Action(description = "导出EXCEL文件")
+    public void exportDataFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            Long taskId = RequestUtil.getLong(request, "id");
+            String type = RequestUtil.getString(request, "type");
+            String secretLevel = RequestUtil.getString(request, "secretLevel");
+            String dataAttr = RequestUtil.getString(request, "dataAttr");
+
+            String taskName = taskInfoService.getTaskById(taskId).getDdTaskName();
+            String[] dataAttrs = new String[]{"序号", "数据名称", "最新值", "单位", "类型", "最大值", "最小值", "所属任务", "创建人"};
+            if (dataAttr != "") {
+                dataAttrs = dataAttr.split("[,|，]");
+            }
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            HSSFWorkbook workbook = privateDataService.exportBrandPeriodSort(dataAttrs, taskName, taskId, type);
+            if (workbook != null) {
+                try {
+                    workbook.write(os);
+                    byte[] content = os.toByteArray();
+                    InputStream is = new ByteArrayInputStream(content);
+
+                    String fileName = String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";
+                    fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20").replaceAll("%28", "\\(").replaceAll("%29", "\\)").replaceAll("%3B", ";").replaceAll("%40", "@").replaceAll("%23", "\\#").replaceAll("%26", "\\&");
+
+                    response.reset();
+                    // 设置response的Header
+                    response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+//                    response.addHeader("Content-Length", "" + file.length());
+                    OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+                    response.setContentType("application/vnd.ms-excel; charset=utf-8") ;
+                    ServletOutputStream out = response.getOutputStream();
+                    BufferedInputStream bis = null;
+                    BufferedOutputStream bos = null;
+                    try {
+                        bis = new BufferedInputStream(is);
+                        bos = new BufferedOutputStream(out);
+                        byte[] buff = new byte[2048];
+                        int bytesRead;
+                        while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                            bos.write(buff, 0, bytesRead);
+                        }
+                    } catch (final IOException e) {
+                        throw e;
+                    } finally {
+                        if (bis != null)
+                            bis.close();
+                        if (bos != null)
+                            bos.close();
+                    }
+//                    workbook.write(toClient);
+//                    toClient.flush();
+//                    toClient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+    }
+
 
     @RequestMapping("importBrandSort")
     @Action(description = "导入EXCEL文件")

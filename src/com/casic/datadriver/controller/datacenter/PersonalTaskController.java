@@ -596,4 +596,20 @@ public class PersonalTaskController extends AbstractController {
         return mav;
     }
 
+    @RequestMapping("exportData")
+    @Action(description = "导出文件对话框")
+    public ModelAndView exportData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Long id = RequestUtil.getLong(request, "id");
+        String dataId = RequestUtil.getString(request, "dataIds");
+        if (dataId != "") {
+            String[] dataIds = dataId.split("[,|，]");
+            List<String> tempIds = Arrays.asList(dataIds);
+            ModelAndView mv = this.getAutoView().addObject("taskId", id)
+                    .addObject("dataIds", tempIds);
+            return mv;
+        } else {
+            ModelAndView mv = this.getAutoView().addObject("taskId", id);
+            return mv;
+        }
+    }
 }

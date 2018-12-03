@@ -66,7 +66,7 @@ function inputTableInit(path, taskId, type) {
     });
     $("#treeGridIn").jqxTreeGrid(
         {
-            width: getWidth(),
+            width: '100%',
             height: getHeight(),
             source: dataAdapter,
             pageable: true,
@@ -98,6 +98,7 @@ function inputTableInit(path, taskId, type) {
                 container.append(cancelOrder);
                 container.append(downLoad);
                 container.append(refreshInput);
+                container.append(exportData);
 
                 if (isView) {
                     toolBar.append(container);
@@ -125,7 +126,11 @@ function inputTableInit(path, taskId, type) {
                 });
                 refreshInput.jqxTooltip({position: 'bottom', content: "点击刷新数据列表"});
 
-
+                exportData.jqxButton({
+                    cursor: "pointer",
+                    disabled: false
+                });
+                exportData.jqxTooltip({position: 'bottom', content: "点击全部导出"});
                 var updateButtons = function (action) {
                     switch (action) {
                         case "Select":
@@ -237,6 +242,21 @@ function inputTableInit(path, taskId, type) {
                         });
                     }
                 });
+                exportData.click(function () {
+                    if (!exportData.jqxButton('disabled')) {
+                        var selection = $("#treeGridIn").jqxTreeGrid('getSelection');
+                        var rowsDataIds = new Array();
+                        for (var i = 0; i < selection.length; i++) {
+                            if (selection[i] != undefined) {
+                                rowsDataIds.push(selection[i].dataId);
+                            }
+                        }
+                        $('#exportAllData').modal({
+                            keyboard: true,
+                            remote: "exportData.ht?id=" + taskId + "&dataIds=" + rowsDataIds
+                        });
+                    }
+                });
             },
             // 数据表加载完事执行，发布数据使用
             rendered: function () {
@@ -266,8 +286,7 @@ function inputTableInit(path, taskId, type) {
                                     $("input[data-row = '" + rowKey + "']").attr("value", "订阅");
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             // end edit and save changes.
                             // target.parent().find('.cancelButtons').hide();
                             // target.val("Edit");
@@ -297,8 +316,7 @@ function inputTableInit(path, taskId, type) {
                         // render custom column.
                         if (rowData.torderState == 1) {
                             return "<strong style='color: #00B83F'>已订阅</strong>";
-                        }
-                        else {
+                        } else {
                             return "<strong style='color: #b4372f'>未订阅</strong>";
                         }
                     }
