@@ -6,8 +6,8 @@
         <result column="user_id" property="userId" jdbcType="NUMERIC"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="score_total" property="scoreTotal" jdbcType="NUMERIC"/>
-        <result column="crt_time" property="crtTime" jdbcType="VARCHAR"/>
-        <result column="udp_time" property="udpTime" jdbcType="VARCHAR"/>
+        <result column="crt_time" property="crtTime" jdbcType="DATE"/>
+        <result column="udp_time" property="udpTime" jdbcType="DATE"/>
         <result column="score_type" property="scoreType" jdbcType="VARCHAR"/>
         <result column="score_action" property="scoreAction" jdbcType="VARCHAR"/>
         <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
