@@ -10,7 +10,7 @@
         <result column="source_score" property="sourceScore" jdbcType="NUMERIC"/>
         <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
         <result column="source_detail" property="sourceDetail" jdbcType="VARCHAR"/>
-        <result column="upd_time" property="updTime" jdbcType="VARCHAR"/>
+        <result column="upd_time" property="updTime" jdbcType="DATE"/>
         <result column="total" property="total" jdbcType="NUMERIC"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="org_id" property="orgId" jdbcType="NUMERIC"/>

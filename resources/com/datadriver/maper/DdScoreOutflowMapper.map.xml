@@ -10,7 +10,7 @@
     <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
     <result column="expend_score" property="expendScore" jdbcType="NUMERIC" />
     <result column="expend_detail" property="expendDetail" jdbcType="VARCHAR" />
-    <result column="udp_time" property="udpTime" jdbcType="VARCHAR" />
+    <result column="udp_time" property="udpTime" jdbcType="DATE" />
     <result column="org_id" property="orgId" jdbcType="NUMERIC" />
     <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
     <result column="user_name" property="userName" jdbcType="VARCHAR"/>
