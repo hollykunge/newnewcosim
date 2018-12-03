@@ -170,6 +170,15 @@
             </div>
         </div>
     </div>
+    <%--全部删除--%>
+    <div class="modal fade" id="delAllData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="overflow: auto" id="delAllContent" style="overflow: auto">
+
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

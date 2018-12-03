@@ -333,12 +333,10 @@ public class PrivateDataService extends BaseService<PrivateData> {
                         break;
                 }
 
-                if (!String.valueOf(hssfRow.getCell(0)).equals("null")) {
-
+                if (!String.valueOf(hssfRow.getCell(0)).equals("null") && !String.valueOf(hssfRow.getCell(0)).isEmpty()) {
 
                     privateData.setDdDataId(UniqueIdUtil.genId());
                     privateData.setDdDataTaskId(taskId);
-                    String a = String.valueOf(hssfRow.getCell(7));
                     if (String.valueOf(hssfRow.getCell(7)).equals("null") || String.valueOf(hssfRow.getCell(7)).equals("")) {
                         privateData.setDdDataIsLeaf((short) 0);
                     } else {
@@ -471,4 +469,17 @@ public class PrivateDataService extends BaseService<PrivateData> {
         }
     }
 
+    public void delprivate(Long privateId) {
+        this.delDataById(privateId);
+        if (this.getDataListByPId(privateId).size() == 0) {
+            return;
+        } else {
+            Long pid = privateId;
+            List<PrivateData> privateDatalist = this.getDataListByPId(pid);
+            this.delDataById(pid);
+            for (int i = 0; i < privateDatalist.size(); i++) {
+                delprivate(privateDatalist.get(i).getDdDataId());
+            }
+        }
+    }
 }

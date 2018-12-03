@@ -117,7 +117,7 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                 });
             },
             deleteRow: function (dataId, commit) {
-                $.get("delPrivateData.ht?dataId=" + dataId, dataId, function (data, status) {
+                $.get("delPrivateData.ht?dataId=" + dataId, function (data, status) {
                     if (status == "success") {
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
                     }
@@ -172,20 +172,26 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                 };
                 var container = $("<div style='margin: 5px;'></div>");
                 var addRow = $('<button id="addRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-plus"></span> 添加数据</button>');
-                var delRow = $('<button id="delRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-trash"></span> 删除数据</button>');
+                var delRow = $('<button id="delRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-trash"></span> 删除已选</button>');
                 var pubRow = $('<button id="pubRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-ok"></span> 发布数据</button>');
                 var cancelRow = $('<button id="cancelRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-remove"></span> 撤销发布</button>');
                 var refreshTable = $('<button id="refreshTable" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-refresh"></span> 刷新表单</button>');
                 var uploadFile = $('<button id="uploadFile" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-upload"></span> 上传文件</button>');
                 var importData = $('<button id="importData" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-import"></span> 导入数据</button>');
+                var delAll = $('<button id="importData" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-remove-circle"></span> 全部删除</button>');
 
                 container.append(addRow);
-                container.append(delRow);
+                container.append(" ");
                 container.append(pubRow);
                 container.append(cancelRow);
-                container.append(refreshTable);
+                container.append(" ");
+                container.append(delRow);
+                // container.append(delAll);
+                container.append(" ");
                 container.append(uploadFile);
                 container.append(importData);
+                container.append(" ");
+                container.append(refreshTable);
                 if (type == 1) {
                     toolBar.append(container);
                 }
@@ -227,6 +233,11 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                     disabled: false
                 });
                 importData.jqxTooltip({position: 'bottom', content: "点击导入数据"});
+                delAll.jqxButton({
+                    cursor: "pointer",
+                    disabled: false
+                });
+                delAll.jqxTooltip({position: 'bottom', content: "点击全部删除"});
                 var updateButtons = function (action) {
                     switch (action) {
                         case "Select":
@@ -376,6 +387,14 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                         $('#importDataFile').modal({
                             keyboard: true,
                             remote: "importPrivateData.ht?id=" + taskId + "&projectId=" + projectId
+                        });
+                    }
+                });
+                delAll.click(function () {
+                    if (!delAll.jqxButton('disabled')) {
+                        $('#delAllData').modal({
+                            keyboard: true,
+                            remote: "delAllData.ht?id=" + taskId
                         });
                     }
                 });

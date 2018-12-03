@@ -92,6 +92,7 @@ function inputTableInit(path, taskId, type) {
                 var cancelOrder = $('<button id="delRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-remove"></span> 取消订阅</button>');
                 var downLoad = $('<button id="pubRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-download"></span> 下载文件</button>');
                 var refreshInput = $('<button id="pubRow" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-refresh"></span> 刷新列表</button>');
+                var exportData = $('<button id="exportData" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-export"></span> 导出数据</button>');
 
                 container.append(orderRow);
                 container.append(cancelOrder);
