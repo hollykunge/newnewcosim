@@ -53,7 +53,7 @@ public class CoinController extends GenericController {
             addScoreModel.setSourceScore(sourceScore);
             addScoreModel.setSourceType(sourceType);
             addScoreModel.setSourceDetail(sourceDetail);
-            addScoreModel.setUpdTime(updTime);
+            addScoreModel.setUpdTime(new Date());
             resultMsg = coinService.addScore(addScoreModel);
 
             JSONObject jsonObject = new JSONObject();

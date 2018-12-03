@@ -1,11 +1,13 @@
 package com.casic.datadriver.manager;
 
+import com.casic.datadriver.publicClass.DataTimeHandler;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,11 +61,8 @@ public class ScoreRegulation {
     /**
      * 积分兑币消耗类型
      */
-    public static final String QUAN_JU_MONTH_RANK = "quan_ju_month_rank";
-    public static final String FENG_XIAN_MONTH_RANK = "feng_xian_month_rank";
-    public static final String QIU_SHI_MONTH_RANK = "qiu_shi_month_rank";
-    public static final String CHUANG_XIN_MONTH_RANK = "chuang_xin_month_rank";
-    public static final String LOTTERY_MONTH = "lottery_month";
+    public static final String MONTH_RANK = "month_rank";
+    public static final String MONTH_LOTTERY = "month_lottery";
 
     /**
      * 创新兑币积分
@@ -188,6 +187,14 @@ public class ScoreRegulation {
      * 给工具点评
      */
     private static final String TOOL_4 = "tool_4";
+    /**
+     * 工具收到评星
+     */
+    private static final String TOOL_5 = "tool_5";
+    /**
+     * 上传收到评论
+     */
+    private static final String TOOL_6 = "tool_6";
 
     //创新3种
     /**
@@ -197,11 +204,11 @@ public class ScoreRegulation {
     /**
      * 工具收到评星
      */
-    private static final String STORE_2 = "store_2";
+//    private static final String STORE_2 = "store_2";
     /**
      * 上传收到评论
      */
-    private static final String STORE_3 = "store_3";
+//    private static final String STORE_3 = "store_3";
 
     private ArrayList<String> sourceDetailList = new ArrayList<String>();
     private Map<String, Integer> overflowMap = new HashMap();
@@ -238,10 +245,12 @@ public class ScoreRegulation {
         sourceDetailList.add(TOOL_2);
         sourceDetailList.add(TOOL_3);
         sourceDetailList.add(TOOL_4);
+        sourceDetailList.add(TOOL_5);
+        sourceDetailList.add(TOOL_6);
         //创新
         sourceDetailList.add(STORE_1);
-        sourceDetailList.add(STORE_2);
-        sourceDetailList.add(STORE_3);
+//        sourceDetailList.add(STORE_2);
+//        sourceDetailList.add(STORE_3);
 
         //设置各分项上限
         overflowMap.put(DESIGN_1, 10);
@@ -270,10 +279,12 @@ public class ScoreRegulation {
      *
      * @param time time
      */
-    public boolean isToday(String time) {
+    public boolean isToday(Date time) {
         //String time = "1988-12-10 11:20:45";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime localTime = LocalDateTime.parse(time, dtf);
+        String timeDate;
+        timeDate = DataTimeHandler.DATE_FORMATTER2.get().format(time);
+        LocalDateTime localTime = LocalDateTime.parse(timeDate, dtf);
         LocalDateTime startTime = LocalDate.now().atTime(0, 0, 0);
         LocalDateTime endTime = LocalDate.now().atTime(23, 59, 59);
         //如果小于今天的开始日期
@@ -290,6 +301,7 @@ public class ScoreRegulation {
 //        }
         return false;
     }
+
     /**
      * @param scoreInflow  单次赚取积分数
      * @param todayScore   今天已经得到的积分数

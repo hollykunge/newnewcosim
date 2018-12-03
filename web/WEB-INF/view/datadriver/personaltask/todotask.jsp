@@ -170,6 +170,16 @@
             </div>
         </div>
     </div>
+    <%--全部删除--%>
+    <div class="modal fade" id="delAllData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="overflow: auto" id="delAllContent" style="overflow: auto">
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>
@@ -275,7 +285,7 @@
         });
     }
     knowledge_btn.onclick = function () {
-        $('#knowledgeContent').attr('src', 'http://10.12.97.21:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=abc&type=2');
+        $('#knowledgeContent').attr('src', 'http://10.12.97.30:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=${TaskInfo.ddTaskName}&type=2&j_username=${account}');
         // $('#windowContent').html(data);
     }
 </script>

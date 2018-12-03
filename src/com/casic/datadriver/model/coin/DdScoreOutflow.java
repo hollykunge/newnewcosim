@@ -2,6 +2,8 @@ package com.casic.datadriver.model.coin;
 
 import com.hotent.core.model.BaseModel;
 
+import java.util.Date;
+
 /**
  * @author workhub
  */
@@ -48,7 +50,7 @@ public class DdScoreOutflow extends BaseModel {
     /**
      * 消耗时间
      */
-    private String udpTime;
+    private Date udpTime;
 
     public Long getId() {
         return id;
@@ -90,11 +92,11 @@ public class DdScoreOutflow extends BaseModel {
         this.expendDetail = expendDetail;
     }
 
-    public String getUdpTime() {
+    public Date getUdpTime() {
         return udpTime;
     }
 
-    public void setUdpTime(String udpTime) {
+    public void setUdpTime(Date udpTime) {
         this.udpTime = udpTime;
     }
 

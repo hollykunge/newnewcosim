@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.casic.datadriver.model.coin.DdGambler">
+    <resultMap id="BaseResultMap" type="com.casic.datadriver.model.coin.DdGambler">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="NUMERIC"/>
+        <result column="period" property="period" jdbcType="NUMERIC"/>
+        <result column="gambler_num" property="gamblerNum" jdbcType="NUMERIC"/>
+        <result column="gambler_name" property="gamblerName" jdbcType="VARCHAR"/>
+        <result column="winner_num" property="winnerNum" jdbcType="NUMERIC"/>
+        <result column="winner_name" property="winnerName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, period, gambler_num, gambler_name, winner_num, winner_name
+    </sql>
+    <insert id="add" parameterType="com.casic.datadriver.model.coin.DdGambler">
+    insert into dd_gambler (id, period, gambler_num, gambler_name, winner_num, winner_name)
+    values (#{id,jdbcType=NUMERIC},
+    #{period,jdbcType=NUMERIC},
+      #{gamblerNum,jdbcType=NUMERIC},
+      #{gamblerName,jdbcType=VARCHAR},
+      #{winnerNum,jdbcType=NUMERIC},
+      #{winnerName,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM dd_gambler
+		WHERE
+		id=#{id}
+	</delete>
+    <select id="getByPeriod" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_gambler
+        WHERE
+        period=#{period}
+    </select>
+</mapper>

@@ -7,6 +7,8 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/commons/include/html_doctype.html" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
     <title>积分列表</title>
@@ -24,13 +26,13 @@
                 <div class="group"><a class="link del"  action="del.ht">删除</a></div>
             </div>
             <div class="toolBar" style="float: right;">
-                <div class="group"><a class="link search"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=quanju">兑换全局币</a></div>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/exchange/getMonthRankByType.ht?scoreType=quanju">兑换全局币</a></div>
                 <div class="l-bar-separator"></div>
-                <div class="group"><a class="link add"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=gongxian">兑换贡献币</a></div>
+                <div class="group"><a class="link add"  href="${ctx}/datadriver/exchange/getMonthRankByType.ht?scoreType=gongxian">兑换贡献币</a></div>
                 <div class="l-bar-separator"></div>
-                <div class="group"><a class="link search"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=qiushi">兑换求实币</a></div>
+                <div class="group"><a class="link search"  href="${ctx}/datadriver/exchange/getMonthRankByType.ht?scoreType=qiushi">兑换求实币</a></div>
                 <div class="l-bar-separator"></div>
-                <div class="group"><a class="link detail"  href="${ctx}/datadriver/exchange/consume.ht?scoreType=chuangxin">兑换创新币</a></div>
+                <div class="group"><a class="link detail"  href="${ctx}/datadriver/exchange/getMonthRankByType.ht?scoreType=chuangxin">兑换创新币</a></div>
             </div>
         </div>
         <div class="panel-search">

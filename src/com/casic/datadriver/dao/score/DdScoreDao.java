@@ -15,31 +15,46 @@ import java.util.List;
 @Repository
 public class DdScoreDao extends BaseDao<DdScore> {
     @Override
-    public Class getEntityClass() {return DdScore.class; }
+    public Class getEntityClass() {
+        return DdScore.class;
+    }
 
     /**
      * 更新积分账户
+     *
      * @param ddScore the query filter
      */
     public void updateScore(DdScore ddScore) {
         this.update(ddScore);
     }
+
+    public void updateByType(DdScore ddScore) {
+        this.update("updateByType", ddScore);
+    }
+
+    public void delByType(String sourceType) {
+        this.update("delByType", sourceType);
+    }
+
     /**
      * 插入
      */
     public void insert() {
     }
+
     /**
      * 删除
      */
-    public void delete(){
+    public void delete() {
     }
+
     /**
      * @param id id
      */
     public List<DdScore> getById(long id) {
         return this.getBySqlKey("getById", id);
     }
+
     /**
      * @param userId userId
      */

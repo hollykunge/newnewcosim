@@ -2,6 +2,8 @@ package com.casic.datadriver.model.coin;
 
 import com.hotent.core.model.BaseModel;
 
+import java.util.Date;
+
 /**
  * @author workhub
  */
@@ -28,12 +30,12 @@ public class DdScore extends BaseModel {
     /**
      * 创建时间
      */
-    private String crtTime;
+    private Date crtTime;
 
     /**
      * 更新时间
      */
-    private String udpTime;
+    private Date udpTime;
 
     /**
      * 积分类型
@@ -101,19 +103,19 @@ public class DdScore extends BaseModel {
         this.scoreTotal = scoreTotal;
     }
 
-    public String getCrtTime() {
+    public Date getCrtTime() {
         return crtTime;
     }
 
-    public void setCrtTime(String crtTime) {
+    public void setCrtTime(Date crtTime) {
         this.crtTime = crtTime;
     }
 
-    public String getUdpTime() {
+    public Date getUdpTime() {
         return udpTime;
     }
 
-    public void setUdpTime(String udpTime) {
+    public void setUdpTime(Date udpTime) {
         this.udpTime = udpTime;
     }
 
