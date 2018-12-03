@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -90,8 +91,7 @@ public class ScoreController extends AbstractController {
         Long scoreUid = RequestUtil.getLong(request,"userId");
         String userName = RequestUtil.getString(request,"userName");
         Integer scoreTotal = RequestUtil.getInt(request, "scoreTotal");
-        String crtTime = RequestUtil.getString(request,"crtTime");
-        String udpTime = RequestUtil.getString(request,"udpTime");
+        Date crtTime = RequestUtil.getDate(request,"crtTime");
         String scoreType = RequestUtil.getString(request,"scoreType");
         String scoreAction = RequestUtil.getString(request,"scoreAction");
         String orgName = RequestUtil.getString(request,"orgName");
@@ -102,7 +102,7 @@ public class ScoreController extends AbstractController {
         ddScore.setUserName(userName);
         ddScore.setScoreTotal(scoreTotal);
         ddScore.setCrtTime(crtTime);
-        ddScore.setUdpTime(udpTime);
+        ddScore.setUdpTime(new Date());
         ddScore.setScoreType(scoreType);
         ddScore.setScoreAction(scoreAction);
         ddScore.setOrgName(orgName);

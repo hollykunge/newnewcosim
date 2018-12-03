@@ -3,6 +3,7 @@ package com.casic.datadriver.model.coin;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author workhub
@@ -27,6 +28,9 @@ public class DdGambler {
 
     @Column(name = "winner_name")
     private String winnerName;
+
+    @Column(name = "crt_time")
+    private Date crtTime;
 
     /**
      * @return id
@@ -82,4 +86,11 @@ public class DdGambler {
         this.winnerName = winnerName;
     }
 
+    public Date getCrtTime() {
+        return crtTime;
+    }
+
+    public void setCrtTime(Date crtTime) {
+        this.crtTime = crtTime;
+    }
 }

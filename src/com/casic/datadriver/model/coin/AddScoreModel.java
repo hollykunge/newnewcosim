@@ -2,6 +2,8 @@ package com.casic.datadriver.model.coin;
 
 import com.hotent.core.model.BaseModel;
 
+import java.util.Date;
+
 /**
  * @author workhub
  */
@@ -31,7 +33,7 @@ public class AddScoreModel extends BaseModel {
     /**
      * 时间戳
      */
-    private String updTime;
+    private Date updTime;
 
     public String getAccount() {
         return account;
@@ -65,11 +67,11 @@ public class AddScoreModel extends BaseModel {
         this.sourceDetail = sourceDetail;
     }
 
-    public String getUpdTime() {
+    public Date getUpdTime() {
         return updTime;
     }
 
-    public void setUpdTime(String updTime) {
+    public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
 

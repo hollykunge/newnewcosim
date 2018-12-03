@@ -43,9 +43,7 @@ public class AddScoreHandler implements IJmsHandler {
                 + " " + addScoreModel.getSourceDetail() + " score : " + addScoreModel.getSourceScore());
 
         //判断是否当天消息
-        String timeDate;
-        Date time = new Date();
-        timeDate = DATE_FORMATTER2.get().format(time);
+
         if (addScoreModel.getAccount() != null) {
             //获取用户
             ISysUser sysUser = sysUserDao.getByAccount(addScoreModel.getAccount());
@@ -68,7 +66,7 @@ public class AddScoreHandler implements IJmsHandler {
                     ddScoreInflow.setSourceScore(Integer.valueOf(addScoreModel.getSourceScore()));
                     ddScoreInflow.setSourceDetail(addScoreModel.getSourceDetail());
                     ddScoreInflow.setSourceType(addScoreModel.getSourceType());
-                    ddScoreInflow.setUpdTime(timeDate);
+                    ddScoreInflow.setUpdTime(new Date());
                     ddScoreInflow.setUserName(sysUser.getFullname());
                     ddScoreInflow.setOrgId(sysUser.getOrgId());
                     String orgName = sysOrgDao.getOrgsByUserId(sysUser.getUserId()).get(0).getOrgName();
@@ -89,10 +87,4 @@ public class AddScoreHandler implements IJmsHandler {
         }
     }
 
-    private final static ThreadLocal<SimpleDateFormat> DATE_FORMATTER2 = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        }
-    };
 }

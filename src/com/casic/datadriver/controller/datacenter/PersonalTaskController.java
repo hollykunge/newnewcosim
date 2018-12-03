@@ -348,19 +348,40 @@ public class PersonalTaskController extends AbstractController {
         return mv;
     }
 
-    public void delprivate(Long privateId) {
-        privateDataService.delDataById(privateId);
-        if (privateDataService.getDataListByPId(privateId).size() == 0) {
-            return;
-        } else {
-            Long pid = privateId;
-            List<PrivateData> privateDatalist = privateDataService.getDataListByPId(pid);
-            privateDataService.delDataById(pid);
-            for (int i = 0; i < privateDatalist.size(); i++) {
-                delprivate(privateDatalist.get(i).getDdDataId());
-            }
-        }
+    /**
+     * 数据导入
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("importPrivateData")
+    @Action(description = "数据导入")//3
+    public ModelAndView importPrivateData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Long id = RequestUtil.getLong(request, "id");
+        Long projectId = RequestUtil.getLong(request, "projectId");
+        ModelAndView mv = this.getAutoView().addObject("taskId", id)
+                .addObject("projectId", projectId);
+        return mv;
     }
+
+    /**
+     * 删除所有的任务数据
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("delAllData")
+    @Action(description = "删除全部数据")//3
+    public ModelAndView delAllData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Long id = RequestUtil.getLong(request, "id");
+        ModelAndView mv = this.getAutoView().addObject("taskId", id);
+        return mv;
+    }
+
 
     /**
      * 删除私有数据
@@ -377,7 +398,13 @@ public class PersonalTaskController extends AbstractController {
             throws Exception {
         try {
             String dataId = RequestUtil.getString(request, "dataId");
-            delprivate(Long.valueOf(dataId));
+            String[] dataIds = dataId.split("[,|，]");
+//            String[] ddDataIds = RequestUtil.getStringAry(request, "dataId");
+            List<String> tempIds = Arrays.asList(dataIds);
+//            String dataId = RequestUtil.getString(request, "dataId");
+            for (String tempId : tempIds){
+                privateDataService.delprivate(Long.valueOf(tempId));
+            }
         } catch (Exception e) {
 
         }
@@ -569,4 +596,20 @@ public class PersonalTaskController extends AbstractController {
         return mav;
     }
 
+    @RequestMapping("exportData")
+    @Action(description = "导出文件对话框")
+    public ModelAndView exportData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Long id = RequestUtil.getLong(request, "id");
+        String dataId = RequestUtil.getString(request, "dataIds");
+        if (dataId != "") {
+            String[] dataIds = dataId.split("[,|，]");
+            List<String> tempIds = Arrays.asList(dataIds);
+            ModelAndView mv = this.getAutoView().addObject("taskId", id)
+                    .addObject("dataIds", tempIds);
+            return mv;
+        } else {
+            ModelAndView mv = this.getAutoView().addObject("taskId", id);
+            return mv;
+        }
+    }
 }

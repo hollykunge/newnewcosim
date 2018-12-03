@@ -22,7 +22,6 @@
 <%--<input type="button" value="导出PDF" id='pdfExportIn'/>--%>
 <%--</div>--%>
 <%--</div>--%>
-</br>
 <div id="treeGridIn" style="width: 100%;"></div>
 <%--模型预览--%>
 <div class="modal fade" id="model_content" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -32,7 +31,15 @@
         </div>
     </div>
 </div>
+<%--导出数据--%>
+<div class="modal fade" id="exportAllData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="overflow: auto" id="exportAllDataContent" style="overflow: auto">
 
+        </div>
+    </div>
+</div>
 <%--错误提示--%>
 <div id="jqxNotificationModel" style="display: none">
     只能预览模型数据！
