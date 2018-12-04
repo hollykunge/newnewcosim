@@ -148,9 +148,12 @@
                                     <c:if test="${taskUser.orgName == orgItem.orgName}">selected="selected"</c:if>>${orgItem.orgName}</option>
                         </c:forEach>
                     </select>
+
                     <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control"
                             noneResultsText="无匹配项"
-                            data-live-search="true" id="select-second" validate="{required:true}">
+                            data-live-search="true" id="select-second" validate="{required:true}"
+                            data-max-options="1"
+                            title="请选择...">
                     </select>
                 </td>
             </tr>
@@ -173,7 +176,7 @@
                 <input type="hidden" id="ddTaskChildType" name="ddTaskChildType" value="${TaskInfo.ddTaskChildType}"/>
                 <input type="hidden" id="ddTaskState" name="ddTaskState" value="${TaskInfo.ddTaskState}"/>
                 <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${TaskInfo.ddTaskProjectId}"/>
-                <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value="${TaskInfo.ddTaskPerson}"/>
+                <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value=""/>
                 <%--<input type="hidden" id="ddTaskResponsiblePerson" name="ddTaskResponsiblePerson"--%>
                 <%--value="${TaskInfo.ddTaskResponsiblePerson}"/>--%>
                 <input type="hidden" id="ddSecretLevel" name="ddSecretLevel"

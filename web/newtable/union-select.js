@@ -31,6 +31,7 @@ $("#select-first").change(function(){
             });
             // 刷新二级select
             $("#select-second").selectpicker('refresh');
+            $("#select-second").selectpicker('deselectAll');
         },
         error:function(){
             console.log("请求当前组织的用户失败！" + "union-select.js");
