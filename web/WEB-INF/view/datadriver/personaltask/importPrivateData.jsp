@@ -20,7 +20,7 @@
 <form class="form-horizontal" name="excelImportForm" action="${ctx}/datadriver/privatedata/importBrandSort.ht?id=<%=request.getParameter("id")%>&&projectId=<%=request.getParameter("projectId")%>" id="uploadForm"
       method="post" enctype="multipart/form-data">
     <div class="modal-body">
-        <div class="alert alert-danger">导入excel文件格式必须严格按照<a class="alert-link" href="${ctx}/platform/system/sysFile/download.ht?fileId=10000028170042">上传文件格式(点击查看)</a></div>
+        <div class="alert alert-danger">导入excel文件格式必须严格按照<a class="alert-link" href="${ctx}/platform/system/sysFile/download.ht?fileId=10000002970072">上传文件格式(点击查看)</a></div>
         <div class="form-group">
             <div class="col-lg-12 col-lg-offset-2">
                 <input class="btn btn-default" id="excel_file" type="file" name="filename"
