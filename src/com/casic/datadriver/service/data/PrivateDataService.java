@@ -533,21 +533,19 @@ public class PrivateDataService extends BaseService<PrivateData> {
      *
      * @return
      */
-    private List<PrivateData> recursion(List<PrivateData> privateDataList, Long dataId) {
+    private List<PrivateData> recursion(List<PrivateData> privateDataList) {
         List<PrivateData> tempList = new ArrayList<>();
         for (PrivateData privateData : privateDataList) {
-            if (privateData != null){
+            if (privateData != null) {
                 //判断当前节点的父节点是否是pid
-                if (dataId.equals(privateData.getDdDataParentId())){
-                    List<PrivateData> child = this.recursion(privateDataList,privateData.getDdDataId());
-                    privateData.setDdDataPublishState((byte)1);
-                    tempList.add()
+                if ("0".equals(privateData.getDdDataParentId()) || privateData.getDdDataParentId() == null) {
+
+                    tempList.add(privateData);
+                }else {
+                    List<PrivateData> privateDataList1 = privateDataDao.getDataListByPId(privateData.getDdDataParentId());
+                    this.recursion(privateDataList1);
                 }
             }
-            List<PrivateData> privateDataList2 = this.recursion(privateData.getDdDataId());
-            PrivateData privateData = privateDataDao.getDataById(Long.parseLong(listId.get(i)));
-            privateData.setDdDataPublishState((byte) 1);
-            privateDataList.add(privateData);
         }
         return privateDataList;
     }
