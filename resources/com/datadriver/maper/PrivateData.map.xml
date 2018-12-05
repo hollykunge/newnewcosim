@@ -264,7 +264,7 @@
     </update>
 
     <update id="updateToPrivate" parameterType="java.util.List">
-        <foreach collection="list" item="item" index="index" open="" close="" separator=" ">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update dd_private_data
             <set>
                 DD_DATA_PUBLISH_STATE = 0
