@@ -254,20 +254,28 @@
         where DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC}
     </update>
 
-    <update id="updateToPublish" parameterType="com.casic.datadriver.model.data.PrivateData">
-        update dd_private_data
-        <set>
-            DD_DATA_PUBLISH_STATE = 1
-        </set>
-        where DD_DATA_ID = ${item.ddDataId} OR DD_DATA_PARENT_ID = ${item.ddDataId}
+    <update id="updateToPublish" parameterType="java.util.List">
+        begin
+        <foreach collection="list" item="item" index="index" open="" close="" separator="">
+            update dd_private_data
+            <set>
+                DD_DATA_PUBLISH_STATE = 1
+            </set>
+            where DD_DATA_ID = ${item.ddDataId} OR DD_DATA_PARENT_ID = ${item.ddDataId};
+        </foreach>
+        end;
     </update>
 
-    <update id="updateToPrivate" parameterType="com.casic.datadriver.model.data.PrivateData">
-        update dd_private_data
-        <set>
-            DD_DATA_PUBLISH_STATE = 0
-        </set>
-        where DD_DATA_ID = ${item.ddDataId} OR DD_DATA_PARENT_ID = ${item.ddDataId}
+    <update id="updateToPrivate" parameterType="java.util.List">
+        begin
+        <foreach collection="list" item="item" index="index" open="" close="" separator="">
+            update dd_private_data
+            <set>
+                DD_DATA_PUBLISH_STATE = 0
+            </set>
+            where DD_DATA_ID = ${item.ddDataId} OR DD_DATA_PARENT_ID = ${item.ddDataId};
+        </foreach>
+        end;
     </update>
 
     <delete id="delByTaskId">
