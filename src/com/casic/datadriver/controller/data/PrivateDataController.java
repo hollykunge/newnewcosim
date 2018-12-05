@@ -457,13 +457,13 @@ public class PrivateDataController extends AbstractController {
             Long taskId = RequestUtil.getLong(request, "id");
             String type = RequestUtil.getString(request, "type");
             String secretLevel = RequestUtil.getString(request, "secretLevel");
-            String dataAttr = RequestUtil.getString(request, "dataAttr");
+//            String dataAttr = RequestUtil.getString(request, "dataAttr");
 
             String taskName = taskInfoService.getTaskById(taskId).getDdTaskName();
             String[] dataAttrs = new String[]{"序号", "数据名称", "最新值", "单位", "类型", "最大值", "最小值", "所属任务", "创建人"};
-            if (dataAttr != "") {
-                dataAttrs = dataAttr.split("[,|，]");
-            }
+//            if (dataAttr != "") {
+//                dataAttrs = dataAttr.split("[,|，]");
+//            }
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             HSSFWorkbook workbook = privateDataService.exportBrandPeriodSort(dataAttrs, taskName, taskId, type);
             if (workbook != null) {
