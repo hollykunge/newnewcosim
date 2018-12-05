@@ -533,30 +533,37 @@ public class PrivateDataService extends BaseService<PrivateData> {
      *
      * @return
      */
+    private List<PrivateData> tempList = new ArrayList<>();
+
     private List<PrivateData> recursion(List<PrivateData> privateDataList) {
-        List<PrivateData> tempList = new ArrayList<>();
         for (PrivateData privateData : privateDataList) {
             if (privateData != null) {
-                //判断当前节点的父节点是否是pid
-                if ("0".equals(privateData.getDdDataParentId()) || privateData.getDdDataParentId() == null) {
-
-                    tempList.add(privateData);
+                tempList.add(privateData);
+                //查出所有的将其作为父节点的节点
+                List<PrivateData> privateDataList1 = privateDataDao.getDataListByPId(privateData.getDdDataId());
+                if (privateDataList1.size()==0){
+                    continue;
                 }else {
-                    List<PrivateData> privateDataList1 = privateDataDao.getDataListByPId(privateData.getDdDataParentId());
                     this.recursion(privateDataList1);
                 }
             }
         }
-        return privateDataList;
+        return tempList;
     }
 
     public String createToPublish(String dataIds, String parent) {
 
         String[] tempStr = dataIds.split("[,|，]");
         List<String> listId = Arrays.asList(tempStr);
+
+        List<PrivateData> privateDataListTemp = new ArrayList<>();
+        for (int i = 0; i < listId.size(); i++) {
+            privateDataListTemp.add(privateDataDao.getDataById(Long.valueOf(listId.get(i))));
+        }
+
         switch (parent) {
             case "publishpanel":
-                List<PrivateData> privateDataList = recursion(dataIds);
+                List<PrivateData> privateDataList = recursion(privateDataListTemp);
                 for (int i = 0; i < privateDataList.size(); i++) {
                     privateDataDao.updateToPublish(privateDataList.get(i));
                 }
