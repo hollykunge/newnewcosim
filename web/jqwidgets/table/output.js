@@ -345,13 +345,15 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                                 rowsDataIds.push(selection[i].uid);
                             }
                         }
-                        $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
-                            if (status == 'success') {
-                                $('#treeGridOut').jqxTreeGrid('updateBoundData');
-                                alertify.set('notifier', 'position', 'top-right');
-                                alertify.success(data);
-                            }
-                        });
+                        if (rowsDataIds.length > 0) {
+                            $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
+                                if (status == 'success') {
+                                    $('#treeGridOut').jqxTreeGrid('updateBoundData');
+                                    alertify.set('notifier', 'position', 'top-right');
+                                    alertify.success(data);
+                                }
+                            });
+                        }
                     }
                 });
                 cancelRow.click(function () {

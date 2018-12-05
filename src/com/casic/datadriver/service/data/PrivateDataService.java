@@ -354,7 +354,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
             }
             List<PrivateData> tempList = new ArrayList<>();
             List<OrderDataRelation> orderDataRelations = orderDataRelationDao.getOrderDataRelationList(taskId);
-            for (OrderDataRelation orderDataRelation:orderDataRelations){
+            for (OrderDataRelation orderDataRelation : orderDataRelations) {
                 tempList.add(this.getDataById(orderDataRelation.getDdDataId()));
             }
             List<Object[]> dataList = transData(tempList, rowName);
@@ -413,7 +413,9 @@ public class PrivateDataService extends BaseService<PrivateData> {
         return workbook;
     }
 
-    //导入数据
+    /**
+     * 导入数据
+     */
     private List<PrivateData> readBrandPeriodSorXls(InputStream is, Long taskId, Long projectId, String taskname)
             throws IOException, ParseException {
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
@@ -526,29 +528,51 @@ public class PrivateDataService extends BaseService<PrivateData> {
         return workbook;
     }
 
-    public String createToPublish(String dataIds, String parent) {
-        String[] tempStr = dataIds.split("[,|，]");
-        List<String> listId = Arrays.asList(tempStr);
-        List<PrivateData> privateDataList = new ArrayList<PrivateData>();
-        for (int i = 0; i < listId.size(); i++) {
-            PrivateData privateData = privateDataDao.getDataById(Long.parseLong(listId.get(i)));
-            privateDataList.add(privateData);
-        }
-        //私有到发布
-        if (("publishpanel").equals(parent)) {
-            privateDataDao.updateToPublish(privateDataList);
-            return "发布成功";
-        }
+    /**
+     * 递归
+     *
+     * @return
+     */
+    private List<PrivateData> recursion(List<PrivateData> privateDataList) {
+        List<PrivateData> tempList = new ArrayList<>();
+        for (PrivateData privateData : privateDataList) {
+            if (privateData != null) {
+                //判断当前节点的父节点是否是pid
+                if ("0".equals(privateData.getDdDataParentId()) || privateData.getDdDataParentId() == null) {
 
-        if (("createpanel").equals(parent)) {
-            for (PrivateData privateData : privateDataList) {
-                List<OrderDataRelation> orderDataRelation = orderDataRelationDao.getBeOrderDataByDataId(privateData.getDdDataId());
-                if (orderDataRelation.isEmpty()) {
-                    privateDataDao.updateToPrivate(privateDataList);
-                    return "撤销成功";
+                    tempList.add(privateData);
+                }else {
+                    List<PrivateData> privateDataList1 = privateDataDao.getDataListByPId(privateData.getDdDataParentId());
+                    this.recursion(privateDataList1);
                 }
             }
+        }
+        return privateDataList;
+    }
 
+    public String createToPublish(String dataIds, String parent) {
+
+        String[] tempStr = dataIds.split("[,|，]");
+        List<String> listId = Arrays.asList(tempStr);
+        switch (parent) {
+            case "publishpanel":
+                List<PrivateData> privateDataList = recursion(dataIds);
+                for (int i = 0; i < privateDataList.size(); i++) {
+                    privateDataDao.updateToPublish(privateDataList.get(i));
+                }
+                break;
+            case "createpanel":
+                for (int i = 0; i < listId.size(); i++) {
+                    List<OrderDataRelation> orderDataRelation = orderDataRelationDao.getBeOrderDataByDataId(Long.parseLong(listId.get(i)));
+                    PrivateData privateData = privateDataDao.getDataById(Long.parseLong(listId.get(i)));
+                    if (orderDataRelation.isEmpty()) {
+                        privateData.setDdDataPublishState((byte) 0);
+                        privateDataDao.updateToPrivate(privateData);
+                    }
+                }
+                break;
+            default:
+                break;
         }
         return "撤销失败";
     }
