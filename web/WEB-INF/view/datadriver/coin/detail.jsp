@@ -37,7 +37,9 @@
             <display:column property="sourceType" title="积分类型" sortable="true" sortName="sourceType" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="sourceDetail" title="积分详情" sortable="true" sortName="sourceDetail" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="sourceScore" title="获得积分" sortable="true" sortName="sourceScore" maxLength="80" style="text-align: center;"></display:column>
-            <display:column property="updTime" title="更新时间" sortable="true" sortName="updTime" style="text-align: center;"></display:column>
+            <display:column title="更新时间" sortable="true" sortName="updTime">
+                <fmt:formatDate value="${detailItem.updTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </display:column>
         </display:table>
         <hotent:paging tableId="detailItem"/>
     </div>
