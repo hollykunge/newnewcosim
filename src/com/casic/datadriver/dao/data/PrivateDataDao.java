@@ -146,11 +146,11 @@ public class PrivateDataDao extends BaseDao<PrivateData> {
         this.delBySqlKey("delByTaskId", taskId);
     }
 
-    public void updateToPublish(PrivateData privateDataList){
+    public void updateToPublish(List<PrivateData> privateDataList){
         this.getBySqlKey("updateToPublish", privateDataList);
     }
 
-    public void updateToPrivate(PrivateData privateDataList){
+    public void updateToPrivate(List<PrivateData> privateDataList){
         this.getBySqlKey("updateToPrivate", privateDataList);
     }
 }

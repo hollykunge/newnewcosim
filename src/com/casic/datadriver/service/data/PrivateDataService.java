@@ -295,7 +295,6 @@ public class PrivateDataService extends BaseService<PrivateData> {
     /**
      * 数据转换
      */
-
     private List<Object[]> transData(List<PrivateData> privateDataList, String[] rowsName) {
 
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -429,8 +428,6 @@ public class PrivateDataService extends BaseService<PrivateData> {
             if (hssfSheet == null) {
                 continue;
             }
-            String str = null;
-            Long StructId = Long.valueOf(0);
             // 循环行Row
             for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
                 privateData = new PrivateData();
@@ -475,6 +472,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
                     privateData.setDdDataCreateTime(now);
                     privateData.setDdDataTaskName(taskname);
                     privateData.setDdDataCreatorId(ContextUtil.getCurrentUserId());
+                    privateData.setDdDataParentId(0L);
                     if (!String.valueOf(hssfRow.getCell(0)).equals("null")) {
                         privateData.setDdDataName(String.valueOf(hssfRow.getCell(0)));
                     }
@@ -533,18 +531,16 @@ public class PrivateDataService extends BaseService<PrivateData> {
      *
      * @return
      */
-    private List<PrivateData> tempList = new ArrayList<>();
-
-    private List<PrivateData> recursion(List<PrivateData> privateDataList) {
+    private List<PrivateData> recursion(List<PrivateData> privateDataList, List<PrivateData> tempList) {
         for (PrivateData privateData : privateDataList) {
             if (privateData != null) {
                 tempList.add(privateData);
                 //查出所有的将其作为父节点的节点
                 List<PrivateData> privateDataList1 = privateDataDao.getDataListByPId(privateData.getDdDataId());
-                if (privateDataList1.size()==0){
+                if (privateDataList1.size() == 0) {
                     continue;
-                }else {
-                    this.recursion(privateDataList1);
+                } else {
+                    this.recursion(privateDataList1, tempList);
                 }
             }
         }
@@ -561,25 +557,29 @@ public class PrivateDataService extends BaseService<PrivateData> {
             privateDataListTemp.add(privateDataDao.getDataById(Long.valueOf(listId.get(i))));
         }
 
-        switch (parent) {
-            case "publishpanel":
-                List<PrivateData> privateDataList = recursion(privateDataListTemp);
-                for (int i = 0; i < privateDataList.size(); i++) {
-                    privateDataDao.updateToPublish(privateDataList.get(i));
-                }
-                break;
-            case "createpanel":
-                for (int i = 0; i < listId.size(); i++) {
-                    List<OrderDataRelation> orderDataRelation = orderDataRelationDao.getBeOrderDataByDataId(Long.parseLong(listId.get(i)));
-                    PrivateData privateData = privateDataDao.getDataById(Long.parseLong(listId.get(i)));
-                    if (orderDataRelation.isEmpty()) {
-                        privateData.setDdDataPublishState((byte) 0);
-                        privateDataDao.updateToPrivate(privateData);
+        List<PrivateData> tempList = new ArrayList<>();
+        List<PrivateData> privateDataList = recursion(privateDataListTemp, tempList);
+        if (privateDataList.size() > 0) {
+            switch (parent) {
+                case "publishpanel":
+
+                    privateDataDao.updateToPublish(privateDataList);
+
+                    break;
+                case "createpanel":
+                    for (int i = 0; i < privateDataList.size(); i++) {
+                        List<OrderDataRelation> orderDataRelation = orderDataRelationDao.getBeOrderDataByDataId(privateDataList.get(i).getDdDataId());
+                        if (!orderDataRelation.isEmpty()) {
+                            privateDataList.remove(i);
+                        }
                     }
-                }
-                break;
-            default:
-                break;
+                    if (privateDataList.size() > 0) {
+                        privateDataDao.updateToPrivate(privateDataList);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
         return "撤销失败";
     }
@@ -588,43 +588,39 @@ public class PrivateDataService extends BaseService<PrivateData> {
         String[] tempStr = dataIds.split("[,|，]");
         List<String> listId = Arrays.asList(tempStr);
         List<OrderDataRelation> orderdatarelationList = new ArrayList<>();
-        //已订阅到可订阅
-        if (("canorderpanel").equals(parent)) {
-            for (int i = 0; i < listId.size(); i++) {
-                QueryParameters queryparameters = new QueryParameters();
-                queryparameters.setId(taskId);
-                queryparameters.setType(Long.parseLong(listId.get(i)));
-                orderDataRelationDao.delDDOrderDataRelation(queryparameters);
-            }
+
+        List<PrivateData> privateDataListTemp = new ArrayList<>();
+        for (int i = 0; i < listId.size(); i++) {
+            privateDataListTemp.add(privateDataDao.getDataById(Long.valueOf(listId.get(i))));
         }
-        //可订阅到已订阅
-        if (("orderpanel").equals(parent)) {
-            for (int i = 0; i < listId.size(); i++) {
-                PrivateData privateData = privateDataDao.getDataById(Long.parseLong(listId.get(i)));
-                OrderDataRelation orderdatarelation = new OrderDataRelation();
-                orderdatarelation.setDdTaskId(taskId);
-                orderdatarelation.setDdDataId(Long.parseLong(listId.get(i)));
-                orderdatarelation.setDdOrderDataId(UniqueIdUtil.genId());
-                orderdatarelation.setDdDataName(privateData.getDdDataName());
-                orderdatarelation.setDdOrderType(1L);
-                orderdatarelation.setDdProjectId(privateData.getDdDataProjId());
-                orderdatarelationList.add(orderdatarelation);
+        List<PrivateData> tempList = new ArrayList<>();
+        List<PrivateData> privateDataList = recursion(privateDataListTemp, tempList);
 
-                List<PrivateData> privateDataList = privateDataDao.getDataListByPId(Long.parseLong(listId.get(i)));
-                for (int j = 0; j < privateDataList.size(); j++) {
-                    PrivateData privateData_child = privateDataList.get(j);
-                    OrderDataRelation orderdatarelation_child = new OrderDataRelation();
-                    orderdatarelation_child.setDdTaskId(taskId);
-                    orderdatarelation_child.setDdDataId(privateData_child.getDdDataId());
-                    orderdatarelation_child.setDdOrderDataId(UniqueIdUtil.genId());
-                    orderdatarelation_child.setDdDataName(privateData_child.getDdDataName());
-                    orderdatarelation_child.setDdOrderType(1L);
-                    orderdatarelation_child.setDdProjectId(privateData_child.getDdDataProjId());
-                    orderdatarelationList.add(orderdatarelation_child);
+        switch (parent) {
+            case "canorderpanel":
+                for (PrivateData privateData : privateDataList) {
+                    QueryParameters queryparameters = new QueryParameters();
+                    queryparameters.setId(taskId);
+                    queryparameters.setType(privateData.getDdDataId());
+                    orderDataRelationDao.delDDOrderDataRelation(queryparameters);
                 }
+                break;
+            case "orderpanel":
+                for (PrivateData privateData : privateDataList) {
+                    OrderDataRelation orderdatarelation = new OrderDataRelation();
+                    orderdatarelation.setDdTaskId(taskId);
+                    orderdatarelation.setDdDataId(privateData.getDdDataId());
+                    orderdatarelation.setDdOrderDataId(UniqueIdUtil.genId());
+                    orderdatarelation.setDdDataName(privateData.getDdDataName());
+                    orderdatarelation.setDdOrderType(1L);
+                    orderdatarelation.setDdProjectId(privateData.getDdDataProjId());
+                    orderdatarelationList.add(orderdatarelation);
+                }
+                orderDataRelationDao.addToOrder(orderdatarelationList);
+                break;
+            default:
+                break;
 
-            }
-            orderDataRelationDao.addToOrder(orderdatarelationList);
         }
     }
 

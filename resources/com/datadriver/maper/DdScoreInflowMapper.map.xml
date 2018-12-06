@@ -10,7 +10,7 @@
         <result column="source_score" property="sourceScore" jdbcType="NUMERIC"/>
         <result column="source_type" property="sourceType" jdbcType="VARCHAR"/>
         <result column="source_detail" property="sourceDetail" jdbcType="VARCHAR"/>
-        <result column="upd_time" property="updTime" jdbcType="DATE"/>
+        <result column="upd_time" property="updTime" jdbcType="VARCHAR"/>
         <result column="total" property="total" jdbcType="NUMERIC"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="org_id" property="orgId" jdbcType="NUMERIC"/>
@@ -46,7 +46,17 @@
         FROM dd_score_inflow
         WHERE user_id=#{userId} AND source_type=#{sourceType}
     </select>
-
+    <!--<select id="getAll" resultMap="BaseResultMap">-->
+        <!--SELECT <include refid="columns"/>-->
+        <!--FROM dd_score_inflow ddsin-->
+        <!--<include refid="dynamicWhere" />-->
+        <!--<if test="@Ognl@isNotEmpty(orderField)">-->
+            <!--order by ${orderField} ${orderSeq}-->
+        <!--</if>-->
+        <!--<if test="@Ognl@isEmpty(orderField)">-->
+            <!--order by id  desc-->
+        <!--</if>-->
+    <!--</select>-->
     <select id="getAll" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
         FROM dd_score_inflow ddsin

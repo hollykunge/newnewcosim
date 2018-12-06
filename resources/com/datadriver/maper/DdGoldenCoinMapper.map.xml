@@ -9,7 +9,7 @@
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
         <result column="org_id" property="orgId" jdbcType="NUMERIC"/>
-        <result column="upd_time" property="updTime" jdbcType="DATE"/>
+        <result column="upd_time" property="updTime" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, user_id, coin_num, coin_type, user_name, org_name, org_id, upd_time
