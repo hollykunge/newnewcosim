@@ -261,7 +261,7 @@
             <set>
                 DD_DATA_PUBLISH_STATE = 1
             </set>
-            where DD_DATA_ID = ${item.ddDataId} OR DD_DATA_PARENT_ID = ${item.ddDataId};
+            where DD_DATA_ID = ${item.ddDataId};
         </foreach>
         end;
     </update>
@@ -273,7 +273,7 @@
             <set>
                 DD_DATA_PUBLISH_STATE = 0
             </set>
-            where DD_DATA_ID = ${item.ddDataId} OR DD_DATA_PARENT_ID = ${item.ddDataId};
+            where DD_DATA_ID = ${item.ddDataId};
         </foreach>
         end;
     </update>

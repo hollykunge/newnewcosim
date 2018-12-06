@@ -314,6 +314,7 @@ public class ScoreRegulation {
         }
         // 判断该项积分是否已达到封顶
         if (scoreInflow + todayScore > overflowMap.get(sourceDetail)) {
+            System.out.println("积分已封顶！");
             return true;
         } else {
             return false;

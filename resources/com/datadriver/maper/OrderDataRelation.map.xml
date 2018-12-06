@@ -21,14 +21,16 @@
     #{ddTaskId,jdbcType=NUMERIC}, #{ddOpreationLevel,jdbcType=NUMERIC}, #{ddDataName,jdbcType=VARCHAR}, #{ddProjectId,jdbcType=NUMERIC})
   </insert>
 
-    <insert id="addToOrder"  parameterType="java.util.List">
+    <insert id="addToOrder" parameterType="java.util.List">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             insert into dd_order_data (DD_ORDER_DATA_ID, DD_ORDER_TYPE, DD_DATA_ID,
             DD_TASK_ID, DD_OPREATION_LEVEL, DD_DATA_NAME, DD_PROJECT_ID)
-            values (#{item.ddOrderDataId,jdbcType=NUMERIC}, #{item.ddOrderType,jdbcType=NUMERIC}, #{item.ddDataId,jdbcType=NUMERIC},
-            #{item.ddTaskId,jdbcType=NUMERIC}, #{item.ddOpreationLevel,jdbcType=NUMERIC}, #{item.ddDataName,jdbcType=VARCHAR}, #{item.ddProjectId,jdbcType=NUMERIC})
+            values (#{item.ddOrderDataId,jdbcType=NUMERIC}, #{item.ddOrderType,jdbcType=NUMERIC},
+            #{item.ddDataId,jdbcType=NUMERIC},
+            #{item.ddTaskId,jdbcType=NUMERIC}, #{item.ddOpreationLevel,jdbcType=NUMERIC},
+            #{item.ddDataName,jdbcType=VARCHAR}, #{item.ddProjectId,jdbcType=NUMERIC})
         </foreach>
-   </insert>
+    </insert>
 
     <delete id="delDDOrderDataRelation" parameterType="com.casic.datadriver.publicClass.QueryParameters">
         delete from dd_order_data
