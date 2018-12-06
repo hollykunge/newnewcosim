@@ -56,7 +56,7 @@
             <display:column property="sourceType" title="积分类型" sortable="true" sortName="source_type" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="sourceDetail" title="积分详情" sortable="true" sortName="source_detail" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="sourceScore" title="获得积分" sortable="true" sortName="source_score" maxLength="80" style="text-align: center;"></display:column>
-            <display:column  title="更新时间" sortable="true" sortName="createtime">
+            <display:column  title="更新时间" sortable="true" sortName="updTime">
                 <fmt:formatDate value="${scoreInflowItem.updTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
         </display:column>
             <display:column title="管理" media="html" style="width:160px; text-align:center;">

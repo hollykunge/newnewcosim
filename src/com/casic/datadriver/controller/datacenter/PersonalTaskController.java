@@ -454,6 +454,9 @@ public class PersonalTaskController extends AbstractController {
             if (privateData2 != null) {
                 privateData2.setDdDataName(dataName);
                 privateData2.setDdDataPath(filePath);
+                if (parentId == ""){
+                    parentId = "0";
+                }
                 privateData2.setDdDataParentId(Long.valueOf(parentId));
                 privateData2.setDdDataTaskId(Long.valueOf(taskId));
                 privateData2.setDdDataIsLeaf(Short.valueOf(isLeaf));

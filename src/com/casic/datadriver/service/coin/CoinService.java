@@ -54,7 +54,7 @@ public class CoinService {
         String resultMsg;
         //判断参数有效性
         if (!scoreRegulation.dataVerify(addScoreModel.getSourceDetail())) {
-            resultMsg = "积分赚取失败！";
+            resultMsg = "数据类型错误！";
             return resultMsg;
         }
         scoreMessageProducer.send(addScoreModel);
