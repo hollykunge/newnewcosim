@@ -280,6 +280,9 @@ public class ScoreRegulation {
      * @param time time
      */
     public boolean isToday(Date time) {
+        if (time == null){
+            return true;
+        }
         //String time = "1988-12-10 11:20:45";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String timeDate;
