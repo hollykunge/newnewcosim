@@ -237,24 +237,7 @@ public class PrivateDataController extends AbstractController {
             Long dataId = RequestUtil.getLong(request, "id");
             Long typeId = RequestUtil.getLong(request, "typeId");
             String secretLevel = RequestUtil.getString(request, "secretLevel");
-            String tempSecretLevel = "非密";
-            switch (secretLevel) {
-                case "fm":
-                    tempSecretLevel = "非密";
-                    break;
-                case "nb":
-                    tempSecretLevel = "内部";
-                    break;
-                case "mm":
-                    tempSecretLevel = "秘密";
-                    break;
-                case "jm":
-                    tempSecretLevel = "机密";
-                    break;
-                default:
-                    tempSecretLevel = "非密";
-                    break;
-            }
+            secretExchange(secretLevel);
             ISysUser appUser = null;
             if (userId > 0) {
                 appUser = sysUserService.getById(userId);
@@ -283,7 +266,7 @@ public class PrivateDataController extends AbstractController {
                 SysFile sysFile = new SysFile();
                 sysFile.setFileId(fileId);
                 //附件名称
-                sysFile.setFileName("(" + tempSecretLevel + ")" + oriFileName.substring(0, oriFileName.lastIndexOf('.')));
+                sysFile.setFileName("(" + secretExchange(secretLevel) + ")" + oriFileName.substring(0, oriFileName.lastIndexOf('.')));
 
                 Calendar cal = Calendar.getInstance();
                 Integer year = cal.get(Calendar.YEAR);
@@ -450,6 +433,7 @@ public class PrivateDataController extends AbstractController {
         bin.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
     }
 
+
     @RequestMapping("exportDataFile")
     @Action(description = "导出EXCEL文件")
     public void exportDataFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -464,6 +448,7 @@ public class PrivateDataController extends AbstractController {
 //            if (dataAttr != "") {
 //                dataAttrs = dataAttr.split("[,|，]");
 //            }
+
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             HSSFWorkbook workbook = privateDataService.exportBrandPeriodSort(dataAttrs, taskName, taskId, type);
             if (workbook != null) {
@@ -472,15 +457,13 @@ public class PrivateDataController extends AbstractController {
                     byte[] content = os.toByteArray();
                     InputStream is = new ByteArrayInputStream(content);
 
-                    String fileName = String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";
+                    String fileName = "(" + secretExchange(secretLevel) + ")" + taskName + ".xls";
                     fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20").replaceAll("%28", "\\(").replaceAll("%29", "\\)").replaceAll("%3B", ";").replaceAll("%40", "@").replaceAll("%23", "\\#").replaceAll("%26", "\\&");
 
                     response.reset();
                     // 设置response的Header
                     response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-//                    response.addHeader("Content-Length", "" + file.length());
-                    OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-                    response.setContentType("application/vnd.ms-excel; charset=utf-8") ;
+                    response.setContentType("application/vnd.ms-excel; charset=utf-8");
                     ServletOutputStream out = response.getOutputStream();
                     BufferedInputStream bis = null;
                     BufferedOutputStream bos = null;
@@ -500,9 +483,6 @@ public class PrivateDataController extends AbstractController {
                         if (bos != null)
                             bos.close();
                     }
-//                    workbook.write(toClient);
-//                    toClient.flush();
-//                    toClient.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -510,6 +490,28 @@ public class PrivateDataController extends AbstractController {
         } catch (Exception ex) {
 
         }
+    }
+
+    private String secretExchange(String secretLevel) {
+        String tempSecretLevel = "非密";
+        switch (secretLevel) {
+            case "fm":
+                tempSecretLevel = "非密";
+                break;
+            case "nb":
+                tempSecretLevel = "内部";
+                break;
+            case "mm":
+                tempSecretLevel = "秘密";
+                break;
+            case "jm":
+                tempSecretLevel = "机密";
+                break;
+            default:
+                tempSecretLevel = "非密";
+                break;
+        }
+        return tempSecretLevel;
     }
 
 

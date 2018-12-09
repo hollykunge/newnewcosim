@@ -9,6 +9,7 @@ import com.casic.datadriver.service.task.TaskInfoService;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.ContextUtil;
+import com.hotent.core.util.ObjectUtils;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.platform.auth.ISysUser;
 import net.sf.json.JSONArray;
@@ -306,7 +307,14 @@ public class PrivateDataService extends BaseService<PrivateData> {
             objs[1] = privateData.getDdDataName();
             objs[2] = privateData.getDdDataLastestValue();
             objs[3] = privateData.getDdDataUnit();
-            objs[4] = privateData.getDdDataType();
+            if (0 == privateData.getDdDataType())
+                objs[4] = "数值";
+            if (1 == privateData.getDdDataType())
+                objs[4] = "模型";
+            if (2 == privateData.getDdDataType())
+                objs[4] = "文件";
+            if (3 == privateData.getDdDataType())
+                objs[4] = "结构型数据";
             objs[5] = privateData.getDdDataSenMax();
             objs[6] = privateData.getDdDataSenMin();
             objs[7] = privateData.getDdDataTaskName();
@@ -354,7 +362,10 @@ public class PrivateDataService extends BaseService<PrivateData> {
             List<PrivateData> tempList = new ArrayList<>();
             List<OrderDataRelation> orderDataRelations = orderDataRelationDao.getOrderDataRelationList(taskId);
             for (OrderDataRelation orderDataRelation : orderDataRelations) {
-                tempList.add(this.getDataById(orderDataRelation.getDdDataId()));
+                PrivateData privateData = this.getDataById(orderDataRelation.getDdDataId());
+                if (ObjectUtils.isNotEmpty(privateData)) {
+                    tempList.add(privateData);
+                }
             }
             List<Object[]> dataList = transData(tempList, rowName);
 
@@ -433,8 +444,6 @@ public class PrivateDataService extends BaseService<PrivateData> {
                 privateData = new PrivateData();
 
                 HSSFRow hssfRow = hssfSheet.getRow(rowNum);
-
-                ISysUser sysUser = ContextUtil.getCurrentUser();
                 Date now = new Date();
                 byte DataType = 0;
                 switch (String.valueOf(hssfRow.getCell(2))) {
@@ -471,6 +480,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
                     privateData.setDdDataIsSubmit((short) 0);
                     privateData.setDdDataCreateTime(now);
                     privateData.setDdDataTaskName(taskname);
+                    privateData.setDdDataCreator(ContextUtil.getCurrentUser().getFullname());
                     privateData.setDdDataCreatorId(ContextUtil.getCurrentUserId());
                     privateData.setDdDataParentId(0L);
                     if (!String.valueOf(hssfRow.getCell(0)).equals("null")) {
@@ -483,6 +493,8 @@ public class PrivateDataService extends BaseService<PrivateData> {
 
                     if (!String.valueOf(hssfRow.getCell(5)).equals("null")) {
                         privateData.setDdDataLastestValue(String.valueOf(hssfRow.getCell(5)));
+                    } else {
+                        privateData.setDdDataLastestValue("无");
                     }
 
                     if (String.valueOf(hssfRow.getCell(4)).equals("null")) {
@@ -503,6 +515,8 @@ public class PrivateDataService extends BaseService<PrivateData> {
 
                     if (!String.valueOf(hssfRow.getCell(6)).equals("null")) {
                         privateData.setDdDataUnit(String.valueOf(hssfRow.getCell(6)));
+                    } else {
+                        privateData.setDdDataUnit("无");
                     }
 
                     privateData.setDdDataType(DataType);
