@@ -399,14 +399,14 @@ public class PersonalTaskController extends AbstractController {
         try {
             String dataId = RequestUtil.getString(request, "dataId");
             String[] dataIds = dataId.split("[,|，]");
-//            String[] ddDataIds = RequestUtil.getStringAry(request, "dataId");
             List<String> tempIds = Arrays.asList(dataIds);
-//            String dataId = RequestUtil.getString(request, "dataId");
             for (String tempId : tempIds){
-                privateDataService.delprivate(Long.valueOf(tempId));
+                if (orderDataRelationService.getBeOrderDataByDataId(Long.valueOf(tempId)).size()==0){
+                    privateDataService.delprivate(Long.valueOf(tempId));
+                }
             }
         } catch (Exception e) {
-
+            e.getMessage();
         }
 
     }
@@ -499,7 +499,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("addPrivateData")
-    @Action(description = "更新除私有数据")
+    @Action(description = "添加私有数据")
     @ResponseBody
     public void addPrivateData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -528,7 +528,7 @@ public class PersonalTaskController extends AbstractController {
             privateData.setDdDataPath(null);
             makeDataType(dataType, privateData);
             privateData.setDdDataDescription("新创建的数据");
-            privateData.setDdDataUnit(null);
+            privateData.setDdDataUnit("无");
             privateData.setDdDataLastestValue(null);
             privateData.setDdDataSenMax(dataSenMax);
             privateData.setDdDataSenMin(dataSenMin);

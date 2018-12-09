@@ -33,9 +33,9 @@
 <script type="text/javascript">
     //@ sourceURL=showtask.ht
     $(document).ready(function () {
-        function getHeight() {
-            return $(window).height() - $('.nav-tabs').outerHeight(true) - 58;
-        }
+        // function getHeight() {
+        //     return $(window).height() - $('.nav-tabs').outerHeight(true) - 58;
+        // }
         var source =
             {
                 dataType: "json",
@@ -60,7 +60,7 @@
             + "<div class='jqx-kanban-item-footer'></div>"
             + "</div>",
             width: "100%",
-            height: getHeight(),
+            height: "100%",
             source: dataAdapter,
             itemRenderer: function(element, item, resource)
             {
