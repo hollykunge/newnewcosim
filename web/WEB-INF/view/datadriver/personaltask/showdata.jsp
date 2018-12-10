@@ -75,7 +75,7 @@
 <div id='DataItemMenu'>
     <ul>
         <li id="addSubDataLi">添加子数据</li>
-        <li id="uploadFileLi">查看文件</li>
+        <li id="uploadFileLi">查看模型</li>
     </ul>
 </div>
 <%--导入数据--%>

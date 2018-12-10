@@ -482,7 +482,6 @@ public class PrivateDataService extends BaseService<PrivateData> {
                     privateData.setDdDataTaskName(taskname);
                     privateData.setDdDataCreator(ContextUtil.getCurrentUser().getFullname());
                     privateData.setDdDataCreatorId(ContextUtil.getCurrentUserId());
-                    privateData.setDdDataParentId(0L);
                     if (!String.valueOf(hssfRow.getCell(0)).equals("null")) {
                         privateData.setDdDataName(String.valueOf(hssfRow.getCell(0)));
                     }
