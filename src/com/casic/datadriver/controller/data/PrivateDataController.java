@@ -545,18 +545,17 @@ public class PrivateDataController extends AbstractController {
             }
 
             logger.info(file.getOriginalFilename());
-
-            String name = file.getOriginalFilename();// 获取上传文件名,包括路径
-            //name = name.substring(name.lastIndexOf("\\") + 1);// 从全路径中提取文件名
+            // 获取上传文件名,包括路径
+            String name = file.getOriginalFilename();
             long size = file.getSize();
             if ((name == null || name.equals("")) && size == 0) {
+                logger.info("文件不对劲");
                 return;
             }
 
             InputStream in = file.getInputStream();
             int count = privateDataService
                     .importBrandPeriodSort(in, taskId, projectId, taskinfo.getDdTaskName());
-//            int count = BrandMobileInfos.size();
 
             message = new ResultMessage(ResultMessage.Success, "成功导入" + count + "条");
         } catch (Exception ex) {
