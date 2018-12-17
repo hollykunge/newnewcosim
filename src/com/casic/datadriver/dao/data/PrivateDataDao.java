@@ -118,6 +118,13 @@ public class PrivateDataDao extends BaseDao<PrivateData> {
     }
 
     /**
+     * 获取个人数据
+     */
+    public List<PrivateData> getDataByUserId(Long userId) {
+        return this.getBySqlKey("getDataByUserId", userId);
+    }
+
+    /**
      * 更新数据
      */
     public void updateData(PrivateData privateData) {
