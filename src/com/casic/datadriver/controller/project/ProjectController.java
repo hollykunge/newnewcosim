@@ -1,6 +1,7 @@
 package com.casic.datadriver.controller.project;
 
 import com.casic.datadriver.controller.task.TaskInfoController;
+import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.data.PrivateData;
 import com.casic.datadriver.model.flow.ProcessFlow;
 import com.casic.datadriver.model.flow.ProjectProcessAssocia;
@@ -28,6 +29,7 @@ import com.hotent.core.web.util.RequestUtil;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.service.system.ResourcesService;
 import com.hotent.platform.service.system.SubSystemService;
+import com.hotent.platform.service.system.SysUserService;
 import net.sf.ezmorph.object.DateMorpher;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -82,6 +84,8 @@ public class ProjectController extends BaseController {
     private OrderDataRelationService orderDataRelationService;
     @Resource
     private PrivateDataService privateDataService;
+    @Resource
+    private SysUserService sysUserService;
 
     /**
      * 保存项目
@@ -345,19 +349,19 @@ public class ProjectController extends BaseController {
         String creatorName = ContextUtil.getCurrentUser().getFullname();
         List<TaskInfo> taskInfos = taskInfoService.queryTaskInfoByProjectId(id);
         boolean temp = false;
-        for (TaskInfo taskInfo:taskInfos){
-            if (taskInfo.getDdTaskChildType() != null && taskInfo.getDdTaskChildType().equals("createpanel")){
+        for (TaskInfo taskInfo : taskInfos) {
+            if (taskInfo.getDdTaskChildType() != null && taskInfo.getDdTaskChildType().equals("createpanel")) {
                 temp = true;
-            }else {
+            } else {
                 temp = false;
                 break;
             }
         }
-        if(taskInfos.size() == 0){
-            temp=true;
+        if (taskInfos.size() == 0) {
+            temp = true;
         }
         Long creatorId = ContextUtil.getCurrentUser().getUserId();
-        return getAutoView().addObject("Project", Project).addObject("creatorName", creatorName).addObject("creatorId", creatorId).addObject("temp",temp);
+        return getAutoView().addObject("Project", Project).addObject("creatorName", creatorName).addObject("creatorId", creatorId).addObject("temp", temp);
     }
 
     /**
@@ -405,24 +409,14 @@ public class ProjectController extends BaseController {
     public void done(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         Long id = RequestUtil.getLong(request, "id");
-        Project project = projectService.getById(id);
-        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(id);
-        if (taskInfoList.isEmpty()) {
-            resultMsg = getText("没有任务，不能完成项目！", "没有任务，不能完成项目！");
+        Boolean done = projectService.doneProject(id);
+        if (done) {
+            resultMsg = getText("完成项目", "完成项目");
+            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+        } else {
+            resultMsg = getText("有未完成的任务，不能完成项目！", "有未完成的任务，不能完成项目！");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
-            return;
         }
-        for (TaskInfo taskInfo : taskInfoList) {
-            if (taskInfo.getDdTaskState() != 3) {
-                resultMsg = getText("有未完成的任务，不能完成项目！", "有未完成的任务，不能完成项目！");
-                writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
-                return;
-            }
-        }
-        project.setDdProjectState((short) 1);
-        projectService.updateAll(project);
-        resultMsg = getText("完成项目", "完成项目");
-        writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
     }
 
     /**
@@ -534,7 +528,7 @@ public class ProjectController extends BaseController {
                 taskInfo.setDdTaskChildType("publishpanel");
                 taskInfo.setDdTaskState(TaskInfo.publishpanel);
                 taskInfoService.update(taskInfo);
-                resultMsg="任务发布成功";
+                resultMsg = "任务发布成功";
             }
         }
         //收回任务
@@ -549,9 +543,9 @@ public class ProjectController extends BaseController {
                 taskInfo.setDdTaskChildType("createpanel");
                 taskInfo.setDdTaskState(TaskInfo.createpanel);
                 taskInfoService.update(taskInfo);
-                resultMsg="收回成功";
+                resultMsg = "收回成功";
             } else {
-                resultMsg="任务中有私有数据，不能收回";
+                resultMsg = "任务中有私有数据，不能收回";
             }
         }
         //驳回任务
@@ -563,7 +557,7 @@ public class ProjectController extends BaseController {
 
             taskStart1.setDdTaskStatus(TaskStart.publishpanel);
             taskStartService.update(taskStart1);
-            resultMsg="任务驳回成功";
+            resultMsg = "任务驳回成功";
         }
         //审核通过
         if (taskInfo.getDdTaskChildType().equals("checkpanel") && parent.equals("completepanel")) {
@@ -574,7 +568,9 @@ public class ProjectController extends BaseController {
 
             taskStart1.setDdTaskStatus(TaskStart.completepanel);
             taskStartService.update(taskStart1);
-            resultMsg="任务审核通过";
+            resultMsg = "任务审核通过";
+            String account = sysUserService.getById(taskInfo.getDdTaskResponsiblePerson()).getAccount();
+            projectService.addScore(account);
         }
         //从已完成到待审核
         if (taskInfo.getDdTaskChildType().equals("completepanel") && parent.equals("checkpanel")) {
@@ -585,7 +581,7 @@ public class ProjectController extends BaseController {
 
             taskStart1.setDdTaskStatus(TaskStart.checkpanel);
             taskStartService.update(taskStart1);
-            resultMsg="任务退回待审核";
+            resultMsg = "任务退回待审核";
         }
         PrintWriter out = response.getWriter();
         out.append(resultMsg);
