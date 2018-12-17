@@ -1,11 +1,22 @@
 package com.casic.datadriver.controller.coin;
 
+import com.alibaba.fastjson.JSON;
 import com.casic.datadriver.model.coin.AddScoreModel;
 import com.casic.datadriver.model.coin.RankModel;
+import com.casic.datadriver.model.data.OrderDataRelation;
+import com.casic.datadriver.model.data.PrivateData;
+import com.casic.datadriver.model.project.Project;
+import com.casic.datadriver.model.task.TaskInfo;
 import com.casic.datadriver.service.coin.CoinService;
+import com.casic.datadriver.service.data.OrderDataRelationService;
+import com.casic.datadriver.service.data.PrivateDataService;
+import com.casic.datadriver.service.project.ProjectService;
+import com.casic.datadriver.service.task.TaskInfoService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.ResultMessage;
+import com.hotent.platform.auth.ISysUser;
+import com.hotent.platform.service.system.SysUserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +42,29 @@ public class CoinController extends GenericController {
     @Autowired
     private CoinService coinService;
 
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private TaskInfoService taskInfoService;
+
+    @Autowired
+    private PrivateDataService privateDataService;
+
+    @Autowired
+    private OrderDataRelationService orderDataRelationService;
     /**
      * 赚取积分接口，参数不能改
      *
-     * @param uid      身份证号
+     * @param uid          身份证号
      * @param sourceScore  分数
      * @param sourceType   一级类型
      * @param sourceDetail 二级类型
      * @param updTime      更新时间
      * @throws Exception the exception
-     *
      */
     @RequestMapping("add")
     @ResponseBody
@@ -67,7 +91,8 @@ public class CoinController extends GenericController {
     }
 
     /**
-     *  测试接口
+     * 测试接口
+     *
      * @param request
      * @param response
      * @throws Exception
@@ -79,10 +104,10 @@ public class CoinController extends GenericController {
         if (request.getHeader("clientip") != null) {
             jsonObject.put("clientip", request.getHeader("clientip"));
         }
-        if (request.getHeader("username") != null ) {
+        if (request.getHeader("username") != null) {
             jsonObject.put("username", request.getHeader("username"));
         }
-        if (request.getHeader("password") != null ) {
+        if (request.getHeader("password") != null) {
             jsonObject.put("password", request.getHeader("password"));
         }
 
@@ -138,4 +163,44 @@ public class CoinController extends GenericController {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
     }
+
+    /**
+     * @param response 年度报告接口：项目数
+     * @throws Exception the exception
+     */
+    @RequestMapping("taskanddata")
+    @ResponseBody
+    public void taskanddata(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        JSONArray jsonR = null;
+        try {
+            ISysUser sysUser = sysUserService.getByAccount(uid);
+            Long userId = sysUser.getUserId();
+            if (userId == null&&userId==0){
+                List<Project> projectList = projectService.queryProjectBasicInfoList(userId);
+                List<TaskInfo> taskListR = taskInfoService.getListByResponceId(userId);
+                List<PrivateData> privateDataList = privateDataService.getDataByUserId(userId);
+                Integer pubNum = 0;
+                for (TaskInfo taskInfo:taskListR){
+                    List<OrderDataRelation> orderDataRelations = orderDataRelationService.getOrderDataRelationList(taskInfo.getDdTaskId());
+                    pubNum =+ orderDataRelations.size();
+                }
+
+                Integer projectNum = projectList.size();
+                Integer taskNum = taskListR.size();
+                Integer dataNum = privateDataList.size();
+
+                HashMap<String, Object> temp = new HashMap<String, Object>();
+                temp.put("projectNum", projectNum);
+                temp.put("taskNum", taskNum);
+                temp.put("dataNum", dataNum);
+                temp.put("pubNum", pubNum);
+                String jsonString = JSON.toJSONString(temp);
+                response.getWriter().write(jsonString);
+            }
+
+        } catch (Exception e) {
+            writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
+        }
+    }
+
 }

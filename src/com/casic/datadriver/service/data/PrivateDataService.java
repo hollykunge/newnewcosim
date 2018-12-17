@@ -737,4 +737,8 @@ public class PrivateDataService extends BaseService<PrivateData> {
         return style;
 
     }
+
+    public List<PrivateData> getDataByUserId(Long userId) {
+        return privateDataDao.getDataByUserId(userId);
+    }
 }

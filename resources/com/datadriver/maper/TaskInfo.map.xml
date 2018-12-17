@@ -44,6 +44,7 @@
         <include refid="Base_Column_List"/>
         from dd_task
         where DD_ID = #{ddTaskId,jdbcType=INTEGER}
+        order by DD_ID desc
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -52,6 +53,7 @@
         FROM dd_task
         WHERE
         DD_ID=#{ddTaskId}
+        order by DD_ID desc
     </select>
 
 
@@ -61,6 +63,7 @@
         FROM dd_task
         WHERE
         DD_PROJECT_ID=#{ProjectId}
+        order by DD_ID desc
     </select>
 
     <select id="getListByResponceId" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -69,6 +72,7 @@
         FROM dd_task
         WHERE
         DD_RESPONSIBLE_PERSON=#{ResponceId}
+        order by DD_ID desc
     </select>
 
     <select id="getListByResponceIdAndState1" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -77,6 +81,7 @@
         FROM dd_task
         WHERE
         DD_RESPONSIBLE_PERSON=#{ResponceId} AND DD_STATE=1
+        order by DD_ID desc
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -100,12 +105,14 @@
         <include refid="Base_Column_List"/>
         FROM dd_task
         WHERE DD_PROJECT_ID=#{ddTaskProjectId} AND DD_STATE=1
+        order by DD_ID desc
     </select>
 
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_task
+        order by DD_ID desc
     </select>
 
 
@@ -335,7 +342,7 @@
         <if test="@Ognl@isNotEmpty(id)">AND DD_ID = #{id}</if>
         <if test="@Ognl@isNotEmpty(name)">AND DD_NAME = #{name}</if>
         <if test="@Ognl@isNotEmpty(userId)">AND DD_RESPONSIBLE_PERSON = #{userId}</if>
-
+        order by DD_ID desc
     </select>
 
     <select id="getByProIdAndUserIdF" parameterType="com.casic.datadriver.publicClass.PageInfo"
@@ -344,6 +351,7 @@
         <include refid="Base_Column_List"/>
         from dd_task
         where DD_PROJECT_ID = #{id} AND DD_RESPONSIBLE_PERSON = #{bf1} AND DD_STATE = 0 limit #{pageSize},#{pageNumber}
+        order by DD_ID desc
     </select>
 
     <select id="getListByPriority" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -351,6 +359,7 @@
         <include refid="Base_Column_List"/>
         from dd_task
         where DD_PROJECT_ID = #{id} AND DD_PRIORITY = 3
+        order by DD_ID desc
     </select>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.casic.datadriver.model.task.TaskInfo">

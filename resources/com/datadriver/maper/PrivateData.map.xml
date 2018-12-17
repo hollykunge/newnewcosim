@@ -101,7 +101,12 @@
         from dd_private_data
         where DD_DATA_ID = #{ddDataId,jdbcType=NUMERIC}
     </select>
-
+    <select id="getDataByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dd_private_data
+        where DD_DATA_CREATOR_ID = #{ddDataCreatorId,jdbcType=NUMERIC}
+    </select>
     <select id="getPrivateByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

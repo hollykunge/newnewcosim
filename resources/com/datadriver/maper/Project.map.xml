@@ -66,6 +66,7 @@
         <include refid="Base_Column_List"/>
         from dd_project
         where DD_ID = #{ddProjectId,jdbcType=NUMERIC}
+        order by DD_ID desc
     </select>
 
     <select id="getProjectListbyUserId" parameterType="java.lang.Long"
@@ -74,6 +75,7 @@
         <include refid="Base_Column_List"/>
         from dd_project
         where DD_CREATOR_ID = #{ddProjectCreatorId,jdbcType=NUMERIC}
+        order by DD_ID desc
     </select>
 
     <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -82,6 +84,7 @@
         FROM dd_project
         WHERE
         DD_ID=#{ddProjectId}
+        order by DD_ID desc
     </select>
 
     <select id="queryProjectBasicInfoList"
@@ -95,6 +98,7 @@
         <if test="@Ognl@isNotEmpty(name)">AND DD_NAME = #{name}</if>
         <if test="@Ognl@isNotEmpty(createStartDate)">AND DD_CREATE_DATATIME >= #{createStartDate}</if>
         <if test="@Ognl@isNotEmpty(createEndDate)">AND DD_CREATE_DATATIME &lt;= #{createEndDate}</if>
+        order by DD_ID desc
     </select>
 
     <select id="queryProjectlistByRes"
@@ -105,6 +109,7 @@
         from dd_project
         where
         DD_RESPONSIBLE_PERSON_ID = #{ddProjectResponsiblePersonId,jdbcType=NUMERIC}
+        order by DD_ID desc
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -123,6 +128,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_project
+        order by DD_ID desc
     </select>
 
 
