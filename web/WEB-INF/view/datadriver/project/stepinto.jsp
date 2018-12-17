@@ -84,8 +84,6 @@
                onclick="done(${Project.ddProjectId})"><span class="glyphicon glyphicon-ok"></span> 完成项目</a>
         </div>
     </ul>
-
-    <br>
     <div class="tab-content board-view" style="height: 100%">
         <div role="tabpanel" class="tab-pane active board-scrum-view" id="task" style="height: 100%">
         </div>
@@ -128,6 +126,10 @@
 <script src="${ctx}/styles/slide/js/classie.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        $(".tab-content").height(getTabHeight());
+        function getTabHeight() {
+            return $(window).height() - $('.nav-tabs').outerHeight(true) - 58;
+        }
         $.get("showtask.ht?id=${Project.ddProjectId}", function (data) {
             $('#task').html(data);
         });

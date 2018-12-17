@@ -21,8 +21,8 @@
                 document.getElementById("mainframe").style.margin = "0px";
             }
             catch (e) {
-                $("#mainframe").height(getHeight());
-                $("#mainframe").css("padding-top", "65px");
+                // $("#mainframe").height(getHeight());
+                $("#mainframe").css("padding-top", "54px");
                 console.log(e)
             }
             $(".nav li a").each(function (index) {
@@ -43,7 +43,7 @@
 </head>
 <body style="height: 100%">
 <%@include file="/commons/cloud/top_console.jsp" %>
-<iframe src="main.ht" frameborder="0" scrolling="no" id="mainframe" style="width: 100%;"></iframe>
+<iframe src="main.ht" frameborder="0" scrolling="no" id="mainframe" style="width: 100%;height: 100%;"></iframe>
 
 </body>
 </html>
