@@ -414,7 +414,7 @@ public class ProjectController extends BaseController {
             resultMsg = getText("完成项目", "完成项目");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } else {
-            resultMsg = getText("有未完成的任务，不能完成项目！", "有未完成的任务，不能完成项目！");
+            resultMsg = getText("不能完成项目！", "不能完成项目！");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
         }
     }
@@ -570,7 +570,7 @@ public class ProjectController extends BaseController {
             taskStartService.update(taskStart1);
             resultMsg = "任务审核通过";
             String account = sysUserService.getById(taskInfo.getDdTaskResponsiblePerson()).getAccount();
-            projectService.addScore(account);
+            projectService.addScore(account, taskInfo.getDdTaskResponsiblePerson());
         }
         //从已完成到待审核
         if (taskInfo.getDdTaskChildType().equals("completepanel") && parent.equals("checkpanel")) {

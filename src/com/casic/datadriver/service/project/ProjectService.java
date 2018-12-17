@@ -51,7 +51,7 @@ public class ProjectService extends BaseService<Project> {
     @Resource
     private CoinAspect coinAspect;
 
-    public static String ACCOUNTMGB;
+    public static String ACCOUNTMGB = "";
 
     public ProjectService() {
     }
@@ -206,6 +206,9 @@ public class ProjectService extends BaseService<Project> {
                 return false;
             }
         }
+        if (project.getDdProjectState()==1){
+            return false;
+        }
         project.setDdProjectState((short) 1);
         update(project);
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
@@ -215,10 +218,11 @@ public class ProjectService extends BaseService<Project> {
         return true;
     }
 
-    public void addScore(String account){
+    public void addScore(String account,Long uid){
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
         ddScoreInflow.setSourceScore(30);
         ddScoreInflow.setSourceDetail("design_4");
+        ddScoreInflow.setUserId(uid);
         ACCOUNTMGB = account;
         coinAspect.setData(ddScoreInflow);
     }
