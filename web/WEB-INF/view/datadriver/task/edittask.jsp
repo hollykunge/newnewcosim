@@ -176,9 +176,8 @@
                 <input type="hidden" id="ddTaskChildType" name="ddTaskChildType" value="${TaskInfo.ddTaskChildType}"/>
                 <input type="hidden" id="ddTaskState" name="ddTaskState" value="${TaskInfo.ddTaskState}"/>
                 <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${TaskInfo.ddTaskProjectId}"/>
-                <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value=""/>
-                <%--<input type="hidden" id="ddTaskResponsiblePerson" name="ddTaskResponsiblePerson"--%>
-                <%--value="${TaskInfo.ddTaskResponsiblePerson}"/>--%>
+                <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value="${TaskInfo.ddTaskPerson}"/>
+                <input type="hidden" id="ddTaskResponsiblePerson" name="ddTaskResponsiblePerson" value="${TaskInfo.ddTaskResponsiblePerson}"/>
                 <input type="hidden" id="ddSecretLevel" name="ddSecretLevel"
                        value="${TaskInfo.ddSecretLevel}"/>
                 <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId"
@@ -261,7 +260,9 @@
 
     $('#select-second').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
         var fullName = $('#select-second').find("option:selected").text();
+        var userId = $('#select-second').find("option:selected").val();
         $("#ddTaskPerson").val(fullName);
+        $("#ddTaskResponsiblePerson").val(userId);
     });
 
     function showResponse(responseText) {

@@ -74,7 +74,7 @@
 	    BIZ_INSTANCE_ID=#{bizInstanceId}
 	</delete>    
 	
-	<select id="getByMainId" resultMap="BizDefSegment">
+	<select id="getByMainId" resultMap="BizInstanceSegment">
 	    SELECT <include refid="columns"/>
 	    FROM BIZ_INSTANCE_SEGMENT 
 	    WHERE BIZ_INSTANCE_ID=#{bizInstanceId}

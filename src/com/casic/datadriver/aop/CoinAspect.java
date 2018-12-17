@@ -13,11 +13,17 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.casic.datadriver.service.project.ProjectService.ACCOUNTMGB;
 
 @Aspect
 public class CoinAspect {
@@ -61,7 +67,7 @@ public class CoinAspect {
     /**
      * design_5,奖励10积分
      */
-    @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.done(..))")
+    @Pointcut("execution(public * com.casic.datadriver.service.project.ProjectService.doneProject(..))")
     public void doneAspect() {
     }
 
@@ -113,10 +119,10 @@ public class CoinAspect {
     @AfterReturning(returning = "result", pointcut = "submittaskAspect()")
     public void submittaskReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
-        DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(30);
-        ddScoreInflow.setSourceDetail("design_4");
-        setData(ddScoreInflow);
+//        DdScoreInflow ddScoreInflow = new DdScoreInflow();
+//        ddScoreInflow.setSourceScore(30);
+//        ddScoreInflow.setSourceDetail("design_4");
+//        setData(ddScoreInflow);
     }
 
     @AfterReturning(returning = "result", pointcut = "saveAspect()")
@@ -173,11 +179,13 @@ public class CoinAspect {
 
     @AfterReturning(returning = "result", pointcut = "doneAspect()")
     public void doneReturning(JoinPoint joinPoint, Object result) throws Throwable {
-        logger.info(joinPoint.getSignature().getName());
-        DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(50);
-        ddScoreInflow.setSourceDetail("design_5");
-        setData(ddScoreInflow);
+//        if ((Boolean)result){
+//            logger.info(joinPoint.getSignature().getName());
+//            DdScoreInflow ddScoreInflow = new DdScoreInflow();
+//            ddScoreInflow.setSourceScore(50);
+//            ddScoreInflow.setSourceDetail("design_5");
+//            setData(ddScoreInflow);
+//        }
     }
 
     public void setData(DdScoreInflow ddScoreInflow) {
@@ -188,7 +196,12 @@ public class CoinAspect {
 
         //传递身份证号、分数、类型、详情、更新时间
         AddScoreModel addScoreModel = new AddScoreModel();
-        addScoreModel.setAccount(ContextUtil.getCurrentUser().getAccount());
+        if (ddScoreInflow.getUserId()==null){
+            addScoreModel.setAccount(ContextUtil.getCurrentUser().getAccount());
+        }else {
+            addScoreModel.setAccount(ACCOUNTMGB);
+        }
+
         addScoreModel.setSourceScore(String.valueOf(ddScoreInflow.getSourceScore()));
         addScoreModel.setSourceType(ddScoreInflow.getSourceType());
         addScoreModel.setSourceDetail(ddScoreInflow.getSourceDetail());

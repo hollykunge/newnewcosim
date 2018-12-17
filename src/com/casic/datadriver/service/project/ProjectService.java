@@ -5,10 +5,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.casic.datadriver.aop.CoinAspect;
 import com.casic.datadriver.dao.task.ProTaskDependanceDao;
 import com.casic.datadriver.dao.task.TaskInfoDao;
+import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.task.ProTaskDependance;
 import com.casic.datadriver.publicClass.ProjectTree;
+import com.casic.datadriver.service.task.TaskInfoService;
 import com.hotent.core.util.BeanUtils;
 import com.hotent.core.util.ContextUtil;
 import com.hotent.core.util.UniqueIdUtil;
@@ -41,6 +44,14 @@ public class ProjectService extends BaseService<Project> {
 
     @Resource
     private ProTaskDependanceDao proTaskDependanceDao;
+
+    @Resource
+    private TaskInfoService taskInfoService;
+
+    @Resource
+    private CoinAspect coinAspect;
+
+    public static String ACCOUNTMGB;
 
     public ProjectService() {
     }
@@ -102,8 +113,6 @@ public class ProjectService extends BaseService<Project> {
      */
     public void updateAll(Project project) throws Exception {
         update(project);
-//        delByPk(project.getDdProjectId());
-//        addSubList(project);
     }
 
     /**
@@ -184,5 +193,33 @@ public class ProjectService extends BaseService<Project> {
             jsonArray.add(jsonObject);
         }
         return jsonArray.toString();
+    }
+
+    public Boolean doneProject(Long id){
+        Project project = this.getById(id);
+        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(id);
+        if (taskInfoList.isEmpty()) {
+            return false;
+        }
+        for (TaskInfo taskInfo : taskInfoList) {
+            if (taskInfo.getDdTaskState() != 3) {
+                return false;
+            }
+        }
+        project.setDdProjectState((short) 1);
+        update(project);
+        DdScoreInflow ddScoreInflow = new DdScoreInflow();
+        ddScoreInflow.setSourceScore(50);
+        ddScoreInflow.setSourceDetail("design_5");
+        coinAspect.setData(ddScoreInflow);
+        return true;
+    }
+
+    public void addScore(String account){
+        DdScoreInflow ddScoreInflow = new DdScoreInflow();
+        ddScoreInflow.setSourceScore(30);
+        ddScoreInflow.setSourceDetail("design_4");
+        ACCOUNTMGB = account;
+        coinAspect.setData(ddScoreInflow);
     }
 }

@@ -62,8 +62,8 @@
                     <th width="20%">计划开始时间:</th>
                     <td>
                         <div class="form-group">
-                            <div class="input-group date form_date" id="datetimeStart" name="ddTaskPlanStartTime">
-                                <input value="" class="form-control" readonly validate="{required:true}"/>
+                            <div class="input-group date form_date" id="datetimeStart">
+                                <input name="ddTaskPlanStartTime" value="" class="form-control" readonly validate="{required:true}"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -72,8 +72,8 @@
                     </td>
                     <th width="20%">计划完成时间:</th>
                     <td>
-                        <div class="input-group date form_date" id="datetimeEnd" name="ddTaskPlanEndTime">
-                            <input value="" class="form-control" readonly validate="{required:true}"/>
+                        <div class="input-group date form_date" id="datetimeEnd">
+                            <input name="ddTaskPlanEndTime" value="" class="form-control" readonly validate="{required:true}"/>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </td>
