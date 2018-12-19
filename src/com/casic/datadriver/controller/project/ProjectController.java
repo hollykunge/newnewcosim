@@ -107,6 +107,7 @@ public class ProjectController extends BaseController {
 
                 project.setDdProjectCreatorId(sysUser.getUserId());
 
+                project.setDdProjectState((short) 0);
                 Date currentTime = new Date();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String dateString = formatter.format(currentTime);
