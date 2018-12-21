@@ -33,18 +33,17 @@
         WHERE
         user_id=#{userId}
     </select>
-
-    <select id="getTodayDetailScore" resultMap="BaseResultMap" parameterType="java.util.Map">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM dd_score_inflow
-        WHERE user_id=#{userId} AND source_detail=#{sourceDetail}
-    </select>
-    <select id="getTypeTotalScore" resultMap="BaseResultMap" parameterType="java.util.Map">
+    <select id="getUserTypeScore" resultMap="BaseResultMap" parameterType="java.util.Map">
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_score_inflow
         WHERE user_id=#{userId} AND source_type=#{sourceType}
+    </select>
+    <select id="getUserDetailScore" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_score_inflow
+        WHERE user_id=#{userId} AND source_detail=#{sourceDetail}
     </select>
     <!--<select id="getAll" resultMap="BaseResultMap">-->
         <!--SELECT <include refid="columns"/>-->

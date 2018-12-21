@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 目前add getAll delById update getAll使用genericDao里的方法
+ *
  * @Author: hollykunge
  * @Description:
  * @Date: 创建于 2018/9/19
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Repository
 public class DdScoreDao extends BaseDao<DdScore> {
+
     @Override
     public Class getEntityClass() {
         return DdScore.class;
@@ -28,42 +31,55 @@ public class DdScoreDao extends BaseDao<DdScore> {
         this.update(ddScore);
     }
 
-    public void updateByType(DdScore ddScore) {
-        this.update("updateByType", ddScore);
-    }
-
+    /**
+     * 删光一类积分所有的
+     *
+     * @param sourceType 一级类型
+     */
     public void delByType(String sourceType) {
         this.update("delByType", sourceType);
     }
 
     /**
-     * 插入
+     * 通过id查一项
      */
-    public void insert() {
+    @Override
+    public DdScore getById(Long id) {
+        return this.getBySqlKey("getById", id).get(0);
     }
 
     /**
-     * 删除
-     */
-    public void delete() {
-    }
-
-    /**
-     * @param id id
-     */
-    public List<DdScore> getById(long id) {
-        return this.getBySqlKey("getById", id);
-    }
-
-    /**
+     * 根据用户id查他积分
+     *
      * @param userId userId
      */
     public List<DdScore> getPersonal(long userId) {
         return this.getBySqlKey("getPersonal", userId);
     }
 
+    /**
+     * 获取一类积分所有的
+     *
+     * @param sourceType 一级类型
+     */
     public List<DdScore> getType(String sourceType) {
         return this.getBySqlKey("getType", sourceType);
+    }
+
+    /**
+     * 根据uid和type查找唯一一个ddScore
+     * @param userId uid
+     * @param sourceType 一级类型
+     * @return 唯一对象
+     */
+    public DdScore getByUidAndType(long userId, String sourceType) {
+        List<DdScore> ddScores = this.getBySqlKey("getPersonal", userId);
+        for(DdScore ddScore : ddScores) {
+            if(ddScore.getScoreType().equals(sourceType)) {
+                return ddScore;
+            }
+        }
+        return null;
     }
 
 }
