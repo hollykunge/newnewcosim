@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DdScoreOutflowDao extends BaseDao<DdScoreOutflow> {
+
     @Override
     public Class getEntityClass() {
         return DdScoreOutflow.class;

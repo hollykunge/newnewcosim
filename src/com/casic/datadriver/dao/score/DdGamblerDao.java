@@ -18,6 +18,11 @@ public class DdGamblerDao extends BaseDao<DdGambler> {
         return DdGambler.class;
     }
 
+    /**
+     * 通过月份索引
+     *
+     * @param period 月份
+     */
     public List<DdGambler> getByPeriod(long period) {
         return this.getBySqlKey("getByPeriod", period);
     }
