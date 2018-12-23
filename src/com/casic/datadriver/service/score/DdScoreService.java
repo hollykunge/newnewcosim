@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.casic.datadriver.manager.ScoreRegulation.CACHE_SCORE;
+import static com.casic.datadriver.manager.ScoreRegulation.CACHE_SCORE_PREFIX;
 
 /**
  * @Author: hollykunge
@@ -50,12 +50,19 @@ public class DdScoreService extends BaseService<DdScore> {
         if (isUseCache) {
             List<DdScore> ddScoreList = ddScoreDao.getAll();
             for (DdScore ddScore : ddScoreList) {
-                Long userId = ddScore.getUserId();
-                String type = ddScore.getScoreType();
-                String cacheKey = CACHE_SCORE + String.valueOf(userId) + type;
-                iCache.add(cacheKey, ddScore);
+                addToCache(ddScore);
             }
         }
+    }
+
+    /**
+     * 为缓存增加一条
+     */
+    private void addToCache(DdScore ddScore) {
+        Long userId = ddScore.getUserId();
+        String type = ddScore.getScoreType();
+        String cacheKey = CACHE_SCORE_PREFIX + userId + type;
+        iCache.add(cacheKey, ddScore);
     }
 
     /**
@@ -69,7 +76,7 @@ public class DdScoreService extends BaseService<DdScore> {
         if (ddScoreInflow != null) {
             Long userId = ddScoreInflow.getUserId();
             String type = ddScoreInflow.getSourceType();
-            String cacheKey = CACHE_SCORE + String.valueOf(userId) + type;
+            String cacheKey = CACHE_SCORE_PREFIX + userId + type;
             if (isUseCache) {
                 ddScore = (DdScore) iCache.getByKey(cacheKey);
             } else {
@@ -83,7 +90,11 @@ public class DdScoreService extends BaseService<DdScore> {
                 ddScore.setScoreTotal(scoreTemp);
                 //TODO:拿出来的对象操作后会自己写入缓存，新缓存框架是否可以？
                 ddScoreDao.updateScore(ddScore);
-                logger.info("通过输入流水更新DdScore，更新缓存 " + cacheKey);
+                if(isUseCache) {
+                    logger.info("通过输入流水更新DdScore，更新缓存 " + cacheKey);
+                } else {
+                    logger.info("通过输入流水更新DdScore " + cacheKey);
+                }
             } else {
                 //生成积分统计对象
                 DdScore ddScoreTemp = new DdScore();
@@ -97,14 +108,18 @@ public class DdScoreService extends BaseService<DdScore> {
                 ddScoreTemp.setOrgId(ddScoreInflow.getOrgId());
                 ddScoreTemp.setOrgName(ddScoreInflow.getOrgName());
                 ddScoreDao.add(ddScoreTemp);
-                iCache.add(cacheKey, ddScoreTemp);
-                logger.info("通过输入流水添加DdScore，添加缓存 " + cacheKey);
+                if(isUseCache) {
+                    iCache.add(cacheKey, ddScoreTemp);
+                    logger.info("通过输入流水添加DdScore，添加缓存 " + cacheKey);
+                } else {
+                    logger.info("通过输入流水添加DdScore " + cacheKey);
+                }
             }
         }
         if (ddScoreOutflow != null) {
             Long userId = ddScoreOutflow.getUserId();
             String type = ddScoreOutflow.getSourceType();
-            String cacheKey = CACHE_SCORE + String.valueOf(userId) + type;
+            String cacheKey = CACHE_SCORE_PREFIX + userId + type;
             if (isUseCache) {
                 ddScore = (DdScore) iCache.getByKey(cacheKey);
             } else {
@@ -120,7 +135,7 @@ public class DdScoreService extends BaseService<DdScore> {
                 ddScore.setUdpTime(ddScoreOutflow.getUdpTime());
                 ddScore.setScoreTotal(scoreTemp);
                 ddScoreDao.updateScore(ddScore);
-                logger.info("通过输出流水更新DdScore，更新缓存 " + cacheKey);
+                logger.info("通过输出流水更新DdScore " + cacheKey);
             } else {
                 logger.error("DdScore中没有该对象，输出流水失败 " + cacheKey);
                 return false;
@@ -141,7 +156,7 @@ public class DdScoreService extends BaseService<DdScore> {
                 DdScore ddScore = ddScoreDao.getById(id);
                 Long userId = ddScore.getUserId();
                 String type = ddScore.getScoreType();
-                String cacheKey = CACHE_SCORE + String.valueOf(userId) + type;
+                String cacheKey = CACHE_SCORE_PREFIX + userId + type;
                 iCache.delByKey(cacheKey);
             }
             //删库
@@ -159,10 +174,10 @@ public class DdScoreService extends BaseService<DdScore> {
         ddScoreDao.delByType(sourceType);
         if (isUseCache) {
             //删缓存
-            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(sourceType);
+            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
             for (DdScore ddScore : ddScores) {
                 Long userId = ddScore.getUserId();
-                String cacheKey = CACHE_SCORE + String.valueOf(userId) + sourceType;
+                String cacheKey = CACHE_SCORE_PREFIX + userId + sourceType;
                 iCache.delByKey(cacheKey);
             }
         }
@@ -178,10 +193,7 @@ public class DdScoreService extends BaseService<DdScore> {
         ddScoreDao.update(entity);
         if (isUseCache) {
             //更新缓存
-            Long userId = entity.getUserId();
-            String type = entity.getScoreType();
-            String cacheKey = CACHE_SCORE + String.valueOf(userId) + type;
-            iCache.add(cacheKey, entity);
+            addToCache(entity);
         }
     }
 
@@ -192,7 +204,7 @@ public class DdScoreService extends BaseService<DdScore> {
     @Override
     public DdScore getById(Long id) {
         if (isUseCache) {
-            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(CACHE_SCORE);
+            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, "");
             for (DdScore ddScore : ddScores) {
                 if (ddScore.getId().equals(id)) {
                     return ddScore;
@@ -208,7 +220,7 @@ public class DdScoreService extends BaseService<DdScore> {
      */
     public List<DdScore> getAllScore() {
         if (isUseCache) {
-            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE);
+            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, "");
         }
         return ddScoreDao.getAll();
     }
@@ -221,7 +233,7 @@ public class DdScoreService extends BaseService<DdScore> {
      */
     public List<DdScore> getPersonal(long userId) {
         if (isUseCache) {
-            return (List<DdScore>) iCache.getByKeySection(String.valueOf(userId));
+            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, String.valueOf(userId));
         }
         return ddScoreDao.getPersonal(userId);
     }
@@ -233,7 +245,7 @@ public class DdScoreService extends BaseService<DdScore> {
      */
     public List<DdScore> getType(String sourceType) {
         if (isUseCache) {
-            return (List<DdScore>) iCache.getByKeySection(sourceType);
+            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
         }
         return ddScoreDao.getType(sourceType);
     }

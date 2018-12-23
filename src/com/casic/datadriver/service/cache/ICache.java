@@ -1,11 +1,9 @@
 package com.casic.datadriver.service.cache;
 
-import java.util.List;
-
 /**
  * 缓存操作接口
  *
- * @author: workhub
+ * @Author: workhub
  * @Date: 2018/12/20
  */
 
@@ -54,7 +52,7 @@ public interface ICache {
      * @param keySection key中包含的关键字
      * @return value
      */
-    Object getByKeySection(String keySection);
+    Object getByKeySection(String keyPrefix, String keySection);
 
     /**
      * 是否包含

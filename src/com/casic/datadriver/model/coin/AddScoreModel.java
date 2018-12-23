@@ -35,6 +35,11 @@ public class AddScoreModel extends BaseModel {
      */
     private Date updTime;
 
+    /**
+     * 资源ID
+     */
+    private Long resourceId;
+
     public String getAccount() {
         return account;
     }
@@ -84,5 +89,13 @@ public class AddScoreModel extends BaseModel {
                 ", sourceDetail='" + sourceDetail + '\'' +
                 ", updTime='" + updTime +
                 '}';
+    }
+
+    public Long getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
     }
 }
