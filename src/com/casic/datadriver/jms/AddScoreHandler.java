@@ -44,9 +44,15 @@ public class AddScoreHandler implements IJmsHandler {
 
         //判断是否当天消息
 
+        //TODO：改成几个判断独立的，不设层次
         if (addScoreModel.getAccount() != null) {
             //获取用户
             ISysUser sysUser = sysUserDao.getByAccount(addScoreModel.getAccount());
+            if (!ddScoreInflowService.isResourceAvailable(
+                    sysUser.getUserId(), addScoreModel.getSourceDetail(), addScoreModel.getResourceId())) {
+                logger.warn("该资源分数已加");
+                return;
+            }
             if (addScoreModel.getSourceScore() != null) {
                 //这里仅传入detail
                 List<DdScoreInflow> todayInflows =

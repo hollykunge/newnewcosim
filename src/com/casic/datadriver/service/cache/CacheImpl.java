@@ -43,10 +43,10 @@ public class CacheImpl implements ICache {
     }
 
     @Override
-    public synchronized Object getByKeySection(String keySection) {
+    public synchronized Object getByKeySection(String keyPrefix, String keySection) {
         List<Object> objects = new ArrayList<>();
         for (String key : cache.keySet()) {
-            if (key.contains(keySection)) {
+            if (key.contains(keyPrefix) && key.contains(keySection)) {
                 objects.add(cache.get(key));
             }
         }

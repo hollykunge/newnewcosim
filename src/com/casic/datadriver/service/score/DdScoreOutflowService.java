@@ -4,8 +4,9 @@ import com.casic.datadriver.dao.score.DdScoreOutflowDao;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @Author: hollykunge
@@ -15,12 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DdScoreOutflowService extends BaseService<DdScoreOutflow> {
 
+    @Resource
     private DdScoreOutflowDao ddScoreOutflowDao;
-
-    @Autowired
-    public DdScoreOutflowService(DdScoreOutflowDao ddScoreOutflowDao) {
-        this.ddScoreOutflowDao = ddScoreOutflowDao;
-    }
 
     @Override
     protected IEntityDao<DdScoreOutflow, Long> getEntityDao() {

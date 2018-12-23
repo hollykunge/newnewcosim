@@ -59,7 +59,7 @@ public class DdScoreInflow extends BaseModel {
     /**
      * 资源id
      */
-    private String resourceId;
+    private Long resourceId;
 
     public Long getTotal() {
         return total;
@@ -157,11 +157,11 @@ public class DdScoreInflow extends BaseModel {
                 '}';
     }
 
-    public String getResourceId() {
+    public Long getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(String resourceId) {
+    public void setResourceId(Long resourceId) {
         this.resourceId = resourceId;
     }
 }

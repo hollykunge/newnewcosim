@@ -25,9 +25,9 @@ public class ScoreRegulation {
     /**
      * 缓存key头
      */
-    public static final String CACHE_SCORE = "DdScore_";
-    public static final String CACHE_SCOREINFLOW = "DdScoreInflow_";
-    public static final String CACHE_SCOREOUTFLOW = "DdScoreOutflow_";
+    public static final String CACHE_SCORE_PREFIX = "DdScore_";
+    public static final String CACHE_SCOREINFLOW_PREFIX = "DdScoreInflow_";
+    public static final String CACHE_SCOREOUTFLOW_PREFIX = "DdScoreOutflow_";
 
     /**
      * 四种币
