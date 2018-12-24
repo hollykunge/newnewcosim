@@ -21,12 +21,18 @@ public class DdGoldenCoinDao extends BaseDao<DdGoldenCoin> {
     }
 
     /**
-     * 通过id索引一项
+     * 删除一项
+     */
+    public void delOneById(Long id) {
+        this.delById(id);
+    }
+
+    /**
+     * 查找一项
      */
     public List<DdGoldenCoin> getById(long id) {
         return this.getBySqlKey("getById", id);
     }
-
 
     /**
      * 根据用户id获取所有币种

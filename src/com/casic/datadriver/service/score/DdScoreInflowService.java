@@ -81,11 +81,12 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
             for (DdScoreInflow ddScoreInflow1 : ddScoreInflows) {
                 if (ddScoreInflow1.getId().equals(ddScoreInflow.getId())) {
                     ddScoreInflows.remove(ddScoreInflow1);
+                    //TODO:在ddScoreInflows取出来不为空的情况下是否会自动更新缓存?
                     iCache.add(cacheKey, ddScoreInflows);
                     return;
                 }
             }
-            logger.warn("缓存中没有该流水 " + cacheKey + ddScoreInflow.getId());
+            logger.warn("缓存键值中没有该流水 " + cacheKey + ddScoreInflow.getId());
         } else {
             logger.warn("缓存中没有该键值 " + cacheKey);
         }
@@ -106,13 +107,11 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
 
     /**
      * 增加
-     *
-     * @param ddScoreInflow DdScoreInflow
      */
     @Override
     public void add(DdScoreInflow ddScoreInflow) {
         //写数据库
-        ddScoreInflowDao.add(ddScoreInflow);
+        ddScoreInflowDao.addOne(ddScoreInflow);
         //写缓存
         if (isUseCache) {
             addToCache(ddScoreInflow);
@@ -132,7 +131,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
                 deleteFromCache(ddScoreInflow);
             }
             //删库
-            ddScoreInflowDao.delById(id);
+            ddScoreInflowDao.delOneById(id);
         }
     }
 
@@ -161,7 +160,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
      */
     public void updateOne(DdScoreInflow entity) {
         //更新数据库
-        ddScoreInflowDao.update(entity);
+        ddScoreInflowDao.updateOne(entity);
         if (isUseCache) {
             //更新缓存
             Long userId = entity.getUserId();
@@ -180,7 +179,6 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
             } else {
                 ddScoreInflows.set(index, entity);
                 iCache.add(cacheKey, entity);
-
             }
         }
     }
@@ -194,7 +192,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
         if (isUseCache) {
             return formCacheReply("");
         }
-        return ddScoreInflowDao.getAll();
+        return ddScoreInflowDao.getAllInflow();
     }
 
     /**
@@ -204,7 +202,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
      * @param sourceDetail 二级类型
      * @return 今日该类型所有流水
      */
-    public List<DdScoreInflow> getTodayScore(Long userId, String sourceDetail) {
+    public List<DdScoreInflow> getTodayScoreDetail(Long userId, String sourceDetail) {
         List<DdScoreInflow> ddScoreInflows;
         if (isUseCache) {
             String cacheKey = CACHE_SCOREINFLOW_PREFIX + userId + sourceDetail;
@@ -250,7 +248,7 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
      *
      * @param userId       uid
      * @param sourceDetail 二级类型
-     * @param resourceId   资源类型
+     * @param resourceId   资源类型，一定有才会进来
      * @return 是否能加分
      */
     public boolean isResourceAvailable(Long userId, String sourceDetail, Long resourceId) {
@@ -259,7 +257,6 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
             String cacheKey = CACHE_SCOREINFLOW_PREFIX + userId + sourceDetail;
             ddScoreInflows = (List<DdScoreInflow>) iCache.getByKey(cacheKey);
         } else {
-            //可以增加一个和resourceId联合查询的
             ddScoreInflows = ddScoreInflowDao.getByUidAndDetail(userId, sourceDetail);
         }
         Iterator<DdScoreInflow> it = ddScoreInflows.iterator();
@@ -279,6 +276,6 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> {
      * @return DdScoreInflow分页列表
      */
     public List<DdScoreInflow> getByUidAndType(QueryFilter queryFilter) {
-        return ddScoreInflowDao.getBySqlKey("getUserTypeScore", queryFilter);
+        return ddScoreInflowDao.getByUidAndType(queryFilter);
     }
 }

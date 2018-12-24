@@ -141,6 +141,14 @@ public class DdScoreInflow extends BaseModel {
         this.orgName = orgName;
     }
 
+    public Long getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
+    }
+
     @Override
     public String toString() {
         return "DdScoreInflow{" +
@@ -155,13 +163,5 @@ public class DdScoreInflow extends BaseModel {
                 ", orgId=" + orgId +
                 ", orgName='" + orgName + '\'' +
                 '}';
-    }
-
-    public Long getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
     }
 }

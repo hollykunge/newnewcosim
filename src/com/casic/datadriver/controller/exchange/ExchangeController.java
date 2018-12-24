@@ -1,8 +1,7 @@
 package com.casic.datadriver.controller.exchange;
 
-import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.RankModel;
-import com.casic.datadriver.service.exchange.ExchangeService;
+import com.casic.datadriver.service.exchange.DdGamblerService;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.util.RequestUtil;
@@ -26,7 +25,7 @@ import java.util.Set;
 public class ExchangeController extends GenericController {
 
     @Autowired
-    private ExchangeService exchangeService;
+    private DdGamblerService ddGamblerService;
 
     /**
      * 获取单类积分的入围名单，每人一个币
@@ -37,7 +36,7 @@ public class ExchangeController extends GenericController {
         JSONArray jsonR;
         try {
             String type = RequestUtil.getString(request, "scoreType");
-            Set<RankModel> itemSet = exchangeService.getRankByType(type);
+            Set<RankModel> itemSet = ddGamblerService.getRankByType(type);
             jsonR = JSONArray.fromObject(itemSet);
             //解决跨域
             String callback = request.getParameter("callback");

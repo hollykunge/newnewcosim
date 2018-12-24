@@ -206,6 +206,7 @@ public class CoinAspect {
         addScoreModel.setSourceType(ddScoreInflow.getSourceType());
         addScoreModel.setSourceDetail(ddScoreInflow.getSourceDetail());
         addScoreModel.setUpdTime(ddScoreInflow.getUpdTime());
+        addScoreModel.setResourceId(ddScoreInflow.getResourceId());
 
         coinService.addScore(addScoreModel);
     }

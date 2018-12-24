@@ -80,6 +80,14 @@ public class AddScoreModel extends BaseModel {
         this.updTime = updTime;
     }
 
+    public Long getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
+    }
+
     @Override
     public String toString() {
         return "AddScoreModel {" +
@@ -89,13 +97,5 @@ public class AddScoreModel extends BaseModel {
                 ", sourceDetail='" + sourceDetail + '\'' +
                 ", updTime='" + updTime +
                 '}';
-    }
-
-    public Long getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
     }
 }

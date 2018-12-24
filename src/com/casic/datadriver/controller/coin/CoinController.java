@@ -93,10 +93,6 @@ public class CoinController extends GenericController {
 
     /**
      * 测试接口
-     *
-     * @param request
-     * @param response
-     * @throws Exception
      */
     @RequestMapping("test")
     @ResponseBody

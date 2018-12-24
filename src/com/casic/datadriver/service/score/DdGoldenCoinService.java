@@ -16,21 +16,29 @@ import java.util.List;
  */
 
 @Service
-public class GoldenCoinService extends BaseService<DdGoldenCoin> {
+public class DdGoldenCoinService extends BaseService<DdGoldenCoin> {
 
     @Resource
     private DdGoldenCoinDao ddGoldenCoinDao;
-
-    public void delAll(Long[] lAryId) {
-        for (Long id : lAryId) {
-            ddGoldenCoinDao.delById(id);
-        }
-    }
 
     @Override
     protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
         return this.ddGoldenCoinDao;
     }
 
+    public void delAll(Long[] lAryId) {
+        for (Long id : lAryId) {
+            ddGoldenCoinDao.delOneById(id);
+        }
+    }
 
+    /**
+     * 获取个人金币数
+     *
+     * @param uid 用户id
+     * @return 如果都有的话应该是四项
+     */
+    public List<DdGoldenCoin> getPersonal(long uid) {
+        return ddGoldenCoinDao.getPersonal(uid);
+    }
 }

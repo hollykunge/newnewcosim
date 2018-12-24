@@ -49,6 +49,7 @@ public interface ICache {
     /**
      * 通过关键字读取缓存
      *
+     * @param keyPrefix  key前缀
      * @param keySection key中包含的关键字
      * @return value
      */
