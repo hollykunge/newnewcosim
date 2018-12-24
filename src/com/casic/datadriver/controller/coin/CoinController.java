@@ -34,7 +34,6 @@ import java.util.*;
  * @Author: hollykunge
  * @Date: 创建于 2018/9/20
  */
-
 @Controller
 @RequestMapping("/coin/")
 public class CoinController extends GenericController {
@@ -56,6 +55,7 @@ public class CoinController extends GenericController {
 
     @Autowired
     private OrderDataRelationService orderDataRelationService;
+
     /**
      * 赚取积分接口，参数不能改
      *
@@ -68,7 +68,7 @@ public class CoinController extends GenericController {
      */
     @RequestMapping("add")
     @ResponseBody
-    public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, Long resourceId, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
             //TODO：传整个model
@@ -78,6 +78,7 @@ public class CoinController extends GenericController {
             addScoreModel.setSourceType(sourceType);
             addScoreModel.setSourceDetail(sourceDetail);
             addScoreModel.setUpdTime(new Date());
+            addScoreModel.setResourceId(resourceId);
             resultMsg = coinService.addScore(addScoreModel);
 
             JSONObject jsonObject = new JSONObject();
@@ -92,12 +93,8 @@ public class CoinController extends GenericController {
 
     /**
      * 测试接口
-     *
-     * @param request
-     * @param response
-     * @throws Exception
      */
-    @RequestMapping("test/test")
+    @RequestMapping("test")
     @ResponseBody
     public void testGetUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONObject jsonObject = new JSONObject();
@@ -168,21 +165,21 @@ public class CoinController extends GenericController {
      * @param response 年度报告接口：项目数
      * @throws Exception the exception
      */
-    @RequestMapping("taskanddata")
+    @RequestMapping("task")
     @ResponseBody
     public void taskanddata(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
         JSONArray jsonR = null;
         try {
             ISysUser sysUser = sysUserService.getByAccount(uid);
             Long userId = sysUser.getUserId();
-            if (userId == null&&userId==0){
+            if (userId != null && userId != 0) {
                 List<Project> projectList = projectService.queryProjectBasicInfoList(userId);
                 List<TaskInfo> taskListR = taskInfoService.getListByResponceId(userId);
                 List<PrivateData> privateDataList = privateDataService.getDataByUserId(userId);
                 Integer pubNum = 0;
-                for (TaskInfo taskInfo:taskListR){
+                for (TaskInfo taskInfo : taskListR) {
                     List<OrderDataRelation> orderDataRelations = orderDataRelationService.getOrderDataRelationList(taskInfo.getDdTaskId());
-                    pubNum =+ orderDataRelations.size();
+                    pubNum = +orderDataRelations.size();
                 }
 
                 Integer projectNum = projectList.size();
@@ -197,7 +194,6 @@ public class CoinController extends GenericController {
                 String jsonString = JSON.toJSONString(temp);
                 response.getWriter().write(jsonString);
             }
-
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }

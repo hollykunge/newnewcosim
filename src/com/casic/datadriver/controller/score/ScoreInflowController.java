@@ -93,6 +93,8 @@ public class ScoreInflowController extends AbstractController {
         Long orgId = RequestUtil.getLong(request, "orgId");
         String orgName = RequestUtil.getString(request, "orgName");
         Long total = RequestUtil.getLong(request, "total");
+        Long resourceId = RequestUtil.getLong(request, "resourceId");
+
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
         ddScoreInflow.setId(scoreInflowId);
         ddScoreInflow.setUserId(scoreInflowUid);
@@ -103,6 +105,7 @@ public class ScoreInflowController extends AbstractController {
         ddScoreInflow.setOrgId(orgId);
         ddScoreInflow.setOrgName(orgName);
         ddScoreInflow.setTotal(total);
+        ddScoreInflow.setResourceId(resourceId);
 
         try {
             ddScoreInflowService.updateOne(ddScoreInflow);

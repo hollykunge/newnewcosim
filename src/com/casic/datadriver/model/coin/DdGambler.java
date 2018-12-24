@@ -32,16 +32,10 @@ public class DdGambler {
     @Column(name = "crt_time")
     private Date crtTime;
 
-    /**
-     * @return id
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * @param id
-     */
     public void setId(Long id) {
         this.id = id;
     }

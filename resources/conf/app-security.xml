@@ -16,6 +16,7 @@
 		<security:intercept-url pattern="/500*" filters="none" />
 		<security:intercept-url pattern="/servlet/ValidCode" filters="none"/>
 		<security:intercept-url pattern="/coin/**" filters="none"/>
+		<security:intercept-url pattern="/datadriver/exchange/**" filters="none"/>
 		<security:intercept-url pattern="/mergelog/**" filters="none"/>
 		<!--
 		<security:session-management invalid-session-url="/loginRedirect.ht">

@@ -4,17 +4,21 @@ import com.casic.datadriver.dao.score.DdScoreDao;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
-import com.hotent.core.bpmn20.entity.activiti.In;
+import com.casic.datadriver.service.cache.ICache;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import static com.casic.datadriver.manager.ScoreRegulation.CACHE_SCORE_PREFIX;
 
 /**
  * @Author: hollykunge
@@ -22,76 +26,118 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 @Service
-public class DdScoreService extends BaseService<DdScore> implements ApplicationListener<ContextRefreshedEvent> {
+public class DdScoreService extends BaseService<DdScore> {
 
-    private static final Map<String, DdScore> SCORE_LIST_CACHE = new ConcurrentHashMap<String, DdScore>();
+    private final Log logger = LogFactory.getLog(DdScoreService.class);
+
+    private boolean isUseCache = false;
 
     @Resource
     private DdScoreDao ddScoreDao;
+
+    @Resource
+    private ICache iCache;
 
     @Override
     protected IEntityDao<DdScore, Long> getEntityDao() {
         return this.ddScoreDao;
     }
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        this.initCacheList();
-    }
-
-    private void initCacheList() {
-        //缓存所有dd_score数据
-        List<DdScore> ddScoreList = ddScoreDao.getAll();
-        for (DdScore ddScore : ddScoreList) {
-            initCache(String.valueOf(ddScore.getUserId()) + ddScore.getScoreType(), ddScore);
+    /**
+     * 在程序启动时与其他缓存初始化一起调用
+     */
+    public void initScoreCache() {
+        if (isUseCache) {
+            List<DdScore> ddScoreList = ddScoreDao.getAll();
+            for (DdScore ddScore : ddScoreList) {
+                addToCache(ddScore);
+            }
         }
     }
 
     /**
-     * 供对外的CoinService调用的，增加DdScore信息
+     * 为缓存增加一条
+     */
+    private void addToCache(DdScore ddScore) {
+        Long userId = ddScore.getUserId();
+        String type = ddScore.getScoreType();
+        String cacheKey = CACHE_SCORE_PREFIX + userId + type;
+        iCache.add(cacheKey, ddScore);
+    }
+
+    /**
+     * 通过一条输入或输出流水更新DdScore，默认在这之前inflow表和outflow表已经更新了
      *
-     * @param ddScoreInflow 一条流水
+     * @param ddScoreInflow  输入流水
+     * @param ddScoreOutflow 输出流水
      */
     public Boolean updateScore(DdScoreInflow ddScoreInflow, DdScoreOutflow ddScoreOutflow) {
+        DdScore ddScore = null;
         if (ddScoreInflow != null) {
-            //首先获取积分统计缓存，每一个用户的一种SourceType对应一个积分统计对象
-            String cacheKey = String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceType();
-            DdScore ddScoreTemp = getCache(cacheKey);
+            Long userId = ddScoreInflow.getUserId();
+            String type = ddScoreInflow.getSourceType();
+            String cacheKey = CACHE_SCORE_PREFIX + userId + type;
+            if (isUseCache) {
+                ddScore = (DdScore) iCache.getByKey(cacheKey);
+            } else {
+                ddScore = ddScoreDao.getByUidAndType(userId, type);
+            }
             //如果有就取出，没有就写数据库并写缓存
-            if (ddScoreTemp != null) {
+            if (ddScore != null) {
                 //计算出
-                Integer scoreTemp = ddScoreTemp.getScoreTotal() + ddScoreInflow.getSourceScore();
-                ddScoreTemp.setUdpTime(ddScoreInflow.getUpdTime());
-                ddScoreTemp.setScoreTotal(scoreTemp);
-                ddScoreDao.updateScore(ddScoreTemp);
+                Integer scoreTemp = ddScore.getScoreTotal() + ddScoreInflow.getSourceScore();
+                ddScore.setUdpTime(ddScoreInflow.getUpdTime());
+                ddScore.setScoreTotal(scoreTemp);
+                //TODO:拿出来的对象操作后会自己写入缓存，新缓存框架是否可以？
+                ddScoreDao.updateScore(ddScore);
+                if (isUseCache) {
+                    logger.info("通过输入流水更新DdScore，更新缓存 " + cacheKey);
+                } else {
+                    logger.info("通过输入流水更新DdScore " + cacheKey);
+                }
             } else {
                 //生成积分统计对象
-                DdScore ddScore = new DdScore();
-                ddScore.setId(UniqueIdUtil.genId());
-                ddScore.setUserId(ddScoreInflow.getUserId());
-                ddScore.setUserName(ddScoreInflow.getUserName());
-                ddScore.setScoreTotal(ddScoreInflow.getSourceScore());
-                ddScore.setScoreType(ddScoreInflow.getSourceType());
-                ddScore.setCrtTime(ddScoreInflow.getUpdTime());
-                ddScore.setUdpTime(ddScoreInflow.getUpdTime());
-                ddScore.setOrgId(ddScoreInflow.getOrgId());
-                ddScore.setOrgName(ddScoreInflow.getOrgName());
-                //如果缓存中没有该用户，把该用户积分对象先写入数据库，再缓存到concurrentHashMap中
-                ddScoreDao.add(ddScore);
-                initCache(cacheKey, ddScore);
+                DdScore ddScoreTemp = new DdScore();
+                ddScoreTemp.setId(UniqueIdUtil.genId());
+                ddScoreTemp.setUserId(userId);
+                ddScoreTemp.setUserName(ddScoreInflow.getUserName());
+                ddScoreTemp.setScoreTotal(ddScoreInflow.getSourceScore());
+                ddScoreTemp.setScoreType(type);
+                ddScoreTemp.setCrtTime(ddScoreInflow.getUpdTime());
+                ddScoreTemp.setUdpTime(ddScoreInflow.getUpdTime());
+                ddScoreTemp.setOrgId(ddScoreInflow.getOrgId());
+                ddScoreTemp.setOrgName(ddScoreInflow.getOrgName());
+                ddScoreDao.addScore(ddScoreTemp);
+                if (isUseCache) {
+                    iCache.add(cacheKey, ddScoreTemp);
+                    logger.info("通过输入流水添加DdScore，添加缓存 " + cacheKey);
+                } else {
+                    logger.info("通过输入流水添加DdScore " + cacheKey);
+                }
             }
         }
         if (ddScoreOutflow != null) {
-            //首先获取积分统计缓存，每一个用户的一种SourceType对应一个积分统计对象
-            String cacheKey = String.valueOf(ddScoreOutflow.getUserId()) + ddScoreOutflow.getSourceType();
-            DdScore ddScoreTemp = getCache(cacheKey);
-            if (ddScoreTemp != null) {
-                //计算出
-                Integer scoreTemp = ddScoreTemp.getScoreTotal() - ddScoreOutflow.getExpendScore();
-                ddScoreTemp.setUdpTime(ddScoreOutflow.getUdpTime());
-                ddScoreTemp.setScoreTotal(scoreTemp);
-                ddScoreDao.updateScore(ddScoreTemp);
+            Long userId = ddScoreOutflow.getUserId();
+            String type = ddScoreOutflow.getSourceType();
+            String cacheKey = CACHE_SCORE_PREFIX + userId + type;
+            if (isUseCache) {
+                ddScore = (DdScore) iCache.getByKey(cacheKey);
             } else {
+                ddScore = ddScoreDao.getByUidAndType(userId, type);
+            }
+            if (ddScore != null) {
+                //计算出
+                Integer scoreTemp = ddScore.getScoreTotal() - ddScoreOutflow.getExpendScore();
+                if (scoreTemp < 0) {
+                    logger.error("用户分数为负，输出流水失败 " + cacheKey);
+                    return false;
+                }
+                ddScore.setUdpTime(ddScoreOutflow.getUdpTime());
+                ddScore.setScoreTotal(scoreTemp);
+                ddScoreDao.updateScore(ddScore);
+                logger.info("通过输出流水更新DdScore " + cacheKey);
+            } else {
+                logger.error("DdScore中没有该对象，输出流水失败 " + cacheKey);
                 return false;
             }
         }
@@ -99,39 +145,42 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
     }
 
     /**
-     * @param cacheKey 缓存key
-     * @return DdScore
-     */
-    public DdScore getCache(String cacheKey) {
-        //如果缓冲中有该用户，则返回积分对象
-        if (SCORE_LIST_CACHE.containsKey(cacheKey)) {
-            return SCORE_LIST_CACHE.get(cacheKey);
-        }
-        return null;
-    }
-
-    /**
-     * @param cacheKey 缓存key
-     * @param ddScore  DdScore
-     */
-    private void initCache(String cacheKey, DdScore ddScore) {
-        //一般是进行数据库查询，将查询的结果进行缓存
-        SCORE_LIST_CACHE.put(cacheKey, ddScore);
-    }
-
-    /**
-     * 删除
+     * 删除特定一些id的
      *
      * @param lAryId id列表
      */
     public void delAll(Long[] lAryId) {
         for (Long id : lAryId) {
-            ddScoreDao.delById(id);
+            if (isUseCache) {
+                //删缓存
+                DdScore ddScore = getById(id);
+                Long userId = ddScore.getUserId();
+                String type = ddScore.getScoreType();
+                String cacheKey = CACHE_SCORE_PREFIX + userId + type;
+                iCache.delByKey(cacheKey);
+            }
+            //删库
+            ddScoreDao.delOneById(id);
         }
     }
 
+    /**
+     * 删除某一类型所有的
+     *
+     * @param sourceType 一级类型
+     */
     public void delByType(String sourceType) {
+        //删库
         ddScoreDao.delByType(sourceType);
+        if (isUseCache) {
+            //删缓存
+            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
+            for (DdScore ddScore : ddScores) {
+                Long userId = ddScore.getUserId();
+                String cacheKey = CACHE_SCORE_PREFIX + userId + sourceType;
+                iCache.delByKey(cacheKey);
+            }
+        }
     }
 
     /**
@@ -140,26 +189,40 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
      * @param entity DdScore
      */
     public void updateOne(DdScore entity) {
-        ddScoreDao.update(entity);
+        //更新数据库
+        ddScoreDao.updateScore(entity);
+        if (isUseCache) {
+            //更新缓存
+            addToCache(entity);
+        }
     }
 
     /**
-     * 根据id查询
-     *
-     * @param id id
-     * @return DdScore列表
+     * 根据id查询，缓存中没有则在数据库查询
+     * 这个方法尽量少用，因为通过id从缓存索引不高效
      */
-    public List<DdScore> getById(long id) {
+    @Override
+    public DdScore getById(Long id) {
+        if (isUseCache) {
+            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, "");
+            for (DdScore ddScore : ddScores) {
+                if (ddScore.getId().equals(id)) {
+                    return ddScore;
+                }
+            }
+            logger.warn("DdScore缓存中没有该对象，查找失败 " + id);
+        }
         return ddScoreDao.getById(id);
     }
 
     /**
      * 查询所有
-     *
-     * @return 所有
      */
     public List<DdScore> getAllScore() {
-        return ddScoreDao.getAll();
+        if (isUseCache) {
+            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, "");
+        }
+        return ddScoreDao.getAllScore();
     }
 
     /**
@@ -169,67 +232,71 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
      * @return DdScore列表
      */
     public List<DdScore> getPersonal(long userId) {
+        if (isUseCache) {
+            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, String.valueOf(userId));
+        }
         return ddScoreDao.getPersonal(userId);
     }
 
     /**
      * 查询类型
      *
-     * @param sourceType s
+     * @param sourceType 一级类型
      */
-    public List<DdScore> getType(String sourceType) {
-        return ddScoreDao.getType(sourceType);
+    public List<DdScore> getByType(String sourceType) {
+        if (isUseCache) {
+            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
+        }
+        return ddScoreDao.getByType(sourceType);
     }
 
     /**
      * 通过最低分限和积分类型获取积分列表
      *
-     * @param least     最低分限
-     * @param scoreType 一级类型
+     * @param least      最低分限
+     * @param sourceType 一级类型
      * @return 符合条件的列表
      */
-    public List<DdScore> getScoresByLeastAndType(Integer least, String scoreType) {
-        List<DdScore> ddScoreList = this.getAllScore();
-        Iterator<DdScore> it = ddScoreList.iterator();
+    public List<DdScore> getScoresByLeastAndType(Integer least, String sourceType) {
+        List<DdScore> ddScores = this.getByType(sourceType);
+        Iterator<DdScore> it = ddScores.iterator();
         while (it.hasNext()) {
             DdScore x = it.next();
-            if ((x.getScoreTotal() < 100) || (!scoreType.equals(x.getScoreType()))) {
+            if (x.getScoreTotal() < least) {
                 it.remove();
             }
         }
-        return ddScoreList;
+        return ddScores;
     }
 
     /**
      * 通过排名区间和积分类型获取积分列表
      *
-     * @param rank      名次
-     * @param scoreType 一级类型
+     * @param rank       名次
+     * @param sourceType 一级类型
      * @return ddScoreList 排序完成
      */
-    public List<DdScore> getScoresByRankAndType(Integer rank, String scoreType) {
-        //初始化列表
-        List<DdScore> ddScoreList = this.getAllScore();
-        //筛选类型并去除末尾零分项
-        Iterator<DdScore> it = ddScoreList.iterator();
+    public List<DdScore> getScoresByRankAndType(Integer rank, String sourceType) {
+        List<DdScore> ddScores = this.getByType(sourceType);
+        Iterator<DdScore> it = ddScores.iterator();
         while (it.hasNext()) {
             DdScore x = it.next();
-            if ((x.getScoreTotal() == 0) || (!scoreType.equals(x.getScoreType()))) {
+            if (0 == x.getScoreTotal()) {
                 it.remove();
             }
         }
         //排序
-        Collections.sort(ddScoreList, new Comparator<DdScore>() {
+        Collections.sort(ddScores, new Comparator<DdScore>() {
             @Override
             public int compare(DdScore ddScore1, DdScore ddScore2) {
                 return ddScore2.getScoreTotal().compareTo(ddScore1.getScoreTotal());
             }
         });
         //根据排名数获取列表
-        if (ddScoreList.size() > rank) {
+        if (ddScores.size() > rank) {
             //符合条件的最后一名分数
-            Integer base = ddScoreList.get(rank - 1).getScoreTotal();
-            Iterator<DdScore> it2 = ddScoreList.iterator();
+            Integer base = ddScores.get(rank - 1).getScoreTotal();
+            Iterator<DdScore> it2 = ddScores.iterator();
             while (it2.hasNext()) {
                 DdScore x = it2.next();
                 if (x.getScoreTotal() < base) {
@@ -237,10 +304,6 @@ public class DdScoreService extends BaseService<DdScore> implements ApplicationL
                 }
             }
         }
-        return ddScoreList;
-    }
-
-    public void updateByType(DdScore ddScore){
-        ddScoreDao.updateByType(ddScore);
+        return ddScores;
     }
 }
