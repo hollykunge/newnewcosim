@@ -2,7 +2,7 @@ package com.casic.datadriver.controller.score;
 
 import com.casic.datadriver.controller.AbstractController;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
-import com.casic.datadriver.service.score.GoldenCoinService;
+import com.casic.datadriver.service.score.DdGoldenCoinService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.query.QueryFilter;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/datadriver/golden/")
 public class GoldenCoinController extends AbstractController {
     @Autowired
-    private GoldenCoinService ddGoldenCoinService;
+    private DdGoldenCoinService ddDdGoldenCoinService;
 
     @RequestMapping("del")
     @Action(description="币删除")
@@ -35,7 +35,7 @@ public class GoldenCoinController extends AbstractController {
         ResultMessage message=null;
         try{
             Long[] lAryId =RequestUtil.getLongAryByStr(request, "id");
-            ddGoldenCoinService.delAll(lAryId);
+            ddDdGoldenCoinService.delAll(lAryId);
             message=new ResultMessage(ResultMessage.Success,"删除成功!");
         }catch(Exception ex){
             message=new ResultMessage(ResultMessage.Fail, "删除失败" + ex.getMessage());
@@ -50,7 +50,7 @@ public class GoldenCoinController extends AbstractController {
     {
         Long scoreId = RequestUtil.getLong(request,"id");
         String returnUrl = RequestUtil.getPrePage(request);
-        DdGoldenCoin ddGoldenCoin = ddGoldenCoinService.getById(scoreId);
+        DdGoldenCoin ddGoldenCoin = ddDdGoldenCoinService.getById(scoreId);
 
         return getAutoView().addObject("bizDef",ddGoldenCoin)
                 .addObject("returnUrl",returnUrl);
@@ -60,7 +60,7 @@ public class GoldenCoinController extends AbstractController {
     @Action(description="币列表")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        List<DdGoldenCoin> list=ddGoldenCoinService.getAll(new QueryFilter(request,"goldenItem"));
+        List<DdGoldenCoin> list= ddDdGoldenCoinService.getAll(new QueryFilter(request,"goldenItem"));
 
         return this.getAutoView().addObject("goldenList",list);
     }
@@ -91,7 +91,7 @@ public class GoldenCoinController extends AbstractController {
             ddGoldenCoin.setUpdTime(updTime);
 
 
-            ddGoldenCoinService.update(ddGoldenCoin);
+            ddDdGoldenCoinService.update(ddGoldenCoin);
             resultMsg = getText("record.updated", "二币");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception ex){
