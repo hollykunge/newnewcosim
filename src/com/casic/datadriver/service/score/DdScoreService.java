@@ -6,7 +6,6 @@ import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
 import com.casic.datadriver.service.cache.ICache;
 import com.hotent.core.db.IEntityDao;
-import com.hotent.core.service.BaseService;
 import com.hotent.core.util.UniqueIdUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +25,7 @@ import static com.casic.datadriver.manager.ScoreRegulation.CACHE_SCORE_PREFIX;
  */
 
 @Service
-public class DdScoreService extends BaseService<DdScore> {
+public class DdScoreService extends AbstractService<DdScore, Long> {
 
     private final Log logger = LogFactory.getLog(DdScoreService.class);
 
@@ -89,7 +88,7 @@ public class DdScoreService extends BaseService<DdScore> {
                 ddScore.setUdpTime(ddScoreInflow.getUpdTime());
                 ddScore.setScoreTotal(scoreTemp);
                 //TODO:拿出来的对象操作后会自己写入缓存，新缓存框架是否可以？
-                ddScoreDao.updateScore(ddScore);
+                ddScoreDao.update(ddScore);
                 if (isUseCache) {
                     logger.info("通过输入流水更新DdScore，更新缓存 " + cacheKey);
                 } else {
@@ -107,7 +106,7 @@ public class DdScoreService extends BaseService<DdScore> {
                 ddScoreTemp.setUdpTime(ddScoreInflow.getUpdTime());
                 ddScoreTemp.setOrgId(ddScoreInflow.getOrgId());
                 ddScoreTemp.setOrgName(ddScoreInflow.getOrgName());
-                ddScoreDao.addScore(ddScoreTemp);
+                ddScoreDao.add(ddScoreTemp);
                 if (isUseCache) {
                     iCache.add(cacheKey, ddScoreTemp);
                     logger.info("通过输入流水添加DdScore，添加缓存 " + cacheKey);
@@ -134,7 +133,7 @@ public class DdScoreService extends BaseService<DdScore> {
                 }
                 ddScore.setUdpTime(ddScoreOutflow.getUdpTime());
                 ddScore.setScoreTotal(scoreTemp);
-                ddScoreDao.updateScore(ddScore);
+                ddScoreDao.update(ddScore);
                 logger.info("通过输出流水更新DdScore " + cacheKey);
             } else {
                 logger.error("DdScore中没有该对象，输出流水失败 " + cacheKey);
@@ -145,22 +144,40 @@ public class DdScoreService extends BaseService<DdScore> {
     }
 
     /**
-     * 删除特定一些id的
-     *
-     * @param lAryId id列表
+     * 重写增加
      */
-    public void delAll(Long[] lAryId) {
-        for (Long id : lAryId) {
-            if (isUseCache) {
-                //删缓存
-                DdScore ddScore = getById(id);
-                Long userId = ddScore.getUserId();
-                String type = ddScore.getScoreType();
-                String cacheKey = CACHE_SCORE_PREFIX + userId + type;
-                iCache.delByKey(cacheKey);
-            }
-            //删库
-            ddScoreDao.delOneById(id);
+    @Override
+    public void add(DdScore ddScore) {
+        super.add(ddScore);
+        //多一个写缓存
+        if (isUseCache) {
+            addToCache(ddScore);
+        }
+    }
+
+    /**
+     * 重写删除
+     */
+    @Override
+    public void delById(Long id) {
+        //多一个删缓存
+        if (isUseCache) {
+            DdScore ddScore = getById(id);
+            Long userId = ddScore.getUserId();
+            String type = ddScore.getScoreType();
+            String cacheKey = CACHE_SCORE_PREFIX + userId + type;
+            iCache.delByKey(cacheKey);
+        }
+        super.delById(id);
+    }
+
+    /**
+     * 重写删一片
+     */
+    @Override
+    public void delByIds(Long[] ids) {
+        for (Long id : ids) {
+            delById(id);
         }
     }
 
@@ -169,6 +186,7 @@ public class DdScoreService extends BaseService<DdScore> {
      *
      * @param sourceType 一级类型
      */
+    @SuppressWarnings("unchecked")
     public void delByType(String sourceType) {
         //删库
         ddScoreDao.delByType(sourceType);
@@ -184,27 +202,27 @@ public class DdScoreService extends BaseService<DdScore> {
     }
 
     /**
-     * 修改
-     *
-     * @param entity DdScore
+     * 重写修改
      */
-    public void updateOne(DdScore entity) {
-        //更新数据库
-        ddScoreDao.updateScore(entity);
+    @Override
+    public void update(DdScore ddScore) {
+        super.update(ddScore);
+        //多一个更新缓存
         if (isUseCache) {
-            //更新缓存
-            addToCache(entity);
+            addToCache(ddScore);
         }
     }
 
     /**
-     * 根据id查询，缓存中没有则在数据库查询
+     * 重写查询，缓存中没有则在数据库查询
      * 这个方法尽量少用，因为通过id从缓存索引不高效
      */
     @Override
+    @SuppressWarnings("unchecked")
     public DdScore getById(Long id) {
         if (isUseCache) {
-            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, "");
+            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(
+                    CACHE_SCORE_PREFIX, "");
             for (DdScore ddScore : ddScores) {
                 if (ddScore.getId().equals(id)) {
                     return ddScore;
@@ -212,17 +230,19 @@ public class DdScoreService extends BaseService<DdScore> {
             }
             logger.warn("DdScore缓存中没有该对象，查找失败 " + id);
         }
-        return ddScoreDao.getById(id);
+        return super.getById(id);
     }
 
     /**
-     * 查询所有
+     * 重写查询所有
      */
-    public List<DdScore> getAllScore() {
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<DdScore> getAll() {
         if (isUseCache) {
             return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, "");
         }
-        return ddScoreDao.getAllScore();
+        return super.getAll();
     }
 
     /**
@@ -231,6 +251,7 @@ public class DdScoreService extends BaseService<DdScore> {
      * @param userId 用户id
      * @return DdScore列表
      */
+    @SuppressWarnings("unchecked")
     public List<DdScore> getPersonal(long userId) {
         if (isUseCache) {
             return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, String.valueOf(userId));
@@ -243,7 +264,8 @@ public class DdScoreService extends BaseService<DdScore> {
      *
      * @param sourceType 一级类型
      */
-    public List<DdScore> getByType(String sourceType) {
+    @SuppressWarnings("unchecked")
+    private List<DdScore> getByType(String sourceType) {
         if (isUseCache) {
             return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
         }
@@ -257,7 +279,7 @@ public class DdScoreService extends BaseService<DdScore> {
      * @param sourceType 一级类型
      * @return 符合条件的列表
      */
-    public List<DdScore> getScoresByLeastAndType(Integer least, String sourceType) {
+    List<DdScore> getScoresByLeastAndType(Integer least, String sourceType) {
         List<DdScore> ddScores = this.getByType(sourceType);
         Iterator<DdScore> it = ddScores.iterator();
         while (it.hasNext()) {
