@@ -24,41 +24,16 @@ public class DdScoreInflowDao extends BaseDao<DdScoreInflow> {
     }
 
     /**
-     * 增加一项
+     * 增加使用add
+     * 删除使用delById
+     * 更新使用update
+     * 查询使用getById, getAll
      */
-    public void addOne(DdScoreInflow ddScoreInflow) {
-        this.add(ddScoreInflow);
-    }
+
 
     /**
-     * 删除一项
+     * 通过uid和一级类型查找
      */
-    public void delOneById(Long id) {
-        this.delById(id);
-    }
-
-    /**
-     * 更改一项
-     */
-    public void updateOne(DdScoreInflow ddScoreInflow) {
-        this.update(ddScoreInflow);
-    }
-
-    /**
-     * 通过id查一项
-     */
-    @Override
-    public DdScoreInflow getById(Long id) {
-        return this.getBySqlKey("getById", id).get(0);
-    }
-
-    /**
-     * 所有项
-     */
-    public List<DdScoreInflow> getAllInflow() {
-        return this.getAll();
-    }
-
     public List<DdScoreInflow> getByUidAndType(Long userId, String sourceType) {
         Map<String, String> param = new HashMap<>(2);
         param.put("userId", String.valueOf(userId));
@@ -73,6 +48,9 @@ public class DdScoreInflowDao extends BaseDao<DdScoreInflow> {
         return this.getBySqlKey("getUserTypeScore", queryFilter);
     }
 
+    /**
+     * 通过uid和二级类型查找
+     */
     public List<DdScoreInflow> getByUidAndDetail(Long userId, String sourceDetail) {
         Map<String, String> param = new HashMap<>(2);
         param.put("userId", String.valueOf(userId));

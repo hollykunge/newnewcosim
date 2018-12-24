@@ -12,9 +12,8 @@ import com.casic.datadriver.service.data.OrderDataRelationService;
 import com.casic.datadriver.service.data.PrivateDataService;
 import com.casic.datadriver.service.project.ProjectService;
 import com.casic.datadriver.service.task.TaskInfoService;
-import com.hotent.core.annotion.Action;
-import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.ResultMessage;
+import com.hotent.core.web.controller.GenericController;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.service.system.SysUserService;
 import net.sf.json.JSONArray;
@@ -26,7 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 主要是积分部分的对外接口，可以提供丰富的积分和协同币展示方式
@@ -34,6 +36,7 @@ import java.util.*;
  * @Author: hollykunge
  * @Date: 创建于 2018/9/20
  */
+
 @Controller
 @RequestMapping("/coin/")
 public class CoinController extends GenericController {
@@ -64,14 +67,19 @@ public class CoinController extends GenericController {
      * @param sourceType   一级类型
      * @param sourceDetail 二级类型
      * @param updTime      更新时间
-     * @throws Exception the exception
+     * @param resourceId   资源id
      */
     @RequestMapping("add")
     @ResponseBody
-    public void add(String uid, String sourceScore, String sourceType, String sourceDetail, String updTime, Long resourceId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void add(String uid,
+                    String sourceScore,
+                    String sourceType,
+                    String sourceDetail,
+                    String updTime,
+                    Long resourceId,
+                    HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
-            //TODO：传整个model
             AddScoreModel addScoreModel = new AddScoreModel();
             addScoreModel.setAccount(uid);
             addScoreModel.setSourceScore(sourceScore);
@@ -123,9 +131,6 @@ public class CoinController extends GenericController {
 
     /**
      * 获取个人所有详情
-     *
-     * @param response 响应
-     * @throws Exception the exception
      */
     @RequestMapping("personalScore")
     @ResponseBody
@@ -143,8 +148,7 @@ public class CoinController extends GenericController {
     }
 
     /**
-     * @param response 响应
-     * @throws Exception the exception
+     * 获取排名
      */
     @RequestMapping("rank")
     @ResponseBody
@@ -198,5 +202,4 @@ public class CoinController extends GenericController {
             writeResultMessage(response.getWriter(), null + "," + e.getMessage(), ResultMessage.Fail);
         }
     }
-
 }
