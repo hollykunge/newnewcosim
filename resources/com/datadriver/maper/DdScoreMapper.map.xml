@@ -57,7 +57,7 @@
             order by ${orderField} ${orderSeq}
         </if>
     </select>
-    <select id="getType" resultMap="BaseResultMap">
+    <select id="getByType" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM dd_score

@@ -1,22 +1,21 @@
-package com.casic.datadriver.service.exchange;
+package com.casic.datadriver.service.score;
 
 import com.casic.datadriver.dao.score.DdGamblerDao;
-import com.casic.datadriver.dao.score.DdGoldenCoinDao;
-import com.casic.datadriver.dao.score.DdScoreOutflowDao;
-import com.casic.datadriver.model.coin.*;
-import com.casic.datadriver.service.score.DdScoreService;
-import com.hotent.core.util.UniqueIdUtil;
+import com.casic.datadriver.model.coin.DdGambler;
+import com.casic.datadriver.model.coin.DdScore;
+import com.casic.datadriver.model.coin.RankModel;
+import com.casic.datadriver.service.cache.ICache;
+import com.hotent.core.db.IEntityDao;
 import com.hotent.platform.auth.ISysUser;
-
 import com.hotent.platform.dao.system.SysUserDao;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.casic.datadriver.manager.ScoreRegulation.*;
 
@@ -33,23 +32,39 @@ import static com.casic.datadriver.manager.ScoreRegulation.*;
  */
 
 @Service
-public class DdGamblerService {
+public class DdGamblerService extends AbstractService<DdGambler, Long> {
 
     private final Log logger = LogFactory.getLog(DdGamblerService.class);
 
-    @Autowired
-    private DdScoreService ddScoreService;
+    private boolean isUseCache = false;
 
-    @Autowired
-    private DdScoreOutflowDao ddScoreOutflowDao;
-    @Autowired
-    private DdGoldenCoinDao ddGoldenCoinDao;
-    @Autowired
+    @Resource
+    private DdScoreService ddScoreService;
+    @Resource
+    private DdScoreOutflowService ddScoreOutflowService;
+    @Resource
+    private DdGoldenCoinService ddGoldenCoinService;
+
+    @Resource
     private DdGamblerDao ddGamblerDao;
 
-    @Autowired
+    @Resource
     private SysUserDao sysUserDao;
 
+    @Resource
+    private ICache iCache;
+
+    @Override
+    protected IEntityDao<DdGambler, Long> getEntityDao() {
+        return this.ddGamblerDao;
+    }
+
+    /**
+     * 在程序启动时与其他缓存初始化一起调用
+     */
+    public void initGamblerCache() {
+        //outflow未使用缓存
+    }
 
     /**
      * 特定种类积分每月排名前列人员公开方法，删月积分对应项（耗光），增加输出流水，加币
@@ -94,9 +109,9 @@ public class DdGamblerService {
                 getCoin = chuangxinCoin;
             }
             //更新输出流水表，其中会同步更新月积分表
-            this.consumeScore(ddScore.getUserId(), scoreType, MONTH_RANK, consumeScore, true);
+            ddScoreOutflowService.consumeScore(ddScore.getUserId(), scoreType, MONTH_RANK, consumeScore, true);
             //写得币表
-            this.gainCoin(ddScore.getUserId(), scoreType, getCoin);
+            ddGoldenCoinService.gainCoin(ddScore.getUserId(), scoreType, getCoin);
             //返回集
             RankModel ddRank = new RankModel();
             ddRank.setRank(i);
@@ -111,76 +126,6 @@ public class DdGamblerService {
         return rankList;
     }
 
-    /**
-     * 写消耗积分私有方法
-     *
-     * @param userId       用户ID
-     * @param scoreType    一级类型
-     * @param consumeType  消耗原因
-     * @param consumeScore 消耗分数
-     * @param isClearMonth 是否同步删除月积分
-     */
-    private void consumeScore(Long userId,
-                              String scoreType,
-                              String consumeType,
-                              Integer consumeScore,
-                              boolean isClearMonth) {
-        DdScoreOutflow ddScoreOutflow = new DdScoreOutflow();
-        ddScoreOutflow.setId(UniqueIdUtil.genId());
-        ddScoreOutflow.setUserId(userId);
-        ddScoreOutflow.setSourceType(scoreType);
-        ddScoreOutflow.setExpendDetail(consumeType);
-        ddScoreOutflow.setExpendScore(consumeScore);
-        ddScoreOutflow.setUdpTime(new Date());
-        if (isClearMonth) {
-            Boolean done = ddScoreService.updateScore(null, ddScoreOutflow);
-            if (done) {
-                ddScoreOutflowDao.add(ddScoreOutflow);
-            } else {
-                logger.warn("月度积分表消耗积分失败");
-                return;
-            }
-        } else {
-            ddScoreOutflowDao.add(ddScoreOutflow);
-        }
-        logger.info(userId + "使用" + consumeScore + "分兑换一枚" + scoreType + "币");
-    }
-
-    /**
-     * 写得币表私有方法
-     *
-     * @param userId   用户
-     * @param coinType 一级类型
-     * @param coinNum  数目
-     */
-    private void gainCoin(Long userId, String coinType, Integer coinNum) {
-        List<DdGoldenCoin> userCoinList = ddGoldenCoinDao.getPersonal(userId);
-        DdGoldenCoin userTypeCoin = new DdGoldenCoin();
-        //币表中是否有
-        Boolean isHave = false;
-        for (DdGoldenCoin ddGoldenCoin : userCoinList) {
-            if (coinType.equals(ddGoldenCoin.getCoinType())) {
-                userTypeCoin = ddGoldenCoin;
-                isHave = true;
-                break;
-            }
-        }
-        if (isHave) {
-            Long nowCoin = userTypeCoin.getCoinNum();
-            userTypeCoin.setCoinNum(nowCoin + coinNum);
-            ddGoldenCoinDao.updateCoin(userTypeCoin);
-        } else {
-            userTypeCoin.setId(UniqueIdUtil.genId());
-            userTypeCoin.setUserId(userId);
-            userTypeCoin.setCoinType(coinType);
-            userTypeCoin.setCoinNum(Integer.toUnsignedLong(coinNum));
-            ISysUser user = sysUserDao.getById(userId);
-            userTypeCoin.setUserName(user.getFullname());
-            userTypeCoin.setOrgId(user.getOrgId());
-            userTypeCoin.setOrgName(user.getOrgName());
-            ddGoldenCoinDao.add(userTypeCoin);
-        }
-    }
 
     /**
      * 获取参与抽奖名单公开方法

@@ -1,7 +1,7 @@
 package com.casic.datadriver.controller.exchange;
 
 import com.casic.datadriver.model.coin.RankModel;
-import com.casic.datadriver.service.exchange.DdGamblerService;
+import com.casic.datadriver.service.score.DdGamblerService;
 import com.hotent.core.web.ResultMessage;
 import com.hotent.core.web.controller.GenericController;
 import com.hotent.core.web.util.RequestUtil;
@@ -46,11 +46,11 @@ public class ExchangeController extends GenericController {
         }
     }
 
-    /**
-     * 获取三类积分和够某一数值后，并且没入围平分金钱名单的人名单
-     *
-     * @throws Exception e
-     */
+//    /**
+//     * 获取三类积分和够某一数值后，并且没入围平分金钱名单的人名单
+//     *
+//     * @throws Exception e
+//     */
 //    @RequestMapping("getLotteryList")
 //    public void getLotteryList(HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        JSONArray jsonR;
@@ -65,11 +65,11 @@ public class ExchangeController extends GenericController {
 //        }
 //    }
 
-    /**
-     * 传入抽奖列表生成抽奖结果并写入数据库
-     *
-     * @throws Exception e
-     */
+//    /**
+//     * 传入抽奖列表生成抽奖结果并写入数据库
+//     *
+//     * @throws Exception e
+//     */
 //    @RequestMapping("getLotteryResult")
 //    public void getLotteryResult(HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        JSONArray jsonR;
@@ -84,11 +84,11 @@ public class ExchangeController extends GenericController {
 //        }
 //    }
 
-    /**
-     * 后台管理使用，按月点击进行兑换
-     *
-     * @throws Exception e
-     */
+//    /**
+//     * 后台管理使用，按月点击进行兑换
+//     *
+//     * @throws Exception e
+//     */
 //    @RequestMapping("consume")
 //    @Action(description = "消耗积分兑换币")
 //    public void consume(HttpServletRequest request, HttpServletResponse response) throws Exception {

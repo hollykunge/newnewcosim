@@ -21,20 +21,12 @@ public class DdScoreDao extends BaseDao<DdScore> {
     }
 
     /**
-     * 增加积分统计
+     * 增加使用add
+     * 删除使用delById
+     * 更新使用update
+     * 查询使用getById, getAll
      */
-    public void addScore(DdScore ddScore) {
-        this.add(ddScore);
-    }
 
-    /**
-     * 更新积分账户
-     *
-     * @param ddScore the query filter
-     */
-    public void updateScore(DdScore ddScore) {
-        this.update(ddScore);
-    }
 
     /**
      * 删光一类积分所有的
@@ -46,43 +38,19 @@ public class DdScoreDao extends BaseDao<DdScore> {
     }
 
     /**
-     * 根据id删除一项
-     */
-    public void delOneById(Long id) {
-        this.delById(id);
-    }
-
-    /**
-     * 通过id查一项
-     */
-    @Override
-    public DdScore getById(Long id) {
-        return this.getBySqlKey("getById", id).get(0);
-    }
-
-    /**
-     * 获取所有
-     */
-    public List<DdScore> getAllScore() {
-        return this.getAll();
-    }
-
-    /**
-     * 根据用户id查他积分
-     *
-     * @param userId userId
-     */
-    public List<DdScore> getPersonal(long userId) {
-        return this.getBySqlKey("getPersonal", userId);
-    }
-
-    /**
      * 获取一类积分所有的
      *
      * @param sourceType 一级类型
      */
     public List<DdScore> getByType(String sourceType) {
-        return this.getBySqlKey("getType", sourceType);
+        return this.getBySqlKey("getByType", sourceType);
+    }
+
+    /**
+     * 根据用户id查他积分
+     */
+    public List<DdScore> getPersonal(long userId) {
+        return this.getBySqlKey("getPersonal", userId);
     }
 
     /**
@@ -101,5 +69,4 @@ public class DdScoreDao extends BaseDao<DdScore> {
         }
         return null;
     }
-
 }

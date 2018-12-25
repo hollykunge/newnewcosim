@@ -28,6 +28,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/datadriver/coin/")
 public class ScoreController extends AbstractController {
+
     @Autowired
     private DdScoreService ddScoreService;
     @Autowired
@@ -35,8 +36,6 @@ public class ScoreController extends AbstractController {
 
     /**
      * 积分列表
-     *
-     * @throws Exception e
      */
     @RequestMapping("list")
     @Action(description = "积分列表")
@@ -47,8 +46,6 @@ public class ScoreController extends AbstractController {
 
     /**
      * 积分批量删除
-     *
-     * @throws Exception e
      */
     @RequestMapping("del")
     @Action(description = "积分列表删除")
@@ -57,7 +54,7 @@ public class ScoreController extends AbstractController {
         ResultMessage message = null;
         try {
             Long[] lAryId = RequestUtil.getLongAryByStr(request, "id");
-            ddScoreService.delAll(lAryId);
+            ddScoreService.delByIds(lAryId);
             message = new ResultMessage(ResultMessage.Success, "删除成功!");
         } catch (Exception ex) {
             message = new ResultMessage(ResultMessage.Fail, "删除失败" + ex.getMessage());
@@ -68,8 +65,6 @@ public class ScoreController extends AbstractController {
 
     /**
      * 积分编辑
-     *
-     * @throws Exception e
      */
     @RequestMapping("edit")
     @Action(description = "编辑个人积分")
@@ -83,10 +78,6 @@ public class ScoreController extends AbstractController {
 
     /**
      * 提交编辑
-     *
-     * @param request  r
-     * @param response r
-     * @throws Exception e
      */
     @RequestMapping("save")
     @Action(description = "提交编辑个人积分")
@@ -102,7 +93,9 @@ public class ScoreController extends AbstractController {
         String scoreAction = RequestUtil.getString(request, "scoreAction");
         String orgName = RequestUtil.getString(request, "orgName");
         Long orgId = RequestUtil.getLong(request, "orgId");
+
         DdScore ddScore = new DdScore();
+
         ddScore.setId(scoreId);
         ddScore.setUserId(scoreUid);
         ddScore.setUserName(userName);
@@ -115,7 +108,7 @@ public class ScoreController extends AbstractController {
         ddScore.setOrgId(orgId);
 
         try {
-            ddScoreService.updateOne(ddScore);
+            ddScoreService.update(ddScore);
             resultMsg = getText("record.updated", "积分");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception e) {
@@ -126,8 +119,6 @@ public class ScoreController extends AbstractController {
 
     /**
      * 积分明细
-     *
-     * @throws Exception e
      */
     @RequestMapping("detail")
     @Action(description = "积分明细")
