@@ -28,72 +28,72 @@ import java.util.List;
 @Controller
 @RequestMapping("/datadriver/inflow/")
 public class ScoreInflowController extends AbstractController {
+
     @Autowired
     private DdScoreInflowService ddScoreInflowService;
 
     /**
-     * @throws Exception e
+     * 列表
      */
     @RequestMapping("list")
-    @Action(description="积分赚取列表")
+    @Action(description = "积分赚取列表")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<DdScoreInflow> earnlist=ddScoreInflowService.getAll(new QueryFilter(request,"scoreInflowItem"));
-        return this.getAutoView().addObject("scoreInflowList",earnlist);
+        List<DdScoreInflow> earnList = ddScoreInflowService.getAll(new QueryFilter(request, "scoreInflowItem"));
+        return this.getAutoView().addObject("scoreInflowList", earnList);
     }
+
     /**
      * 流水列表批量删除
-     * @param request r
-     * @param response r
-     * @throws Exception e
      */
     @RequestMapping("del")
-    @Action(description="流水列表删除")
+    @Action(description = "流水列表删除")
     public void del(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String preUrl = RequestUtil.getPrePage(request);
         ResultMessage message = null;
-        try{
-            Long[] lAryId =RequestUtil.getLongAryByStr(request, "id");
-            ddScoreInflowService.delAll(lAryId);
-            message = new ResultMessage(ResultMessage.Success,"删除成功!");
-        }catch(Exception ex){
+        try {
+            Long[] lAryId = RequestUtil.getLongAryByStr(request, "id");
+            ddScoreInflowService.delByIds(lAryId);
+            message = new ResultMessage(ResultMessage.Success, "删除成功!");
+        } catch (Exception ex) {
             message = new ResultMessage(ResultMessage.Fail, "删除失败" + ex.getMessage());
         }
         addMessage(message, request);
         response.sendRedirect(preUrl);
     }
+
     /**
      * 编辑个人流水
-     * @throws Exception e
      */
     @RequestMapping("edit")
-    @Action(description="编辑个人流水")
+    @Action(description = "编辑个人流水")
     public ModelAndView edit(HttpServletRequest request) throws Exception {
-        Long scoreInflowId = RequestUtil.getLong(request,"id");
+        Long scoreInflowId = RequestUtil.getLong(request, "id");
         String returnUrl = RequestUtil.getPrePage(request);
         DdScoreInflow ddScoreInflow = ddScoreInflowService.getById(scoreInflowId);
-        return getAutoView().addObject("bizDef",ddScoreInflow)
-                .addObject("returnUrl",returnUrl);
+        return getAutoView().addObject("bizDef", ddScoreInflow)
+                .addObject("returnUrl", returnUrl);
     }
+
     /**
      * 提交编辑个人流水
-     * @param request r
-     * @param response r
-     * @throws Exception e
      */
     @RequestMapping("save")
-    @Action(description="提交编辑个人流水")
+    @Action(description = "提交编辑个人流水")
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
 
-        Long scoreInflowId = RequestUtil.getLong(request,"id");
-        Long scoreInflowUid = RequestUtil.getLong(request,"userId");
-        Integer sourceScore = RequestUtil.getInt(request,"sourceScore");
+        Long scoreInflowId = RequestUtil.getLong(request, "id");
+        Long scoreInflowUid = RequestUtil.getLong(request, "userId");
+        Integer sourceScore = RequestUtil.getInt(request, "sourceScore");
         String sourceType = RequestUtil.getString(request, "sourceType");
-        String sourceDetail = RequestUtil.getString(request,"sourceDetail");
+        String sourceDetail = RequestUtil.getString(request, "sourceDetail");
         Long orgId = RequestUtil.getLong(request, "orgId");
         String orgName = RequestUtil.getString(request, "orgName");
         Long total = RequestUtil.getLong(request, "total");
+        Long resourceId = RequestUtil.getLong(request, "resourceId");
+
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
+
         ddScoreInflow.setId(scoreInflowId);
         ddScoreInflow.setUserId(scoreInflowUid);
         ddScoreInflow.setSourceScore(sourceScore);
@@ -103,11 +103,13 @@ public class ScoreInflowController extends AbstractController {
         ddScoreInflow.setOrgId(orgId);
         ddScoreInflow.setOrgName(orgName);
         ddScoreInflow.setTotal(total);
+        ddScoreInflow.setResourceId(resourceId);
 
         try {
-            ddScoreInflowService.updateOne(ddScoreInflow);
+            ddScoreInflowService.update(ddScoreInflow);
             resultMsg = getText("record.updated", "赚取的积分");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
+
         } catch (Exception e) {
             writeResultMessage(response.getWriter(), resultMsg + "," + e.getMessage(), ResultMessage.Fail);
         }

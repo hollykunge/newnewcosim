@@ -14,21 +14,23 @@ import java.util.List;
 
 @Repository
 public class DdGoldenCoinDao extends BaseDao<DdGoldenCoin> {
+
     @Override
     public Class getEntityClass() {
         return DdGoldenCoin.class;
     }
 
-    public List<DdGoldenCoin> getById(long id) {
-        return this.getBySqlKey("getById", id);
-    }
+    /**
+     * 增加使用add
+     * 删除使用delById
+     * 更新使用update
+     * 查询使用getById, getAll
+     */
 
-
-    public List<DdGoldenCoin> getPersonal(long uid) {
+    /**
+     * 根据用户id获取所有币种
+     */
+    public List<DdGoldenCoin> getPersonal(Long uid) {
         return this.getBySqlKey("getPersonal", uid);
-    }
-
-    public void updateCoin(DdGoldenCoin ddGoldenCoin){
-        this.update(ddGoldenCoin);
     }
 }

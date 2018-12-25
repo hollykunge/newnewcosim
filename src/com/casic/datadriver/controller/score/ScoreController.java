@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -29,6 +28,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/datadriver/coin/")
 public class ScoreController extends AbstractController {
+
     @Autowired
     private DdScoreService ddScoreService;
     @Autowired
@@ -36,67 +36,66 @@ public class ScoreController extends AbstractController {
 
     /**
      * 积分列表
-     * @throws Exception e
      */
     @RequestMapping("list")
-    @Action(description="积分列表")
+    @Action(description = "积分列表")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<DdScore> list=ddScoreService.getAll(new QueryFilter(request,"scoreItem"));
-        return this.getAutoView().addObject("scoreList",list);
+        List<DdScore> list = ddScoreService.getAll(new QueryFilter(request, "scoreItem"));
+        return this.getAutoView().addObject("scoreList", list);
     }
+
     /**
      * 积分批量删除
-     * @throws Exception e
      */
     @RequestMapping("del")
-    @Action(description="积分列表删除")
+    @Action(description = "积分列表删除")
     public void del(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String preUrl = RequestUtil.getPrePage(request);
         ResultMessage message = null;
-        try{
-            Long[] lAryId =RequestUtil.getLongAryByStr(request, "id");
-            ddScoreService.delAll(lAryId);
-            message = new ResultMessage(ResultMessage.Success,"删除成功!");
-        }catch(Exception ex) {
+        try {
+            Long[] lAryId = RequestUtil.getLongAryByStr(request, "id");
+            ddScoreService.delByIds(lAryId);
+            message = new ResultMessage(ResultMessage.Success, "删除成功!");
+        } catch (Exception ex) {
             message = new ResultMessage(ResultMessage.Fail, "删除失败" + ex.getMessage());
         }
         addMessage(message, request);
         response.sendRedirect(preUrl);
     }
+
     /**
      * 积分编辑
-     * @throws Exception e
      */
     @RequestMapping("edit")
-    @Action(description="编辑个人积分")
+    @Action(description = "编辑个人积分")
     public ModelAndView edit(HttpServletRequest request) throws Exception {
-        Long scoreId = RequestUtil.getLong(request,"id");
+        Long scoreId = RequestUtil.getLong(request, "id");
         String returnUrl = RequestUtil.getPrePage(request);
         DdScore ddScore = ddScoreService.getById(scoreId);
         return getAutoView().addObject("bizDef", ddScore)
                 .addObject("returnUrl", returnUrl);
     }
+
     /**
      * 提交编辑
-     * @param request r
-     * @param response r
-     * @throws Exception e
      */
     @RequestMapping("save")
-    @Action(description="提交编辑个人积分")
+    @Action(description = "提交编辑个人积分")
     public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
 
-        Long scoreId = RequestUtil.getLong(request,"id");
-        Long scoreUid = RequestUtil.getLong(request,"userId");
-        String userName = RequestUtil.getString(request,"userName");
+        Long scoreId = RequestUtil.getLong(request, "id");
+        Long scoreUid = RequestUtil.getLong(request, "userId");
+        String userName = RequestUtil.getString(request, "userName");
         Integer scoreTotal = RequestUtil.getInt(request, "scoreTotal");
-        Date crtTime = RequestUtil.getDate(request,"crtTime");
-        String scoreType = RequestUtil.getString(request,"scoreType");
-        String scoreAction = RequestUtil.getString(request,"scoreAction");
-        String orgName = RequestUtil.getString(request,"orgName");
-        Long orgId = RequestUtil.getLong(request,"orgId");
+        Date crtTime = RequestUtil.getDate(request, "crtTime");
+        String scoreType = RequestUtil.getString(request, "scoreType");
+        String scoreAction = RequestUtil.getString(request, "scoreAction");
+        String orgName = RequestUtil.getString(request, "orgName");
+        Long orgId = RequestUtil.getLong(request, "orgId");
+
         DdScore ddScore = new DdScore();
+
         ddScore.setId(scoreId);
         ddScore.setUserId(scoreUid);
         ddScore.setUserName(userName);
@@ -109,7 +108,7 @@ public class ScoreController extends AbstractController {
         ddScore.setOrgId(orgId);
 
         try {
-            ddScoreService.updateOne(ddScore);
+            ddScoreService.update(ddScore);
             resultMsg = getText("record.updated", "积分");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
         } catch (Exception e) {
@@ -117,14 +116,14 @@ public class ScoreController extends AbstractController {
         }
 
     }
+
     /**
      * 积分明细
-     * @throws Exception e
      */
     @RequestMapping("detail")
-    @Action(description="积分明细")
+    @Action(description = "积分明细")
     public ModelAndView detail(HttpServletRequest request) throws Exception {
-        Long scoreId = RequestUtil.getLong(request,"id");
+        Long scoreId = RequestUtil.getLong(request, "id");
         DdScore ddScore = ddScoreService.getById(scoreId);
 
         QueryFilter queryFilter = new QueryFilter(request, "detailItem");

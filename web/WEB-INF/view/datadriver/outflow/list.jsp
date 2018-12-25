@@ -60,7 +60,7 @@
             <display:column property="expendScore" title="消耗积分值" sortable="true" sortName="expend_score" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="sourceType" title="积分类型" sortable="true" sortName="source_type" maxLength="80" style="text-align: center;"></display:column>
             <display:column property="expendDetail" title="积分消耗详情" sortable="true" sortName="expend_detail" maxLength="80" style="text-align: center;"></display:column>
-            <display:column  title="更新时间" sortable="true" sortName="createtime">
+            <display:column  title="更新时间" sortable="true" sortName="udp_time">
                 <fmt:formatDate value="${scoreOutflowItem.udpTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
             </display:column>
             <display:column title="管理" media="html" style="width:260px; text-align: center;">

@@ -1,21 +1,21 @@
 package com.casic.datadriver.service.score;
 
 import com.casic.datadriver.dao.score.DdScoreInflowDao;
-import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.manager.ScoreRegulation;
+import com.casic.datadriver.model.coin.DdScoreInflow;
+import com.casic.datadriver.service.cache.Cache;
 import com.hotent.core.db.IEntityDao;
-import com.hotent.core.service.BaseService;
 import com.hotent.core.web.query.QueryFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import static com.casic.datadriver.manager.ScoreRegulation.CACHE_SCOREINFLOW_PREFIX;
 
 /**
  * @Author: hollykunge
@@ -23,95 +23,185 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 @Service
-public class DdScoreInflowService extends BaseService<DdScoreInflow> implements ApplicationListener<ContextRefreshedEvent> {
+public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
 
-    private static final Map<String, DdScoreInflow> SCORE_INFLOW_LIST_CACHE
-            = new ConcurrentHashMap<String, DdScoreInflow>();
+    private final Log logger = LogFactory.getLog(DdScoreInflowService.class);
 
+    private boolean isUseCache = false;
+
+    @Resource
     private DdScoreInflowDao ddScoreInflowDao;
 
+    @Resource
     private ScoreRegulation scoreRegulation;
 
-    @Autowired
-    public DdScoreInflowService(DdScoreInflowDao ddScoreInflowDao, ScoreRegulation scoreRegulation) {
-        this.ddScoreInflowDao = ddScoreInflowDao;
-        this.scoreRegulation = scoreRegulation;
-    }
+    @Resource
+    private Cache cache;
 
     @Override
     protected IEntityDao<DdScoreInflow, Long> getEntityDao() {
         return this.ddScoreInflowDao;
     }
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        this.initCacheList();
-    }
-
-    private void initCacheList() {
-        //缓存所有数据
-        List<DdScoreInflow> ddScoreInflows = ddScoreInflowDao.getAll();
-        for (DdScoreInflow ddScoreInflow : ddScoreInflows) {
-            initCache(String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceDetail(), ddScoreInflow);
+    /**
+     * 在程序启动时与其他缓存初始化一起调用
+     */
+    public void initScoreInflowCache() {
+        if (isUseCache) {
+            List<DdScoreInflow> ddScoreInflowList = ddScoreInflowDao.getAll();
+            for (DdScoreInflow ddScoreInflow : ddScoreInflowList) {
+                addToCache(ddScoreInflow);
+            }
         }
     }
 
-    private void initCache(String cacheKey, DdScoreInflow ddScoreInflow) {
-        //一般是进行数据库查询，将查询的结果进行缓存
-        SCORE_INFLOW_LIST_CACHE.put(cacheKey, ddScoreInflow);
+    /**
+     * 增加一条流水缓存的私有方法
+     */
+    @SuppressWarnings("unchecked")
+    private void addToCache(DdScoreInflow ddScoreInflow) {
+        Long userId = ddScoreInflow.getUserId();
+        String type = ddScoreInflow.getSourceDetail();
+        String cacheKey = CACHE_SCOREINFLOW_PREFIX + userId + type;
+        List<DdScoreInflow> ddScoreInflows = (List<DdScoreInflow>) cache.getByKey(cacheKey);
+        ddScoreInflows.add(ddScoreInflow);
+        //TODO:在ddScoreInflows取出来不为空的情况下是否会自动更新缓存?
+        cache.add(cacheKey, ddScoreInflows);
     }
 
     /**
-     * 增加
-     *
-     * @param ddScoreInflow DdScoreInflow
+     * 删除一条流水缓存的私有方法
+     */
+    @SuppressWarnings("unchecked")
+    private void deleteFromCache(DdScoreInflow ddScoreInflow) {
+        Long userId = ddScoreInflow.getUserId();
+        String type = ddScoreInflow.getSourceDetail();
+        String cacheKey = CACHE_SCOREINFLOW_PREFIX + userId + type;
+        if (cache.containKey(cacheKey)) {
+            List<DdScoreInflow> ddScoreInflows = (List<DdScoreInflow>) cache.getByKey(cacheKey);
+            for (DdScoreInflow ddScoreInflow1 : ddScoreInflows) {
+                if (ddScoreInflow1.getId().equals(ddScoreInflow.getId())) {
+                    ddScoreInflows.remove(ddScoreInflow1);
+                    //TODO:在ddScoreInflows取出来不为空的情况下是否会自动更新缓存?
+                    cache.add(cacheKey, ddScoreInflows);
+                    return;
+                }
+            }
+            logger.warn("缓存键值中没有该流水 " + cacheKey + ddScoreInflow.getId());
+        } else {
+            logger.warn("缓存中没有该键值 " + cacheKey);
+        }
+    }
+
+    /**
+     * 通过关键字从缓存中获取与之相关的所有输入流水
+     */
+    @SuppressWarnings("unchecked")
+    private List<DdScoreInflow> formCacheReply(String keySection) {
+        List<DdScoreInflow> resultList = new ArrayList<>();
+        List<List<DdScoreInflow>> ddScoreInflowsList =
+                (List<List<DdScoreInflow>>) cache.getByKeySection(CACHE_SCOREINFLOW_PREFIX, keySection);
+        for (List<DdScoreInflow> ddScoreInflows : ddScoreInflowsList) {
+            resultList.addAll(ddScoreInflows);
+        }
+        return resultList;
+    }
+
+    /**
+     * 重写增加
      */
     @Override
     public void add(DdScoreInflow ddScoreInflow) {
-        //写数据库
-        ddScoreInflowDao.addCoin(ddScoreInflow);
+        super.add(ddScoreInflow);
         //写缓存
-        String cacheKey = String.valueOf(ddScoreInflow.getUserId()) + ddScoreInflow.getSourceDetail();
-        initCache(cacheKey, ddScoreInflow);
-    }
-
-    /**
-     * 删除
-     *
-     * @param lAryId id列表
-     */
-    public void delAll(Long[] lAryId) {
-        for (Long id : lAryId) {
-            ddScoreInflowDao.delById(id);
+        if (isUseCache) {
+            addToCache(ddScoreInflow);
         }
     }
 
     /**
-     * 通过id查找
-     *
-     * @param id id
-     * @return DdScoreInflow
+     * 重写删除
      */
-    public DdScoreInflow getById(long id) {
-        return ddScoreInflowDao.getById(id);
+    @Override
+    public void delById(Long id) {
+        if (isUseCache) {
+            //删缓存
+            DdScoreInflow ddScoreInflow = ddScoreInflowDao.getById(id);
+            deleteFromCache(ddScoreInflow);
+        }
+        super.delById(id);
     }
 
     /**
-     * 更改
-     *
-     * @param entity DdScoreInflow
+     * 重写删除一片
      */
-    public void updateOne(DdScoreInflow entity) {
-        ddScoreInflowDao.update(entity);
+    @Override
+    public void delByIds(Long[] ids) {
+        for (Long id : ids) {
+            delById(id);
+        }
     }
 
     /**
-     * 查找所有
+     * 重写更改
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public void update(DdScoreInflow ddScoreInflow) {
+        super.update(ddScoreInflow);
+        if (isUseCache) {
+            //更新缓存
+            Long userId = ddScoreInflow.getUserId();
+            String type = ddScoreInflow.getSourceDetail();
+            String cacheKey = CACHE_SCOREINFLOW_PREFIX + userId + type;
+            List<DdScoreInflow> ddScoreInflows = (List<DdScoreInflow>) cache.getByKey(cacheKey);
+            int index = -1;
+            for (DdScoreInflow entity : ddScoreInflows) {
+                if (entity.getId().equals(ddScoreInflow.getId())) {
+                    index = ddScoreInflows.indexOf(entity);
+                    break;
+                }
+            }
+            if (index < 0) {
+                logger.warn("DdScoreInflow缓存中没有该对象，更新失败 " + ddScoreInflow.getId());
+            } else {
+                ddScoreInflows.set(index, ddScoreInflow);
+                cache.add(cacheKey, ddScoreInflow);
+            }
+        }
+    }
+
+    /**
+     * 重写查找，缓存中没有则在数据库查询
+     * 这个方法尽量少用，因为通过id从缓存索引不高效
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public DdScoreInflow getById(Long id) {
+        if (isUseCache) {
+            List<DdScoreInflow> ddScoreInflows = formCacheReply("");
+            for (DdScoreInflow ddScoreInflow : ddScoreInflows) {
+                if (id.equals(ddScoreInflow.getId())) {
+                    return ddScoreInflow;
+                }
+            }
+            logger.warn("DdScoreInflow缓存中没有该对象，查找失败 " + id);
+        }
+        return super.getById(id);
+    }
+
+
+    /**
+     * 重写查找所有，缓存中没有则在数据库查询
      *
      * @return DdScoreInflow列表
      */
-    public List<DdScoreInflow> getAllScoreInflow() {
-        return ddScoreInflowDao.getAll();
+    @Override
+    public List<DdScoreInflow> getAll() {
+        if (isUseCache) {
+            return formCacheReply("");
+        }
+        return super.getAll();
     }
 
     /**
@@ -121,21 +211,23 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
      * @param sourceDetail 二级类型
      * @return 今日该类型所有流水
      */
-    public List<DdScoreInflow> getTodayScore(Long userId, String sourceDetail) {
-        //联合查询
-        Map<String, String> param = new HashMap<>(2);
-        param.put("userId", String.valueOf(userId));
-        param.put("sourceDetail", sourceDetail);
-        List<DdScoreInflow> ddScoreInflows =
-                ddScoreInflowDao.getList("getTodayDetailScore", param);
-
-        List<DdScoreInflow> todayInflows = new ArrayList<>();
-        for (DdScoreInflow ddScoreInflow : ddScoreInflows) {
-            if (scoreRegulation.isToday(ddScoreInflow.getUpdTime())) {
-                todayInflows.add(ddScoreInflow);
+    @SuppressWarnings("unchecked")
+    public List<DdScoreInflow> getTodayScoreDetail(Long userId, String sourceDetail) {
+        List<DdScoreInflow> ddScoreInflows;
+        if (isUseCache) {
+            String cacheKey = CACHE_SCOREINFLOW_PREFIX + userId + sourceDetail;
+            ddScoreInflows = (List<DdScoreInflow>) cache.getByKey(cacheKey);
+        } else {
+            ddScoreInflows = ddScoreInflowDao.getByUidAndDetail(userId, sourceDetail);
+        }
+        Iterator<DdScoreInflow> it = ddScoreInflows.iterator();
+        while (it.hasNext()) {
+            DdScoreInflow x = it.next();
+            if (!scoreRegulation.isToday(x.getUpdTime())) {
+                it.remove();
             }
         }
-        return todayInflows;
+        return ddScoreInflows;
     }
 
     /**
@@ -146,11 +238,46 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
      * @return DdScoreInflow列表
      */
     public List<DdScoreInflow> getTypeTotalScore(Long userId, String sourceType) {
-        //联合查询
-        Map<String, String> param = new HashMap<>(2);
-        param.put("userId", String.valueOf(userId));
-        param.put("sourceType", sourceType);
-        return ddScoreInflowDao.getList("getTypeTotalScore", param);
+        if (isUseCache) {
+            //把这个list list的单独写一个函数
+            List<DdScoreInflow> ddScoreInflowsUser = formCacheReply(String.valueOf(userId));
+            Iterator<DdScoreInflow> it = ddScoreInflowsUser.iterator();
+            while (it.hasNext()) {
+                DdScoreInflow x = it.next();
+                if (!x.getSourceType().equals(sourceType)) {
+                    it.remove();
+                }
+            }
+            return ddScoreInflowsUser;
+        }
+        return ddScoreInflowDao.getByUidAndType(userId, sourceType);
+    }
+
+    /**
+     * 判断该加分资源是否可用
+     *
+     * @param userId       uid
+     * @param sourceDetail 二级类型
+     * @param resourceId   资源类型，一定有才会进来
+     * @return 是否能加分
+     */
+    @SuppressWarnings("unchecked")
+    public boolean isResourceAvailable(Long userId, String sourceDetail, Long resourceId) {
+        List<DdScoreInflow> ddScoreInflows;
+        if (isUseCache) {
+            String cacheKey = CACHE_SCOREINFLOW_PREFIX + userId + sourceDetail;
+            ddScoreInflows = (List<DdScoreInflow>) cache.getByKey(cacheKey);
+        } else {
+            ddScoreInflows = ddScoreInflowDao.getByUidAndDetail(userId, sourceDetail);
+        }
+        Iterator<DdScoreInflow> it = ddScoreInflows.iterator();
+        while (it.hasNext()) {
+            DdScoreInflow x = it.next();
+            if (resourceId.equals(x.getResourceId())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -169,12 +296,12 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
 
     /**
-     * 分页获取个人的一级类型流水
+     * 分页获取个人的一级类型流水，不支持缓存
      *
      * @param queryFilter {userId："",sourceType: ""}
      * @return DdScoreInflow分页列表
      */
     public List<DdScoreInflow> getByUidAndType(QueryFilter queryFilter) {
-        return ddScoreInflowDao.getBySqlKey("getTypeTotalScore", queryFilter);
+        return ddScoreInflowDao.getByUidAndType(queryFilter);
     }
 }

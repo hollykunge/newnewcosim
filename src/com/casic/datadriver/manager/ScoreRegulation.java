@@ -23,6 +23,13 @@ public class ScoreRegulation {
     public static final int SCORE_LIMIT = 10;
 
     /**
+     * 缓存key头
+     */
+    public static final String CACHE_SCORE_PREFIX = "DdScore_";
+    public static final String CACHE_SCOREINFLOW_PREFIX = "DdScoreInflow_";
+    public static final String CACHE_SCOREOUTFLOW_PREFIX = "DdScoreOutflow_";
+
+    /**
      * 四种币
      */
     public static final String QUAN_JU = "quanju";
@@ -49,17 +56,17 @@ public class ScoreRegulation {
     public static final Integer RANK_NUM = 80;
 
     /**
-     * 抽奖最低分
+     * 抽奖最低分，抽奖规则待定
      */
     public static final Integer LOTTERY_BASE = 200;
 
     /**
-     * 抽奖最少人数
+     * 抽奖最少人数，抽奖规则待定
      */
     public static final Integer LOTTERY_MIN_POOL = 100;
 
     /**
-     * 积分兑币消耗类型
+     * 积分兑币消耗类型，抽奖规则待定
      */
     public static final String MONTH_RANK = "month_rank";
     public static final String MONTH_LOTTERY = "month_lottery";
@@ -146,7 +153,7 @@ public class ScoreRegulation {
     private static final String KNOWLEDGE_8 = "knowledge_8";
 
 
-    //求实10种
+    //求实12种
     /**
      * 登陆并在线，目前弃用
      */
@@ -204,13 +211,19 @@ public class ScoreRegulation {
     /**
      * 工具收到评星
      */
-//    private static final String STORE_2 = "store_2";
+    private static final String STORE_2 = "store_2";
     /**
      * 上传收到评论
      */
-//    private static final String STORE_3 = "store_3";
+    private static final String STORE_3 = "store_3";
 
+    /**
+     * 加分项
+     */
     private ArrayList<String> sourceDetailList = new ArrayList<String>();
+    /**
+     * 封顶项
+     */
     private Map<String, Integer> overflowMap = new HashMap();
 
     public ScoreRegulation() {
@@ -249,10 +262,9 @@ public class ScoreRegulation {
         sourceDetailList.add(TOOL_6);
         //创新
         sourceDetailList.add(STORE_1);
-//        sourceDetailList.add(STORE_2);
-//        sourceDetailList.add(STORE_3);
+        //sourceDetailList.add(STORE_2);
+        //sourceDetailList.add(STORE_3);
 
-        //设置各分项上限
         overflowMap.put(DESIGN_1, 10);
         overflowMap.put(DESIGN_2, 30);
 
@@ -280,7 +292,7 @@ public class ScoreRegulation {
      * @param time time
      */
     public boolean isToday(Date time) {
-        if (time == null){
+        if (time == null) {
             return true;
         }
         //String time = "1988-12-10 11:20:45";
@@ -290,19 +302,8 @@ public class ScoreRegulation {
         LocalDateTime localTime = LocalDateTime.parse(timeDate, dtf);
         LocalDateTime startTime = LocalDate.now().atTime(0, 0, 0);
         LocalDateTime endTime = LocalDate.now().atTime(23, 59, 59);
-        //如果小于今天的开始日期
-//        if (localTime.isBefore(startTime)) {
-//            System.out.println("时间是过去");
-//        }
         //如果大于今天的开始日期，小于今天的结束日期
-        if (localTime.isAfter(startTime) && localTime.isBefore(endTime)) {
-            return true;
-        }
-        //如果大于今天的结束日期
-//        if (localTime.isAfter(endTime)) {
-//            System.out.println("时间是未来");
-//        }
-        return false;
+        return localTime.isAfter(startTime) && localTime.isBefore(endTime);
     }
 
     /**
@@ -332,6 +333,90 @@ public class ScoreRegulation {
      */
     public Boolean dataVerify(String sourceDetail) {
         return sourceDetailList.contains(sourceDetail);
+    }
+
+
+    /**
+     * 通过二级类型获得一级类型
+     *
+     * @param sourceDetail 二级类型
+     * @return 一级类型
+     */
+    public String getSourceByDetail(String sourceDetail) {
+        switch (sourceDetail) {
+            case (DESIGN_1):
+                return QUAN_JU;
+            case (DESIGN_2):
+                return QUAN_JU;
+            case (DESIGN_3):
+                return QUAN_JU;
+            case (DESIGN_4):
+                return QUAN_JU;
+            case (DESIGN_5):
+                return QUAN_JU;
+            case (DESIGN_6):
+                return QUAN_JU;
+            case (DESIGN_7):
+                return QUAN_JU;
+            case (DESIGN_8):
+                return QUAN_JU;
+
+            case (ISSUE_1):
+                return FENG_XIAN;
+            case (ISSUE_2):
+                return FENG_XIAN;
+            case (KNOWLEDGE_1):
+                return FENG_XIAN;
+            case (KNOWLEDGE_2):
+                return FENG_XIAN;
+            case (KNOWLEDGE_3):
+                return FENG_XIAN;
+            case (KNOWLEDGE_4):
+                return FENG_XIAN;
+            case (KNOWLEDGE_5):
+                return FENG_XIAN;
+            case (KNOWLEDGE_6):
+                return FENG_XIAN;
+            case (KNOWLEDGE_7):
+                return FENG_XIAN;
+            case (KNOWLEDGE_8):
+                return FENG_XIAN;
+
+            case (TALK_1):
+                return QIU_SHI;
+            case (TALK_2):
+                return QIU_SHI;
+            case (TALK_3):
+                return QIU_SHI;
+            case (SEARCH_1):
+                return QIU_SHI;
+            case (SEARCH_2):
+                return QIU_SHI;
+            case (SEARCH_3):
+                return QIU_SHI;
+            case (TOOL_1):
+                return QIU_SHI;
+            case (TOOL_2):
+                return QIU_SHI;
+            case (TOOL_3):
+                return QIU_SHI;
+            case (TOOL_4):
+                return QIU_SHI;
+            case (TOOL_5):
+                return QIU_SHI;
+            case (TOOL_6):
+                return QIU_SHI;
+
+            case (STORE_1):
+                return CHUANG_XIN;
+            case (STORE_2):
+                return CHUANG_XIN;
+            case (STORE_3):
+                return CHUANG_XIN;
+
+            default:
+                return null;
+        }
     }
 }
 
