@@ -77,7 +77,6 @@ public class CoinController extends GenericController {
      * @param sourceType   一级类型
      * @param sourceDetail 二级类型
      * @param updTime      更新时间
-     * @param resourceId   资源id
      */
     @RequestMapping("add")
     @ResponseBody
@@ -86,7 +85,6 @@ public class CoinController extends GenericController {
                     String sourceType,
                     String sourceDetail,
                     String updTime,
-                    Long resourceId,
                     HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         try {
@@ -96,7 +94,6 @@ public class CoinController extends GenericController {
             addScoreModel.setSourceType(sourceType);
             addScoreModel.setSourceDetail(sourceDetail);
             addScoreModel.setUpdTime(new Date());
-            addScoreModel.setResourceId(resourceId);
             resultMsg = coinService.addScore(addScoreModel);
 
             JSONObject jsonObject = new JSONObject();
