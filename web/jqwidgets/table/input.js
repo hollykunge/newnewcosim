@@ -13,7 +13,7 @@ function getHeight() {
     return $(window).height() - $('.nav-tabs').outerHeight(true) - 100;
 }
 
-function inputTableInit(path, taskId, type) {
+function inputTableInit(path, taskId, type, projectId) {
     var isView = false;
     if (type == 1) {
         isView = true;
@@ -215,7 +215,7 @@ function inputTableInit(path, taskId, type) {
                                 rowsDataIds.push(selection[i].dataId);
                             }
                         }
-                        $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=orderpanel" + "&taskId=" + taskId, function (data, status) {
+                        $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=orderpanel" + "&taskId=" + taskId + "&projectId=" + projectId, function (data, status) {
                             if (status == 'success') {
                                 // window.location.reload();
                                 $('#treeGridIn').jqxTreeGrid('updateBoundData');
@@ -235,7 +235,7 @@ function inputTableInit(path, taskId, type) {
                                 rowsDataIds.push(selection[i].dataId);
                             }
                         }
-                        $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=canorderpanel" + "&taskId=" + taskId, function (data, status) {
+                        $.get("canOrderToOrder.ht?dataIds=" + rowsDataIds + "&parent=canorderpanel" + "&taskId=" + taskId + "&projectId=" + projectId, function (data, status) {
                             if (status == 'success') {
                                 $('#treeGridIn').jqxTreeGrid('updateBoundData');
                             }

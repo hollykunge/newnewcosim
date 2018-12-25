@@ -1,5 +1,7 @@
 package com.casic.datadriver.service.cache;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 缓存操作接口
  *
@@ -7,7 +9,7 @@ package com.casic.datadriver.service.cache;
  * @Date: 2018/12/20
  */
 
-public interface ICache {
+public interface Cache {
     /**
      * 添加缓存
      *

@@ -4,7 +4,7 @@ import com.casic.datadriver.dao.score.DdGamblerDao;
 import com.casic.datadriver.model.coin.DdGambler;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.RankModel;
-import com.casic.datadriver.service.cache.ICache;
+import com.casic.datadriver.service.cache.Cache;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.dao.system.SysUserDao;
@@ -52,7 +52,7 @@ public class DdGamblerService extends AbstractService<DdGambler, Long> {
     private SysUserDao sysUserDao;
 
     @Resource
-    private ICache iCache;
+    private Cache cache;
 
     @Override
     protected IEntityDao<DdGambler, Long> getEntityDao() {

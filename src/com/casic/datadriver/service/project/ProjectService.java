@@ -214,16 +214,16 @@ public class ProjectService extends BaseService<Project> {
         DdScoreInflow ddScoreInflow = new DdScoreInflow();
         ddScoreInflow.setSourceScore(50);
         ddScoreInflow.setSourceDetail("design_5");
-        coinAspect.setData(ddScoreInflow);
+        coinAspect.setData(50,"design_5",0L);
         return true;
     }
 
-    public void addScore(String account,Long uid){
-        DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(30);
-        ddScoreInflow.setSourceDetail("design_4");
-        ddScoreInflow.setUserId(uid);
-        ACCOUNTMGB = account;
-        coinAspect.setData(ddScoreInflow);
-    }
+//    public void addScore(String account,Long uid){
+//        DdScoreInflow ddScoreInflow = new DdScoreInflow();
+//        ddScoreInflow.setSourceScore(30);
+//        ddScoreInflow.setSourceDetail("design_4");
+//        ddScoreInflow.setUserId(uid);
+//        ACCOUNTMGB = account;
+//        coinAspect.setData(ddScoreInflow);
+//    }
 }
