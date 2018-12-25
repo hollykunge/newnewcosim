@@ -46,6 +46,12 @@
         FROM dd_score_inflow
         WHERE user_id=#{userId} AND source_type=#{sourceType}
     </select>
+    <select id="getOrgTotalScore" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM dd_score_inflow
+        WHERE org_id=#{orgId} AND source_type=#{sourceType}
+    </select>
     <!--<select id="getAll" resultMap="BaseResultMap">-->
         <!--SELECT <include refid="columns"/>-->
         <!--FROM dd_score_inflow ddsin-->
@@ -83,6 +89,7 @@
         WHERE
         id=#{id}
     </select>
+
     <update id="update" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
         UPDATE dd_score_inflow
         <set>

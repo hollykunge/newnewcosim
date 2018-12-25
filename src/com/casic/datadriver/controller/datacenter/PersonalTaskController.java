@@ -241,7 +241,7 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("showorder")
-    @Action(description = "显示订阅和已订阅")
+    @Action(description = "显示可订阅和已订阅")
     public ModelAndView showorder(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
         Integer type = RequestUtil.getInt(request, "type");

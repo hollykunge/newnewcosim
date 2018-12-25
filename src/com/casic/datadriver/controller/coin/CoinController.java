@@ -1,7 +1,9 @@
 package com.casic.datadriver.controller.coin;
 
 import com.alibaba.fastjson.JSON;
+import com.casic.datadriver.manager.ScoreRegulation;
 import com.casic.datadriver.model.coin.AddScoreModel;
+import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.coin.RankModel;
 import com.casic.datadriver.model.data.OrderDataRelation;
 import com.casic.datadriver.model.data.PrivateData;
@@ -11,6 +13,7 @@ import com.casic.datadriver.service.coin.CoinService;
 import com.casic.datadriver.service.data.OrderDataRelationService;
 import com.casic.datadriver.service.data.PrivateDataService;
 import com.casic.datadriver.service.project.ProjectService;
+import com.casic.datadriver.service.score.DdScoreInflowService;
 import com.casic.datadriver.service.task.TaskInfoService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.web.controller.GenericController;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -55,6 +59,9 @@ public class CoinController extends GenericController {
 
     @Autowired
     private OrderDataRelationService orderDataRelationService;
+
+    @Autowired
+    private DdScoreInflowService ddScoreInflowService;
 
     /**
      * 赚取积分接口，参数不能改
@@ -171,30 +178,105 @@ public class CoinController extends GenericController {
     @RequestMapping("task")
     @ResponseBody
     public void taskanddata(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        JSONArray jsonR = null;
+        ISysUser sysUser = sysUserService.getByAccount(uid);
+        Double quanjuSum = 0.0d;
+        Double fengxianSum = 0.0d;
+        Double qiushiSum = 0.0d;
+        Double chuangxinSum = 0.0d;
+
+        Double quanjuOrgSum = 0.0d;
+        Double fengxianOrgSum = 0.0d;
+        Double qiushiOrgSum = 0.0d;
+        Double chuangxinOrgSum = 0.0d;
+
+        DecimalFormat df = new DecimalFormat("0.0000");
         try {
-            ISysUser sysUser = sysUserService.getByAccount(uid);
             Long userId = sysUser.getUserId();
             if (userId != null && userId != 0) {
                 List<Project> projectList = projectService.queryProjectBasicInfoList(userId);
                 List<TaskInfo> taskListR = taskInfoService.getListByResponceId(userId);
                 List<PrivateData> privateDataList = privateDataService.getDataByUserId(userId);
-                Integer pubNum = 0;
-                for (TaskInfo taskInfo : taskListR) {
-                    List<OrderDataRelation> orderDataRelations = orderDataRelationService.getOrderDataRelationList(taskInfo.getDdTaskId());
-                    pubNum = +orderDataRelations.size();
+                Integer projectTotal = projectService.getAll().size();
+                Integer taskTotal = taskInfoService.getAll().size();
+                Integer dataTotal = privateDataService.getAll().size();
+
+                //个人积分总和
+                List<DdScoreInflow> quanjuInflows =
+                        ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QUAN_JU);
+                for (DdScoreInflow ddScoreInflow : quanjuInflows) {
+                    quanjuSum += ddScoreInflow.getSourceScore();
                 }
+                List<DdScoreInflow> fengxianInflows =
+                        ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.FENG_XIAN);
+                for (DdScoreInflow ddScoreInflow : fengxianInflows) {
+                    fengxianSum += ddScoreInflow.getSourceScore();
+                }
+                List<DdScoreInflow> qiushiInflows =
+                        ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.QIU_SHI);
+                for (DdScoreInflow ddScoreInflow : qiushiInflows) {
+                    qiushiSum += ddScoreInflow.getSourceScore();
+                }
+                List<DdScoreInflow> chuangxinInflows =
+                        ddScoreInflowService.getTypeTotalScore(userId, ScoreRegulation.CHUANG_XIN);
+                for (DdScoreInflow ddScoreInflow : chuangxinInflows) {
+                    chuangxinSum += ddScoreInflow.getSourceScore();
+                }
+
+                //所在研究室积分总和
+                List<DdScoreInflow> quanjuOrg =
+                        ddScoreInflowService.getOrgTotalScore(sysUser.getOrgId(), ScoreRegulation.QUAN_JU);
+                for (DdScoreInflow ddScoreInflow : quanjuOrg) {
+                    quanjuOrgSum += ddScoreInflow.getSourceScore();
+                }
+                List<DdScoreInflow> fengxianOrg =
+                        ddScoreInflowService.getOrgTotalScore(sysUser.getOrgId(), ScoreRegulation.FENG_XIAN);
+                for (DdScoreInflow ddScoreInflow : fengxianOrg) {
+                    fengxianOrgSum += ddScoreInflow.getSourceScore();
+                }
+                List<DdScoreInflow> qiushiOrg =
+                        ddScoreInflowService.getOrgTotalScore(sysUser.getOrgId(), ScoreRegulation.QIU_SHI);
+                for (DdScoreInflow ddScoreInflow : qiushiOrg) {
+                    qiushiOrgSum += ddScoreInflow.getSourceScore();
+                }
+                List<DdScoreInflow> chuangxinOrg =
+                        ddScoreInflowService.getOrgTotalScore(sysUser.getOrgId(), ScoreRegulation.CHUANG_XIN);
+                for (DdScoreInflow ddScoreInflow : chuangxinOrg) {
+                    chuangxinOrgSum += ddScoreInflow.getSourceScore();
+                }
+//                Integer orderNum = 0;
+//                for (TaskInfo taskInfo : taskListR) {
+//                    List<OrderDataRelation> orderDataRelations = orderDataRelationService.getOrderDataRelationList(taskInfo.getDdTaskId());
+//                    orderNum = +orderDataRelations.size();
+//                }
 
                 Integer projectNum = projectList.size();
                 Integer taskNum = taskListR.size();
-                Integer dataNum = privateDataList.size();
+                Integer pubNum = privateDataList.size();
 
-                HashMap<String, Object> temp = new HashMap<String, Object>();
-                temp.put("projectNum", projectNum);
-                temp.put("taskNum", taskNum);
-                temp.put("dataNum", dataNum);
-                temp.put("pubNum", pubNum);
-                String jsonString = JSON.toJSONString(temp);
+                HashMap<String, Object> tempRadar = new HashMap<String, Object>();
+                HashMap<String, Object> tempContribution = new HashMap<String, Object>();
+                HashMap<String, Object> tempMy2018 = new HashMap<String, Object>();
+
+                double taskRadar = (double)projectNum/projectTotal*0.6+(double)taskNum/taskTotal*0.4;
+                double dataRadar = (double)pubNum/dataTotal;
+
+                tempRadar.put("taskRadar", df.format(taskRadar));
+                tempRadar.put("dataRadar", df.format(dataRadar));
+
+                tempContribution.put("quanju", df.format((double)quanjuSum/quanjuOrgSum));
+                tempContribution.put("fengxian", df.format((double)fengxianSum/fengxianOrgSum));
+                tempContribution.put("qiushi", df.format((double)qiushiSum/qiushiOrgSum));
+                tempContribution.put("chuangxin", df.format((double)chuangxinSum/chuangxinOrgSum));
+
+                tempMy2018.put("project", projectNum);
+                tempMy2018.put("task", taskNum);
+
+                HashMap<String, Object> temp1 = new HashMap<>();
+                temp1.put("radarDT", tempRadar);
+                temp1.put("contribution", tempContribution);
+                temp1.put("my2018", tempMy2018);
+
+                String jsonString = JSON.toJSONString(temp1);
                 response.getWriter().write(jsonString);
             }
         } catch (Exception e) {

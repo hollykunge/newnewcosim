@@ -116,7 +116,7 @@
 </div>
 <%--任务详细--%>
 <div class="modal fade" id="taskdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="overflow: auto" id="taskdetailcontent">
 
         </div>
@@ -198,14 +198,6 @@
             $('#task').html(data);
         });
     });
-    //关闭任务详情模态框
-    //    $("#addindex1").on("hidden.bs.modal", function() {
-    //        $(this).removeData("bs.modal");
-    //    });
-    //关闭统计模态框
-//    $("#statis").on("hidden.bs.modal", function () {
-//        $(this).removeData("bs.modal");
-//    });
     switch_attr_index.onclick = function () {
         $("#create_task").hide();
         $("#indexDataFormSave").show();

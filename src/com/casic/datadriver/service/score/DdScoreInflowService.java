@@ -154,6 +154,21 @@ public class DdScoreInflowService extends BaseService<DdScoreInflow> implements 
     }
 
     /**
+     * 获取个人所在组织流水
+     *
+     * @param ogrId     ogrId
+     * @param sourceType 一级类型
+     * @return DdScoreInflow列表
+     */
+    public List<DdScoreInflow> getOrgTotalScore(Long ogrId, String sourceType) {
+        //联合查询
+        Map<String, String> param = new HashMap<>(2);
+        param.put("orgId", String.valueOf(ogrId));
+        param.put("sourceType", sourceType);
+        return ddScoreInflowDao.getList("getOrgTotalScore", param);
+    }
+
+    /**
      * 分页获取个人的一级类型流水
      *
      * @param queryFilter {userId："",sourceType: ""}
