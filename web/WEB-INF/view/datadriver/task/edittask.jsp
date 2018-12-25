@@ -41,169 +41,190 @@
     <h4 class="modal-title" id="exampleModalLabel">任务详情</h4>
 </div>
 <div class="modal-body">
-    <%--<ul class="nav nav-tabs" role="tablist" id="myTab">--%>
-    <%--<li role="presentation" class="active reponav-item" id="switch_attr_publish"><a href="#data"--%>
-    <%--data-toggle="tab"--%>
-    <%--role="tab"><span--%>
-    <%--class="glyphicon glyphicon-log-out"></span> 任务编辑</a>--%>
-    <%--</li>--%>
-    <%--<li role="presentation" class="reponav-item" id="switch_attr_order"><a href="#publish" data-toggle="tab"--%>
-    <%--role="tab"><span--%>
-    <%--class="glyphicon glyphicon-log-in"></span> 任务活动</a>--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <form id="taskInfoForm" name="taskInfoForm" method="post" action="${ctx}/datadriver/task/save.ht"
-          class="form-horizontal">
-        <table id="AddHandlingFee" class="table" cellpadding="0" cellspacing="0"
-               border="0"
-               type="main">
-            <tr>
-                <th width="20%">任务名称:</th>
-                <td>
-                    <input name="ddTaskName" type="text" class="col-md-9 form-control" id="task-name"
-                           value="${TaskInfo.ddTaskName}">
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">项目名称:</th>
-                <td>
-                    <input name="ddTaskProjectName" type="text" class="col-md-9 form-control" id="project-name"
-                           value="${TaskInfo.ddTaskProjectName}"
-                           readonly>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">优先级:</th>
-                <td>
-                    <select id="ddTaskPriority" name="ddTaskPriority" class="form-control">
-                        <option value="1"
-                                <c:if test="${TaskInfo.ddTaskPriority == 1}">selected="selected"</c:if>><span
-                                class="label label-primary">一般</span></option>
-                        <option value="2"
-                                <c:if test="${TaskInfo.ddTaskPriority == 2}">selected="selected"</c:if>><span
-                                class="label label-warning">重要</span></option>
-                        <option value="3"
-                                <c:if test="${TaskInfo.ddTaskPriority == 3}">selected="selected"</c:if>><span
-                                class="label label-danger">紧急</span></option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">计划开始时间:</th>
-                <td>
-                    <input name="ddTaskPlanStartTime" class="form-control" id="plan-start" size="16" type="text"
-                           value="${TaskInfo.ddTaskPlanStartTime}" readonly>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">计划完成时间:</th>
-                <td>
-                    <input name="ddTaskPlanEndTime" class="form-control" id="plan-end" size="16" type="text"
-                           value="${TaskInfo.ddTaskPlanEndTime}" readonly>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">里程碑:</th>
-                <td>
-                    <div class="radio radio-info radio-inline">
-                        <input type="radio" name="ddTaskMilestone" id="ddTaskMilestone1" value="1"
-                               <c:if test="${TaskInfo.ddTaskMilestone == 1}">checked</c:if>>
-                        <label for="ddTaskMilestone1">
-                            是
-                        </label>
-                    </div>
-                    <div class="radio radio-info radio-inline">
-                        <input type="radio" name="ddTaskMilestone" id="ddTaskMilestone0" value="0"
-                               <c:if test="${TaskInfo.ddTaskMilestone == 0}">checked</c:if>>
-                        <label for="ddTaskMilestone0">
-                            否
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">密级:</th>
-                <td>
-                    <input type="text" id="task-secret" name="ddProjectSecretLevel"
-                            <c:choose>
-                                <c:when test="${TaskInfo.ddSecretLevel == 'fm'}">value="非密"</c:when>
-                                <c:when test="${TaskInfo.ddSecretLevel == 'mm'}">value="秘密"</c:when>
-                                <c:when test="${TaskInfo.ddSecretLevel == 'jm'}">value="机密"</c:when>
-                                <c:when test="${TaskInfo.ddSecretLevel == 'nb'}">value="内部"</c:when>
-                                <c:otherwise>value="非密"</c:otherwise>
-                            </c:choose>
-                           class="form-control" readonly/>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">负责人:</th>
-                <td>
-                    <select class="selectpicker show-tick form-control"
-                            noneResultsText="无匹配项"
-                            data-live-search="true" id="select-first"
-                            data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${TaskInfo.ddTaskProjectId}"
-                            validate="{required:true}">
-                        <c:forEach var="orgItem" items="${sysOrgList}">
-                            <option value="${orgItem.orgId}"
-                                    <c:if test="${taskUser.orgName == orgItem.orgName}">selected="selected"</c:if>>${orgItem.orgName}</option>
-                        </c:forEach>
-                    </select>
+    <div class="col-xs-2">
+        <ul class="nav nav-pills nav-stacked" role="tablist" id="myTab">
+            <li role="presentation" class="active" id="switch_attr_edit"><a href="#edit" role="tab"
+                                                                            data-toggle="tab">任务编辑</a></li>
+            <li role="presentation" id="switch_attr_act"><a href="#act" role="tab" data-toggle="tab">任务活动</a></li>
+            <li role="presentation" id="switch_attr_order"><a href="#order" role="tab" data-toggle="tab">订阅数据</a></li>
+            <li role="presentation" id="switch_attr_pub"><a href="#pub" role="tab" data-toggle="tab">发布数据</a></li>
 
-                    <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control"
-                            noneResultsText="无匹配项"
-                            data-live-search="true" id="select-second" validate="{required:true}"
-                            data-max-options="1"
-                            title="请选择...">
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">任务类型:</th>
-                <td>
+        </ul>
+    </div>
+    <div class="col-xs-10">
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="edit">
+                <form id="taskInfoForm" name="taskInfoForm" method="post" action="${ctx}/datadriver/task/save.ht"
+                      class="form-horizontal">
+                    <table id="AddHandlingFee" class="table" cellpadding="0" cellspacing="0"
+                           border="0"
+                           type="main">
+                        <tr>
+                            <th width="20%">任务名称:</th>
+                            <td>
+                                <input name="ddTaskName" type="text" class="col-md-9 form-control" id="task-name"
+                                       value="${TaskInfo.ddTaskName}">
+                            </td>
+                        </tr>
+                        <tr style="display: none">
+                            <th width="20%">项目名称:</th>
+                            <td>
+                                <input name="ddTaskProjectName" type="text" class="col-md-9 form-control"
+                                       id="project-name"
+                                       value="${TaskInfo.ddTaskProjectName}"
+                                       readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">优先级:</th>
+                            <td>
+                                <select id="ddTaskPriority" name="ddTaskPriority" class="form-control">
+                                    <option value="1"
+                                            <c:if test="${TaskInfo.ddTaskPriority == 1}">selected="selected"</c:if>><span
+                                            class="label label-primary">一般</span></option>
+                                    <option value="2"
+                                            <c:if test="${TaskInfo.ddTaskPriority == 2}">selected="selected"</c:if>><span
+                                            class="label label-warning">重要</span></option>
+                                    <option value="3"
+                                            <c:if test="${TaskInfo.ddTaskPriority == 3}">selected="selected"</c:if>><span
+                                            class="label label-danger">紧急</span></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">计划开始时间:</th>
+                            <td>
+                                <input name="ddTaskPlanStartTime" class="form-control" id="plan-start" size="16"
+                                       type="text"
+                                       value="${TaskInfo.ddTaskPlanStartTime}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">计划完成时间:</th>
+                            <td>
+                                <input name="ddTaskPlanEndTime" class="form-control" id="plan-end" size="16"
+                                       type="text"
+                                       value="${TaskInfo.ddTaskPlanEndTime}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">里程碑:</th>
+                            <td>
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" name="ddTaskMilestone" id="ddTaskMilestone1" value="1"
+                                           <c:if test="${TaskInfo.ddTaskMilestone == 1}">checked</c:if>>
+                                    <label for="ddTaskMilestone1">
+                                        是
+                                    </label>
+                                </div>
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" name="ddTaskMilestone" id="ddTaskMilestone0" value="0"
+                                           <c:if test="${TaskInfo.ddTaskMilestone == 0}">checked</c:if>>
+                                    <label for="ddTaskMilestone0">
+                                        否
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">密级:</th>
+                            <td>
+                                <input type="text" id="task-secret" name="ddProjectSecretLevel"
+                                        <c:choose>
+                                            <c:when test="${TaskInfo.ddSecretLevel == 'fm'}">value="非密"</c:when>
+                                            <c:when test="${TaskInfo.ddSecretLevel == 'mm'}">value="秘密"</c:when>
+                                            <c:when test="${TaskInfo.ddSecretLevel == 'jm'}">value="机密"</c:when>
+                                            <c:when test="${TaskInfo.ddSecretLevel == 'nb'}">value="内部"</c:when>
+                                            <c:otherwise>value="非密"</c:otherwise>
+                                        </c:choose>
+                                       class="form-control" readonly/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">负责人:</th>
+                            <td>
+                                <select class="selectpicker show-tick form-control"
+                                        noneResultsText="无匹配项"
+                                        data-live-search="true" id="select-first"
+                                        data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${TaskInfo.ddTaskProjectId}"
+                                        validate="{required:true}">
+                                    <c:forEach var="orgItem" items="${sysOrgList}">
+                                        <option value="${orgItem.orgId}"
+                                                <c:if test="${taskUser.orgName == orgItem.orgName}">selected="selected"</c:if>>${orgItem.orgName}</option>
+                                    </c:forEach>
+                                </select>
 
-                    <input type="text" name="ddTaskType"
-                           value="${TaskInfo.ddTaskType}" class="form-control"/>
-                </td>
-            </tr>
-            <tr>
-                <th width="20%">任务描述:</th>
-                <td>
-                    <textarea class="form-control" name="ddTaskDescription">${TaskInfo.ddTaskDescription}</textarea>
-                </td>
-            </tr>
-            <tr>
-                <input type="hidden" id="ddTaskId" name="ddTaskId" value="${TaskInfo.ddTaskId}"/>
-                <input type="hidden" id="ddTaskChildType" name="ddTaskChildType" value="${TaskInfo.ddTaskChildType}"/>
-                <input type="hidden" id="ddTaskState" name="ddTaskState" value="${TaskInfo.ddTaskState}"/>
-                <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId" value="${TaskInfo.ddTaskProjectId}"/>
-                <input type="hidden" id="ddTaskPerson" name="ddTaskPerson" value="${TaskInfo.ddTaskPerson}"/>
-                <input type="hidden" id="ddTaskResponsiblePerson" name="ddTaskResponsiblePerson" value="${TaskInfo.ddTaskResponsiblePerson}"/>
-                <input type="hidden" id="ddSecretLevel" name="ddSecretLevel"
-                       value="${TaskInfo.ddSecretLevel}"/>
-                <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId"
-                       value="${TaskInfo.ddTaskCreatorId}"/>
-            </tr>
-        </table>
-    </form>
-</div>
-<div class="modal-footer">
-    <c:choose>
-        <c:when test="${TaskInfo.ddTaskChildType=='createpanel'}">
-            <a type="button" class="btn btn-danger" href="${ctx}/datadriver/task/del.ht?id=${TaskInfo.ddTaskId}"><span
-                    class="glyphicon glyphicon-trash"
-                    aria-hidden="true"></span> 删除</a>
-            <button id="dataFormSave" type="button" class="btn btn-success"><span
-                    class="glyphicon glyphicon-floppy-saved"
-                    aria-hidden="true"></span> 保存
-            </button>
-        </c:when>
-        <c:when test="${TaskInfo.ddTaskChildType=='checkpanel'}">
-            <a type="button" class="btn btn-default" id="reback" href="javascript:void(0)"><span
-                    class="glyphicon glyphicon-repeat"></span> 退回</a>
-        </c:when>
-        <c:otherwise>
-        </c:otherwise>
-    </c:choose>
+                                <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control"
+                                        noneResultsText="无匹配项"
+                                        data-live-search="true" id="select-second" validate="{required:true}"
+                                        data-max-options="1"
+                                        title="请选择...">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">任务类型:</th>
+                            <td>
+
+                                <input type="text" name="ddTaskType"
+                                       value="${TaskInfo.ddTaskType}" class="form-control"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">任务描述:</th>
+                            <td>
+                                    <textarea class="form-control"
+                                              name="ddTaskDescription">${TaskInfo.ddTaskDescription}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <input type="hidden" id="ddTaskId" name="ddTaskId" value="${TaskInfo.ddTaskId}"/>
+                            <input type="hidden" id="ddTaskChildType" name="ddTaskChildType"
+                                   value="${TaskInfo.ddTaskChildType}"/>
+                            <input type="hidden" id="ddTaskState" name="ddTaskState"
+                                   value="${TaskInfo.ddTaskState}"/>
+                            <input type="hidden" id="ddTaskProjectId" name="ddTaskProjectId"
+                                   value="${TaskInfo.ddTaskProjectId}"/>
+                            <input type="hidden" id="ddTaskPerson" name="ddTaskPerson"
+                                   value="${TaskInfo.ddTaskPerson}"/>
+                            <input type="hidden" id="ddTaskResponsiblePerson" name="ddTaskResponsiblePerson"
+                                   value="${TaskInfo.ddTaskResponsiblePerson}"/>
+                            <input type="hidden" id="ddSecretLevel" name="ddSecretLevel"
+                                   value="${TaskInfo.ddSecretLevel}"/>
+                            <input type="hidden" id="ddTaskCreatorId" name="ddTaskCreatorId"
+                                   value="${TaskInfo.ddTaskCreatorId}"/>
+                        </tr>
+                    </table>
+                </form>
+                <div class="col-xs-offset-3 col-xs-9">
+                    <c:choose>
+                        <c:when test="${TaskInfo.ddTaskChildType=='createpanel'}">
+                            <a type="button" class="btn btn-danger"
+                               href="${ctx}/datadriver/task/del.ht?id=${TaskInfo.ddTaskId}"><span
+                                    class="glyphicon glyphicon-trash"
+                                    aria-hidden="true"></span> 删除</a>
+                            <button id="dataFormSave" type="button" class="btn btn-success"><span
+                                    class="glyphicon glyphicon-floppy-saved"
+                                    aria-hidden="true"></span> 保存
+                            </button>
+                        </c:when>
+                        <c:when test="${TaskInfo.ddTaskChildType=='checkpanel'}">
+                            <a type="button" class="btn btn-default" id="reback" href="javascript:void(0)"><span
+                                    class="glyphicon glyphicon-repeat"></span> 退回</a>
+                        </c:when>
+                        <c:otherwise>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane board-scrum-view" id="act" style="height: 100%">
+            </div>
+            <div role="tabpanel" class="tab-pane board-scrum-view" id="order" style="height: 100%">
+            </div>
+            <div role="tabpanel" class="tab-pane board-scrum-view" id="pub" style="height: 100%">
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 
@@ -248,9 +269,29 @@
             error: function () {
                 console.log("请求当前组织的用户失败！" + "edittask.js");
             }
-
         });
     });
+
+    //活动
+    $("#switch_attr_act").onclick = function () {
+        <%--$.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {--%>
+        <%--$('#act').html(data);--%>
+        <%--});--%>
+    }
+
+    //订阅
+    $("#switch_attr_order").onclick = function () {
+        $.get("${ctx}/datadriver/project/order.ht?taskId=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
+            $('#order').html(data);
+        });
+    }
+
+    //发布
+    $("#switch_attr_pub").onclick = function () {
+        $.get("${ctx}/datadriver/project/publish.ht?taskId=${TaskInfo.ddTaskId}", function (data) {
+            $('#pub').html(data);
+        });
+    }
 
     $("#reback").click(function () {
         $.get("${ctx}/datadriver/personaltask/recovertask.ht?id=${TaskInfo.ddTaskId}", function (data) {

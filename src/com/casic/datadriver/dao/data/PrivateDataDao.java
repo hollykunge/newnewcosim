@@ -41,12 +41,6 @@ public class PrivateDataDao extends BaseDao<PrivateData> {
         this.add(privateData);
     }
 
-    /**
-     * 获取所有数据
-     */
-    public List<PrivateData> getAll() {
-        return this.getAll();
-    }
 
     /**
      * 根据数据ID获取数据

@@ -11,9 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.casic.datadriver.manager.ScoreRegulation.CACHE_SCOREINFLOW_PREFIX;
 
@@ -278,6 +276,21 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
             }
         }
         return true;
+    }
+
+    /**
+     * 获取个人所在组织流水
+     *
+     * @param ogrId     ogrId
+     * @param sourceType 一级类型
+     * @return DdScoreInflow列表
+     */
+    public List<DdScoreInflow> getOrgTotalScore(Long ogrId, String sourceType) {
+        //联合查询
+        Map<String, String> param = new HashMap<>(2);
+        param.put("orgId", String.valueOf(ogrId));
+        param.put("sourceType", sourceType);
+        return ddScoreInflowDao.getList("getOrgTotalScore", param);
     }
 
     /**
