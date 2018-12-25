@@ -61,15 +61,7 @@ public class ProjectController extends BaseController {
      * The project service.
      */
     @Resource
-    private TaskInfoController taskInfoController;
-    @Resource
-    private ResourcesService resourcesService;
-    @Resource
-    private SubSystemService subSystemService;
-    @Resource
     private ProjectService projectService;
-    @Resource
-    private ProjectStartService projectStartService;
     @Resource
     private TaskInfoService taskInfoService;
     @Resource
@@ -80,8 +72,6 @@ public class ProjectController extends BaseController {
     private ProjectProcessAssociaService projectProcessAssociaService;
     @Resource
     private ProcessFlowService processFlowService;
-    @Resource
-    private OrderDataRelationService orderDataRelationService;
     @Resource
     private PrivateDataService privateDataService;
     @Resource
@@ -720,4 +710,44 @@ public class ProjectController extends BaseController {
         return mv;
     }
 
+    /**
+     * 任务中的订阅情况
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the list
+     * @throws Exception the exception
+     */
+    @RequestMapping("order")
+    @Action(description = "订阅情况")
+    public void order(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long taskId = RequestUtil.getLong(request, "taskId");
+        Long projectId = RequestUtil.getLong(request, "projectId");
+        String jsonString = privateDataService.getInputDataByTaskId(projectId, taskId, true);
+        PrintWriter out = response.getWriter();
+        out.append(jsonString);
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 任务中的发布情况
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the list
+     * @throws Exception the exception
+     */
+    @RequestMapping("publish")
+    @Action(description = "发布情况")
+    public void publish(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long taskId = RequestUtil.getLong(request, "taskId");
+        String jsonString = privateDataService.getOutputDataByTaskId(taskId, true);
+        PrintWriter out = response.getWriter();
+        out.append(jsonString);
+        out.flush();
+        out.close();
+    }
 }

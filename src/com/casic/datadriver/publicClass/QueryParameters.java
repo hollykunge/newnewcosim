@@ -18,6 +18,20 @@ public class QueryParameters {
 
     private String backupsS;
 
+    public Long getBackupsL() {
+        return backupsL;
+    }
+
+    public Boolean getBackup() {
+        return isBackup;
+    }
+
+    public void setBackup(Boolean backup) {
+        isBackup = backup;
+    }
+
+    private Boolean isBackup;
+
     public Long getBackupsL(int i) {
         return backupsL;
     }

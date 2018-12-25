@@ -65,12 +65,6 @@ public class PrivateDataService extends BaseService<PrivateData> {
         privateDataDao.addSingleData(privateData);
     }
 
-    /**
-     * 获取所有数据
-     */
-    public List<PrivateData> getAll() {
-        return privateDataDao.getAll();
-    }
 
     /**
      * 获取任务私有数据
@@ -153,10 +147,17 @@ public class PrivateDataService extends BaseService<PrivateData> {
     /**
      * 获取任务输出数据(私有)
      */
-    public String getOutputDataByTaskId(Long taskId) {
+    public String getOutputDataByTaskId(Long taskId, Boolean isChecked) {
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonMembers = new JSONArray();
-        List<PrivateData> privateDataList = privateDataDao.getDataListByTaskId(taskId);
+
+        List<PrivateData> privateDataList = new ArrayList<>();
+        if (isChecked){
+            privateDataList = privateDataDao.getOrdListByTaskId(taskId);
+        }else {
+            privateDataList = privateDataDao.getDataListByTaskId(taskId);
+        }
+
         for (int i = 0; i < privateDataList.size(); i++) {
             PrivateData privateData = privateDataList.get(i);
             jsonObject.put("dataId", privateData.getDdDataId());
@@ -206,12 +207,20 @@ public class PrivateDataService extends BaseService<PrivateData> {
 
     /**
      * 获取任务输入数据(项目)
+     * @Param isChecked 是否是在任务审核中调用
      */
-    public String getInputDataByTaskId(Long projectId, Long taskId) {
+    public String getInputDataByTaskId(Long projectId, Long taskId, Boolean isChecked) {
         QueryParameters queryParameters = new QueryParameters();
         queryParameters.setId(projectId);
         queryParameters.setBackupsL(taskId);
-        List<PrivateData> allPrivateData = privateDataDao.getDataListByProId(queryParameters);
+        queryParameters.setBackup(isChecked);
+        List<PrivateData> allPrivateData = new ArrayList<>();
+        if (isChecked){
+            allPrivateData = privateDataDao.getDataListByProId(queryParameters);
+        }else {
+            allPrivateData = privateDataDao.getPubListByTaskId(taskId);
+        }
+
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonMembers = new JSONArray();
 

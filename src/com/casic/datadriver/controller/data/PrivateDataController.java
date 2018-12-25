@@ -583,7 +583,7 @@ public class PrivateDataController extends AbstractController {
             throws Exception {
         Long taskId = RequestUtil.getLong(request, "taskId");
         Long projectId = RequestUtil.getLong(request, "projectId");
-        String jsonString = privateDataService.getInputDataByTaskId(projectId, taskId);
+        String jsonString = privateDataService.getInputDataByTaskId(projectId, taskId, false);
         PrintWriter out = response.getWriter();
         out.append(jsonString);
         out.flush();
@@ -603,7 +603,7 @@ public class PrivateDataController extends AbstractController {
     public void outputData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         Long taskId = RequestUtil.getLong(request, "taskId");
-        String jsonString = privateDataService.getOutputDataByTaskId(taskId).toString();
+        String jsonString = privateDataService.getOutputDataByTaskId(taskId, false);
         PrintWriter out = response.getWriter();
         out.append(jsonString);
         out.flush();
