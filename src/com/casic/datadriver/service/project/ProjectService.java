@@ -109,7 +109,7 @@ public class ProjectService extends BaseService<Project> {
     }
 
     /**
-     * 20161202 根据项目来添加任务
+     * 20161202 根据项目来添加任务s
      */
     public void updateAll(Project project) throws Exception {
         update(project);
@@ -194,36 +194,4 @@ public class ProjectService extends BaseService<Project> {
         }
         return jsonArray.toString();
     }
-
-    public Boolean doneProject(Long id){
-        Project project = this.getById(id);
-        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(id);
-        if (taskInfoList.isEmpty()) {
-            return false;
-        }
-        for (TaskInfo taskInfo : taskInfoList) {
-            if (taskInfo.getDdTaskState() != 3) {
-                return false;
-            }
-        }
-        if (project.getDdProjectState()==1){
-            return false;
-        }
-        project.setDdProjectState((short) 1);
-        update(project);
-        DdScoreInflow ddScoreInflow = new DdScoreInflow();
-        ddScoreInflow.setSourceScore(50);
-        ddScoreInflow.setSourceDetail("design_5");
-        coinAspect.setData(50,"design_5",0L);
-        return true;
-    }
-
-//    public void addScore(String account,Long uid){
-//        DdScoreInflow ddScoreInflow = new DdScoreInflow();
-//        ddScoreInflow.setSourceScore(30);
-//        ddScoreInflow.setSourceDetail("design_4");
-//        ddScoreInflow.setUserId(uid);
-//        ACCOUNTMGB = account;
-//        coinAspect.setData(ddScoreInflow);
-//    }
 }

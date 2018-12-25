@@ -2,7 +2,6 @@ package com.casic.datadriver.aop;
 
 
 import com.casic.datadriver.model.coin.AddScoreModel;
-import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.service.coin.CoinService;
 import com.casic.datadriver.service.score.DdScoreInflowService;
 import com.hotent.core.util.ContextUtil;
@@ -13,20 +12,11 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static com.casic.datadriver.service.project.ProjectService.ACCOUNTMGB;
 
 @Aspect
 public class CoinAspect {
@@ -35,11 +25,6 @@ public class CoinAspect {
     private DdScoreInflowService ddScoreInflowService;
     @Resource
     private CoinService coinService;
-
-    private List<Map<String, String>> flagList = new ArrayList<>();
-    private boolean flag = false;
-    private List<Map<String, String>> flagListTo = new ArrayList<>();
-    private boolean flagTo = false;
 
     private Integer sourceScore;
     private String sourceDetail;
@@ -101,22 +86,19 @@ public class CoinAspect {
     public void todotaskReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-        Long projectId = RequestUtil.getLong(request, "projectId");
         Long taskId = RequestUtil.getLong(request, "id");
-        Long resourceId = Long.parseLong(projectId.toString() + taskId.toString());
+        Long resourceId = taskId;
         sourceScore = 2;
         sourceDetail = "design_1";
-        setData(sourceScore,sourceDetail,null);
+        setData(sourceScore,sourceDetail,resourceId);
     }
 
     @AfterReturning(returning = "result", pointcut = "updatePrivateDataAspect()")
     public void updatePrivateDataReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-        Long projectId = RequestUtil.getLong(request, "projectId");
-        Long taskId = RequestUtil.getLong(request, "taskId");
         Long dataId = RequestUtil.getLong(request, "dataId");
-        Long resourceId = Long.parseLong(projectId.toString() + taskId.toString() + dataId.toString());
+        Long resourceId = dataId;
         sourceScore = 10;
         sourceDetail = "design_2";
         setData(sourceScore,sourceDetail,resourceId);
@@ -126,13 +108,11 @@ public class CoinAspect {
     public void uploadPrivateFileReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-        Long projectId = RequestUtil.getLong(request, "projectId");
         Long taskId = RequestUtil.getLong(request, "taskId");
-        Long dataId = RequestUtil.getLong(request, "id");
-        Long resourceId = Long.parseLong(projectId.toString() + taskId.toString() + dataId.toString());
+        Long resourceId = taskId;
         sourceScore = 5;
         sourceDetail = "design_3";
-        setData(sourceScore,sourceDetail,null);
+        setData(sourceScore,sourceDetail,resourceId);
     }
 
     @AfterReturning(returning = "result", pointcut = "movetaskAspect()")
@@ -141,7 +121,6 @@ public class CoinAspect {
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
         String parent = RequestUtil.getString(request, "parent");
             if(parent.equals("completepanel")){
-                Long projectId = RequestUtil.getLong(request, "projectId");
                 Long taskId = RequestUtil.getLong(request, "id");
                 Long resourceId = Long.parseLong(taskId.toString());
                 sourceScore = 30;
@@ -162,61 +141,23 @@ public class CoinAspect {
     public void orderAndCreateReturning(JoinPoint joinPoint, Object result) throws Throwable {
         logger.info(joinPoint.getSignature().getName());
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-
         Long taskId = RequestUtil.getLong(request, "taskId");
         Long resourceId = Long.parseLong(taskId.toString());
         sourceScore = 30;
         sourceDetail = "design_8";
         setData(sourceScore,sourceDetail,resourceId);
-
-        //当前用户在同一个任务中点击订阅，只有第一次计算积分，多次点击只计算一次
-        //TODO: 需用更好的方法
-//        if (joinPoint.getSignature().getName().equals("canOrderToOrder")) {
-//            orderAndCreateDesign(request,map,ddScoreInflow,flagList,flag);
-//        } else if (joinPoint.getSignature().getName().equals("createToPublish")) {
-//            orderAndCreateDesign(request,map,ddScoreInflow,flagListTo,flagTo);
-//        }
-//        flag = false;
     }
 
     @AfterReturning(returning = "result", pointcut = "doneAspect()")
     public void doneReturning(JoinPoint joinPoint, Object result) throws Throwable {
          logger.info(joinPoint.getSignature().getName());
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-        Long projectId = RequestUtil.getLong(request, "taskId");
-        Long resourceId = Long.parseLong(projectId.toString());
+        Long projectId = RequestUtil.getLong(request, "id");
+        Long resourceId = projectId;
             logger.info(joinPoint.getSignature().getName());
             sourceScore = 50;
             sourceDetail = "design_5";
             setData(sourceScore,sourceDetail,resourceId);
-    }
-
-    public void orderAndCreateDesign(HttpServletRequest request,Map<String,String> map,DdScoreInflow ddScoreInflow,List<Map<String,String>> list,boolean temp){
-        Long taskId = RequestUtil.getLong(request, "taskId");
-        String account = ContextUtil.getCurrentUser().getAccount();
-        if (list.size() == 0 ) {
-            map.put(account, taskId.toString());
-            list.add(map);
-            ddScoreInflow.setSourceScore(30);
-            ddScoreInflow.setSourceDetail("design_8");
-            //setData(ddScoreInflow);
-        } else {
-            for (Map<String, String> flagMap : list) {
-                for (Map.Entry<String, String> entry : flagMap.entrySet()) {
-                    if (entry.getKey().equals(account) && entry.getValue().equals(taskId.toString())) {
-                        temp = true;
-                    }
-                }
-            }
-            if (!temp) {
-                map.put(account, taskId.toString());
-                list.add(map);
-                ddScoreInflow.setSourceScore(30);
-                ddScoreInflow.setSourceDetail("design_8");
-               // setData(ddScoreInflow);
-            }
-        }
-
     }
 
     public void setData(Integer sourceScore,String sourceDetail,Long resourceId) {
@@ -226,11 +167,6 @@ public class CoinAspect {
 
         //传递身份证号、分数、类型、详情、更新时间
         AddScoreModel addScoreModel = new AddScoreModel();
-//        if (ddScoreInflow.getUserId()==null){
-//            addScoreModel.setAccount(ContextUtil.getCurrentUser().getAccount());
-//        }else {
-//            addScoreModel.setAccount(ACCOUNTMGB);
-//        }
         addScoreModel.setAccount(ContextUtil.getCurrentUser().getAccount());
         addScoreModel.setSourceScore(String.valueOf(sourceScore));
         addScoreModel.setSourceType(sourceType);
