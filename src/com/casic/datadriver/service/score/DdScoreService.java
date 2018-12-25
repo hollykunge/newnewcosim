@@ -4,7 +4,7 @@ import com.casic.datadriver.dao.score.DdScoreDao;
 import com.casic.datadriver.model.coin.DdScore;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
-import com.casic.datadriver.service.cache.ICache;
+import com.casic.datadriver.service.cache.Cache;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.util.UniqueIdUtil;
 import org.apache.commons.logging.Log;
@@ -35,7 +35,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
     private DdScoreDao ddScoreDao;
 
     @Resource
-    private ICache iCache;
+    private Cache cache;
 
     @Override
     protected IEntityDao<DdScore, Long> getEntityDao() {
@@ -61,7 +61,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
         Long userId = ddScore.getUserId();
         String type = ddScore.getScoreType();
         String cacheKey = CACHE_SCORE_PREFIX + userId + type;
-        iCache.add(cacheKey, ddScore);
+        cache.add(cacheKey, ddScore);
     }
 
     /**
@@ -77,7 +77,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
             String type = ddScoreInflow.getSourceType();
             String cacheKey = CACHE_SCORE_PREFIX + userId + type;
             if (isUseCache) {
-                ddScore = (DdScore) iCache.getByKey(cacheKey);
+                ddScore = (DdScore) cache.getByKey(cacheKey);
             } else {
                 ddScore = ddScoreDao.getByUidAndType(userId, type);
             }
@@ -108,7 +108,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
                 ddScoreTemp.setOrgName(ddScoreInflow.getOrgName());
                 ddScoreDao.add(ddScoreTemp);
                 if (isUseCache) {
-                    iCache.add(cacheKey, ddScoreTemp);
+                    cache.add(cacheKey, ddScoreTemp);
                     logger.info("通过输入流水添加DdScore，添加缓存 " + cacheKey);
                 } else {
                     logger.info("通过输入流水添加DdScore " + cacheKey);
@@ -120,7 +120,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
             String type = ddScoreOutflow.getSourceType();
             String cacheKey = CACHE_SCORE_PREFIX + userId + type;
             if (isUseCache) {
-                ddScore = (DdScore) iCache.getByKey(cacheKey);
+                ddScore = (DdScore) cache.getByKey(cacheKey);
             } else {
                 ddScore = ddScoreDao.getByUidAndType(userId, type);
             }
@@ -166,7 +166,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
             Long userId = ddScore.getUserId();
             String type = ddScore.getScoreType();
             String cacheKey = CACHE_SCORE_PREFIX + userId + type;
-            iCache.delByKey(cacheKey);
+            cache.delByKey(cacheKey);
         }
         super.delById(id);
     }
@@ -192,11 +192,11 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
         ddScoreDao.delByType(sourceType);
         if (isUseCache) {
             //删缓存
-            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
+            List<DdScore> ddScores = (List<DdScore>) cache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
             for (DdScore ddScore : ddScores) {
                 Long userId = ddScore.getUserId();
                 String cacheKey = CACHE_SCORE_PREFIX + userId + sourceType;
-                iCache.delByKey(cacheKey);
+                cache.delByKey(cacheKey);
             }
         }
     }
@@ -221,7 +221,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
     @SuppressWarnings("unchecked")
     public DdScore getById(Long id) {
         if (isUseCache) {
-            List<DdScore> ddScores = (List<DdScore>) iCache.getByKeySection(
+            List<DdScore> ddScores = (List<DdScore>) cache.getByKeySection(
                     CACHE_SCORE_PREFIX, "");
             for (DdScore ddScore : ddScores) {
                 if (ddScore.getId().equals(id)) {
@@ -240,7 +240,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
     @SuppressWarnings("unchecked")
     public List<DdScore> getAll() {
         if (isUseCache) {
-            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, "");
+            return (List<DdScore>) cache.getByKeySection(CACHE_SCORE_PREFIX, "");
         }
         return super.getAll();
     }
@@ -254,7 +254,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
     @SuppressWarnings("unchecked")
     public List<DdScore> getPersonal(long userId) {
         if (isUseCache) {
-            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, String.valueOf(userId));
+            return (List<DdScore>) cache.getByKeySection(CACHE_SCORE_PREFIX, String.valueOf(userId));
         }
         return ddScoreDao.getPersonal(userId);
     }
@@ -267,7 +267,7 @@ public class DdScoreService extends AbstractService<DdScore, Long> {
     @SuppressWarnings("unchecked")
     private List<DdScore> getByType(String sourceType) {
         if (isUseCache) {
-            return (List<DdScore>) iCache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
+            return (List<DdScore>) cache.getByKeySection(CACHE_SCORE_PREFIX, sourceType);
         }
         return ddScoreDao.getByType(sourceType);
     }

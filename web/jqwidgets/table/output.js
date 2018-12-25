@@ -346,7 +346,7 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                             }
                         }
                         if (rowsDataIds.length > 0) {
-                            $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel", function (data, status) {
+                            $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=publishpanel"+"&taskId="+taskId, function (data, status) {
                                 if (status == 'success') {
                                     $('#treeGridOut').jqxTreeGrid('updateBoundData');
                                     alertify.set('notifier', 'position', 'top-right');
@@ -369,7 +369,7 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                             }
                         }
                         if (rowsDataIds.length > 0) {
-                            $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel", function (data, status) {
+                            $.get("createToPublish.ht?dataIds=" + rowsDataIds + "&parent=createpanel"+"&taskId="+taskId, function (data, status) {
                                 if (status == 'success') {
                                     $('#treeGridOut').jqxTreeGrid('updateBoundData');
                                     alertify.set('notifier', 'position', 'top-right');
@@ -406,7 +406,7 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                         if (selection[0].dataType == '模型' || selection[0].dataType == '文件') {
                             $('#uploadPrivateFile').modal({
                                 keyboard: true,
-                                remote: "uploadPrivateFile.ht?id=" + selection[0].dataId
+                                remote: "uploadPrivateFile.ht?id=" + selection[0].dataId + "&taskId=" + taskId + "&projectId" + projectId
                             });
                         }
                     }

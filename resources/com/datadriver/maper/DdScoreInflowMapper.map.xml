@@ -15,17 +15,18 @@
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="org_id" property="orgId" jdbcType="NUMERIC"/>
         <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+        <result column="resource_id" property="resourceId" jdbcType="NUMERIC"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, user_id, source_score, source_type, source_detail, upd_time, total, user_name, org_id, org_name
+        id, user_id, source_score, source_type, source_detail, upd_time, total, user_name, org_id, org_name,resource_id
     </sql>
 
     <insert id="add" parameterType="com.casic.datadriver.model.coin.DdScoreInflow">
-    insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time, user_name, org_id, org_name)
+    insert into dd_score_inflow (id, user_id, source_score, source_type, source_detail, upd_time, user_name, org_id, org_name,resource_id)
     values (#{id,jdbcType=NUMERIC}, #{userId,jdbcType=NUMERIC}, #{sourceScore,jdbcType=NUMERIC},
       #{sourceType,jdbcType=VARCHAR}, #{sourceDetail,jdbcType=VARCHAR}, #{updTime,jdbcType=VARCHAR},
-       #{userName,jdbcType=VARCHAR}, #{orgId,jdbcType=NUMERIC}, #{orgName,jdbcType=VARCHAR})
+       #{userName,jdbcType=VARCHAR}, #{orgId,jdbcType=NUMERIC}, #{orgName,jdbcType=VARCHAR},#{resourceId,jdbcType=NUMERIC})
     </insert>
     <select id="getByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
@@ -111,6 +112,9 @@
             </if>
             <if test="orgName !=null">
                 org_name = #{orgName,jdbcType=VARCHAR}
+            </if>
+            <if test="resourceId !=null">
+                resource_id = #{resourceId,jdbcType=NUMERIC}
             </if>
         </set>
         WHERE

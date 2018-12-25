@@ -410,14 +410,24 @@ public class ProjectController extends BaseController {
     public void done(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String resultMsg = null;
         Long id = RequestUtil.getLong(request, "id");
-        Boolean done = projectService.doneProject(id);
-        if (done) {
-            resultMsg = getText("完成项目", "完成项目");
-            writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
-        } else {
-            resultMsg = getText("不能完成项目！", "不能完成项目！");
+        Project project = projectService.getById(id);
+        List<TaskInfo> taskInfoList = taskInfoService.queryTaskInfoByProjectId(id);
+        if (taskInfoList.isEmpty()) {
+            resultMsg = getText("没有任务，不能完成项目！", "没有任务，不能完成项目！");
             writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
+            return;
         }
+        for (TaskInfo taskInfo : taskInfoList) {
+            if (taskInfo.getDdTaskState() != 3) {
+                resultMsg = getText("有未完成的任务，不能完成项目！", "有未完成的任务，不能完成项目！");
+                writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Fail);
+                return;
+            }
+        }
+        project.setDdProjectState((short) 1);
+        projectService.updateAll(project);
+        resultMsg = getText("完成项目", "完成项目");
+        writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
     }
 
     /**
@@ -571,7 +581,7 @@ public class ProjectController extends BaseController {
             taskStartService.update(taskStart1);
             resultMsg = "任务审核通过";
             String account = sysUserService.getById(taskInfo.getDdTaskResponsiblePerson()).getAccount();
-            projectService.addScore(account, taskInfo.getDdTaskResponsiblePerson());
+            //projectService.addScore(account, taskInfo.getDdTaskResponsiblePerson());
         }
         //从已完成到待审核
         if (taskInfo.getDdTaskChildType().equals("completepanel") && parent.equals("checkpanel")) {

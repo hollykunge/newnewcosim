@@ -2,7 +2,7 @@ package com.casic.datadriver.service.score;
 
 import com.casic.datadriver.dao.score.DdScoreOutflowDao;
 import com.casic.datadriver.model.coin.DdScoreOutflow;
-import com.casic.datadriver.service.cache.ICache;
+import com.casic.datadriver.service.cache.Cache;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.util.UniqueIdUtil;
 import org.apache.commons.logging.Log;
@@ -31,7 +31,7 @@ public class DdScoreOutflowService extends AbstractService<DdScoreOutflow, Long>
     private DdScoreService ddScoreService;
 
     @Resource
-    private ICache iCache;
+    private Cache cache;
 
     @Override
     protected IEntityDao<DdScoreOutflow, Long> getEntityDao() {

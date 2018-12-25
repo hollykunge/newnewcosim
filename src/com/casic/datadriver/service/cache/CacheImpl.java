@@ -1,6 +1,7 @@
 package com.casic.datadriver.service.cache;
 
 import com.fr.bi.cube.engine.third.edu.emory.mathcs.backport.java.util.Collections;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +14,8 @@ import java.util.Map;
  * @author workhub
  * @Date: 2018/12/21
  */
-
-public class CacheImpl implements ICache {
+@Component
+public class CacheImpl implements Cache {
 
     private Map<String, Object> cache = (Map<String, Object>) Collections.synchronizedMap(new HashMap<String, Object>());
 

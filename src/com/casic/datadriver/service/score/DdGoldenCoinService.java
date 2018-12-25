@@ -2,7 +2,7 @@ package com.casic.datadriver.service.score;
 
 import com.casic.datadriver.dao.score.DdGoldenCoinDao;
 import com.casic.datadriver.model.coin.DdGoldenCoin;
-import com.casic.datadriver.service.cache.ICache;
+import com.casic.datadriver.service.cache.Cache;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.platform.auth.ISysUser;
@@ -34,7 +34,7 @@ public class DdGoldenCoinService extends AbstractService<DdGoldenCoin, Long> {
     private SysUserDao sysUserDao;
 
     @Resource
-    private ICache iCache;
+    private Cache cache;
 
     @Override
     protected IEntityDao<DdGoldenCoin, Long> getEntityDao() {
