@@ -37,7 +37,7 @@
     <delete id="delByType" parameterType="java.lang.String">
 		DELETE FROM dd_score
 		WHERE
-		source_type=#{sourceType}
+		score_type=#{scoreType}
 	</delete>
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
@@ -47,7 +47,7 @@
         1=1
         <if test="@Ognl@isNotEmpty(userName)"> AND dds.user_name LIKE #{userName} </if>
         <if test="@Ognl@isNotEmpty(scoreType)"> AND dds.score_type LIKE #{scoreType}</if>
-        <if test="@Ognl@isNotEmpty(orgName)"> AND dds.score_type LIKE #{orgName}</if>
+        <if test="@Ognl@isNotEmpty(orgName)"> AND dds.org_name LIKE #{orgName}</if>
         <if test="@Ognl@isNotEmpty(scoreAction)"> AND dds.score_action LIKE #{scoreAction}</if>
         <if test="@Ognl@isNotEmpty(crtTime)"> AND dds.crt_time LIKE #{crtTime}</if>
         <if test="@Ognl@isNotEmpty(udpTime)"> AND dds.udp_time LIKE #{udpTime}</if>
@@ -62,7 +62,7 @@
         <include refid="Base_Column_List"/>
         FROM dd_score
         WHERE
-        source_type=#{sourceType}
+        score_type=#{scoreType}
     </select>
     <select id="getPersonal" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT

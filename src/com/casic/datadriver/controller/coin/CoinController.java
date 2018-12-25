@@ -179,6 +179,7 @@ public class CoinController extends GenericController {
     @RequestMapping("task")
     @ResponseBody
     public void taskanddata(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         ISysUser sysUser = sysUserService.getByAccount(uid);
         Double quanjuSum = 0.0d;
         Double fengxianSum = 0.0d;
@@ -274,7 +275,7 @@ public class CoinController extends GenericController {
 
                 HashMap<String, Object> temp1 = new HashMap<>();
                 temp1.put("radarDT", tempRadar);
-                temp1.put("contribution", tempContribution);
+                temp1.put("Contribution", tempContribution);
                 temp1.put("my2018", tempMy2018);
 
                 String jsonString = JSON.toJSONString(temp1);
