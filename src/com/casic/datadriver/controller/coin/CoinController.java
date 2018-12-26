@@ -191,7 +191,14 @@ public class CoinController extends GenericController {
         Double qiushiOrgSum = 0.0d;
         Double chuangxinOrgSum = 0.0d;
 
-        DecimalFormat df = new DecimalFormat("0.0000");
+        double quanjuNumber = 0.0d;
+        double fengxianNumber = 0.0d;
+        double qiushiNumber = 0.0d;
+        double chuangxinNumber = 0.0d;
+
+        double taskRadar = 0.0d;
+        double dataRadar = 0.0d;
+                DecimalFormat df = new DecimalFormat("0.0000");
         try {
             Long userId = sysUser.getUserId();
             if (userId != null && userId != 0) {
@@ -259,16 +266,27 @@ public class CoinController extends GenericController {
                 HashMap<String, Object> tempContribution = new HashMap<String, Object>();
                 HashMap<String, Object> tempMy2018 = new HashMap<String, Object>();
 
-                double taskRadar = (double)projectNum/projectTotal*0.6+(double)taskNum/taskTotal*0.4;
-                double dataRadar = (double)pubNum/dataTotal;
+                taskRadar = (double) projectNum / projectTotal * 0.6 + (double) taskNum / taskTotal * 0.4;
+                dataRadar = (double) pubNum / dataTotal;
 
-                tempRadar.put("taskRadar", df.format(taskRadar));
-                tempRadar.put("dataRadar", df.format(dataRadar));
+                if (!Double.isNaN(taskRadar))
+                tempRadar.put("taskRadar", Double.parseDouble(df.format(taskRadar)));
+                if (!Double.isNaN(dataRadar))
+                tempRadar.put("dataRadar", Double.parseDouble(df.format(dataRadar)));
 
-                tempContribution.put("quanju", df.format((double)quanjuSum/quanjuOrgSum));
-                tempContribution.put("fengxian", df.format((double)fengxianSum/fengxianOrgSum));
-                tempContribution.put("qiushi", df.format((double)qiushiSum/qiushiOrgSum));
-                tempContribution.put("chuangxin", df.format((double)chuangxinSum/chuangxinOrgSum));
+                quanjuNumber = (double) quanjuSum / quanjuOrgSum;
+                fengxianNumber = (double) fengxianSum / fengxianOrgSum;
+                qiushiNumber = (double) qiushiSum / qiushiOrgSum;
+                chuangxinNumber = (double) chuangxinSum / chuangxinOrgSum;
+
+                if (!Double.isNaN(quanjuNumber))
+                tempContribution.put("quanju", Double.parseDouble(df.format(quanjuNumber)));
+                if (!Double.isNaN(fengxianNumber))
+                tempContribution.put("fengxian", Double.parseDouble(df.format(fengxianNumber)));
+                if (!Double.isNaN(qiushiNumber))
+                tempContribution.put("qiushi", Double.parseDouble(df.format(qiushiNumber)));
+                if (!Double.isNaN(chuangxinNumber))
+                tempContribution.put("chuangxin", Double.parseDouble(df.format(chuangxinNumber)));
 
                 tempMy2018.put("project", projectNum);
                 tempMy2018.put("task", taskNum);
