@@ -152,9 +152,9 @@ public class PrivateDataService extends BaseService<PrivateData> {
         JSONArray jsonMembers = new JSONArray();
 
         List<PrivateData> privateDataList = new ArrayList<>();
-        if (isChecked){
+        if (isChecked) {
             privateDataList = privateDataDao.getOrdListByTaskId(taskId);
-        }else {
+        } else {
             privateDataList = privateDataDao.getDataListByTaskId(taskId);
         }
 
@@ -207,6 +207,7 @@ public class PrivateDataService extends BaseService<PrivateData> {
 
     /**
      * 获取任务输入数据(项目)
+     *
      * @Param isChecked 是否是在任务审核中调用
      */
     public String getInputDataByTaskId(Long projectId, Long taskId, Boolean isChecked) {
@@ -215,10 +216,11 @@ public class PrivateDataService extends BaseService<PrivateData> {
         queryParameters.setBackupsL(taskId);
         queryParameters.setBackup(isChecked);
         List<PrivateData> allPrivateData = new ArrayList<>();
-        if (isChecked){
-            allPrivateData = privateDataDao.getDataListByProId(queryParameters);
-        }else {
+
+        if (isChecked) {
             allPrivateData = privateDataDao.getPubListByTaskId(taskId);
+        } else {
+            allPrivateData = privateDataDao.getDataListByProId(queryParameters);
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -316,14 +318,23 @@ public class PrivateDataService extends BaseService<PrivateData> {
             objs[1] = privateData.getDdDataName();
             objs[2] = privateData.getDdDataLastestValue();
             objs[3] = privateData.getDdDataUnit();
-            if (0 == privateData.getDdDataType())
+
+            if (0 == privateData.getDdDataType()) {
                 objs[4] = "数值";
-            if (1 == privateData.getDdDataType())
+            }
+
+            if (1 == privateData.getDdDataType()) {
                 objs[4] = "模型";
-            if (2 == privateData.getDdDataType())
+            }
+
+            if (2 == privateData.getDdDataType()) {
                 objs[4] = "文件";
-            if (3 == privateData.getDdDataType())
+            }
+
+            if (3 == privateData.getDdDataType()) {
                 objs[4] = "结构型数据";
+            }
+
             objs[5] = privateData.getDdDataSenMax();
             objs[6] = privateData.getDdDataSenMin();
             objs[7] = privateData.getDdDataTaskName();
