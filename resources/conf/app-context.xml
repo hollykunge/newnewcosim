@@ -15,7 +15,7 @@
 
     <import resource="app-security.xml"/>
 
-    <import resource="app-jms.xml"/>
+    <!--<import resource="app-jms.xml"/>-->
     <import resource="app-cxf-service.xml"/>
 
 </beans>
