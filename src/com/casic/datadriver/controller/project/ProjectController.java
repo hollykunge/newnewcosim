@@ -718,7 +718,7 @@ public class ProjectController extends BaseController {
      * @return the list
      * @throws Exception the exception
      */
-    @RequestMapping("order")
+    @RequestMapping("orderData")
     @Action(description = "订阅情况")
     public void order(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -739,7 +739,7 @@ public class ProjectController extends BaseController {
      * @return the list
      * @throws Exception the exception
      */
-    @RequestMapping("publish")
+    @RequestMapping("publishData")
     @Action(description = "发布情况")
     public void publish(HttpServletRequest request, HttpServletResponse response)
             throws Exception {

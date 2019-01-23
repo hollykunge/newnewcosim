@@ -14,16 +14,16 @@ import javax.jms.Queue;
 
 public class ScoreMessageProducer {
 
-    private static final Log logger = LogFactory.getLog(ScoreMessageProducer.class);
-
-    @Resource(name="scoreMessageQueue")
-    private Queue scoreMessageQueue;
-
-    @Resource
-    private JmsTemplate jmsTemplate;
-
-    public void send(Object model) {
-        logger.debug("produce the score message");
-        jmsTemplate.convertAndSend(scoreMessageQueue, model);
-    }
+//    private static final Log logger = LogFactory.getLog(ScoreMessageProducer.class);
+//
+//    @Resource(name="scoreMessageQueue")
+//    private Queue scoreMessageQueue;
+//
+//    @Resource
+//    private JmsTemplate jmsTemplate;
+//
+//    public void send(Object model) {
+//        logger.info("错误追踪，已发送至队列");
+//        jmsTemplate.convertAndSend(scoreMessageQueue, model);
+//    }
 }

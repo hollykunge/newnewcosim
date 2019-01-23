@@ -1,18 +1,29 @@
 package com.casic.datadriver.service.coin;
 
+import com.alibaba.fastjson.JSON;
 import com.casic.datadriver.jms.ScoreMessageProducer;
 import com.casic.datadriver.manager.ScoreRegulation;
 import com.casic.datadriver.model.coin.*;
+import com.casic.datadriver.model.data.PrivateData;
+import com.casic.datadriver.model.project.Project;
+import com.casic.datadriver.model.task.TaskInfo;
+import com.casic.datadriver.service.data.OrderDataRelationService;
+import com.casic.datadriver.service.data.PrivateDataService;
+import com.casic.datadriver.service.project.ProjectService;
 import com.casic.datadriver.service.score.DdGoldenCoinService;
 import com.casic.datadriver.service.score.DdScoreInflowService;
 import com.casic.datadriver.service.score.DdScoreService;
+import com.casic.datadriver.service.task.TaskInfoService;
+import com.hotent.platform.auth.ISysUser;
 import com.hotent.platform.dao.system.SysOrgDao;
 import com.hotent.platform.dao.system.SysUserDao;
+import com.hotent.platform.service.system.SysUserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +58,16 @@ public class CoinService {
     private ScoreRegulation scoreRegulation;
 
     @Autowired
-    private ScoreMessageProducer scoreMessageProducer;
+    private ProjectService projectService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private TaskInfoService taskInfoService;
+
+    @Autowired
+    private PrivateDataService privateDataService;
 
     /**
      * @param addScoreModel 加分模型
@@ -67,7 +87,9 @@ public class CoinService {
             logger.warn("Detail类型未计入加分类型 " + detail);
             return resultMsg;
         }
-        scoreMessageProducer.send(addScoreModel);
+        logger.info("错误追踪，开始发送至队列");
+        ddScoreInflowService.handInflowScore(addScoreModel);
+//        scoreMessageProducer.send(addScoreModel);
         resultMsg = "积分请求已加入队列！";
         return resultMsg;
     }
@@ -197,5 +219,119 @@ public class CoinService {
             return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         }
     };
+
+    /**
+     * 个人积分总和计算
+     *
+     * @param uid
+     * @return
+     */
+    public Double countUserScore(Long uid, String type) {
+        Double scoreSum = 0.0d;
+        List<DdScoreInflow> scoreInflows = ddScoreInflowService.getTypeTotalScore(uid, type);
+        for (DdScoreInflow ddScoreInflow : scoreInflows) {
+            scoreSum += ddScoreInflow.getSourceScore();
+        }
+        return scoreSum;
+    }
+
+    /**
+     * 组织积分总和计算
+     *
+     * @param orgId
+     * @return
+     */
+    public Double countOrgScore(Long orgId, String type) {
+        Double scoreSum = 0.0d;
+        List<DdScoreInflow> scoreInflows = ddScoreInflowService.getOrgTotalScore(orgId, type);
+        for (DdScoreInflow ddScoreInflow : scoreInflows) {
+            scoreSum += ddScoreInflow.getSourceScore();
+        }
+        return scoreSum;
+    }
+
+    public String getJsonForReport(String uid) {
+        ISysUser sysUser = sysUserService.getByAccount(uid);
+
+        DecimalFormat df = new DecimalFormat("0.0000");
+
+        Long userId = sysUser.getUserId();
+        if (userId != null && userId != 0) {
+            List<Project> projectList = projectService.queryProjectBasicInfoList(userId);
+            List<TaskInfo> taskListR = taskInfoService.getListByResponceId(userId);
+            List<PrivateData> privateDataList = privateDataService.getDataByUserId(userId);
+            int projectTotal = projectService.getAll().size();
+            int taskTotal = taskInfoService.getAll().size();
+            int dataTotal = privateDataService.getAll().size();
+
+            //个人积分总和
+            Double quanjuSum = countUserScore(userId, ScoreRegulation.QUAN_JU);
+            Double fengxianSum = countUserScore(userId, ScoreRegulation.FENG_XIAN);
+            Double qiushiSum = countUserScore(userId, ScoreRegulation.QIU_SHI);
+            Double chuangxinSum = countUserScore(userId, ScoreRegulation.CHUANG_XIN);
+
+            //所在研究室积分总和
+            Double quanjuOrgSum = countOrgScore(sysUser.getOrgId(), ScoreRegulation.QUAN_JU);
+            Double fengxianOrgSum = countOrgScore(sysUser.getOrgId(), ScoreRegulation.FENG_XIAN);
+            Double qiushiOrgSum = countOrgScore(sysUser.getOrgId(), ScoreRegulation.QIU_SHI);
+            Double chuangxinOrgSum = countOrgScore(sysUser.getOrgId(), ScoreRegulation.CHUANG_XIN);
+
+            Integer projectNum = projectList.size();
+            Integer taskNum = taskListR.size();
+            double pubNum = privateDataList.size();
+
+            HashMap<String, Object> tempMap = new HashMap<String, Object>(8);
+
+            double taskRadar = (double) projectNum / projectTotal * 0.6 + (double) taskNum / taskTotal * 0.4;
+            double dataRadar = pubNum / dataTotal;
+
+            if (!Double.isNaN(taskRadar)) {
+                tempMap.put("taskRadar", Double.parseDouble(df.format(taskRadar)));
+            } else {
+                tempMap.put("taskRadar", 0);
+            }
+
+            if (!Double.isNaN(dataRadar)) {
+                tempMap.put("dataRadar", Double.parseDouble(df.format(dataRadar)));
+            } else {
+                tempMap.put("dataRadar", 0);
+            }
+
+            double quanjuNumber = (double) quanjuSum / quanjuOrgSum;
+            double fengxianNumber = (double) fengxianSum / fengxianOrgSum;
+            double qiushiNumber = (double) qiushiSum / qiushiOrgSum;
+            double chuangxinNumber = (double) chuangxinSum / chuangxinOrgSum;
+
+            if (!Double.isNaN(quanjuNumber)) {
+                tempMap.put("quanju", Double.parseDouble(df.format(quanjuNumber)));
+            } else {
+                tempMap.put("quanju", 0);
+            }
+
+            if (!Double.isNaN(fengxianNumber)) {
+                tempMap.put("fengxian", Double.parseDouble(df.format(fengxianNumber)));
+            } else {
+                tempMap.put("fengxian", 0);
+            }
+
+            if (!Double.isNaN(qiushiNumber)) {
+                tempMap.put("qiushi", Double.parseDouble(df.format(qiushiNumber)));
+            } else {
+                tempMap.put("qiushi", 0);
+            }
+
+            if (!Double.isNaN(chuangxinNumber)) {
+                tempMap.put("chuangxin", Double.parseDouble(df.format(chuangxinNumber)));
+            } else {
+                tempMap.put("chuangxin", 0);
+            }
+
+            tempMap.put("project", projectNum);
+            tempMap.put("task", taskNum);
+
+            return JSON.toJSONString(tempMap);
+        }
+        return null;
+    }
 }
 

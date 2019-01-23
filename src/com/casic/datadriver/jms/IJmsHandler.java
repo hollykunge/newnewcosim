@@ -9,5 +9,5 @@ public interface IJmsHandler {
      * 处理消息
      * @param model 消息类型
      */
-    public void handMessage(Object model);
+//    public void handMessage(Object model);
 }
