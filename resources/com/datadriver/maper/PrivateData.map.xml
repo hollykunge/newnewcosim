@@ -134,10 +134,15 @@
 
     <select id="getPubListByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from dd_private_data
-        where DD_DATA_TASK_ID = #{taskId} AND DD_DATA_PUBLISH_STATE = 1
-        order by DD_DATA_ID desc
+        dpd.DD_DATA_ID, dpd.DD_DATA_NAME, dpd.DD_DATA_TYPE, dpd.DD_DATA_DESCRIPTION, dpd.DD_DATA_TASK_ID, dpd.DD_DATA_PUBLISH_STATE,
+        dpd.DD_DATA_ORDER_STATE, dpd.DD_DATA_IS_SUBMIT, dpd.DD_DATA_CREATE_TIME, dpd.DD_DATA_CREATOR, dpd.DD_DATA_CREATOR_ID,
+        dpd.DD_DATA_SEN_MIN, dpd.DD_DATA_SEN_MAX, dpd.DD_DATA_PARENT_ID, dpd.DD_DATA_LASTEST_VALUE, dpd.DD_DATA_UNIT,
+        dpd.DD_DATA_TASK_NAME, dpd.DD_DATA_ENG_NAME, dpd.DD_DATA_PATH, dpd.DD_DATA_NODE_PATH, dpd.DD_DATA_DEPTH,
+        dpd.DD_DATA_IS_LEAF, dpd.DD_DATA_PROJ_ID, dpd.DD_DATA_RESERVED1, dpd.DD_DATA_RESERVED2
+        from dd_private_data dpd
+        inner join dd_order_data dod
+        on dpd.DD_DATA_ID = dod.DD_DATA_ID where dod.DD_TASK_ID = #{taskId}
+        order by dpd.DD_DATA_ID desc
     </select>
 
     <select id="getUnPubListByTaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -152,7 +157,7 @@
         select
         <include refid="Base_Column_List"/>
         from dd_private_data
-        where DD_DATA_TASK_ID = #{taskId} AND DD_DATA_ORDER_STATE = 1
+        where DD_DATA_TASK_ID = #{taskId} AND DD_DATA_PUBLISH_STATE = 1
         order by DD_DATA_ID desc
     </select>
 
