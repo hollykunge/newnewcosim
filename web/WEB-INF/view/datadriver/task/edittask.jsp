@@ -280,18 +280,31 @@
     }
 
     //订阅
-    $("#switch_attr_order").onclick = function () {
+    <%--$("#switch_attr_order").onclick = function () {--%>
+        <%--$.get("${ctx}/datadriver/project/orderData.ht?taskId=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {--%>
+            <%--$('#order').html(data);--%>
+        <%--});--%>
+    <%--}--%>
+    //发布
+    <%--$("#switch_attr_pub").onclick = function () {--%>
+        <%--$.get("${ctx}/datadriver/project/publishData.ht?taskId=${TaskInfo.ddTaskId}", function (data) {--%>
+            <%--$('#pub').html(data);--%>
+        <%--});--%>
+    <%--}--%>
+
+    //订阅
+    $("#switch_attr_order").click(function () {
         $.get("${ctx}/datadriver/project/order.ht?taskId=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
             $('#order').html(data);
         });
-    }
+    });
 
     //发布
-    $("#switch_attr_pub").onclick = function () {
+    $("#switch_attr_pub").click(function () {
         $.get("${ctx}/datadriver/project/publish.ht?taskId=${TaskInfo.ddTaskId}", function (data) {
             $('#pub').html(data);
         });
-    }
+    });
 
     $("#reback").click(function () {
         $.get("${ctx}/datadriver/personaltask/recovertask.ht?id=${TaskInfo.ddTaskId}", function (data) {

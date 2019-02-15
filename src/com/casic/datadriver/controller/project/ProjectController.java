@@ -711,6 +711,25 @@ public class ProjectController extends BaseController {
     }
 
     /**
+     * 任务中的订阅
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the list
+     * @throws Exception the exception
+     */
+    @RequestMapping("order")
+    @Action(description = "任务中订阅")
+    public ModelAndView order(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long taskId = RequestUtil.getLong(request, "taskId");
+        Long projectId = RequestUtil.getLong(request, "projectId");
+        ModelAndView mv = new ModelAndView();
+        mv = this.getAutoView().addObject("projectId",projectId).addObject("taskId",taskId);
+        return mv;
+    }
+
+    /**
      * 任务中的订阅情况
      *
      * @param request  the request
@@ -720,7 +739,7 @@ public class ProjectController extends BaseController {
      */
     @RequestMapping("orderData")
     @Action(description = "订阅情况")
-    public void order(HttpServletRequest request, HttpServletResponse response)
+    public void orderData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         Long taskId = RequestUtil.getLong(request, "taskId");
         Long projectId = RequestUtil.getLong(request, "projectId");
@@ -732,6 +751,23 @@ public class ProjectController extends BaseController {
     }
 
     /**
+     * 任务中的发布
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the list
+     * @throws Exception the exception
+     */
+    @RequestMapping("publish")
+    @Action(description = "任务中发布")
+    public ModelAndView publish(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long taskId = RequestUtil.getLong(request, "taskId");
+        ModelAndView mv = new ModelAndView();
+        mv = this.getAutoView().addObject("taskId",taskId);
+        return mv;
+}
+    /**
      * 任务中的发布情况
      *
      * @param request  the request
@@ -741,7 +777,7 @@ public class ProjectController extends BaseController {
      */
     @RequestMapping("publishData")
     @Action(description = "发布情况")
-    public void publish(HttpServletRequest request, HttpServletResponse response)
+    public void publishData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         Long taskId = RequestUtil.getLong(request, "taskId");
         String jsonString = privateDataService.getOutputDataByTaskId(taskId, true);

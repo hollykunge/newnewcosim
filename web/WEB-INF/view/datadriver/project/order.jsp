@@ -10,6 +10,12 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
+    <%@include file="/commons/datadriver/formbase.jsp" %>
+    <link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <%@include file="/newtable/tablecontext.jsp" %>
+    <script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>
+    <script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>
+    <script type="text/javascript" src="${ctx}/js/hotent/subform.js"></script>
     <title>订阅数据审核</title>
 </head>
 <body>
@@ -29,7 +35,7 @@
             showHeader: true,
             dataType: "json",
             idField: "dataId",
-            url: "orderData.ht",
+            url: "${ctx}/datadriver/project/orderData.ht?projectId=${projectId}&taskId=${taskId}",
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
             striped: false,                      //是否显示行间隔色
@@ -80,14 +86,14 @@
                     align: 'left',
                     visible: true
                 }, {
-                    field: 'min',
+                    field: 'dataSenMin',
                     title: '最小值',
                     width: 160,
                     sortable: true,
                     align: 'left',
                     visible: true
                 }, {
-                    field: 'max',
+                    field: 'dataSenMax',
                     title: '最大值',
                     width: 160,
                     sortable: true,
@@ -114,6 +120,25 @@
             '</a>'
         ].join('');
     }
+
+    //设置table高度
+    function getHeight() {
+        return $(window).height() - $('.panel-heading').outerHeight(true) - 80;
+    }
+    window.operateEvents = {
+        'click #stepIntoProject': function (e, value, row, index) {
+            window.location.href = "stepinto.ht?id=" + row.projectId;
+        },
+        'click #setupProject': function (e, value, row, index) {
+            $('#myCreate').modal({
+                keyboard: true,
+                remote: "setup.ht?id=" + row.projectId
+            })
+        },
+        'click #processFlow': function (e, value, row, index) {
+            window.location.href = "${ctx}/datadriver/designflow/flowframe.ht?id=" + row.projectId;
+        }
+    };
 </script>
 </body>
 </html>
