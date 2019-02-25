@@ -63,8 +63,7 @@
             try {
                 isClient = JSInteraction.isme();
                 $("#dataList").css({"width": "100%", "height": "100%", "margin-top": "12px"});
-            }
-            catch (e) {
+            } catch (e) {
                 console.log(e)
             }
         });
@@ -72,15 +71,83 @@
 </head>
 <body id="jqxWidget">
 <div id="knowledge_frame">
-    <div id="windowHeader">
+
+        <div id="windowHeader">
                     <span>
-                        相关知识
+                        <img src="" alt="" style="margin-right: 15px"/>仿真结果
                     </span>
-    </div>
-    <div style="overflow: hidden;" id="windowContent">
-        <iframe id="knowledgeContent" src="" width="300" height="720" frameborder="0" scrolling="auto" marginheight="2px" marginwidth="2px"></iframe>
-    </div>
+        </div>
+        <div style="overflow: hidden;" id="windowContent">
+            <div id="tab">
+                <ul style="margin-left: 30px;">
+                    <li>方案1</li>
+                    <li>方案2</li>
+                    <li>方案3</li>
+                    <li>方案4</li>
+                    <li>方案5</li>
+                    <li>方案6</li>
+                    <li>方案7</li>
+                    <li>方案8</li>
+                    <li>方案9</li>
+                    <li>方案10</li>
+                    <li>方案11</li>
+                    <li>方案12</li>
+                </ul>
+                <div>
+                    <p>123123123</p>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+                <div>
+                    <img src="" style="float: left; margin: 10px;" alt=""/>
+
+                </div>
+            </div>
+        </div>
+
 </div>
+
+
 <div class="container" id="dataList">
     <div class="row">
         <div class="col-xs-9">
@@ -95,17 +162,7 @@
                 <a class="btn btn-success" href="javascript:void(0)" id="submit_btn"><span
                         class="glyphicon glyphicon-ok"></span> 提交审核</a>
                 <a class="btn btn-default" href="javascript:void(0)" id="knowledge_btn"><span
-                        class="glyphicon glyphicon-book"></span> 知识获取</a>
-                <%--<a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span--%>
-                <%--class="glyphicon glyphicon-stats"></span>--%>
-                <%--流程监控--%>
-                <%--</a>--%>
-                <%--<a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"--%>
-                <%--class="btn btn-default" target="_blank"><span--%>
-                <%--class="glyphicon glyphicon-stats" 　></span>--%>
-                <%--数据挖掘--%>
-                <%--</a>--%>
-
+                        class="glyphicon glyphicon-book"></span> 开始仿真</a>
             </div>
         </div>
     </div>
@@ -197,9 +254,7 @@
                     $('#knowledge_btn').click(function () {
                         $('#knowledge_frame').jqxWindow('open');
                     });
-                    // $('#hideWindowButton').click(function () {
-                    //     $('#knowledge_frame').jqxWindow('close');
-                    // });
+
                 }
                 ;
 
@@ -208,16 +263,13 @@
                     var jqxWidget = $('#jqxWidget');
                     var offset = jqxWidget.offset();
                     $('#knowledge_frame').jqxWindow({
-                        position: {x: offset.left + (currentWidth - 360), y: offset.top},
+                        // position: {x: offset.left + (currentWidth - 360), y: offset.top},
                         showCollapseButton: true,
-                        maxHeight: 800,
-                        maxWidth: 360,
-                        minHeight: 600,
-                        minWidth: 180,
-                        height: 720,
-                        width: 320,
+                        height: 800,
+                        width: 600,
                         autoOpen: false,
                         initContent: function () {
+                            $('#tab').jqxTabs({ height: '100%', width:  '100%' });
                             $('#knowledge_frame').jqxWindow('focus');
                         }
                     });
@@ -237,26 +289,18 @@
             ()
         )
     ;
+
     $(document).ready(function () {
         $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {
             $('#data').html(data);
         });
-
         knowledgeWindow.init();
-
     });
 
     var switch_attr_index = document.getElementById('switch_attr_index'),
-        switch_attr_data = document.getElementById('switch_attr_data'),
         switch_attr_publish = document.getElementById('switch_attr_publish'),
         switch_attr_order = document.getElementById('switch_attr_order'),
-        // statis_btn = document.getElementById('statis_btn'),
-        create_task = document.getElementById('create_task'),
-
-        switch_attr_child = document.getElementById('switch_attr_child'),
-        submit_btn = document.getElementById('submit_btn'),
-        knowledge_btn = document.getElementById('knowledge_btn'),
-        switch_attr_talk = document.getElementById('switch_attr_talk');
+        submit_btn = document.getElementById('submit_btn');
 
 
     $("#statis").on("hidden.bs.modal", function () {
@@ -284,9 +328,7 @@
             $('#publish').html(data);
         });
     }
-    knowledge_btn.onclick = function () {
-        $('#knowledgeContent').attr('src', 'http://10.12.97.30:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=${TaskInfo.ddTaskName}&type=2&j_username=${account}');
-        // $('#windowContent').html(data);
-    }
+
+
 </script>
 </html>
