@@ -179,7 +179,6 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                 var uploadFile = $('<button id="uploadFile" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-upload"></span> 上传文件</button>');
                 var importData = $('<button id="importData" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-import"></span> 导入数据</button>');
                 var delAll = $('<button id="importData" type="button" style="margin-left: 5px"><span class="glyphicon glyphicon-remove-circle"></span> 全部删除</button>');
-
                 container.append(addRow);
                 container.append(" ");
                 container.append(pubRow);
@@ -238,6 +237,7 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                     disabled: false
                 });
                 delAll.jqxTooltip({position: 'bottom', content: "点击全部删除"});
+
                 var updateButtons = function (action) {
                     switch (action) {
                         case "Select":
