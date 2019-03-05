@@ -68,8 +68,24 @@
             }
         });
     </script>
+    <style>
+        #loading{
+            position: absolute;
+            top:45%;
+            left:55%;
+            margin: -25px -150px;
+            background-color: rgba(0,0,0,0);
+            text-align: center;
+            padding:20px;
+            z-index: 9999                                                                                                   ;
+        }
+
+    </style>
 </head>
 <body id="jqxWidget">
+<div id="loading" style="display: none">
+    <img src="${ctx}/images/onLoad.gif"/> 仿真中...
+</div>
 <div id="knowledge_frame">
 
         <div id="windowHeader">
@@ -80,66 +96,131 @@
         <div style="overflow: hidden;" id="windowContent">
             <div id="tab">
                 <ul style="margin-left: 30px;">
-                    <li>方案1</li>
-                    <li>方案2</li>
-                    <li>方案3</li>
-                    <li>方案4</li>
-                    <li>方案5</li>
-                    <li>方案6</li>
-                    <li>方案7</li>
-                    <li>方案8</li>
-                    <li>方案9</li>
-                    <li>方案10</li>
-                    <li>方案11</li>
-                    <li>方案12</li>
+                    <li>图1</li>
+                    <li>图2</li>
+                    <li>图3</li>
+                    <li>图4</li>
+                    <li>图5</li>
+                    <li>图6</li>
+                    <li>图7</li>
+                    <li>图8</li>
+                    <li>图9</li>
+                    <li>图10</li>
+                    <li>图11</li>
+                    <li>图12</li>
                 </ul>
+                <%--<div>--%>
+                    <%--<div>--%>
+                        <%--<strong  style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>|--%>
+                        <%--<strong style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>--%>
+                    <%--</div>--%>
+
+                    <%--<img src="${ctx}/images/fangzhen/m2.jpg" style="margin: 2px;" alt=""/>--%>
+
+                <%--</div>--%>
+                <%--<div>--%>
+                    <%--<div>--%>
+                        <%--<strong  style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>|--%>
+                        <%--<strong style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>--%>
+                    <%--</div>--%>
+
+                    <%--<img src="${ctx}/images/fangzhen/m2.jpg" style="margin: 2px;" alt=""/>--%>
+
+                <%--</div>--%>
                 <div>
-                    <p>123123123</p>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国 &nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度：1223   m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间：123213  s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1234  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123321 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国 &nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度：1223   m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间：123213  s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1234  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123321 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1233  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123321 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123123 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1321  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 132123 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1233  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123123 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123123 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123123 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123123 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
                 <div>
-                    <img src="" style="float: left; margin: 10px;" alt=""/>
+                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
+                    <p style="float: left">1.飞行时间： 123123 s</p>
+                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
 
                 </div>
             </div>
@@ -252,7 +333,12 @@
                     $('#knowledge_frame').jqxWindow('draggable', true);
 
                     $('#knowledge_btn').click(function () {
-                        $('#knowledge_frame').jqxWindow('open');
+                        $('#loading').show();
+                        setTimeout(function(){
+                            $('#loading').hide();
+                            $('#knowledge_frame').jqxWindow('open');
+
+                        }, 3000);
                     });
 
                 }
