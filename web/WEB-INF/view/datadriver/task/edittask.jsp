@@ -22,11 +22,13 @@
     <!-- include the style of alertify-->
     <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/alertify.min.css"/>
     <link rel="stylesheet" href="${ctx}/js/alertifyjs/css/themes/default.min.css"/>
-    <link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <%--<link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>--%>
     <link href="${ctx}/styles/select/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
     <link href="${ctx}/newtable/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <%--<%@include file="/commons/datadriver/formbase.jsp" %>--%>
+    <%--<%@include file="/newtable/tablecontext.jsp" %>--%>
     <script src="${ctx}/styles/select/bootstrap-select.min.js"></script>
-    <script src="${ctx}/newtable/union-select.js"></script>
+    <script src="${ctx}/newtable/union-select_edit.js"></script>
     <script src="${ctx}/newtable/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="${ctx}/newtable/locales/bootstrap-datetimepicker.zh-CN.js"
             charset="UTF-8"></script>
@@ -145,7 +147,7 @@
                             <td>
                                 <select class="selectpicker show-tick form-control"
                                         noneResultsText="无匹配项"
-                                        data-live-search="true" id="select-first"
+                                        data-live-search="true" id="select-first_edit"
                                         data-getDataUrl="${ctx}/platform/system/sysOrg/users.ht?projectId=${TaskInfo.ddTaskProjectId}"
                                         validate="{required:true}">
                                     <c:forEach var="orgItem" items="${sysOrgList}">
@@ -156,7 +158,7 @@
 
                                 <select name="ddTaskResponsiblePerson" class="selectpicker show-tick form-control"
                                         noneResultsText="无匹配项"
-                                        data-live-search="true" id="select-second" validate="{required:true}"
+                                        data-live-search="true" id="select-second_edit" validate="{required:true}"
                                         data-max-options="1"
                                         title="请选择...">
                                 </select>
@@ -231,6 +233,7 @@
 <script>
     //@ sourceURL=edittask.js
     $(function () {
+        $("#select-second_edit").empty();
         $('.selectpicker').selectpicker();
         var options = {};
         if (showResponse) {
@@ -261,10 +264,10 @@
                         var options = '<option selected="selected" value="' + this.userId + '">' + this.fullname + '</option>';
                     else if (this.userId != ${TaskInfo.ddTaskResponsiblePerson})
                         var options = '<option value="' + this.userId + '">' + this.fullname + '</option>';
-                    $("#select-second").append(options);
+                    $("#select-second_edit").append(options);
                 });
                 // 刷新二级select
-                $("#select-second").selectpicker('refresh');
+                $("#select-second_edit").selectpicker('refresh');
             },
             error: function () {
                 console.log("请求当前组织的用户失败！" + "edittask.js");
@@ -273,29 +276,20 @@
     });
 
     //活动
-    $("#switch_attr_act").onclick = function () {
-        <%--$.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {--%>
-        <%--$('#act').html(data);--%>
-        <%--});--%>
-    }
-
-    //订阅
-    <%--$("#switch_attr_order").onclick = function () {--%>
-        <%--$.get("${ctx}/datadriver/project/orderData.ht?taskId=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {--%>
-            <%--$('#order').html(data);--%>
-        <%--});--%>
-    <%--}--%>
-    //发布
-    <%--$("#switch_attr_pub").onclick = function () {--%>
-        <%--$.get("${ctx}/datadriver/project/publishData.ht?taskId=${TaskInfo.ddTaskId}", function (data) {--%>
-            <%--$('#pub').html(data);--%>
-        <%--});--%>
-    <%--}--%>
+    $("#switch_attr_act").click (function () {
+        $.get("${ctx}/datadriver/project/publishorderdata.ht?taskId=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
+        $('#act').html(data);
+            // $('#order').remove();
+            // $('#pub').remove();
+        });
+    });
 
     //订阅
     $("#switch_attr_order").click(function () {
         $.get("${ctx}/datadriver/project/order.ht?taskId=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}", function (data) {
             $('#order').html(data);
+            // $('#act').remove();
+            // $('#pub').remove();
         });
     });
 
@@ -303,6 +297,8 @@
     $("#switch_attr_pub").click(function () {
         $.get("${ctx}/datadriver/project/publish.ht?taskId=${TaskInfo.ddTaskId}", function (data) {
             $('#pub').html(data);
+            // $('#act').remove();
+            // $('#order').remove();
         });
     });
 
@@ -312,9 +308,9 @@
         });
     });
 
-    $('#select-second').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-        var fullName = $('#select-second').find("option:selected").text();
-        var userId = $('#select-second').find("option:selected").val();
+    $('#select-second_edit').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+        var fullName = $('#select-second_edit').find("option:selected").text();
+        var userId = $('#select-second_edit').find("option:selected").val();
         $("#ddTaskPerson").val(fullName);
         $("#ddTaskResponsiblePerson").val(userId);
     });

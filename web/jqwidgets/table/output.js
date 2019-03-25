@@ -111,13 +111,13 @@ function outputTableInit(path, taskId, projectId, taskName, type) {
                         commit(true);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert(errorThrown);
+                        alert(0000);
                         commit(false);
                     }
                 });
             },
             deleteRow: function (dataId, commit) {
-                $.get("delPrivateData.ht?dataId=" + dataId, function (data, status) {
+                $.get("delPrivateData.ht?dataId=" + dataId +"&taskId=" + taskId, function (data, status) {
                     if (status == "success") {
                         $("#treeGridOut").jqxTreeGrid('updateBoundData');
                     }

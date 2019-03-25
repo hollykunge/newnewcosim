@@ -57,6 +57,10 @@ public class PersonalTaskController extends AbstractController {
     private OrderDataRelationService orderDataRelationService;
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private TaskVerMapService taskVerMapService;
+    @Resource
+    private PrivateVersionService privateVersionService;
 
     /**
      * 2016/12/4/
@@ -184,6 +188,10 @@ public class PersonalTaskController extends AbstractController {
     public ModelAndView todotask(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long taskId = RequestUtil.getLong(request, "id");
         Long type = RequestUtil.getLong(request, "type");
+        //形成第一个版本
+        if (taskVerMapService.getVersionNum(taskId) == null && privateDataService.getPrivateByTaskId(taskId).size() != 0) {
+            savePrivateVer(taskId,true);
+        }
         TaskInfo taskInfo = taskInfoService.getById(taskId);
         ISysUser sysUser = sysUserService.getById(taskInfo.getDdTaskResponsiblePerson());
         String account = sysUser.getAccount();
@@ -392,12 +400,13 @@ public class PersonalTaskController extends AbstractController {
      * @throws Exception
      */
     @RequestMapping("delPrivateData")
-    @Action(description = "添加私有数据")//2
+    @Action(description = "删除私有数据")//2
     @ResponseBody
     public void delPrivateData(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         try {
             String dataId = RequestUtil.getString(request, "dataId");
+            String taskId = RequestUtil.getString(request, "taskId");
             String[] dataIds = dataId.split("[,|，]");
             List<String> tempIds = Arrays.asList(dataIds);
             for (String tempId : tempIds){
@@ -405,6 +414,8 @@ public class PersonalTaskController extends AbstractController {
                     privateDataService.delprivate(Long.valueOf(tempId));
                 }
             }
+            //删除数据时更新一个版本.
+            savePrivateVer(Long.valueOf(taskId),false);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -448,9 +459,9 @@ public class PersonalTaskController extends AbstractController {
             String dataSenMax = RequestUtil.getString(request, "dataSenMax");
             String dataSenMin = RequestUtil.getString(request, "dataSenMin");
             String type = RequestUtil.getString(request, "type");
-
             PrivateData privateData2 = privateDataService.getDataById(Long.valueOf(uid));
             PrivateData privateData = new PrivateData();
+            String ddDataLastestValue = privateData2.getDdDataLastestValue();
             if (privateData2 != null) {
                 privateData2.setDdDataName(dataName);
                 privateData2.setDdDataPath(filePath);
@@ -479,10 +490,19 @@ public class PersonalTaskController extends AbstractController {
                 privateData2.setDdDataSenMax(dataSenMax);
                 privateData2.setDdDataSenMin(dataSenMin);
                 privateDataService.updateData(privateData2);
+                if(ddDataLastestValue == null){
+                    ddDataLastestValue = "";
+                }
+                if(!dataValue.equals(ddDataLastestValue)){
+                    System.out.println("++++++++++++++++"+(dataValue.equals(ddDataLastestValue))+"+++++++++++++++++++++++=");
+                //更新一个版本
+                savePrivateVer(Long.valueOf(taskId),false);
+                }
                 resultMsg = String.valueOf(privateData2.getDdDataId());
             }
         } catch (Exception e) {
             resultMsg = "failed";
+            logger.info(e.getMessage());
         }
         PrintWriter out = response.getWriter();
         out.append(resultMsg);
@@ -491,7 +511,7 @@ public class PersonalTaskController extends AbstractController {
     }
 
     /**
-     * 更新除私有数据
+     * 添加私有数据
      *
      * @param request
      * @param response
@@ -543,6 +563,15 @@ public class PersonalTaskController extends AbstractController {
             privateData.setDdDataIsLeaf(Short.valueOf(isLeaf));
             privateData.setDdDataTaskName(taskName);
             privateDataService.addDDPrivateData(privateData);
+
+            //没有数据时，判断是否有版本信息，没有版本在新建第一条数据时形成第一个版本
+            Long versionNum = taskVerMapService.getVersionNum(Long.valueOf(taskId));
+            if (versionNum == null) {
+                savePrivateVer(Long.valueOf(taskId),true);
+            }else{
+                savePrivateVer(Long.valueOf(taskId),false);
+            }
+
             resultMsg = String.valueOf(privateData.getDdDataId());
         } catch (Exception e) {
             resultMsg = "failed";
@@ -614,5 +643,56 @@ public class PersonalTaskController extends AbstractController {
             ModelAndView mv = this.getAutoView().addObject("taskId", id);
             return mv;
         }
+    }
+
+    /**
+     *
+     * @param taskId
+     * @param flag 为true时形成第一个版本，为false时更新版本
+     */
+    private void savePrivateVer(Long taskId,boolean flag){
+        Long versionNum = taskVerMapService.getVersionNum(Long.valueOf(taskId));
+        TaskVerMap taskVerMap = new TaskVerMap();
+        taskVerMap.setDdTaskVerId(UniqueIdUtil.genId());
+        taskVerMap.setDdVersionTime(new Date());
+        taskVerMap.setDdTaskId(Long.valueOf(taskId));
+        if (flag) {
+            taskVerMap.setDdVersionNum(1);
+        }else {
+            taskVerMap.setDdVersionNum(Integer.valueOf(String.valueOf(versionNum)) + 1);
+        }
+
+        taskVerMapService.addTaskVerMap(taskVerMap);
+        for (PrivateData privateData : privateDataService.getPrivateByTaskId(taskId)) {
+            PrivateVersion privateVersion = new PrivateVersion();
+            privateVersion.setDdVersionId(UniqueIdUtil.genId());
+            privateVersion.setDdDataCreateTime(privateData.getDdDataCreateTime());
+            privateVersion.setDdDataCreator(privateData.getDdDataCreator());
+            privateVersion.setDdDataCreatorId(privateData.getDdDataCreatorId());
+            privateVersion.setDdDataDepth(privateData.getDdDataDepth());
+            privateVersion.setDdDataDescription(privateData.getDdDataDescription());
+            privateVersion.setDdDataEngName(privateData.getDdDataEngName());
+            privateVersion.setDdDataId(privateData.getDdDataId());
+            privateVersion.setDdDataIsLeaf(privateData.getDdDataIsLeaf());
+            privateVersion.setDdDataIsSubmit(privateData.getDdDataIsSubmit());
+            privateVersion.setDdDataLastestValue(privateData.getDdDataLastestValue());
+            privateVersion.setDdDataName(privateData.getDdDataName());
+            privateVersion.setDdDataNodePath(privateData.getDdDataNodePath());
+            privateVersion.setDdDataOrderState(privateData.getDdDataOrderState());
+            privateVersion.setDdDataParentId(privateData.getDdDataParentId());
+            privateVersion.setDdDataPath(privateData.getDdDataPath());
+            privateVersion.setDdDataProjId(privateData.getDdDataProjId());
+            privateVersion.setDdDataPublishState(privateData.getDdDataPublishState());
+            privateVersion.setDdDataReserved2(privateData.getDdDataReserved2());
+            privateVersion.setDdDataSenMax(privateData.getDdDataSenMax());
+            privateVersion.setDdDataSenMin(privateData.getDdDataSenMin());
+            privateVersion.setDdDataTaskId(privateData.getDdDataTaskId());
+            privateVersion.setDdDataTaskName(privateData.getDdDataTaskName());
+            privateVersion.setDdDataType(privateData.getDdDataType());
+            privateVersion.setDdDataUnit(privateData.getDdDataUnit());
+            privateVersion.setDdDataReserved1(taskVerMap.getDdTaskVerId());
+            privateVersionService.addPrivateVer(privateVersion);
+        }
+
     }
 }

@@ -3,7 +3,7 @@
 <mapper namespace="com.casic.datadriver.model.data.TaskVerMap">
   <resultMap id="BaseResultMap" type="com.casic.datadriver.model.data.TaskVerMap">
     <id column="DD_TASK_VER_ID" jdbcType="NUMERIC" property="ddTaskVerId" />
-    <result column="DD_VERSION_TIME" jdbcType="DATE" property="ddVersionTime" />
+    <result column="DD_VERSION_TIME" jdbcType="TIMESTAMP" property="ddVersionTime" />
     <result column="DD_TASK_ID" jdbcType="NUMERIC" property="ddTaskId" />
     <result column="DD_VERSION_NUM" jdbcType="INTEGER" property="ddVersionNum" />
     <result column="DD_VERSION_DESCRIPTION" jdbcType="VARCHAR" property="ddVersionDescription" />
@@ -31,6 +31,7 @@
     <include refid="Base_Column_List" />
     from dd_task_ver_map
     where DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC}
+    order by DD_VERSION_NUM desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from dd_task_ver_map
@@ -40,7 +41,7 @@
     insert into dd_task_ver_map (DD_TASK_VER_ID, DD_VERSION_TIME, DD_TASK_ID,
       DD_VERSION_NUM, DD_VERSION_DESCRIPTION, DD_RESERVED1, 
       DD_RESERVED2)
-    values (#{ddTaskVerId,jdbcType=NUMERIC}, #{ddVersionTime,jdbcType=DATE}, #{ddTaskId,jdbcType=NUMERIC},
+    values (#{ddTaskVerId,jdbcType=NUMERIC}, #{ddVersionTime,jdbcType=TIMESTAMP}, #{ddTaskId,jdbcType=NUMERIC},
       #{ddVersionNum,jdbcType=INTEGER}, #{ddVersionDescription,jdbcType=VARCHAR}, #{ddReserved1,jdbcType=NUMERIC}, 
       #{ddReserved2,jdbcType=VARCHAR})
   </insert>
@@ -74,7 +75,7 @@
         #{ddTaskVerId,jdbcType=NUMERIC},
       </if>
       <if test="ddVersionTime != null">
-        #{ddVersionTime,jdbcType=DATE},
+        #{ddVersionTime,jdbcType=TIMESTAMP},
       </if>
       <if test="ddTaskId != null">
         #{ddTaskId,jdbcType=NUMERIC},
@@ -97,7 +98,7 @@
     update dd_task_ver_map
     <set>
       <if test="ddVersionTime != null">
-        DD_VERSION_TIME = #{ddVersionTime,jdbcType=DATE},
+        DD_VERSION_TIME = #{ddVersionTime,jdbcType=TIMESTAMP},
       </if>
       <if test="ddTaskId != null">
         DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
@@ -119,7 +120,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.casic.datadriver.model.data.TaskVerMap">
     update dd_task_ver_map
-    set DD_VERSION_TIME = #{ddVersionTime,jdbcType=DATE},
+    set DD_VERSION_TIME = #{ddVersionTime,jdbcType=TIMESTAMP},
       DD_TASK_ID = #{ddTaskId,jdbcType=NUMERIC},
       DD_VERSION_NUM = #{ddVersionNum,jdbcType=INTEGER},
       DD_VERSION_DESCRIPTION = #{ddVersionDescription,jdbcType=VARCHAR},

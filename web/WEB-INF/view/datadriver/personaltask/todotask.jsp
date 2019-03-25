@@ -1,3 +1,4 @@
+
 <%--
   Created by IntelliJ IDEA.
   User: dodo
@@ -63,172 +64,24 @@
             try {
                 isClient = JSInteraction.isme();
                 $("#dataList").css({"width": "100%", "height": "100%", "margin-top": "12px"});
-            } catch (e) {
+            }
+            catch (e) {
                 console.log(e)
             }
         });
     </script>
-    <style>
-        #loading{
-            position: absolute;
-            top:45%;
-            left:55%;
-            margin: -25px -150px;
-            background-color: rgba(0,0,0,0);
-            text-align: center;
-            padding:20px;
-            z-index: 9999                                                                                                   ;
-        }
-
-    </style>
 </head>
 <body id="jqxWidget">
-<div id="loading" style="display: none">
-    <img src="${ctx}/images/onLoad.gif"/> 仿真中...
-</div>
 <div id="knowledge_frame">
-
-        <div id="windowHeader">
+    <div id="windowHeader">
                     <span>
-                        <img src="" alt="" style="margin-right: 15px"/>仿真结果
+                        相关知识
                     </span>
-        </div>
-        <div style="overflow: hidden;" id="windowContent">
-            <div id="tab">
-                <ul style="margin-left: 30px;">
-                    <li>图1</li>
-                    <li>图2</li>
-                    <li>图3</li>
-                    <li>图4</li>
-                    <li>图5</li>
-                    <li>图6</li>
-                    <li>图7</li>
-                    <li>图8</li>
-                    <li>图9</li>
-                    <li>图10</li>
-                    <li>图11</li>
-                    <li>图12</li>
-                </ul>
-                <%--<div>--%>
-                    <%--<div>--%>
-                        <%--<strong  style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>|--%>
-                        <%--<strong style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>--%>
-                    <%--</div>--%>
-
-                    <%--<img src="${ctx}/images/fangzhen/m2.jpg" style="margin: 2px;" alt=""/>--%>
-
-                <%--</div>--%>
-                <%--<div>--%>
-                    <%--<div>--%>
-                        <%--<strong  style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>|--%>
-                        <%--<strong style="display: inline">末制导精度</strong><div style="display: inline">123123123</div>|<strong style="display: inline">飞行时间</strong><div style="display: inline">123123123</div>--%>
-                    <%--</div>--%>
-
-                    <%--<img src="${ctx}/images/fangzhen/m2.jpg" style="margin: 2px;" alt=""/>--%>
-
-                <%--</div>--%>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国 &nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度：1223   m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间：123213  s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1234  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123321 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国 &nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度：1223   m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间：123213  s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1234  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123321 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1233  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123321 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123123 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1321  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 132123 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1233  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123123 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123123 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123123 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123123 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-                <div>
-                    <p style="float: left">1.武器名称：歼——05&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">2.生产国家：中国&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.末制导精度： 1231  m&nbsp&nbsp&nbsp</p>
-                    <p style="float: left">1.飞行时间： 123123 s</p>
-                    <img src="" style="float: left; margin: 10px;" alt="歼——05"/>
-
-                </div>
-            </div>
-        </div>
-
+    </div>
+    <div style="overflow: hidden;" id="windowContent">
+        <iframe id="knowledgeContent" src="" width="300" height="720" frameborder="0" scrolling="auto" marginheight="2px" marginwidth="2px"></iframe>
+    </div>
 </div>
-
-
 <div class="container" id="dataList">
     <div class="row">
         <div class="col-xs-9">
@@ -243,7 +96,17 @@
                 <a class="btn btn-success" href="javascript:void(0)" id="submit_btn"><span
                         class="glyphicon glyphicon-ok"></span> 提交审核</a>
                 <a class="btn btn-default" href="javascript:void(0)" id="knowledge_btn"><span
-                        class="glyphicon glyphicon-book"></span> 开始仿真</a>
+                        class="glyphicon glyphicon-book"></span> 知识获取</a>
+                <%--<a id="statis_btn" href="javascript:void(0)" class="btn btn-default"><span--%>
+                <%--class="glyphicon glyphicon-stats"></span>--%>
+                <%--流程监控--%>
+                <%--</a>--%>
+                <%--<a id="data_btn" href="http://10.12.99.118:8080/octagon/?username=realrec@neusoft.com"--%>
+                <%--class="btn btn-default" target="_blank"><span--%>
+                <%--class="glyphicon glyphicon-stats" 　></span>--%>
+                <%--数据挖掘--%>
+                <%--</a>--%>
+
             </div>
         </div>
     </div>
@@ -326,36 +189,33 @@
     //@ sourceURL=todotask.ht
     var knowledgeWindow = (function () {
                 var currentWidth = $(window).width();
-
                 //Adding event listeners
                 function _addEventListeners() {
                     $('#knowledge_frame').jqxWindow('resizable', true);
                     $('#knowledge_frame').jqxWindow('draggable', true);
-
                     $('#knowledge_btn').click(function () {
-                        $('#loading').show();
-                        setTimeout(function(){
-                            $('#loading').hide();
-                            $('#knowledge_frame').jqxWindow('open');
-
-                        }, 3000);
+                        $('#knowledge_frame').jqxWindow('open');
                     });
-
+                    // $('#hideWindowButton').click(function () {
+                    //     $('#knowledge_frame').jqxWindow('close');
+                    // });
                 }
                 ;
-
                 //Creating the window
                 function _createWindow() {
                     var jqxWidget = $('#jqxWidget');
                     var offset = jqxWidget.offset();
                     $('#knowledge_frame').jqxWindow({
-                        // position: {x: offset.left + (currentWidth - 360), y: offset.top},
+                        position: {x: offset.left + (currentWidth - 360), y: offset.top},
                         showCollapseButton: true,
-                        height: 800,
-                        width: 600,
+                        maxHeight: 800,
+                        maxWidth: 360,
+                        minHeight: 600,
+                        minWidth: 180,
+                        height: 720,
+                        width: 320,
                         autoOpen: false,
                         initContent: function () {
-                            $('#tab').jqxTabs({ height: '100%', width:  '100%' });
                             $('#knowledge_frame').jqxWindow('focus');
                         }
                     });
@@ -375,24 +235,25 @@
             ()
         )
     ;
-
     $(document).ready(function () {
         $.get("showdata.ht?id=${TaskInfo.ddTaskId}&projectId=${TaskInfo.ddTaskProjectId}&type=${type}", function (data) {
             $('#data').html(data);
         });
         knowledgeWindow.init();
     });
-
     var switch_attr_index = document.getElementById('switch_attr_index'),
+        switch_attr_data = document.getElementById('switch_attr_data'),
         switch_attr_publish = document.getElementById('switch_attr_publish'),
         switch_attr_order = document.getElementById('switch_attr_order'),
-        submit_btn = document.getElementById('submit_btn');
-
-
+        // statis_btn = document.getElementById('statis_btn'),
+        create_task = document.getElementById('create_task'),
+        switch_attr_child = document.getElementById('switch_attr_child'),
+        submit_btn = document.getElementById('submit_btn'),
+        knowledge_btn = document.getElementById('knowledge_btn'),
+        switch_attr_talk = document.getElementById('switch_attr_talk');
     $("#statis").on("hidden.bs.modal", function () {
         $(this).removeData("bs.modal");
     });
-
     submit_btn.onclick = function () {
         $.get("submittask.ht?id=${TaskInfo.ddTaskId}", function (data) {
             window.location.href = 'list.ht';
@@ -414,7 +275,9 @@
             $('#publish').html(data);
         });
     }
-
-
+    knowledge_btn.onclick = function () {
+        $('#knowledgeContent').attr('src', 'http://10.12.97.30:8006/giksp/knowledge/knowledgeforer!krecommendUI.action?key=${TaskInfo.ddTaskName}&type=2&j_username=${account}');
+        // $('#windowContent').html(data);
+    }
 </script>
 </html>

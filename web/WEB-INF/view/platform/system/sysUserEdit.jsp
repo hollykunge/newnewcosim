@@ -610,7 +610,7 @@
                         <th>是否在职:</th>
                         <td>
                             <select name="isLock" class="select" style="width:245px !important"
-                                    <c:if test="${bySelf==1}">disabled="disabled"</c:if>>
+                                    disabled="disabled">
                                 <option value="<%=SysUser.UN_LOCKED %>"
                                         <c:if test="${sysUser.isLock==0}">selected</c:if> >是
                                 </option>
@@ -709,7 +709,7 @@
                 </table>
                 <input type="hidden" name="userId" value="${sysUser.userId}"/>
                 <input type="hidden" id="picture" name="picture" value="${sysUser.picture}"/>
-                <%--<input type="hidden" id="isLock" name="isLock" value="${sysUser.isLock}"/>--%>
+                <input type="hidden" id="isLock" name="isLock" value="${sysUser.isLock}"/>
 
                 <input type="hidden" id="psnSecretLevel" name="psnSecretLevel" value="${sysUser.psnSecretLevel}"/>
 

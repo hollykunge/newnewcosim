@@ -10,23 +10,24 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-    <%@include file="/commons/datadriver/formbase.jsp" %>
-    <link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>
-    <%@include file="/newtable/tablecontext.jsp" %>
-    <script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>
-    <script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>
-    <script type="text/javascript" src="${ctx}/js/hotent/subform.js"></script>
+    <%--<%@include file="/commons/datadriver/formbase.jsp" %>--%>
+    <%--<link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>--%>
+    <%--<%@include file="/newtable/tablecontext.jsp" %>--%>
+    <%--<script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>--%>
+    <%--<script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>--%>
+    <%--<script type="text/javascript" src="${ctx}/js/hotent/subform.js"></script>--%>
+
+        <%--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>--%>
+        <%--<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>--%>
+        <%--<script src="${ctx}/newtable/bootstrap-table.js"></script>--%>
     <title>订阅数据审核</title>
 </head>
 <body>
+<div class="row" id="toolbar"></div>
 <div id="order_check">
     <table id="table_order"></table>
-</div>
+</body>
 <script type="text/javascript">
-    $(function () {
-        initTable();
-    });
-
     var $table_order = $('#table_order');
     var curRow = {};
 
@@ -78,6 +79,13 @@
                     sortable: false,
                     align: 'left',
                     visible: true
+                },{
+                    field: 'dataType',
+                    title: '类型',
+                    width: 160,
+                    sortable: true,
+                    align: 'left',
+                    visible: true
                 }, {
                     field: 'dataValue',
                     title: '数值',
@@ -115,10 +123,21 @@
     }
     //操作
     function operateData(value, row, index) {
-        return [
-            '<a id="feedback" href="javascript:void(0)" class="btn btn-success btn-xs" title="点击进行反馈"><span class="glyphicon glyphicon-log-in"></span> 反馈',
-            '</a>'
-        ].join('');
+        if(row.dataType == '文件' || row.dataType == '模型' ){
+            return [
+                '<a id="feedback" href="javascript:void(0)" class="btn btn-success btn-xs" title="点击进行反馈"><span class="glyphicon glyphicon-log-in"></span> 反馈',
+                '</a>',
+                '   ',
+                '<a id="download" href="javascript:void(0)" class="btn btn-info btn-xs" title="点击进行下载"><span class="glyphicon glyphicon-log-in"></span> 下载',
+                '</a>'
+            ].join('');
+        } else {
+            return [
+                '<a id="feedback" href="javascript:void(0)" class="btn btn-success btn-xs" title="点击进行反馈"><span class="glyphicon glyphicon-log-in"></span> 反馈',
+                '</a>'
+            ].join('');
+        }
+
     }
 
     //设置table高度
@@ -137,8 +156,14 @@
         },
         'click #processFlow': function (e, value, row, index) {
             window.location.href = "${ctx}/datadriver/designflow/flowframe.ht?id=" + row.projectId;
+        },
+        'click #download': function (e, value, row, index) {
+            window.location.href = "${ctx}/datadriver/privatedata/getPrivatefile.ht?id=" + row.dataId;
         }
     };
+
+    $(function () {
+        initTable();
+    });
 </script>
-</body>
 </html>

@@ -1,40 +1,52 @@
+<!DOCTYPE html>
 <%--
   Created by IntelliJ IDEA.
-  User: holly
-  Date: 2018/12/25
-  Time: 11:25
+  User: d
+  Date: 2017/1/19
+  Time: 上午10:51
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="f" uri="http://www.jee-soft.cn/functions" %>
+<%@ taglib prefix="display" uri="http://displaytag.sf.net" %>
+<%@ taglib prefix="hotent" uri="http://www.jee-soft.cn/paging" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@include file="/commons/include/html_doctype.html" %>
+<html lang="zh-CN" style="height: 100%; margin: 0px">
 <head>
-    <%--<%@include file="/commons/datadriver/formbase.jsp" %>--%>
-    <%--<link href="${ctx}/newtable/bootstrap.css" rel="stylesheet" type="text/css"/>--%>
-    <%--<%@include file="/newtable/tablecontext.jsp" %>--%>
-    <%--<script type="text/javascript" src="${ctx}/js/hotent/CustomValid.js"></script>--%>
-    <%--<script type="text/javascript" src="${ctx}/js/hotent/formdata.js"></script>--%>
-    <%--<script type="text/javascript" src="${ctx}/js/hotent/subform.js"></script>--%>
-    <title>发布数据审核</title>
-</head>
-<body>
-<div class="row" id="toolbar"></div>
-<div id="publish_check">
-    <table id="table_publish"></table>
-</div>
-<script type="text/javascript">
-    var $table_order = $('#table_publish');
-    var curRow = {};
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+    <%--<script type="text/javascript" src="${ctx}/jqwidgets/jqx-all.js"></script>--%>
+    <title>进入任务页面</title>
 
+</head>
+
+<body style="height: 100%;">
+<div class="row" id="toolbar_center"></div>
+<%--<div id="dataVersionList">
+    <table id="data_center_table"></table>
+</div>--%>
+<table id="data_center_table"></table>
+</body>
+<script type="text/javascript">
+    //设置table高度
+    function getHeight() {
+        return $(window).height() - $('.panel-heading').outerHeight(true) - 80;
+    }
+    var $data_center_table = $('#data_center_table');
+    var curRow = {};
     function initTable() {
-        $table_order.bootstrapTable({
+        $data_center_table.bootstrapTable({
             showHeader: true,
+            url: "${ctx}/datadriver/project/getVersionList.ht?taskId=${taskId}",
             dataType: "json",
-            idField: "dataId",
-            url: "${ctx}/datadriver/project/publishData.ht?taskId=${taskId}",
+            idField: "ddTaskVerId",
+//            classes: "table table-hover table-striped",
             method: 'get',                      //请求方式（*）
-            toolbar: '#toolbar',                //工具按钮用哪个容器
+            toolbar: '#toolbar_center',                //工具按钮用哪个容器
             striped: false,                      //是否显示行间隔色
             cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,
@@ -60,46 +72,43 @@
             minimumCountColumns: 5,             //当列数小于此值时，将隐藏内容列下拉框。
             clickToSelect: false,                //是否启用点击选中行
             height: getHeight(),                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-            uniqueId: "dataId",                     //每一行的唯一标识，一般为主键列
+            uniqueId: "ddTaskVerId",                     //每一行的唯一标识，一般为主键列
             cardView: false,                    //是否显示详细视图
             columns: [
                 {
-                    field: 'dataId',
-                    title: '数据ID',
+                    field: 'ddTaskId',
+                    title: '任务ID',
                     sortable: false,
                     align: 'left',
                     visible: false
                 }, {
-                    field: 'dataName',
-                    title: '数据名称',
+                    field: 'ddTaskName',
+                    title: '任务名称',
                     sortable: false,
                     align: 'left',
                     visible: true
-                },{
-                    field: 'dataType',
-                    title: '类型',
-                    width: 160,
+                }, {
+                    field: 'ddTaskVerId',
+                    title: '任务版本ID',
+                    sortable: true,
+                    align: 'left',
+                    visible: false
+                }
+                , {
+                    field: 'ddVersionDescription',
+                    title: '版本说明',
                     sortable: true,
                     align: 'left',
                     visible: true
                 }, {
-                    field: 'dataValue',
-                    title: '数值',
-                    width: 160,
+                    field: 'ddVersionId',
+                    title: '版本ID',
                     sortable: true,
                     align: 'left',
-                    visible: true
+                    visible: false
                 }, {
-                    field: 'dataSenMin',
-                    title: '最小值',
-                    width: 160,
-                    sortable: true,
-                    align: 'left',
-                    visible: true
-                }, {
-                    field: 'dataSenMax',
-                    title: '最大值',
-                    width: 160,
+                    field: 'ddVersionNum',
+                    title: '版本号',
                     sortable: true,
                     align: 'left',
                     visible: true
@@ -107,9 +116,8 @@
                     field: 'operate',
                     title: '操作',
                     align: 'center',
-                    width: 220,
                     events: operateEvents,
-                    formatter: operateData
+                    formatter: operateTaskVersion
                 }
             ],
             onClickRow: function (row, $element) {
@@ -117,35 +125,24 @@
             }
         });
     }
+
     //操作
-    function operateData(value, row, index) {
+    function operateTaskVersion(value, row, index) {
         return [
-            '<a id="feedback" href="javascript:void(0)" class="btn btn-success btn-xs" title="点击进行反馈"><span class="glyphicon glyphicon-log-in"></span> 反馈',
+            '<a id="getVersionList" href="javascript:void(0)" class="btn btn-success btn-xs" title="点击查看任务数据版本列表"><span class="glyphicon glyphicon-list-alt"></span> 查看版本',
             '</a>'
         ].join('');
     }
-
-    //设置table高度
-    function getHeight() {
-        return $(window).height() - $('.panel-heading').outerHeight(true) - 80;
-    }
     window.operateEvents = {
-        'click #stepIntoProject': function (e, value, row, index) {
-            window.location.href = "stepinto.ht?id=" + row.projectId;
-        },
-        'click #setupProject': function (e, value, row, index) {
-            $('#myCreate').modal({
-                keyboard: true,
-                remote: "setup.ht?id=" + row.projectId
+        'click #getVersionList': function (e, value, row, index) {
+            $.get("${ctx}/datadriver/project/taskactivity.ht?versionId=" + row.ddTaskVerId, function (data) {
+                // $('#dataVersionList').html(data);
+                $('#act').html(data);
             })
-        },
-        'click #processFlow': function (e, value, row, index) {
-            window.location.href = "${ctx}/datadriver/designflow/flowframe.ht?id=" + row.projectId;
         }
     };
     $(function () {
         initTable();
     });
 </script>
-</body>
 </html>
