@@ -25,7 +25,9 @@
 
 <body style="height: 100%;">
 <div class="row" id="toolbar_center"></div>
-<table id="data_center_table"></table>
+    <div id="dataVersionList">
+        <table id="data_center_table"></table>
+    </div>
 </body>
 <script type="text/javascript">
     //设置table高度
@@ -37,7 +39,7 @@
     function initTable() {
         $data_center_table.bootstrapTable({
             showHeader: true,
-            url: 'getVersionList.ht?taskId=${taskId}',
+            url: "${ctx}/datadriver/datacenter/getVersionList.ht?taskId=${taskId}",
             dataType: "json",
             idField: "ddTaskVerId",
 //            classes: "table table-hover table-striped",
@@ -131,8 +133,8 @@
     }
     window.operateEvents = {
         'click #getVersionList': function (e, value, row, index) {
-            $.get("dataversion.ht?versionId=" + row.ddTaskVerId, function (data) {
-                $('#listFrame').html(data);
+            $.get("${ctx}/datadriver/datacenter/dataversion.ht?versionId=" + row.ddTaskVerId, function (data) {
+                $('#dataVersionList').html(data);
             })
         }
     };

@@ -3,12 +3,16 @@ package com.casic.datadriver.controller.data;
 import com.casic.datadriver.controller.AbstractController;
 
 import com.casic.datadriver.model.data.PrivateData;
+import com.casic.datadriver.model.data.PrivateVersion;
+import com.casic.datadriver.model.data.TaskVerMap;
 import com.casic.datadriver.model.modelcenter.ModelCenterModel;
 import com.casic.datadriver.model.task.TaskInfo;
 import com.casic.datadriver.service.ModelCenterService;
 import com.casic.datadriver.service.data.DataSnapShotIdService;
 
 import com.casic.datadriver.service.data.PrivateDataService;
+import com.casic.datadriver.service.data.PrivateVersionService;
+import com.casic.datadriver.service.data.TaskVerMapService;
 import com.casic.datadriver.service.task.TaskInfoService;
 import com.hotent.core.annotion.Action;
 import com.hotent.core.util.AppUtil;
@@ -87,6 +91,11 @@ public class PrivateDataController extends AbstractController {
 
     @Resource
     private SysUserService sysUserService;
+
+    @Resource
+    private TaskVerMapService taskVerMapService;
+    @Resource
+    private PrivateVersionService privateVersionService;
 
     /**
      * ?????????.
@@ -558,6 +567,50 @@ public class PrivateDataController extends AbstractController {
                     .importBrandPeriodSort(in, taskId, projectId, taskinfo.getDdTaskName());
 
             message = new ResultMessage(ResultMessage.Success, "成功导入" + count + "条");
+            if(count != 0){
+            Long versionNum = taskVerMapService.getVersionNum(Long.valueOf(taskId));
+            TaskVerMap taskVerMap = new TaskVerMap();
+            taskVerMap.setDdTaskVerId(UniqueIdUtil.genId());
+            taskVerMap.setDdVersionTime(new Date());
+            taskVerMap.setDdTaskId(Long.valueOf(taskId));
+            if (versionNum == null) {
+                taskVerMap.setDdVersionNum(1);
+            }else {
+                taskVerMap.setDdVersionNum(Integer.valueOf(String.valueOf(versionNum)) + 1);
+            }
+
+            taskVerMapService.addTaskVerMap(taskVerMap);
+            for (PrivateData privateData : privateDataService.getPrivateByTaskId(taskId)) {
+                PrivateVersion privateVersion = new PrivateVersion();
+                privateVersion.setDdVersionId(UniqueIdUtil.genId());
+                privateVersion.setDdDataCreateTime(privateData.getDdDataCreateTime());
+                privateVersion.setDdDataCreator(privateData.getDdDataCreator());
+                privateVersion.setDdDataCreatorId(privateData.getDdDataCreatorId());
+                privateVersion.setDdDataDepth(privateData.getDdDataDepth());
+                privateVersion.setDdDataDescription(privateData.getDdDataDescription());
+                privateVersion.setDdDataEngName(privateData.getDdDataEngName());
+                privateVersion.setDdDataId(privateData.getDdDataId());
+                privateVersion.setDdDataIsLeaf(privateData.getDdDataIsLeaf());
+                privateVersion.setDdDataIsSubmit(privateData.getDdDataIsSubmit());
+                privateVersion.setDdDataLastestValue(privateData.getDdDataLastestValue());
+                privateVersion.setDdDataName(privateData.getDdDataName());
+                privateVersion.setDdDataNodePath(privateData.getDdDataNodePath());
+                privateVersion.setDdDataOrderState(privateData.getDdDataOrderState());
+                privateVersion.setDdDataParentId(privateData.getDdDataParentId());
+                privateVersion.setDdDataPath(privateData.getDdDataPath());
+                privateVersion.setDdDataProjId(privateData.getDdDataProjId());
+                privateVersion.setDdDataPublishState(privateData.getDdDataPublishState());
+                privateVersion.setDdDataReserved2(privateData.getDdDataReserved2());
+                privateVersion.setDdDataSenMax(privateData.getDdDataSenMax());
+                privateVersion.setDdDataSenMin(privateData.getDdDataSenMin());
+                privateVersion.setDdDataTaskId(privateData.getDdDataTaskId());
+                privateVersion.setDdDataTaskName(privateData.getDdDataTaskName());
+                privateVersion.setDdDataType(privateData.getDdDataType());
+                privateVersion.setDdDataUnit(privateData.getDdDataUnit());
+                privateVersion.setDdDataReserved1(taskVerMap.getDdTaskVerId());
+                privateVersionService.addPrivateVer(privateVersion);
+            }
+            }
         } catch (Exception ex) {
             // 改为人工刷新缓存KeyContextManager.clearPeriodCacheData(new
             // PeriodDimensions());// 清理所有缓存

@@ -6,16 +6,16 @@
     <title>数据版本</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
 
-    <script src="${ctx}/jqwidgets/table/dataversion.js"></script>
+    <script type="text/javascript" src="${ctx}/jqwidgets/table/taskactivity.js"></script>
+    <%--<script type="text/javascript" src="${ctx}/jqwidgets/jqx-all.js"></script>--%>
+
 </head>
 <body>
 <div id="table_version_detail"></div>
 </body>
 <script type="text/javascript">
     $(function () {
-        dataVersionTableInit('${ctx}/datadriver/datacenter/getListByVerId.ht?versionId=${versionId}', ${versionId})
+        dataVersionTableInitInProject('${ctx}/datadriver/project/getListByVerId.ht?versionId=${versionId}', ${versionId})
     });
 </script>
 </html>
-
-

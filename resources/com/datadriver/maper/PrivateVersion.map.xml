@@ -11,7 +11,7 @@
     <result column="DD_DATA_PUBLISH_STATE" jdbcType="TINYINT" property="ddDataPublishState" />
     <result column="DD_DATA_ORDER_STATE" jdbcType="SMALLINT" property="ddDataOrderState" />
     <result column="DD_DATA_IS_SUBMIT" jdbcType="SMALLINT" property="ddDataIsSubmit" />
-    <result column="DD_DATA_CREATE_TIME" jdbcType="DATE" property="ddDataCreateTime" />
+    <result column="DD_DATA_CREATE_TIME" jdbcType="TIMESTAMP" property="ddDataCreateTime" />
     <result column="DD_DATA_CREATOR" jdbcType="VARCHAR" property="ddDataCreator" />
     <result column="DD_DATA_CREATOR_ID" jdbcType="NUMERIC" property="ddDataCreatorId" />
     <result column="DD_DATA_SEN_MIN" jdbcType="VARCHAR" property="ddDataSenMin" />
@@ -42,18 +42,21 @@
     <include refid="Base_Column_List" />
     from dd_private_version
     where DD_VERSION_ID = #{ddVersionId,jdbcType=NUMERIC}
+    order by DD_DATA_ID desc
   </select>
   <select id="getListByVerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from dd_private_version
     where DD_DATA_RESERVED1 = #{ddVersionId,jdbcType=NUMERIC}
+    order by DD_DATA_ID desc
   </select>
   <select id="getListBytaskId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from dd_private_version
     where DD_DATA_TASK_ID = #{taskId,jdbcType=NUMERIC}
+    order by DD_DATA_ID desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
   delete from dd_private_version
@@ -77,7 +80,7 @@
     values (#{ddVersionId,jdbcType=NUMERIC}, #{ddDataId,jdbcType=NUMERIC}, #{ddDataName,jdbcType=VARCHAR}, 
       #{ddDataType,jdbcType=TINYINT}, #{ddDataDescription,jdbcType=VARCHAR}, #{ddDataTaskId,jdbcType=NUMERIC}, 
       #{ddDataPublishState,jdbcType=TINYINT}, #{ddDataOrderState,jdbcType=SMALLINT}, 
-      #{ddDataIsSubmit,jdbcType=SMALLINT}, #{ddDataCreateTime,jdbcType=DATE}, #{ddDataCreator,jdbcType=VARCHAR},
+      #{ddDataIsSubmit,jdbcType=SMALLINT}, #{ddDataCreateTime,jdbcType=TIMESTAMP}, #{ddDataCreator,jdbcType=VARCHAR},
       #{ddDataCreatorId,jdbcType=NUMERIC}, #{ddDataSenMin,jdbcType=VARCHAR}, #{ddDataSenMax,jdbcType=VARCHAR},
       #{ddDataParentId,jdbcType=NUMERIC}, #{ddDataLastestValue,jdbcType=VARCHAR}, #{ddDataUnit,jdbcType=VARCHAR}, 
       #{ddDataTaskName,jdbcType=VARCHAR}, #{ddDataEngName,jdbcType=VARCHAR}, #{ddDataPath,jdbcType=VARCHAR}, 
@@ -196,7 +199,7 @@
         #{ddDataIsSubmit,jdbcType=SMALLINT},
       </if>
       <if test="ddDataCreateTime != null">
-        #{ddDataCreateTime,jdbcType=DATE},
+        #{ddDataCreateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="ddDataCreator != null">
         #{ddDataCreator,jdbcType=VARCHAR},
@@ -276,7 +279,7 @@
         DD_DATA_IS_SUBMIT = #{ddDataIsSubmit,jdbcType=SMALLINT},
       </if>
       <if test="ddDataCreateTime != null">
-        DD_DATA_CREATE_TIME = #{ddDataCreateTime,jdbcType=DATE},
+        DD_DATA_CREATE_TIME = #{ddDataCreateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="ddDataCreator != null">
         DD_DATA_CREATOR = #{ddDataCreator,jdbcType=VARCHAR},
@@ -339,7 +342,7 @@
       DD_DATA_PUBLISH_STATE = #{ddDataPublishState,jdbcType=TINYINT},
       DD_DATA_ORDER_STATE = #{ddDataOrderState,jdbcType=SMALLINT},
       DD_DATA_IS_SUBMIT = #{ddDataIsSubmit,jdbcType=SMALLINT},
-      DD_DATA_CREATE_TIME = #{ddDataCreateTime,jdbcType=DATE},
+      DD_DATA_CREATE_TIME = #{ddDataCreateTime,jdbcType=TIMESTAMP},
       DD_DATA_CREATOR = #{ddDataCreator,jdbcType=VARCHAR},
       DD_DATA_CREATOR_ID = #{ddDataCreatorId,jdbcType=NUMERIC},
       DD_DATA_SEN_MIN = #{ddDataSenMin,jdbcType=VARCHAR},

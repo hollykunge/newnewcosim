@@ -13,6 +13,8 @@ import com.casic.datadriver.model.task.TaskStart;
 import com.casic.datadriver.publicClass.JsonFormat;
 import com.casic.datadriver.service.data.OrderDataRelationService;
 import com.casic.datadriver.service.data.PrivateDataService;
+import com.casic.datadriver.service.data.PrivateVersionService;
+import com.casic.datadriver.service.data.TaskVerMapService;
 import com.casic.datadriver.service.flow.ProcessFlowService;
 import com.casic.datadriver.service.flow.ProjectProcessAssociaService;
 import com.casic.datadriver.service.project.ProjectService;
@@ -76,7 +78,10 @@ public class ProjectController extends BaseController {
     private PrivateDataService privateDataService;
     @Resource
     private SysUserService sysUserService;
-
+    @Resource
+    TaskVerMapService taskVerMapService;
+    @Resource
+    PrivateVersionService privateVersionService;
     /**
      * 保存项目
      *
@@ -618,20 +623,21 @@ public class ProjectController extends BaseController {
                     Long taskId = (Long) ddTaskId;
 
                     TaskInfo taskInfo = taskInfoService.getById(taskId);
+                    if(null == taskStartService.getByTaskId(taskId)){
+                        taskStart.setDdTaskStartId(UniqueIdUtil.genId());
+                        taskStart.setDdTaskId(taskId);
+                        taskStart.setDdTaskStatus(TaskStart.publishpanel);
 
-                    taskStart.setDdTaskStartId(UniqueIdUtil.genId());
-                    taskStart.setDdTaskId(taskId);
-                    taskStart.setDdTaskStatus(TaskStart.publishpanel);
+                        //更新taskinfo
+                        taskInfo.setDdTaskChildType("publishpanel");
+                        taskInfo.setDdTaskState(TaskInfo.publishpanel);
+                        taskInfoService.update(taskInfo);
+                        //添加taskstart
+                        long userId = taskInfo.getDdTaskResponsiblePerson();
+                        taskStart.setDdTaskResponcePerson(userId);
 
-                    //更新taskinfo
-                    taskInfo.setDdTaskChildType("publishpanel");
-                    taskInfo.setDdTaskState(TaskInfo.publishpanel);
-                    taskInfoService.update(taskInfo);
-                    //添加taskstart
-                    long userId = taskInfo.getDdTaskResponsiblePerson();
-                    taskStart.setDdTaskResponcePerson(userId);
-
-                    taskStartService.taskStart(taskStart);
+                        taskStartService.taskStart(taskStart);
+                    }
                     writeResultMessage(response.getWriter(), resultMsg, ResultMessage.Success);
                 }
             }
@@ -781,6 +787,49 @@ public class ProjectController extends BaseController {
             throws Exception {
         Long taskId = RequestUtil.getLong(request, "taskId");
         String jsonString = privateDataService.getOutputDataByTaskId(taskId, true);
+        PrintWriter out = response.getWriter();
+        out.append(jsonString);
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping("publishorderdata")
+    @Action(description = "版本信息")
+    public ModelAndView publishorderdata(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long taskId = RequestUtil.getLong(request, "taskId");
+        ModelAndView mv = this.getAutoView().addObject("taskId", taskId);
+        return mv;
+
+    }
+
+    @RequestMapping("getVersionList")
+    @Action(description = "版本信息")
+    public void getVersionList(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long taskId = RequestUtil.getLong(request, "taskId");
+        String jsonString = taskVerMapService.getListByTaskId(taskId);
+        PrintWriter out = response.getWriter();
+        out.append(jsonString);
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping("taskactivity")
+    @Action(description = "版本信息")
+    public ModelAndView dataversion(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long versionId = RequestUtil.getLong(request, "versionId");
+        ModelAndView mv = this.getAutoView().addObject("versionId", versionId);
+        return mv;
+    }
+
+    @RequestMapping("getListByVerId")
+    @Action(description = "根据版本ID获取数据信息")
+    public void getListByVerId(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Long versionId = RequestUtil.getLong(request, "versionId");
+        String jsonString = privateVersionService.getListByVerId(versionId);
         PrintWriter out = response.getWriter();
         out.append(jsonString);
         out.flush();

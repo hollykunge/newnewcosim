@@ -67,9 +67,9 @@ public class CoinAspect {
     /**
      * design_6,奖励30积分
      */
-    @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.save(..))")
-    public void saveAspect() {
-    }
+//    @Pointcut("execution(public * com.casic.datadriver.controller.project.ProjectController.save(..))")
+//    public void saveAspect() {
+//    }
 
     /**
      * design_8,奖励30积分
@@ -129,13 +129,13 @@ public class CoinAspect {
             }
     }
 
-    @AfterReturning(returning = "result", pointcut = "saveAspect()")
-    public void saveReturning(JoinPoint joinPoint, Object result) throws Throwable {
-        logger.info(joinPoint.getSignature().getName());
-        sourceScore = 30;
-        sourceDetail = "design_6";
-        setData(sourceScore,sourceDetail,null);
-    }
+//    @AfterReturning(returning = "result", pointcut = "saveAspect()")
+//    public void saveReturning(JoinPoint joinPoint, Object result) throws Throwable {
+//        logger.info(joinPoint.getSignature().getName());
+//        sourceScore = 30;
+//        sourceDetail = "design_6";
+//        setData(sourceScore,sourceDetail,null);
+//    }
 
     @AfterReturning(returning = "result", pointcut = "orderAndCreateAspect()")
     public void orderAndCreateReturning(JoinPoint joinPoint, Object result) throws Throwable {
