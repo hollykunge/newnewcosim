@@ -13,6 +13,7 @@ import com.hotent.core.service.BaseService;
 import com.hotent.core.util.BeanUtils;
 import com.hotent.core.util.UniqueIdUtil;
 import com.hotent.platform.auth.ISysUser;
+import com.hotent.platform.dao.system.SysOrgDao;
 import com.hotent.platform.service.system.SysUserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -48,6 +49,9 @@ public class TaskInfoService extends BaseService<TaskInfo> {
 
     @Resource
     private SysUserService sysUserService;
+
+    @Resource
+    private SysOrgDao sysOrgDao;
 
     /**
      * Adds the DD taskInfo.
@@ -262,5 +266,80 @@ public class TaskInfoService extends BaseService<TaskInfo> {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 该任务是否是本部分项目负责人派发的
+     * @param taskId 任务id
+     */
+    public Boolean isSameDept(Long taskId){
+
+        TaskInfo taskInfo = getById(taskId);
+
+        if(taskInfo != null) {
+            Long projectOrg = sysOrgDao.getOrgsByUserId(
+                    taskInfo.getDdTaskCreatorId()).get(0).getOrgId();
+
+            Long taskOrg = sysOrgDao.getOrgsByUserId(
+                    taskInfo.getDdTaskResponsiblePerson()).get(0).getOrgId();
+
+            return (projectOrg.equals(taskOrg));
+        }
+        return false;
+    }
+
+    /**
+     * 判断同一用户不同任务使用同一名称
+     */
+    public Boolean hasSameNameTask(Long taskId) {
+
+        TaskInfo taskInfo = getById(taskId);
+
+        if(taskInfo != null) {
+            Long userId = taskInfo.getDdTaskResponsiblePerson();
+            String taskName = taskInfo.getDdTaskName();
+            Long projectId = taskInfo.getDdTaskProjectId();
+            String projectName = taskInfo.getDdTaskProjectName();
+
+            List<TaskInfo> tasks = taskInfoDao.getAll();
+            for(TaskInfo ti : tasks){
+                if(ti.getDdTaskResponsiblePerson().equals(userId)) {
+                    //同项目名
+                    Boolean projectSame = (ti.getDdTaskProjectName().equals(projectName))
+                            && (!ti.getDdTaskProjectId().equals(projectId));
+                    //同任务名，这里默认跨项目同名也不允许
+                    Boolean taskSame = (ti.getDdTaskName().equals(taskName))
+                            && (!ti.getDdTaskId().equals(taskId));
+                    if(projectSame || taskSame) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public Boolean isMultiOrgProject(Long projectId) {
+
+        List<TaskInfo> tasks = taskInfoDao.queryTaskInfoByProjectId(projectId);
+
+        for(TaskInfo ti : tasks) {
+
+            Long projectOrg = sysOrgDao.getOrgsByUserId(
+                    ti.getDdTaskCreatorId()).get(0).getOrgId();
+
+            Long taskOrg = sysOrgDao.getOrgsByUserId(
+                    ti.getDdTaskResponsiblePerson()).get(0).getOrgId();
+
+            //首先看是否有跨部门任务
+            if(!projectOrg.equals(taskOrg)) {
+                //再看该跨部门任务有没有数据
+                //TODO：任务数据压根没放到任务里
+                //if(ti.getPrivateDataList().size() > 0) {
+                    return true;
+                //}
+            }
+        }
+        return false;
     }
 }
