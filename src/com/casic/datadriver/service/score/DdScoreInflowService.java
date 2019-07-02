@@ -5,6 +5,8 @@ import com.casic.datadriver.manager.ScoreRegulation;
 import com.casic.datadriver.model.coin.AddScoreModel;
 import com.casic.datadriver.model.coin.DdScoreInflow;
 import com.casic.datadriver.service.cache.Cache;
+import com.casic.datadriver.service.project.ProjectService;
+import com.casic.datadriver.service.task.TaskInfoService;
 import com.hotent.core.db.IEntityDao;
 import com.hotent.core.util.AppUtil;
 import com.hotent.core.util.UniqueIdUtil;
@@ -50,6 +52,9 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
 
     @Resource
     private DdScoreService ddScoreService;
+
+    @Resource
+    private TaskInfoService taskInfoService;
 
     @Override
     protected IEntityDao<DdScoreInflow, Long> getEntityDao() {
@@ -326,6 +331,23 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
 
         logger.info("handle message : " + addScoreModel.getAccount()
                 + " " + addScoreModel.getSourceDetail() + " score : " + addScoreModel.getSourceScore());
+
+        //1.本部门任务派发不计分
+        if(taskInfoService.isSameDept(addScoreModel.getResourceId())) {
+            logger.info("部门内部发布订阅活动，不计分");
+            return;
+        }
+        //2.同名不计分
+        if(taskInfoService.hasSameNameTask(addScoreModel.getResourceId())) {
+            logger.info("项目或任务同名，不计分");
+            return;
+        }
+        //3.完成跨部门项目
+        if(!taskInfoService.isMultiOrgProject(addScoreModel.getResourceId())) {
+            logger.info("非跨部门项目，不计分");
+            return;
+        }
+
 
         //TODO:判断是否当天消息
         if (addScoreModel.getAccount() == null) {

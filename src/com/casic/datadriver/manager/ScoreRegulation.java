@@ -228,12 +228,12 @@ public class ScoreRegulation {
 
     public ScoreRegulation() {
         //全局
-        sourceDetailList.add(DESIGN_1);
+        //sourceDetailList.add(DESIGN_1);
         sourceDetailList.add(DESIGN_2);
         sourceDetailList.add(DESIGN_3);
-        sourceDetailList.add(DESIGN_4);
+        //sourceDetailList.add(DESIGN_4);
         sourceDetailList.add(DESIGN_5);
-        sourceDetailList.add(DESIGN_6);
+        //sourceDetailList.add(DESIGN_6);
         //sourceDetailList.add(DESIGN_7);
         sourceDetailList.add(DESIGN_8);
         //奉献
@@ -249,8 +249,8 @@ public class ScoreRegulation {
         sourceDetailList.add(KNOWLEDGE_8);
         //求实
         //sourceDetailList.add(TALK_1);
-        sourceDetailList.add(TALK_2);
-        sourceDetailList.add(TALK_3);
+        //sourceDetailList.add(TALK_2);
+        //sourceDetailList.add(TALK_3);
         sourceDetailList.add(SEARCH_1);
         sourceDetailList.add(SEARCH_2);
         sourceDetailList.add(SEARCH_3);
@@ -265,7 +265,7 @@ public class ScoreRegulation {
         //sourceDetailList.add(STORE_2);
         //sourceDetailList.add(STORE_3);
 
-        overflowMap.put(DESIGN_1, 10);
+        //overflowMap.put(DESIGN_1, 10);
         overflowMap.put(DESIGN_2, 30);
 
         overflowMap.put(KNOWLEDGE_1, 5);
