@@ -332,9 +332,9 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
         logger.info("handle message : " + addScoreModel.getAccount()
                 + " " + addScoreModel.getSourceDetail() + " score : " + addScoreModel.getSourceScore());
 
-        //1.本部门任务派发不计分
-        if(taskInfoService.isSameDept(addScoreModel.getResourceId())) {
-            logger.info("部门内部发布订阅活动，不计分");
+        //1.本人任务派发不计分
+        if(taskInfoService.isSamePerson(addScoreModel.getResourceId())) {
+            logger.info("本人发布订阅活动，不计分");
             return;
         }
         //2.同名不计分
@@ -342,8 +342,8 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
             logger.info("项目或任务同名，不计分");
             return;
         }
-        //3.完成跨部门项目
-        if(!taskInfoService.isMultiOrgProject(addScoreModel.getResourceId())) {
+        //3.完成多人合作项目
+        if(!taskInfoService.isMultiUserProject(addScoreModel.getResourceId())) {
             logger.info("非跨部门项目，不计分");
             return;
         }

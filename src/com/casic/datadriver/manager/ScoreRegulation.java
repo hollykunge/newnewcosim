@@ -252,14 +252,14 @@ public class ScoreRegulation {
         //sourceDetailList.add(TALK_2);
         //sourceDetailList.add(TALK_3);
         sourceDetailList.add(SEARCH_1);
-        sourceDetailList.add(SEARCH_2);
-        sourceDetailList.add(SEARCH_3);
+        //sourceDetailList.add(SEARCH_2);
+        //sourceDetailList.add(SEARCH_3);
         //sourceDetailList.add(TOOL_1);
         sourceDetailList.add(TOOL_2);
-        sourceDetailList.add(TOOL_3);
+        //sourceDetailList.add(TOOL_3);
         sourceDetailList.add(TOOL_4);
-        sourceDetailList.add(TOOL_5);
-        sourceDetailList.add(TOOL_6);
+        //sourceDetailList.add(TOOL_5);
+        //sourceDetailList.add(TOOL_6);
         //创新
         sourceDetailList.add(STORE_1);
         //sourceDetailList.add(STORE_2);
@@ -277,13 +277,13 @@ public class ScoreRegulation {
         overflowMap.put(TALK_2, 9);
         overflowMap.put(TALK_3, 8);
 
-        overflowMap.put(SEARCH_1, 6);
-        overflowMap.put(SEARCH_2, 5);
-        overflowMap.put(SEARCH_3, 5);
+        overflowMap.put(SEARCH_1, 3);
+        //overflowMap.put(SEARCH_2, 5);
+        //overflowMap.put(SEARCH_3, 5);
 
         overflowMap.put(TOOL_2, 3);
-        overflowMap.put(TOOL_3, 5);
-        overflowMap.put(TOOL_4, 10);
+        //overflowMap.put(TOOL_3, 5);
+        overflowMap.put(TOOL_4, 3);
     }
 
     /**

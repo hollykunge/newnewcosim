@@ -289,6 +289,25 @@ public class TaskInfoService extends BaseService<TaskInfo> {
     }
 
     /**
+     * 该任务是否是本人派发的
+     * @param taskId 任务id
+     */
+    public Boolean isSamePerson(Long taskId){
+
+        TaskInfo taskInfo = getById(taskId);
+
+        if(taskInfo != null) {
+
+            Long projectUser = taskInfo.getDdTaskCreatorId();
+
+            Long taskUser = taskInfo.getDdTaskResponsiblePerson();
+
+            return (projectUser.equals(taskUser));
+        }
+        return false;
+    }
+
+    /**
      * 判断同一用户不同任务使用同一名称
      */
     public Boolean hasSameNameTask(Long taskId) {
@@ -337,6 +356,28 @@ public class TaskInfoService extends BaseService<TaskInfo> {
                 //TODO：任务数据压根没放到任务里
                 //if(ti.getPrivateDataList().size() > 0) {
                     return true;
+                //}
+            }
+        }
+        return false;
+    }
+
+    public Boolean isMultiUserProject(Long projectId) {
+
+        List<TaskInfo> tasks = taskInfoDao.queryTaskInfoByProjectId(projectId);
+
+        for(TaskInfo ti : tasks) {
+
+            Long projectUser = ti.getDdTaskCreatorId();
+
+            Long taskUser = ti.getDdTaskResponsiblePerson();
+
+            //首先看是否有跨部门任务
+            if(!projectUser.equals(taskUser)) {
+                //再看该跨部门任务有没有数据
+                //TODO：任务数据压根没放到任务里
+                //if(ti.getPrivateDataList().size() > 0) {
+                return true;
                 //}
             }
         }
