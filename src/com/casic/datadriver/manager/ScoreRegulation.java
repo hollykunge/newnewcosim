@@ -418,5 +418,9 @@ public class ScoreRegulation {
                 return null;
         }
     }
+
+    public String getFinishProjectDetail() {
+        return DESIGN_5;
+    }
 }
 

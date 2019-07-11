@@ -343,12 +343,12 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
             return;
         }
         //3.完成多人合作项目
-        if(!taskInfoService.isMultiUserProject(addScoreModel.getResourceId())) {
-            logger.info("非跨部门项目，不计分");
-            return;
+        if(scoreRegulation.getFinishProjectDetail().equals(addScoreModel.getSourceDetail())){
+            if(!taskInfoService.isMultiUserProject(addScoreModel.getResourceId())) {
+                logger.info("非跨部门项目，不计分");
+                return;
+            }
         }
-
-
         //TODO:判断是否当天消息
         if (addScoreModel.getAccount() == null) {
             logger.warn("用户id为空或者获取日期不正确");
