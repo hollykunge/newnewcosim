@@ -301,7 +301,7 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
     /**
      * 获取个人所在组织流水
      *
-     * @param ogrId     ogrId
+     * @param ogrId      ogrId
      * @param sourceType 一级类型
      * @return DdScoreInflow列表
      */
@@ -332,21 +332,23 @@ public class DdScoreInflowService extends AbstractService<DdScoreInflow, Long> {
         logger.info("handle message : " + addScoreModel.getAccount()
                 + " " + addScoreModel.getSourceDetail() + " score : " + addScoreModel.getSourceScore());
 
-        //1.本人任务派发不计分
-        if(taskInfoService.isSamePerson(addScoreModel.getResourceId())) {
-            logger.info("本人发布订阅活动，不计分");
-            return;
-        }
-        //2.同名不计分
-        if(taskInfoService.hasSameNameTask(addScoreModel.getResourceId())) {
-            logger.info("项目或任务同名，不计分");
-            return;
-        }
-        //3.完成多人合作项目
-        if(scoreRegulation.getFinishProjectDetail().equals(addScoreModel.getSourceDetail())){
-            if(!taskInfoService.isMultiUserProject(addScoreModel.getResourceId())) {
-                logger.info("非跨部门项目，不计分");
+        if (addScoreModel.getSourceType().equals(ScoreRegulation.QUAN_JU)) {
+            //1.本人任务派发不计分
+            if (taskInfoService.isSamePerson(addScoreModel.getResourceId())) {
+                logger.info("本人发布订阅活动，不计分");
                 return;
+            }
+            //2.同名不计分
+            if (taskInfoService.hasSameNameTask(addScoreModel.getResourceId())) {
+                logger.info("项目或任务同名，不计分");
+                return;
+            }
+            //3.完成多人合作项目
+            if (scoreRegulation.getFinishProjectDetail().equals(addScoreModel.getSourceDetail())) {
+                if (!taskInfoService.isMultiUserProject(addScoreModel.getResourceId())) {
+                    logger.info("非跨部门项目，不计分");
+                    return;
+                }
             }
         }
         //TODO:判断是否当天消息
